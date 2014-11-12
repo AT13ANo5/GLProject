@@ -1,19 +1,24 @@
+//=================================================================================
+//コンソールクラス
+//=================================================================================
 #ifndef _CONSOLE_H_
 #define _CONSOLE_H_
 
-
+//=================================================================================
+//マクロ定義
+//=================================================================================
 #define LENGTH_STRING_BUFF (1028)	//バッファ量
 class Console
 {
 public:
 	
-	static void Sys(char* command);
-	static void Print(char* fmt,...);
-	static void Cls(void);
-	static void SetCursorPos(SHORT x,SHORT y);
+	static void Sys(char* command);//システムコマンドを使用
+	static void Print(char* fmt,...);//文字を表示(文末で勝手に改行される)
+	static void Cls(void);//画面をクリア
+	static void SetCursorPos(SHORT x,SHORT y);//カーソルを移動
 
-	static void Initialize();
-	static void Finalize();
+	static void Initialize();//初期化
+	static void Finalize();//終了
 private:
 	Console();
 	~Console();

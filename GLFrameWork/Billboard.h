@@ -1,8 +1,16 @@
+//=================================================================================
+//ビルボードクラス
+//
+//Rotはzだけ回る
+//=================================================================================
 #ifndef _CBillboard_H_
 #define _CBillboard_H_
+
+//=================================================================================
+//インクルード
+//=================================================================================
 #include "main.h"
 #include "Object.h"
-
 
 //=============================================================================
 //OpenGLのシーン3Dクラス
@@ -17,13 +25,20 @@ public:
 	void Update(void);
 	void Draw(void);
 
+	//=================================================================================
+	//生成
+	//=================================================================================
 	static CBillboard* Create(VECTOR3 pos,VECTOR3 size,VECTOR3 rot = VECTOR3(0,0,0),COLOR color = COLOR(1.0f,1.0f,1.0f,1.0f));
 
-	void SetSize(float x,float y,float z){ _Size.x = x;_Size.y = y;_Size.z = z; }
-	void SetSize(const VECTOR3& pos){ _Size = pos; }
-	void SetSizeX(float x){ _Size.x = x; }
-	void SetSizeY(float y){ _Size.y = y; }
-	void SetSizeZ(float z){ _Size.z = z; }
+	//=================================================================================
+	//セッター
+	//=================================================================================
+	void SetSize(float x,float y,float z){ _Size.x = x;_Size.y = y;_Size.z = z; ResizeVtx();}
+	void SetSize(const VECTOR3& pos){ _Size = pos; ResizeVtx(); }
+	void SetSizeX(float x){ _Size.x = x; ResizeVtx(); }
+	void SetSizeY(float y){ _Size.y = y; ResizeVtx(); }
+	void SetSizeZ(float z){ _Size.z = z; ResizeVtx(); }
+
 	void SetUV(float x,float y,float width,float height);
 	void SetUV_X(float x){ uv.x = x;uv.Set(); }
 	void SetUV_Y(float y){ uv.y = y;uv.Set(); }
@@ -32,11 +47,12 @@ public:
 
 	void SetTex(TEX_INFO tex){ Texture = tex;uv.InverseH = tex.InverseH;uv.InverseV = tex.InverseV; }
 
-	void AddSize(float x,float y,float z){ _Size.x += x;_Size.y += y;_Size.z += z; }
-	void AddSize(const VECTOR3& pos){ _Size += pos; }
-	void AddSizeX(float x){ _Size.x += x; }
-	void AddSizeY(float y){ _Size.y += y; }
-	void AddSizeZ(float z){ _Size.z += z; }
+	void AddSize(float x,float y,float z){ _Size.x += x;_Size.y += y;_Size.z += z; ResizeVtx(); }
+	void AddSize(const VECTOR3& pos){ _Size += pos; ResizeVtx(); }
+	void AddSizeX(float x){ _Size.x += x; ResizeVtx(); }
+	void AddSizeY(float y){ _Size.y += y; ResizeVtx(); }
+	void AddSizeZ(float z){ _Size.z += z; ResizeVtx(); }
+
 	void AddUV_X(float x){ uv.x += x;uv.Set(); }
 	void AddUV_Y(float y){ uv.y += y;uv.Set(); }
 	void AddUV_Width(float width){ uv.width += width;uv.Set(); }
@@ -52,6 +68,7 @@ private:
 	VECTOR3 Nor[4];
 	MATERIAL Material;
 
+	void ResizeVtx(void);
 };
 
 #endif

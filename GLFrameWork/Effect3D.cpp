@@ -70,7 +70,7 @@ void CEffect3D::Draw(void)
 {
 	//ライティング無効
 	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
 
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	glEnable(GL_BLEND);
@@ -116,7 +116,7 @@ void CEffect3D::Draw(void)
 
 	glDisable(GL_BLEND);
 
-	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
 }
 
 void CEffect3D::SetUV(float x,float y,float width,float height)

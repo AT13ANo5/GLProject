@@ -10,8 +10,8 @@ Console* Console::Self = nullptr;
 
 Console::Console()
 {
-	Cursor.X = 1;
-	Cursor.Y = 1;
+	Cursor.X = 0;
+	Cursor.Y = 0;
 	::AllocConsole();
 	ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	system("mode CON: COLS=100 LINES=135");//‰æ–ÊƒTƒCƒYÝ’è
@@ -65,16 +65,29 @@ void Console::Print(char* fmt,...)
 		char Buff[LENGTH_STRING_BUFF] = { 0 };
 		va_list argp;
 		va_start(argp,fmt);
-		vsprintf_s(Buff,256,fmt,argp);
+		vsprintf_s(Buff,LENGTH_STRING_BUFF,fmt,argp);
 		va_end(argp);
 
 		if (Cursor.Y >= 135)
 		{
 			Cls();
 		}
-
+		int cnt=0,num=0;
+		while (1)
+		{
+			if (Buff[cnt] == '\n')
+			{
+				Cursor.Y++;
+				num++;
+			}
+			if (Buff[cnt] == '\0'||cnt>=LENGTH_STRING_BUFF)
+			{
+				break;
+			}
+			cnt++;
+		}
+		if (num == 0){ Cursor.Y++; }
 		printf(Buff);
-		Cursor.Y++;
 		SetConsoleCursorPosition(ConsoleHandle,Cursor);
 	}
 #endif

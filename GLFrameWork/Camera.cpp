@@ -4,17 +4,17 @@
 float ClickPosX;
 CCamera::CCamera()
 {
-	PosP.x = 
-	PosP.y = 
-	PosP.z = 0;
+	_Eye.x = 
+	_Eye.y = 
+	_Eye.z = 0;
 	
-	PosR.x =
-	PosR.y = 0;
-	PosR.z = -50.0f;
+	_Lookat.x =
+	_Lookat.y = 0;
+	_Lookat.z = -50.0f;
 
-	VecU.x =
-	VecU.z = 0;
-	VecU.y = 1.0f;
+	_UpVec.x =
+	_UpVec.z = 0;
+	_UpVec.y = 1.0f;
 }
 
 CCamera::~CCamera()
@@ -23,13 +23,13 @@ CCamera::~CCamera()
 
 void CCamera::Init(float posx,float posy,float posz,float lookx,float looky,float lookz)
 {
-	PosP.x = posx;
-	PosP.y = posy;
-	PosP.z = posz;
+	_Eye.x = posx;
+	_Eye.y = posy;
+	_Eye.z = posz;
 
-	PosR.x = lookx;
-	PosR.y = looky;
-	PosR.z = lookz;
+	_Lookat.x = lookx;
+	_Lookat.y = looky;
+	_Lookat.z = lookz;
 
 	Length = sqrt((lookx-posx)*(lookx-posx)+(looky-posy)*(looky-posy)+(lookz-posz)*(lookz-posz));
 
@@ -37,6 +37,23 @@ void CCamera::Init(float posx,float posy,float posz,float lookx,float looky,floa
 	Angle.y = atan2(lookx-posx,lookz-posz);
 	Angle.z = atan2(lookx-posx,looky-posy);
 
+}
+
+void CCamera::Init(const VECTOR3& eye,const VECTOR3& lookat)
+{
+	_Eye.x = eye.x;
+	_Eye.y = eye.y;
+	_Eye.z = eye.z;
+
+	_Lookat.x = lookat.x;
+	_Lookat.y = lookat.y;
+	_Lookat.z = lookat.z;
+
+	Length = sqrt((lookat.x - eye.x)*(lookat.x - eye.x) + (lookat.y - eye.y)*(lookat.y - eye.y) + (lookat.z - eye.z)*(lookat.z - eye.z));
+
+	Angle.x = atan2(lookat.y - eye.y,lookat.z - eye.z);
+	Angle.y = atan2(lookat.x - eye.x,lookat.z - eye.z);
+	Angle.z = atan2(lookat.x - eye.x,lookat.y - eye.y);
 }
 
 void CCamera::Update(void)
@@ -59,8 +76,8 @@ void CCamera::Update(void)
 	{
 		Length += 20.0f;
 	}
-	PosP.x = sinf(Angle.y)*Length+PosR.x;
-	PosP.z = cosf(Angle.y)*Length+PosR.z;
+	_Eye.x = sinf(Angle.y)*Length+_Lookat.x;
+	_Eye.z = cosf(Angle.y)*Length+_Lookat.z;
 }
 
 void CCamera::Set(void)
@@ -74,7 +91,7 @@ void CCamera::Set(void)
 	glLoadIdentity();
 	//カメラの設定
 	
-	gluLookAt(PosP.x,PosP.y,PosP.z,//カメラ座標
-		PosR.x,PosR.y,PosR.z,//注視点座標
-		VecU.x,VecU.y,VecU.z);//上方向ベクトル
+	gluLookAt(_Eye.x,_Eye.y,_Eye.z,//カメラ座標
+		_Lookat.x,_Lookat.y,_Lookat.z,//注視点座標
+		_UpVec.x,_UpVec.y,_UpVec.z);//上方向ベクトル
 }

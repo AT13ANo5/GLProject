@@ -88,7 +88,9 @@
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CommonGL.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Effect2D.cpp" />
     <ClCompile Include="Effect3D.cpp" />
+    <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="Keyboard.cpp" />
@@ -103,7 +105,6 @@
     <ClCompile Include="MeshField.cpp" />
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="MEshGround.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +113,7 @@
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CommonGL.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Effect2D.h" />
     <ClInclude Include="Effect3D.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="GamePad.h" />

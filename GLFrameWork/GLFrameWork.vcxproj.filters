@@ -82,6 +82,9 @@
     <Filter Include="Console">
       <UniqueIdentifier>{c8b6510c-142e-417d-9753-df7a09758218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effect2D">
+      <UniqueIdentifier>{47fe28e2-1c1c-4803-ae7c-408f4564fc7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -147,7 +150,10 @@
     <ClCompile Include="Console.cpp">
       <Filter>Console</Filter>
     </ClCompile>
-    <ClCompile Include="MEshGround.cpp">
+    <ClCompile Include="Effect2D.cpp">
+      <Filter>Effect2D</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshGround.cpp">
       <Filter>Mesh\Ground</Filter>
     </ClCompile>
   </ItemGroup>
@@ -217,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="MeshGround.h">
       <Filter>Mesh\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect2D.h">
+      <Filter>Effect2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

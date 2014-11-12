@@ -4,6 +4,7 @@
 #include "Polygon3D.h"
 #include "Billboard.h"
 #include "Effect3D.h"
+#include "Effect2D.h"
 #include "Model.h"
 #include "MeshFiled.h"
 #include "MeshCylinder.h"
@@ -19,6 +20,7 @@ CManager::CManager()
 	Keyboard = nullptr;
 
 	Console::Initialize();
+	Console::Print("Start Debug...");
 }
 CManager::~CManager()
 {
@@ -39,7 +41,6 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 	Mouse->Init(hInstance,hWnd);
 	Keyboard = new CKeyboard;
 	Keyboard->Init(hInstance,hWnd);
-
 
 }
 

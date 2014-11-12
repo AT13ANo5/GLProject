@@ -1,14 +1,22 @@
+//===================================================================
+//汎用構造体群
+//===================================================================
 #ifndef _COMMONGL_H_
 #define _COMMONGL_H_
 
-
+//デリートを簡略化したマクロ
 #define SafeDelete(x) if(x!=nullptr){	\
 						delete x;		\
 						x = nullptr; }
+
+//デリートを簡略化したマクロ(配列用)
 #define SafeDeletes(x) if(x!=nullptr){	\
 						delete[] x;		\
 						x = nullptr; }	\
 
+//===================================================================
+//XY
+//===================================================================
 struct VECTOR2
 {
 public:
@@ -17,12 +25,32 @@ public:
 	VECTOR2 operator + (const VECTOR2&) const;
 	VECTOR2 operator - (const VECTOR2&) const;
 	VECTOR2 operator * (const VECTOR2&) const;
+	VECTOR2 operator * (const float) const;
 	VECTOR2 operator / (const VECTOR2&) const;
+	VECTOR2 operator / (const float) const;
 	VECTOR2 operator += (const VECTOR2&);
 	VECTOR2 operator -= (const VECTOR2&);
-	float x,y;
+	VECTOR2 operator *= (const VECTOR2&);
+	VECTOR2 operator *= (const float);
+	VECTOR2 operator /= (const VECTOR2&);
+	VECTOR2 operator /= (const float);
+
+	float Dot(const VECTOR2& Src1,const VECTOR2& Src2);
+	float Cross(const VECTOR2& Src1,const VECTOR2& Scr2);
+
+	union
+	{
+		struct
+		{
+			float x,y;
+		};
+		float f[2];
+	};
 };
 
+//===================================================================
+//XYZ
+//===================================================================
 struct VECTOR3
 {
 public:
@@ -31,19 +59,32 @@ public:
 	VECTOR3 operator + (const VECTOR3&) const;
 	VECTOR3 operator - (const VECTOR3&) const;
 	VECTOR3 operator * (const VECTOR3&) const;
+	VECTOR3 operator * (const float) const;
 	VECTOR3 operator / (const VECTOR3&) const;
+	VECTOR3 operator / (const float) const;
 	VECTOR3 operator += (const VECTOR3&);
 	VECTOR3 operator -= (const VECTOR3&);
-	VECTOR3 operator *= (float f);
-	VECTOR3 operator /= (float f);
 	VECTOR3 operator *= (const VECTOR3&);
+	VECTOR3 operator *= (float f);
 	VECTOR3 operator /= (const VECTOR3&);
-	void Normalize(void);
-	static float Dot(VECTOR3 Src1,VECTOR3 Src2);
-	static void Cross(VECTOR3* Output,VECTOR3 Src1,VECTOR3 Src2);
-	float x,y,z;
-};
+	VECTOR3 operator /= (float f);
+	void Normalize(void);//正規化
+	static float Dot(const VECTOR3& Src1,const VECTOR3& Src2);//内積
+	static void Cross(VECTOR3* Output,const VECTOR3& Src1,const VECTOR3& Src2);//外積
 
+	union
+	{
+		struct
+		{
+			float x,y,z;
+		};
+		float f[3];
+	};
+	
+};
+//===================================================================
+//XYZW
+//===================================================================
 struct VECTOR4
 {
 public:
@@ -52,12 +93,28 @@ public:
 	VECTOR4 operator + (const VECTOR4&) const;
 	VECTOR4 operator - (const VECTOR4&) const;
 	VECTOR4 operator * (const VECTOR4&) const;
+	VECTOR4 operator * (const float) const;
 	VECTOR4 operator / (const VECTOR4&) const;
+	VECTOR4 operator / (const float) const;
 	VECTOR4 operator += (const VECTOR4&);
 	VECTOR4 operator -= (const VECTOR4&);
-	float x,y,z,w;
-};
+	VECTOR4 operator *= (const VECTOR4&);
+	VECTOR4 operator *= (const float);
+	VECTOR4 operator /= (const VECTOR4&);
+	VECTOR4 operator /= (const float);
 
+	union
+	{
+		struct
+		{
+			float x,y,z,w;
+		};
+		float f[4];
+	};
+};
+//===================================================================
+//RGBA
+//===================================================================
 struct COLOR
 {
 public:
@@ -65,11 +122,20 @@ public:
 	COLOR(float fr,float fg,float fb,float fa);
 	COLOR operator + (const COLOR&) const;
 	COLOR operator - (const COLOR&) const;
+	COLOR operator * (const COLOR&) const;
+	COLOR operator * (const float) const;
+	COLOR operator / (const COLOR&) const;
+	COLOR operator / (const float) const;
 	COLOR operator += (const COLOR&);
 	COLOR operator -= (const COLOR&);
+	COLOR operator *= (const COLOR&);
+	COLOR operator *= (const float);
+	COLOR operator /= (const COLOR&);
+	COLOR operator /= (const float);
 	float r,g,b,a;
 };
 
+//色を簡単に作れるテンプレート
 #define WHITE(Alpha)	(COLOR(1.0f,1.0f,1.0f,Alpha))
 #define RED(Alpha)		(COLOR(1.0f,0.0f,0.0f,Alpha))
 #define BLUE(Alpha)		(COLOR(0.0f,0.0f,1.0f,Alpha))
@@ -80,6 +146,9 @@ public:
 #define BLACK(Alpha)	(COLOR(0.0f,0.0f,0.0f,Alpha))
 #define GRAY(Alpha)		(COLOR(0.5f,0.5f,0.5f,Alpha))
 
+//===================================================================
+//マトリックス
+//===================================================================
 typedef struct FLOAT3
 {
 	float x,y,z;
@@ -104,6 +173,7 @@ typedef struct MATRIX3x3
 		FLOAT4	v[3];
 	};
 } MATRIX3x3;
+
 typedef struct MATRIX4x4
 {
 	union
@@ -120,7 +190,9 @@ typedef struct MATRIX4x4
 		FLOAT4	v[4];
 	};
 } MATRIX4x4;
-
+//===================================================================
+//逆行列作成
+//===================================================================
 inline void glMatrixInverse(MATRIX4x4 *out,const MATRIX4x4& in)
 {
 	out->_11 = in._11;
@@ -142,6 +214,9 @@ inline void glMatrixInverse(MATRIX4x4 *out,const MATRIX4x4& in)
 	out->_44 = 1.0f;
 }
 
+//===================================================================
+//UV値
+//===================================================================
 typedef struct UV
 {
 public:
@@ -161,10 +236,12 @@ public:
 		this->width = width;
 		this->height = height;
 	}
+
 	float x,y,width,height;
 	bool InverseH,InverseV;
 	VECTOR2 tex[4];
 
+	//これを呼び出すと、tex配列に値がセットされる
 	void Set(void)
 	{
 		if (InverseH)

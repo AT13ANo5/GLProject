@@ -123,3 +123,11 @@ void CBillboard::SetUV(float x,float y,float width,float height)
 	uv.Set();
 
 }
+
+void CBillboard::ResizeVtx(void)
+{
+	Vtx[0] = VECTOR3(_Size.x / 2.0f,_Size.y / 2.0f,0);
+	Vtx[1] = VECTOR3(-_Size.x / 2.0f,_Size.y / 2.0f,0);
+	Vtx[2] = VECTOR3(_Size.x / 2.0f,-_Size.y / 2.0f,0);
+	Vtx[3] = VECTOR3(-_Size.x / 2.0f,-_Size.y / 2.0f,0);
+}
