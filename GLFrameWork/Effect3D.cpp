@@ -73,7 +73,7 @@ void CEffect3D::Draw(void)
 	glDepthMask(GL_FALSE);
 
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-	glEnable(GL_BLEND);
+	
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();//ビューマトリックスを退避
@@ -114,7 +114,7 @@ void CEffect3D::Draw(void)
 	glPopMatrix();//ビューマトリックスを戻す
 	glBindTexture(GL_TEXTURE_2D,0);
 
-	glDisable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
 	glDepthMask(GL_TRUE);
 }

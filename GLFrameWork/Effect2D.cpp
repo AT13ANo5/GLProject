@@ -73,7 +73,7 @@ void CEffect2D::Draw(void)
 	glDisable(GL_LIGHTING);
 
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 	glDepthMask(GL_FALSE);
 	//2D用マトリクス設定
 
@@ -106,7 +106,8 @@ void CEffect2D::Draw(void)
 
 	glBindTexture(GL_TEXTURE_2D,0);
 
-	glDisable(GL_BLEND);
+	//glDisable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
 	glDepthMask(GL_TRUE);
 

@@ -53,6 +53,8 @@ HRESULT CRenderer::Init(HWND hWnd)
 	}
 	//OpenGL•`‰æİ’è
 	glEnable(GL_CULL_FACE);//ƒJƒŠƒ“ƒO‚·‚é
+	glEnable(GL_BLEND);
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);

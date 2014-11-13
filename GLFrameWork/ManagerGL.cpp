@@ -42,6 +42,11 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 	Keyboard = new CKeyboard;
 	Keyboard->Init(hInstance,hWnd);
 
+	CBillboard* bill = CBillboard::Create(VECTOR3(0,0,0),VECTOR2(100.0f,100.0f),VECTOR3(0,0,0),RED(0.5f));
+	bill->SetTex(CTexture::Texture(CTexture::TEX_LIGHT));
+	CEffect3D::Create(VECTOR3(0,0,100.0f),VECTOR2(100.0f,100.0f),VECTOR3(0,0,0),BLUE(1.0f));
+	CPolygon3D::Create(VECTOR3(0,0,-100.0f),VECTOR2(100.0f,100.0f),VECTOR3(-90.0f,0,0),GREEN(0.8f));
+
 }
 
 void CManager::Uninit(HWND hWnd)
