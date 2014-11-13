@@ -23,9 +23,6 @@ CPolygon2D::CPolygon2D():CObject(LAYER_NUM-2)
 //=============================================================================
 void CPolygon2D::Init(void)
 {
-	TEX_INFO tex;
-	Length = sqrtf((_Size.x/2)*(_Size.x/2)+(_Size.y/2)*(_Size.y/2));
-	Angle = atan2f(_Size.x/2,_Size.y/2);
 
 	Vtx[0] = VECTOR3(_Size.x / 2,-_Size.y / 2.0f,0);
 	Vtx[1] = VECTOR3(-_Size.x / 2,-_Size.y / 2.0f,0);
@@ -37,7 +34,7 @@ void CPolygon2D::Init(void)
 //=============================================================================
 //ì¬
 //=============================================================================
-CPolygon2D* CPolygon2D::Create(VECTOR3 pos,VECTOR3 size,VECTOR3 rot,COLOR color)
+CPolygon2D* CPolygon2D::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
 	CPolygon2D* Scene = new CPolygon2D;
 	Scene->_Pos = pos;
@@ -115,4 +112,12 @@ void CPolygon2D::SetUV(float x,float y,float width,float height)
 	uv.InverseV = Texture.InverseV;
 	uv.Set();
 
+}
+
+void CPolygon2D::Resize(void)
+{
+	Vtx[0] = VECTOR3(_Size.x / 2,-_Size.y / 2.0f,0);
+	Vtx[1] = VECTOR3(-_Size.x / 2,-_Size.y / 2.0f,0);
+	Vtx[2] = VECTOR3(_Size.x / 2,_Size.y / 2.0f,0);
+	Vtx[3] = VECTOR3(-_Size.x / 2,_Size.y / 2.0f,0);
 }

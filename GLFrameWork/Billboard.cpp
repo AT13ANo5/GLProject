@@ -37,7 +37,7 @@ void CBillboard::Init(void)
 	Vtx[3] = VECTOR3(-_Size.x / 2.0f,-_Size.y / 2.0f,0);
 
 }
-CBillboard* CBillboard::Create(VECTOR3 pos,VECTOR3 size,VECTOR3 rot,COLOR color)
+CBillboard* CBillboard::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
 	CBillboard* Scene = new CBillboard;
 	Scene->_Pos = pos;

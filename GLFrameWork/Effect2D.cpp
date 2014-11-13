@@ -10,12 +10,12 @@
 CEffect2D::CEffect2D():CObject(LAYER_NUM - 1)
 {
 	_Pos.x =
-		_Pos.y =
-		_Pos.z = 0;
+	_Pos.y =
+	_Pos.z = 0;
 
 	_Rot.x =
-		_Rot.y =
-		_Rot.z = 0;
+	_Rot.y =
+	_Rot.z = 0;
 
 }
 //=============================================================================
@@ -37,7 +37,7 @@ void CEffect2D::Init(void)
 //=============================================================================
 //ì¬
 //=============================================================================
-CEffect2D* CEffect2D::Create(VECTOR3 pos,VECTOR3 size,VECTOR3 rot,COLOR color)
+CEffect2D* CEffect2D::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
 	CEffect2D* Scene = new CEffect2D;
 	Scene->_Pos = pos;
@@ -123,4 +123,12 @@ void CEffect2D::SetUV(float x,float y,float width,float height)
 	uv.InverseV = Texture.InverseV;
 	uv.Set();
 
+}
+
+void CEffect2D::Resize(void)
+{
+	Vtx[0] = VECTOR3(_Size.x / 2,-_Size.y / 2.0f,0);
+	Vtx[1] = VECTOR3(-_Size.x / 2,-_Size.y / 2.0f,0);
+	Vtx[2] = VECTOR3(_Size.x / 2,_Size.y / 2.0f,0);
+	Vtx[3] = VECTOR3(-_Size.x / 2,_Size.y / 2.0f,0);
 }

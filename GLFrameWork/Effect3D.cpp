@@ -10,12 +10,12 @@
 CEffect3D::CEffect3D() :CObject(3)
 {
 	_Pos.x =
-		_Pos.y =
-		_Pos.z = 0;
+	_Pos.y =
+	_Pos.z = 0;
 
 	_Rot.x =
-		_Rot.y =
-		_Rot.z = 0;
+	_Rot.y =
+	_Rot.z = 0;
 
 }
 //=============================================================================
@@ -37,7 +37,7 @@ void CEffect3D::Init(void)
 	Vtx[3] = VECTOR3(-_Size.x / 2.0f,-_Size.y / 2.0f,0);
 
 }
-CEffect3D* CEffect3D::Create(VECTOR3 pos,VECTOR3 size,VECTOR3 rot,COLOR color)
+CEffect3D* CEffect3D::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
 	CEffect3D* Scene = new CEffect3D;
 	Scene->_Pos = pos;
@@ -126,4 +126,12 @@ void CEffect3D::SetUV(float x,float y,float width,float height)
 	uv.InverseV = Texture.InverseV;
 	uv.Set();
 
+}
+
+void CEffect3D::Resize(void)
+{
+	Vtx[0] = VECTOR3(_Size.x / 2.0f,_Size.y / 2.0f,0);
+	Vtx[1] = VECTOR3(-_Size.x / 2.0f,_Size.y / 2.0f,0);
+	Vtx[2] = VECTOR3(_Size.x / 2.0f,-_Size.y / 2.0f,0);
+	Vtx[3] = VECTOR3(-_Size.x / 2.0f,-_Size.y / 2.0f,0);
 }

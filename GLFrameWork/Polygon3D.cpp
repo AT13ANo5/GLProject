@@ -35,6 +35,7 @@ void CPolygon3D::Init(void)
 	Vtx[1] = VECTOR3(_Size.x/2,0,_Size.y/2);
 	Vtx[2] = VECTOR3(-_Size.x/2,0,-_Size.y/2);
 	Vtx[3] = VECTOR3(_Size.x/2,0,-_Size.y/2);
+
 	for (int cnt = 0;cnt < 4;cnt++)
 	{
 		Nor[cnt] = VECTOR3(0,0,-1.0f);
@@ -42,7 +43,7 @@ void CPolygon3D::Init(void)
 
 	
 }
-CPolygon3D* CPolygon3D::Create(VECTOR3 pos,VECTOR3 size,VECTOR3 rot,COLOR color)
+CPolygon3D* CPolygon3D::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
 	CPolygon3D* Scene = new CPolygon3D;
 	Scene->_Pos = pos;
@@ -119,4 +120,12 @@ void CPolygon3D::SetUV(float x,float y,float width,float height)
 	uv.InverseV = Texture.InverseV;
 	uv.Set();
 
+}
+
+void CPolygon3D::Resize(void)
+{
+	Vtx[0] = VECTOR3(-_Size.x / 2,0,_Size.y / 2);
+	Vtx[1] = VECTOR3(_Size.x / 2,0,_Size.y / 2);
+	Vtx[2] = VECTOR3(-_Size.x / 2,0,-_Size.y / 2);
+	Vtx[3] = VECTOR3(_Size.x / 2,0,-_Size.y / 2);
 }
