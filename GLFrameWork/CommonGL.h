@@ -12,7 +12,8 @@
 //デリートを簡略化したマクロ(配列用)
 #define SafeDeletes(x) if(x!=nullptr){	\
 						delete[] x;		\
-						x = nullptr; }	\
+						x = nullptr; }
+#define PI (3.14159265359f)
 
 //===================================================================
 //XY
@@ -115,7 +116,7 @@ public:
 //===================================================================
 //RGBA
 //===================================================================
-struct COLOR
+typedef struct COLOR
 {
 public:
 	COLOR(){};
@@ -133,7 +134,7 @@ public:
 	COLOR operator /= (const COLOR&);
 	COLOR operator /= (const float);
 	float r,g,b,a;
-};
+}COLOR;
 
 //色を簡単に作れるテンプレート
 #define WHITE(Alpha)	(COLOR(1.0f,1.0f,1.0f,Alpha))

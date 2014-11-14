@@ -90,6 +90,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Effect2D.cpp" />
     <ClCompile Include="Effect3D.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="GamePad.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Billboard.h" />
@@ -115,6 +117,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Effect2D.h" />
     <ClInclude Include="Effect3D.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="Keyboard.h" />
@@ -130,7 +133,9 @@
     <ClInclude Include="MeshSphere.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MeshGround.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

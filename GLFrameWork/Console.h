@@ -27,7 +27,6 @@ private:
 	static Console* Self;
 	static COORD Cursor;
 	static HANDLE ConsoleHandle;
-	
 
 };
 

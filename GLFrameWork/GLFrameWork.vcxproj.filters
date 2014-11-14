@@ -1,231 +1,250 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="リソース ファイル">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="main">
-      <UniqueIdentifier>{c067ca8e-23ef-4d7c-80d3-78b92575b7d6}</UniqueIdentifier>
+    <Filter Include="00_システム">
+      <UniqueIdentifier>{328972dd-fc4f-495a-9218-2264c70171f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{56236559-af7b-4543-a17d-4d90f7e1fd4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{cbbf6725-3eec-4dc6-b1ac-81f91446f3de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{30a9dc15-08c7-4b0d-bc9b-28dacefafc43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{752e34d8-e4a8-45e9-84f8-bd980f7f1a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{7606cd0a-9401-4a04-a9b2-2af126745a27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input\GamePad">
-      <UniqueIdentifier>{64e1dedf-c907-4fe3-883c-d32fb9daab23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input\Keyboard">
-      <UniqueIdentifier>{88315306-9f0d-440c-ad55-4fd75381a712}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Light">
-      <UniqueIdentifier>{bbcc5d08-858a-45dd-a210-6c472c29ed5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input\Mouse">
-      <UniqueIdentifier>{0c783b59-a561-4d7a-9aae-ee9667a03efb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{a171efa7-07f7-4b7d-9ac6-fb00593217fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Polygon2D">
-      <UniqueIdentifier>{0342eb2c-2f21-40cc-b9ed-b04502d6c58f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Polygon3D">
-      <UniqueIdentifier>{3b8cfaa5-c03c-43d8-b7c6-bfb9a37088c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh">
-      <UniqueIdentifier>{0953b2c2-d486-4ab2-a90c-e9abced7b7f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh\Cylinder">
-      <UniqueIdentifier>{ffb42608-bc33-4b8f-84df-84b46890cc55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh\Field">
-      <UniqueIdentifier>{89117472-c18d-48f7-9b38-418599a6744a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh\Sphere">
-      <UniqueIdentifier>{62ee392c-c3c2-4d52-8cb8-c1e6ba9e1403}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Texture">
-      <UniqueIdentifier>{78394ef8-33c2-4577-850d-62f66a4a6226}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Billboard">
+    <Filter Include="00_システム\Billboard">
       <UniqueIdentifier>{6041b7bb-4c35-4b2e-83d8-b0202304b3d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{9226f0bb-a860-4699-b2f2-a789a3621d09}</UniqueIdentifier>
+    <Filter Include="00_システム\Camera">
+      <UniqueIdentifier>{cbbf6725-3eec-4dc6-b1ac-81f91446f3de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Effect3D">
-      <UniqueIdentifier>{a1563678-6efd-448a-b769-a466a649e833}</UniqueIdentifier>
+    <Filter Include="00_システム\Common">
+      <UniqueIdentifier>{752e34d8-e4a8-45e9-84f8-bd980f7f1a1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mesh\Ground">
-      <UniqueIdentifier>{9e0031a4-da48-4fc5-90e6-037e210104a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Console">
+    <Filter Include="00_システム\Console">
       <UniqueIdentifier>{c8b6510c-142e-417d-9753-df7a09758218}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Effect2D">
+    <Filter Include="00_システム\Effect2D">
       <UniqueIdentifier>{47fe28e2-1c1c-4803-ae7c-408f4564fc7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Effect3D">
+      <UniqueIdentifier>{a1563678-6efd-448a-b769-a466a649e833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Input">
+      <UniqueIdentifier>{30a9dc15-08c7-4b0d-bc9b-28dacefafc43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Input\GamePad">
+      <UniqueIdentifier>{64e1dedf-c907-4fe3-883c-d32fb9daab23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Input\Keyboard">
+      <UniqueIdentifier>{88315306-9f0d-440c-ad55-4fd75381a712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Input\Mouse">
+      <UniqueIdentifier>{0c783b59-a561-4d7a-9aae-ee9667a03efb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Light">
+      <UniqueIdentifier>{bbcc5d08-858a-45dd-a210-6c472c29ed5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\main">
+      <UniqueIdentifier>{c067ca8e-23ef-4d7c-80d3-78b92575b7d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Manager">
+      <UniqueIdentifier>{56236559-af7b-4543-a17d-4d90f7e1fd4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Mesh">
+      <UniqueIdentifier>{0953b2c2-d486-4ab2-a90c-e9abced7b7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Mesh\Cylinder">
+      <UniqueIdentifier>{ffb42608-bc33-4b8f-84df-84b46890cc55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Mesh\Field">
+      <UniqueIdentifier>{89117472-c18d-48f7-9b38-418599a6744a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Mesh\Sphere">
+      <UniqueIdentifier>{62ee392c-c3c2-4d52-8cb8-c1e6ba9e1403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Mesh\Ground">
+      <UniqueIdentifier>{9e0031a4-da48-4fc5-90e6-037e210104a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Model">
+      <UniqueIdentifier>{9226f0bb-a860-4699-b2f2-a789a3621d09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Object">
+      <UniqueIdentifier>{7606cd0a-9401-4a04-a9b2-2af126745a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Polygon2D">
+      <UniqueIdentifier>{0342eb2c-2f21-40cc-b9ed-b04502d6c58f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Polygon3D">
+      <UniqueIdentifier>{3b8cfaa5-c03c-43d8-b7c6-bfb9a37088c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Renderer">
+      <UniqueIdentifier>{a171efa7-07f7-4b7d-9ac6-fb00593217fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Texture">
+      <UniqueIdentifier>{78394ef8-33c2-4577-850d-62f66a4a6226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Fade">
+      <UniqueIdentifier>{49033684-a351-4f32-9d5b-08dc736bfe08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Scene">
+      <UniqueIdentifier>{801d9042-ca76-42dc-ab80-51283618c068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01_タイトル">
+      <UniqueIdentifier>{7549e58c-6fcc-4f32-bd23-44bb003f75a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>main</Filter>
+      <Filter>00_システム\main</Filter>
     </ClCompile>
     <ClCompile Include="ManagerGL.cpp">
-      <Filter>Manager</Filter>
+      <Filter>00_システム\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Camera</Filter>
+      <Filter>00_システム\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CInput.cpp">
-      <Filter>Input</Filter>
+      <Filter>00_システム\Input</Filter>
     </ClCompile>
     <ClCompile Include="CommonGL.cpp">
-      <Filter>Common</Filter>
+      <Filter>00_システム\Common</Filter>
     </ClCompile>
     <ClCompile Include="GamePad.cpp">
-      <Filter>Input\GamePad</Filter>
+      <Filter>00_システム\Input\GamePad</Filter>
     </ClCompile>
     <ClCompile Include="Keyboard.cpp">
-      <Filter>Input\Keyboard</Filter>
+      <Filter>00_システム\Input\Keyboard</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Light</Filter>
+      <Filter>00_システム\Light</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
-      <Filter>Input\Mouse</Filter>
+      <Filter>00_システム\Input\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Renderer</Filter>
+      <Filter>00_システム\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Texture</Filter>
+      <Filter>00_システム\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Object</Filter>
+      <Filter>00_システム\Object</Filter>
     </ClCompile>
     <ClCompile Include="MeshCylinder.cpp">
-      <Filter>Mesh\Cylinder</Filter>
+      <Filter>00_システム\Mesh\Cylinder</Filter>
     </ClCompile>
     <ClCompile Include="MeshField.cpp">
-      <Filter>Mesh\Field</Filter>
+      <Filter>00_システム\Mesh\Field</Filter>
     </ClCompile>
     <ClCompile Include="MeshSphere.cpp">
-      <Filter>Mesh\Sphere</Filter>
+      <Filter>00_システム\Mesh\Sphere</Filter>
     </ClCompile>
     <ClCompile Include="Polygon3D.cpp">
-      <Filter>Polygon3D</Filter>
+      <Filter>00_システム\Polygon3D</Filter>
     </ClCompile>
     <ClCompile Include="Polygon2D.cpp">
-      <Filter>Polygon2D</Filter>
+      <Filter>00_システム\Polygon2D</Filter>
     </ClCompile>
     <ClCompile Include="Billboard.cpp">
-      <Filter>Billboard</Filter>
+      <Filter>00_システム\Billboard</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Model</Filter>
+      <Filter>00_システム\Model</Filter>
     </ClCompile>
     <ClCompile Include="Effect3D.cpp">
-      <Filter>Effect3D</Filter>
+      <Filter>00_システム\Effect3D</Filter>
     </ClCompile>
     <ClCompile Include="Console.cpp">
-      <Filter>Console</Filter>
+      <Filter>00_システム\Console</Filter>
     </ClCompile>
     <ClCompile Include="Effect2D.cpp">
-      <Filter>Effect2D</Filter>
+      <Filter>00_システム\Effect2D</Filter>
     </ClCompile>
     <ClCompile Include="MeshGround.cpp">
-      <Filter>Mesh\Ground</Filter>
+      <Filter>00_システム\Mesh\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <Filter>00_システム\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>01_タイトル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
-      <Filter>main</Filter>
+      <Filter>00_システム\main</Filter>
     </ClInclude>
     <ClInclude Include="ManagerGL.h">
-      <Filter>Manager</Filter>
+      <Filter>00_システム\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Camera</Filter>
+      <Filter>00_システム\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CInput.h">
-      <Filter>Input</Filter>
+      <Filter>00_システム\Input</Filter>
     </ClInclude>
     <ClInclude Include="CommonGL.h">
-      <Filter>Common</Filter>
+      <Filter>00_システム\Common</Filter>
     </ClInclude>
     <ClInclude Include="GamePad.h">
-      <Filter>Input\GamePad</Filter>
+      <Filter>00_システム\Input\GamePad</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
-      <Filter>Input\Keyboard</Filter>
+      <Filter>00_システム\Input\Keyboard</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Light</Filter>
+      <Filter>00_システム\Light</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
-      <Filter>Input\Mouse</Filter>
+      <Filter>00_システム\Input\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Renderer</Filter>
+      <Filter>00_システム\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Texture</Filter>
+      <Filter>00_システム\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>Object</Filter>
+      <Filter>00_システム\Object</Filter>
     </ClInclude>
     <ClInclude Include="MeshCylinder.h">
-      <Filter>Mesh\Cylinder</Filter>
+      <Filter>00_システム\Mesh\Cylinder</Filter>
     </ClInclude>
     <ClInclude Include="MeshFiled.h">
-      <Filter>Mesh\Field</Filter>
+      <Filter>00_システム\Mesh\Field</Filter>
     </ClInclude>
     <ClInclude Include="MeshSphere.h">
-      <Filter>Mesh\Sphere</Filter>
+      <Filter>00_システム\Mesh\Sphere</Filter>
     </ClInclude>
     <ClInclude Include="Polygon3D.h">
-      <Filter>Polygon3D</Filter>
+      <Filter>00_システム\Polygon3D</Filter>
     </ClInclude>
     <ClInclude Include="Polygon2D.h">
-      <Filter>Polygon2D</Filter>
+      <Filter>00_システム\Polygon2D</Filter>
     </ClInclude>
     <ClInclude Include="Billboard.h">
-      <Filter>Billboard</Filter>
+      <Filter>00_システム\Billboard</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Model</Filter>
+      <Filter>00_システム\Model</Filter>
     </ClInclude>
     <ClInclude Include="Effect3D.h">
-      <Filter>Effect3D</Filter>
+      <Filter>00_システム\Effect3D</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
-      <Filter>Console</Filter>
+      <Filter>00_システム\Console</Filter>
     </ClInclude>
     <ClInclude Include="MeshGround.h">
-      <Filter>Mesh\Ground</Filter>
+      <Filter>00_システム\Mesh\Ground</Filter>
     </ClInclude>
     <ClInclude Include="Effect2D.h">
-      <Filter>Effect2D</Filter>
+      <Filter>00_システム\Effect2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Fade.h">
+      <Filter>00_システム\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>00_システム\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>01_タイトル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

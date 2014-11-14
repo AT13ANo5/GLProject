@@ -11,6 +11,14 @@ struct LIGHT
 	COLOR Specular;
 };
 
+enum
+{
+	SCENE_TITLE,
+	SCENE_GAME,
+	SCENE_RESULT,
+	SCENE_MAX
+};
+
 class CRenderer;
 class CScene;
 class CCamera;
@@ -27,13 +35,20 @@ public:
 	void Uninit(HWND hWnd);
 	void Update(void);
 	void Draw(void);
+
+	void ChangeScene(short next);
+
 	CRenderer* GetRenderer(void){return Render;}
 private:
+	CScene* Scene;
 	CRenderer* Render;
 	CCamera* pCamera;
 	CLight* Light;
 	CMouse* Mouse;
 	CKeyboard* Keyboard;
+
+	short NextScene;
+	bool ChangeFlag;
 };
 
 #endif

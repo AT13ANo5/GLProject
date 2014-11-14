@@ -13,11 +13,18 @@
 #include "Light.h"
 #include "Mouse.h"
 #include "Keyboard.h"
+
+#include "Scene.h"
+#include "Title.h"
+#include "Fade.h"
+
 CManager::CManager()
 {
 	Render = nullptr;
 	Mouse = nullptr;
 	Keyboard = nullptr;
+	Scene = nullptr;
+	ChangeFlag = false;
 
 	Console::Initialize();
 	Console::Print("Start Debug...");
@@ -42,16 +49,22 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 	Keyboard = new CKeyboard;
 	Keyboard->Init(hInstance,hWnd);
 
-	CBillboard* bill = CBillboard::Create(VECTOR3(0,0,0),VECTOR2(100.0f,100.0f),VECTOR3(0,0,0),RED(0.5f));
-	bill->SetTex(CTexture::Texture(CTexture::TEX_LIGHT));
-	CEffect3D::Create(VECTOR3(0,0,100.0f),VECTOR2(100.0f,100.0f),VECTOR3(0,0,0),BLUE(1.0f));
-	CPolygon3D::Create(VECTOR3(0,0,-100.0f),VECTOR2(100.0f,100.0f),VECTOR3(-90.0f,0,0),GREEN(0.8f));
+	NextScene = SCENE_TITLE;
+
+	Scene = new CTitle();
+	Scene->Init();
+	CFade::Set(0,30);
 
 }
 
 void CManager::Uninit(HWND hWnd)
 {
-
+	if (Scene != nullptr)
+	{
+		Scene->Uninit();
+		delete Scene;
+		Scene = nullptr;
+	}
 	CRenderer::Uninit(hWnd);
 	delete Render;
 	Render=NULL;
@@ -59,6 +72,7 @@ void CManager::Uninit(HWND hWnd)
 	CModel::Finalize();
 	CTexture::Finalize();
 
+	
 	if(Mouse != nullptr)
 	{
 		Mouse->Uninit();
@@ -91,10 +105,47 @@ void CManager::Update(void)
 	pCamera->Update();
 	Light->Update();
 	Render->Update();
+
+	Scene->Update();
+
+	if (CFade::Instance().State() == CFade::FADE_NONE && ChangeFlag)
+	{
+		Scene->Uninit();
+		delete Scene;
+		Scene = nullptr;
+
+		switch (NextScene)
+		{
+		case SCENE_TITLE:
+			Scene = new CTitle;
+			break;
+		case SCENE_GAME:
+
+			break;
+		case SCENE_RESULT:
+
+			break;
+		default:
+			break;
+		}
+		if (Scene != nullptr)
+		{
+			CFade::Set(0,30);
+			Scene->Init();
+		}
+		ChangeFlag = false;
+	}
 }
 
 void CManager::Draw(void)
 {
 	pCamera->Set();
 	Render->Draw();
+}
+
+void CManager::ChangeScene(short next)
+{
+	CFade::Set(1.0f,30);
+	NextScene = next;
+	ChangeFlag = true;
 }

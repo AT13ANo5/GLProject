@@ -1,9 +1,9 @@
 #include "Renderer.h"
 #include "Object.h"
+#include "Fade.h"
+
 HDC		CRenderer::OpenGLDevice	=NULL;
 HGLRC	CRenderer::OpenGLContext=NULL;
-CObject* CRenderer::pScenes[SCENE_MAX+1] = {NULL};
-int CRenderer::SceneNum = 0;
 
 HRESULT CRenderer::Init(HWND hWnd)
 {
@@ -59,17 +59,17 @@ HRESULT CRenderer::Init(HWND hWnd)
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
 	
-	SceneNum = 0;
-	for(int cnt=0;cnt<SCENE_MAX+1;cnt++)
-	{
-		pScenes[cnt]=NULL;
-	}
+
+	CFade::Initialize();
+
 	return S_OK;
 }
 
 void CRenderer::Uninit(HWND hWnd)
 {
 	CObject::ReleaseAll();
+	CFade::Finalize();
+
 	// カレントコンテキストを無効にする
 	wglMakeCurrent(NULL, NULL);
 	// カレントコンテキストを削除
@@ -81,6 +81,7 @@ void CRenderer::Uninit(HWND hWnd)
 void CRenderer::Update(void)
 {
 	CObject::UpdateAll();
+	CFade::Instance().Update();
 }
 void CRenderer::Draw(void)
 {
@@ -89,16 +90,8 @@ void CRenderer::Draw(void)
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	
 	CObject::DrawAll();
+	CFade::Instance().Draw();
 
 	SwapBuffers(OpenGLDevice);//バッファの入れ替え
 
-}
-
-void CRenderer::AddScene(CObject* Scene)
-{
-	if(SceneNum<SCENE_MAX)
-	{
-		pScenes[SceneNum] = Scene;
-		SceneNum++;
-	}
 }

@@ -1,6 +1,6 @@
 #ifndef _TEXTURE_H_
 #define _TEXTURE_H_
-#include "main.h"
+
 typedef struct TEX_INFO
 {
 	TEX_INFO()
@@ -14,6 +14,7 @@ typedef struct TEX_INFO
 	bool InverseV;
 	float Width;
 	float Height;
+
 }TEX_INFO;
 
 
@@ -24,6 +25,9 @@ public:
 	enum
 	{
 		TEX_MIKU = 0,
+		TEX_TITLELOGO,
+
+		TEX_TEST,
 		TEX_LIGHT,
 		TEX_MAX
 	};
@@ -41,6 +45,7 @@ public:
 private:
 
 	static TEX_INFO Tex[];
-	static void LoadTexture(int id,const char* filename);
+	static void LoadTga(int id,const char* filename);
+	static void LoadDDS(int id,const char* filename);
 };
 #endif
