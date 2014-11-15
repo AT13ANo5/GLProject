@@ -89,6 +89,9 @@
     <Filter Include="01_タイトル">
       <UniqueIdentifier>{7549e58c-6fcc-4f32-bd23-44bb003f75a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム">
+      <UniqueIdentifier>{d6d5100f-7f7b-45df-a4f4-c81d196887c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -165,6 +168,9 @@
     </ClCompile>
     <ClCompile Include="Title.cpp">
       <Filter>01_タイトル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>02_ゲーム</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +251,9 @@
     </ClInclude>
     <ClInclude Include="Title.h">
       <Filter>01_タイトル</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>02_ゲーム</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

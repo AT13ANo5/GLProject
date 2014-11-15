@@ -71,14 +71,13 @@ void CBillboard::Draw(void)
 {
 	//ライティング無効
 	glDisable(GL_LIGHTING);
-	glDisable(GL_DEPTH_TEST);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();//ビューマトリックスを退避
 
 	MATRIX4x4 matrix,invMatrix;
 	glGetFloatv(GL_MODELVIEW_MATRIX,(float*)&matrix);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	//描画設定
 	glTranslatef(_Pos.x,_Pos.y,_Pos.z);
 	glMatrixInverse(&invMatrix,matrix);
@@ -95,6 +94,7 @@ void CBillboard::Draw(void)
 	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,(float*)&Material.emission);
 	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
+	//glDepthMask(GL_FALSE);
 	//ポリゴン描画
 	glBegin(GL_TRIANGLE_STRIP);
 
@@ -108,7 +108,8 @@ void CBillboard::Draw(void)
 	}
 
 	glEnd();
-	glEnable(GL_DEPTH_TEST);
+
+	glDepthMask(GL_TRUE);
 
 	glPopMatrix();//ビューマトリックスを戻す
 	glBindTexture(GL_TEXTURE_2D,0);

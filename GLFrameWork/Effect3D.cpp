@@ -70,9 +70,7 @@ void CEffect3D::Draw(void)
 {
 	//ライティング無効
 	glDisable(GL_LIGHTING);
-	glDepthMask(GL_FALSE);
-
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+	
 	
 
 	glMatrixMode(GL_MODELVIEW);
@@ -97,6 +95,9 @@ void CEffect3D::Draw(void)
 	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,(float*)&Material.emission);
 	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
+	glDepthMask(GL_FALSE);
+
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	//ポリゴン描画
 	glBegin(GL_TRIANGLE_STRIP);
 
@@ -111,12 +112,14 @@ void CEffect3D::Draw(void)
 
 	glEnd();
 
-	glPopMatrix();//ビューマトリックスを戻す
-	glBindTexture(GL_TEXTURE_2D,0);
-
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
 	glDepthMask(GL_TRUE);
+
+	glPopMatrix();//ビューマトリックスを戻す
+	glBindTexture(GL_TEXTURE_2D,0);
+
+	
 }
 
 void CEffect3D::SetUV(float x,float y,float width,float height)

@@ -5,6 +5,7 @@ class CScene
 {
 public:
 	CScene(){ Frame = 0; }
+	virtual ~CScene(){}
 	virtual void Init(void)=0;
 	virtual void Uninit(void)=0;
 	virtual void Update(void)=0;

@@ -1,14 +1,6 @@
 #include "ManagerGL.h"
 #include "Object.h"
-#include "Polygon2D.h"
-#include "Polygon3D.h"
-#include "Billboard.h"
-#include "Effect3D.h"
-#include "Effect2D.h"
 #include "Model.h"
-#include "MeshFiled.h"
-#include "MeshCylinder.h"
-#include "MeshSphere.h"
 #include "Camera.h"
 #include "Light.h"
 #include "Mouse.h"
@@ -16,7 +8,11 @@
 
 #include "Scene.h"
 #include "Title.h"
+#include "Game.h"
 #include "Fade.h"
+
+short	CManager::NextScene = SCENE_TITLE;
+bool	CManager::ChangeFlag = false;
 
 CManager::CManager()
 {
@@ -49,11 +45,9 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 	Keyboard = new CKeyboard;
 	Keyboard->Init(hInstance,hWnd);
 
-	NextScene = SCENE_TITLE;
-
 	Scene = new CTitle();
 	Scene->Init();
-	CFade::Set(0,30);
+	CFade::Set(0,60);
 
 }
 
@@ -120,7 +114,7 @@ void CManager::Update(void)
 			Scene = new CTitle;
 			break;
 		case SCENE_GAME:
-
+			Scene = new CGame;
 			break;
 		case SCENE_RESULT:
 

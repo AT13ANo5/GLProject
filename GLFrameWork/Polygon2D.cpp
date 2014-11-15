@@ -83,7 +83,8 @@ void CPolygon2D::Draw(void)
 	glRotatef(_Rot.z,0,0,1.0f);
 	glScalef(1.0f,1.0f,1.0f);
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
-		
+	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
 	//ƒ|ƒŠƒSƒ“•`‰æ
 	glBegin(GL_TRIANGLE_STRIP);
 	

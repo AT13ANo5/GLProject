@@ -95,6 +95,8 @@ void CPolygon3D::Draw(void)
 	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,(float*)&Material.emission);
 	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
 	//ƒ|ƒŠƒSƒ“•`‰æ
 	glBegin(GL_TRIANGLE_STRIP);
 	

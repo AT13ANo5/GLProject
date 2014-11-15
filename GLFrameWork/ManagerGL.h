@@ -36,7 +36,7 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	void ChangeScene(short next);
+	static void ChangeScene(short next);
 
 	CRenderer* GetRenderer(void){return Render;}
 private:
@@ -47,8 +47,8 @@ private:
 	CMouse* Mouse;
 	CKeyboard* Keyboard;
 
-	short NextScene;
-	bool ChangeFlag;
+	static short NextScene;
+	static bool ChangeFlag;
 };
 
 #endif

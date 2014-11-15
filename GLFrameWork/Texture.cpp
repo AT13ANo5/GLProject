@@ -209,8 +209,10 @@ void CTexture::LoadDDS(int id,const char* filename)
 	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,pixel);
 	glBindTexture(GL_TEXTURE_2D,0);//ÉAÉìÉçÉbÉN
 
-	Tex[id].Width = dds_header.dwWidth;
-	Tex[id].Height = dds_header.dwHeight;
+	Tex[id].Width = (float)dds_header.dwWidth;
+	Tex[id].Height = (float)dds_header.dwHeight;
+	Tex[id].InverseV = true;
+	Tex[id].InverseH = false;
 
 	delete[] pixel;
 }

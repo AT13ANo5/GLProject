@@ -7,8 +7,8 @@ void CFade::Initialize(void)
 	Self = new CFade;
 	Self->Vtx[0] = VECTOR3(SCREEN_WIDTH,0,0);
 	Self->Vtx[1] = VECTOR3(0,0,0);
-	Self->Vtx[2] = VECTOR3(0,SCREEN_HEIGHT,0);
-	Self->Vtx[3] = VECTOR3(SCREEN_WIDTH,SCREEN_HEIGHT,0);
+	Self->Vtx[2] = VECTOR3(SCREEN_WIDTH,SCREEN_HEIGHT,0);
+	Self->Vtx[3] = VECTOR3(0,SCREEN_HEIGHT,0);
 	Self->_Color = BLACK(1.0f);
 	Self->_State = FADE_NONE;
 }
@@ -23,7 +23,7 @@ bool CFade::Set(float destAlpha,int frame,bool infinit)
 	if (Self->_State == FADE_NONE || Self->_Infinit == false)
 	{
 		Self->DestAlpha = destAlpha;
-		Self->SubAlpha = destAlpha - Self->_Color.a;
+		Self->SubAlpha = (destAlpha - Self->_Color.a)/frame;
 		(Self->SubAlpha < 0)? Self->_State = FADE_IN : Self->_State = FADE_OUT;
 		Self->_Infinit = infinit;
 
@@ -74,6 +74,7 @@ void CFade::Draw(void)
 	//ライティング無効
 	glDisable(GL_LIGHTING);
 
+	glDisable(GL_DEPTH_TEST);
 	//2D用マトリクス設定
 
 	glMatrixMode(GL_PROJECTION);
@@ -84,6 +85,9 @@ void CFade::Draw(void)
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();//ビューマトリックスを退避
 	glLoadIdentity();
+
+	glTranslatef(0,0,0);
+	glScalef(1.0f,1.0f,1.0f);
 
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
 
@@ -97,9 +101,9 @@ void CFade::Draw(void)
 		glTexCoord2f(uv.tex[cnt].x,uv.tex[cnt].y);
 		glVertex3f(Vtx[cnt].x,Vtx[cnt].y,Vtx[cnt].z);
 	}
-
+	
 	glEnd();
-
+	glEnable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D,0);
 
 	//ビュー行列を戻す

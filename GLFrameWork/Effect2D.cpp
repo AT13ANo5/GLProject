@@ -106,7 +106,6 @@ void CEffect2D::Draw(void)
 
 	glBindTexture(GL_TEXTURE_2D,0);
 
-	//glDisable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
 	glDepthMask(GL_TRUE);

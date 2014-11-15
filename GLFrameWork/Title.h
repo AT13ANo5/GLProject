@@ -8,6 +8,8 @@ class CPolygon2D;
 class CTitle :public CScene
 {
 public:
+	CTitle();
+	~CTitle();
 	void Init(void);
 	void Uninit(void);
 	void Update(void);

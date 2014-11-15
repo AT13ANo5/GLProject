@@ -99,6 +99,10 @@ void CObject::UpdateAll(void)
 		{
 			Next = Scene->Next;
 			Scene->Update();
+			if (Scene->DeathFlag)
+			{
+				Scene->Uninit();
+			}
 			Scene = Next;
 		}
 	}
