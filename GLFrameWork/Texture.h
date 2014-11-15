@@ -9,28 +9,29 @@ typedef struct TEX_INFO
 		Width = Height = 0;
 		InverseH = InverseV = false;
 	}
-	unsigned int TexID;
-	bool InverseH;
-	bool InverseV;
-	float Width;
-	float Height;
+	unsigned int TexID;//テクスチャのID(バインドするのはこれ)
+	bool InverseH;//左右反転フラグ
+	bool InverseV;//上下反転フラグ
+	float Width;//幅
+	float Height;//高さ
 
 }TEX_INFO;
 
+enum
+{
+	TEX_MIKU = 0,
+	TEX_TITLELOGO,
+	TEX_RESULT_LOGO,
+	TEX_TEST,
+	TEX_LIGHT,
+	TEX_MAX
+};
 
 class CTexture
 {
 public:
 
-	enum
-	{
-		TEX_MIKU = 0,
-		TEX_TITLELOGO,
-
-		TEX_TEST,
-		TEX_LIGHT,
-		TEX_MAX
-	};
+	
 
 	static void Initialize(void);
 	static void Finalize(void);

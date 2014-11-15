@@ -20,13 +20,13 @@ void CGame::Init(void)
 {
 	
 	CBillboard* bill = CBillboard::Create(VECTOR3(0,0,0),VECTOR2(200.0f,200.0f),VECTOR3(0,0,0),WHITE(1.0f));
-	bill->SetTex(CTexture::Texture(CTexture::TEX_TEST));
+	bill->SetTex(CTexture::Texture(TEX_TEST));
 
-	bill = CBillboard::Create(VECTOR3(0,0,-200.0f),VECTOR2(200.0f,200.0f),VECTOR3(0,0,0),WHITE(0.5f));
-	bill->SetTex(CTexture::Texture(CTexture::TEX_TEST));
+	bill = CBillboard::Create(VECTOR3(0,0,200.0f),VECTOR2(200.0f,200.0f),VECTOR3(0,0,0),WHITE(0.5f));
+	bill->SetTex(CTexture::Texture(TEX_TEST));
 
 	CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
-	polygon->SetTex(CTexture::Texture(CTexture::TEX_LIGHT));
+	polygon->SetTex(CTexture::Texture(TEX_LIGHT));
 	polygon->SetColor(GREEN(1.0f));
 
 	
@@ -39,5 +39,8 @@ void CGame::Uninit(void)
 
 void CGame::Update(void)
 {
-
+	if (CKeyboard::GetTrigger(DIK_RETURN))
+	{
+		CManager::ChangeScene(SCENE_RESULT);
+	}
 }

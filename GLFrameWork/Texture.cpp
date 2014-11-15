@@ -2,12 +2,13 @@
 #include "main.h"
 #include <stdio.h>
 #include<string>
-TEX_INFO CTexture::Tex[CTexture::TEX_MAX];
+TEX_INFO CTexture::Tex[TEX_MAX];
 
-static std::string TexFile[CTexture::TEX_MAX] = 
+static std::string TexFile[TEX_MAX] = 
 {
 	"data/texture/miku.tga",
 	"data/texture/TitleLogo.dds",
+	"data/texture/ResultLogo.dds",
 	"data/texture/Maro.tga",
 	"data/texture/Light.tga",
 	
@@ -15,7 +16,7 @@ static std::string TexFile[CTexture::TEX_MAX] =
 
 void CTexture::Initialize(void)
 {
-	for (int cnt = 0;cnt < CTexture::TEX_MAX;cnt++)
+	for (int cnt = 0;cnt < TEX_MAX;cnt++)
 	{
 		std::string::iterator it = TexFile[cnt].end()-3;
 		char ex[4] = { *it,*(it + 1),*(it + 2) ,'\0'};

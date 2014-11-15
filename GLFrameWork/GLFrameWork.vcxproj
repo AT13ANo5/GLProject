@@ -107,6 +107,7 @@
     <ClCompile Include="MeshField.cpp" />
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Result.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="MeshSphere.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MeshGround.h" />
+    <ClInclude Include="Result.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Title.h" />

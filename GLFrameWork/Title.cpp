@@ -17,7 +17,7 @@ CTitle::~CTitle()
 void CTitle::Init(void)
 {
 	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/3.0f,0),VECTOR2(500.0f,250.0f));
-	Logo->SetTex(CTexture::Texture(CTexture::TEX_TITLELOGO));
+	Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
 }
 
 void CTitle::Uninit(void)

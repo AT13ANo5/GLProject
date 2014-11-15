@@ -92,6 +92,9 @@
     <Filter Include="02_ゲーム">
       <UniqueIdentifier>{d6d5100f-7f7b-45df-a4f4-c81d196887c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03_リザルト">
+      <UniqueIdentifier>{578904e1-7089-40bd-a0b6-7bc48e0ff8a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -171,6 +174,9 @@
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>02_ゲーム</Filter>
+    </ClCompile>
+    <ClCompile Include="Result.cpp">
+      <Filter>03_リザルト</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>02_ゲーム</Filter>
+    </ClInclude>
+    <ClInclude Include="Result.h">
+      <Filter>03_リザルト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

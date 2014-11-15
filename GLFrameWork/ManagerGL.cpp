@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "Title.h"
 #include "Game.h"
+#include "Result.h"
 #include "Fade.h"
 
 short	CManager::NextScene = SCENE_TITLE;
@@ -117,7 +118,7 @@ void CManager::Update(void)
 			Scene = new CGame;
 			break;
 		case SCENE_RESULT:
-
+			Scene = new CResult;
 			break;
 		default:
 			break;
@@ -139,7 +140,10 @@ void CManager::Draw(void)
 
 void CManager::ChangeScene(short next)
 {
-	CFade::Set(1.0f,30);
-	NextScene = next;
-	ChangeFlag = true;
+	if (CFade::Instance().State() == CFade::FADE_NONE)
+	{
+		CFade::Set(1.0f,30);
+		NextScene = next;
+		ChangeFlag = true;
+	}
 }
