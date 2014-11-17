@@ -19,11 +19,11 @@ class CBillboard :public CObject
 {
 public:
 	CBillboard();
-	~CBillboard(){}
-	void Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	virtual ~CBillboard(){}
+	virtual void Init(void);
+	virtual void Uninit(void);
+	virtual void Update(void);
+	virtual void Draw(void);
 
 	//=================================================================================
 	//ê∂ê¨
