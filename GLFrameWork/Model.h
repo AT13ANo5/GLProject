@@ -87,7 +87,6 @@ public:
 	void LoadAnim(char* filename);
 	static CModel* Create(int id,const VECTOR3& pos);
 	
-	LPSTR GetTexture(void){return Texture;}
 	LPSTR GetModelName(void){return FileName;}
 	int GetModelID(void){return ModelID;}
 
@@ -99,8 +98,6 @@ public:
 
 	static int GetModelNum(void){return ModelNum;}
 	VECTOR3 GetSize(void){ return Size; }
-
-	void SetTexture(LPSTR filename){Texture = filename;}
 
 	static CModel* GetModel(int id);
 
@@ -119,18 +116,15 @@ protected:
 
 	VECTOR3 Size;
 	MATERIAL Material;
-	unsigned int texture;
 	float rot;
 
 	static MODEL_DATA ModelData[];
 	static bool LoadModel(const char* filename,int id);
 	static int ModelNum;
 	int ModelID;
-	int TextureID;
 	int MotionFrameNum;
 	int MotionID;
 	LPSTR FileName;
-	LPSTR Texture;
 
 	VECTOR3** MotionPos;
 	VECTOR3** MotionRot;
