@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "Splash.h"
 #include "Title.h"
+#include "Connection.h"
 #include "Game.h"
 #include "Result.h"
 #include "Fade.h"
@@ -118,6 +119,9 @@ void CManager::Update(void)
 		case SCENE_TITLE:
 			Scene = new CTitle;
 			break;
+		case SCENE_CONNECTION:
+			Scene = new CConnection;
+			break;
 		case SCENE_GAME:
 			Scene = new CGame;
 			break;
@@ -144,7 +148,7 @@ void CManager::Draw(void)
 
 void CManager::ChangeScene(short next)
 {
-	if (CFade::Instance().State() == CFade::FADE_NONE)
+	if (CFade::Instance().State() == CFade::FADE_NONE&&ChangeFlag==false)
 	{
 		CFade::Set(1.0f,30);
 		NextScene = next;

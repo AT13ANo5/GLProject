@@ -187,6 +187,9 @@
     <ClCompile Include="Splash.cpp">
       <Filter>04＿スプラッシュ</Filter>
     </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>05_通信ロビー</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -275,6 +278,9 @@
     </ClInclude>
     <ClInclude Include="Splash.h">
       <Filter>04＿スプラッシュ</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>05_通信ロビー</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

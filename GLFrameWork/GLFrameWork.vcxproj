@@ -87,6 +87,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CommonGL.cpp" />
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Effect2D.cpp" />
     <ClCompile Include="Effect3D.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CommonGL.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Effect2D.h" />
     <ClInclude Include="Effect3D.h" />
