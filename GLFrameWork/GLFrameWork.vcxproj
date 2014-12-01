@@ -108,6 +108,7 @@
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="Splash.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="MeshGround.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Splash.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Title.h" />
   </ItemGroup>

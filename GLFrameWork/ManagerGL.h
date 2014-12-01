@@ -13,6 +13,7 @@ struct LIGHT
 
 enum
 {
+	SCENE_SPLASH = 0,
 	SCENE_TITLE,
 	SCENE_GAME,
 	SCENE_RESULT,

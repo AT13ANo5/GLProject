@@ -95,6 +95,12 @@
     <Filter Include="03_リザルト">
       <UniqueIdentifier>{578904e1-7089-40bd-a0b6-7bc48e0ff8a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04＿スプラッシュ">
+      <UniqueIdentifier>{3e983107-7602-439c-b1ac-79b4a0f8ea29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_通信ロビー">
+      <UniqueIdentifier>{5e7e1077-cd30-4694-9a12-15700001e523}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -177,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="Result.cpp">
       <Filter>03_リザルト</Filter>
+    </ClCompile>
+    <ClCompile Include="Splash.cpp">
+      <Filter>04＿スプラッシュ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +272,9 @@
     </ClInclude>
     <ClInclude Include="Result.h">
       <Filter>03_リザルト</Filter>
+    </ClInclude>
+    <ClInclude Include="Splash.h">
+      <Filter>04＿スプラッシュ</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

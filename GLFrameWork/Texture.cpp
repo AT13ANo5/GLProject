@@ -9,6 +9,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/miku.tga",
 	"data/texture/TitleLogo.dds",
 	"data/texture/ResultLogo.dds",
+	"data/texture/TeamLogo.dds",
+	"data/texture/Connection.dds",
 	"data/texture/Maro.tga",
 	"data/texture/Light.tga",
 	

@@ -7,12 +7,13 @@
 #include "Keyboard.h"
 
 #include "Scene.h"
+#include "Splash.h"
 #include "Title.h"
 #include "Game.h"
 #include "Result.h"
 #include "Fade.h"
 
-short	CManager::NextScene = SCENE_TITLE;
+short	CManager::NextScene = SCENE_SPLASH;
 bool	CManager::ChangeFlag = false;
 
 CManager::CManager()
@@ -46,7 +47,7 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 	Keyboard = new CKeyboard;
 	Keyboard->Init(hInstance,hWnd);
 
-	Scene = new CTitle();
+	Scene = new CSplash();
 	Scene->Init();
 	CFade::Set(0,60);
 
@@ -111,6 +112,9 @@ void CManager::Update(void)
 
 		switch (NextScene)
 		{
+		case SCENE_SPLASH:
+			Scene = new CSplash;
+			break;
 		case SCENE_TITLE:
 			Scene = new CTitle;
 			break;
