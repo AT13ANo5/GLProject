@@ -5,6 +5,7 @@
 #include "Light.h"
 #include "Mouse.h"
 #include "Keyboard.h"
+#include "SoundAL.h"
 
 #include "Scene.h"
 #include "Splash.h"
@@ -39,6 +40,7 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 
 	pCamera = new CCamera;
 	pCamera->Init(0,30.0f,500.0f,0,0,0);
+	CSoundAL::Initialize();
 	CModel::Initialize();
 	CTexture::Initialize();
 	Light = new CLight;
@@ -66,6 +68,7 @@ void CManager::Uninit(HWND hWnd)
 	delete Render;
 	Render=NULL;
 
+	CSoundAL::Finalize();
 	CModel::Finalize();
 	CTexture::Finalize();
 
@@ -99,6 +102,7 @@ void CManager::Update(void)
 {
 	Mouse->Update();
 	Keyboard->Update();
+	CSoundAL::UpdateAll();
 	pCamera->Update();
 	Light->Update();
 	Render->Update();

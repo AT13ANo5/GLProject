@@ -109,11 +109,15 @@
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="SoundAL.cpp" />
     <ClCompile Include="Splash.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AL\al.h" />
+    <ClInclude Include="AL\alc.h" />
+    <ClInclude Include="AL\alut.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CInput.h" />
@@ -141,6 +145,7 @@
     <ClInclude Include="MeshGround.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SoundAL.h" />
     <ClInclude Include="Splash.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Title.h" />

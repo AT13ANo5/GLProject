@@ -101,6 +101,12 @@
     <Filter Include="05_通信ロビー">
       <UniqueIdentifier>{5e7e1077-cd30-4694-9a12-15700001e523}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\Sound">
+      <UniqueIdentifier>{a06c5286-164c-47ae-9700-d71637aceae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpenAL">
+      <UniqueIdentifier>{12c68dc9-8de3-4245-b431-1437112919a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -189,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="Connection.cpp">
       <Filter>05_通信ロビー</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundAL.cpp">
+      <Filter>00_システム\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +290,18 @@
     </ClInclude>
     <ClInclude Include="Connection.h">
       <Filter>05_通信ロビー</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundAL.h">
+      <Filter>00_システム\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="AL\al.h">
+      <Filter>OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="AL\alc.h">
+      <Filter>OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="AL\alut.h">
+      <Filter>OpenAL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
