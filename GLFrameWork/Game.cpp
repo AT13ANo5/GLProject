@@ -27,7 +27,7 @@ void CGame::Init(void)
   // ’nŒ`¶¬
   Ground = nullptr;
   Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(50.0f, 50.0f), VECTOR2(20.0f, 20.0f));
-  Ground->SetTex(CTexture::Texture(TEX_MIKU));
+  Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
   // ‹ó¶¬
   Sky = nullptr;
