@@ -47,10 +47,6 @@ private:
 	int IndexNum;
 	int PolygonNum;
 	int VertexNum;
-<<<<<<< HEAD
-=======
-//	unsigned int Texture;
->>>>>>> shirakawa/character
 
 	VECTOR3* Vtx;
 	VECTOR2* Tex;
