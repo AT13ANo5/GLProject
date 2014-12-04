@@ -126,14 +126,11 @@ void CModel::UnlinkList(void)
 //=============================================================================
 void CModel::Init(void)
 {
-
 	Material.ambient = COLOR(0.2f,0.2f,0.5f,1.0f);
 	Material.diffuse = COLOR(1.0f,1.0f,1.0f,1.0f);
 	Material.specular = COLOR(0,0,0,1.0f);
 	Material.emission = COLOR(0,0,0,1.0f);
 	Material.shininess = 0.0f;
-	
-	rot = -45.0f;
 }
 
 void CModel::Initialize(void)
@@ -143,6 +140,7 @@ void CModel::Initialize(void)
 		LoadModel(ModelFile[cnt],cnt);
 	}
 }
+
 //=============================================================================
 //èIóπèàóù
 //=============================================================================

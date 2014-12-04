@@ -95,6 +95,12 @@
     <Filter Include="03_リザルト">
       <UniqueIdentifier>{578904e1-7089-40bd-a0b6-7bc48e0ff8a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム\プレイヤー">
+      <UniqueIdentifier>{e86f6961-db8e-4be7-80fc-3146341f67c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_ゲーム\弾">
+      <UniqueIdentifier>{90df1a7b-5c1d-4151-9ee1-cb8cc61def85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -177,6 +183,12 @@
     </ClCompile>
     <ClCompile Include="Result.cpp">
       <Filter>03_リザルト</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>02_ゲーム\プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>02_ゲーム\弾</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +275,12 @@
     </ClInclude>
     <ClInclude Include="Result.h">
       <Filter>03_リザルト</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>02_ゲーム\プレイヤー</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>02_ゲーム\弾</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
