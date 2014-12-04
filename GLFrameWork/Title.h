@@ -4,6 +4,7 @@
 #include "Scene.h"
 
 class CPolygon2D;
+class CModel;
 
 class CTitle :public CScene
 {
@@ -17,5 +18,6 @@ public:
 private:
 
 	CPolygon2D* Logo;
+  CModel*     Player;
 };
 #endif

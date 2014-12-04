@@ -238,7 +238,7 @@ void CMeshGround::Draw(void)
 	glRotatef(_Rot.x,1.0f,0,0);
 	glScalef(1.0f,1.0f,1.0f);
 
-	glBindTexture(GL_TEXTURE_2D,Texture);
+	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
 
 	//glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(float*)&Material.ambient);
 	//glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(float*)&Material.diffuse);

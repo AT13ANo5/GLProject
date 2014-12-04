@@ -47,7 +47,7 @@ private:
 	int IndexNum;
 	int PolygonNum;
 	int VertexNum;
-	unsigned int Texture;
+//	unsigned int Texture;
 
 	VECTOR3* Vtx;
 	VECTOR2* Tex;

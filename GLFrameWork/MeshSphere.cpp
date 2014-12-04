@@ -99,7 +99,7 @@ void CMeshSphere::Update(void)
 }
 void CMeshSphere::Draw(void)
 {
-	glEnable(GL_LIGHTING);
+  glDisable(GL_LIGHTING);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();//ビューマトリックスを退避
@@ -111,6 +111,7 @@ void CMeshSphere::Draw(void)
 	glScalef(1.0f,1.0f,1.0f);
 	
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
+
 
 	//glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(float*)&Material.ambient);
 	//glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(float*)&Material.diffuse);
@@ -134,4 +135,5 @@ void CMeshSphere::Draw(void)
 	glPopMatrix();//ビューマトリックスを戻す
 	glBindTexture(GL_TEXTURE_2D,0);
 
+  glEnable(GL_LIGHTING);
 }
