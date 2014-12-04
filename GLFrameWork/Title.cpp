@@ -49,11 +49,11 @@ void CTitle::Update(void)
   }
   if (CKeyboard::GetPress(DIK_A))
   {
-    Player->AddPosX(1.0f);
+    Player->AddRotY(1.0f);
   }
   else if (CKeyboard::GetPress(DIK_D))
   {
-    Player->AddPosX(-1.0f);
+    Player->AddRotY(-1.0f);
   }
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{

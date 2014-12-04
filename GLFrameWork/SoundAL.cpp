@@ -22,15 +22,7 @@ typedef struct
 
 const PARAM File[CSoundAL::SOUND_MAX] =
 {
-	{ "data/sound/CosmicMind.wav",true },
-	{ "data/sound/Alice_in_Wonderland.wav",true },
-	{ "data/sound/ChineseTea.wav",true },
-	{ "data/sound/Greenwich_of_Sky.wav",true },
-	{ "data/sound/Lullaby.wav",true },
-	{ "data/sound/OldWorld.wav",true },
-	{ "data/sound/Port_of_Spring.wav",true },
-	{ "data/sound/ENCOUNTER.wav",true },
-	{ "data/sound/LockOn.wav",false }
+	{ "data/sound/BGM.wav",true },
 };
 
 SOUND_BUFF CSoundAL::Buffer[SOUND_MAX];
