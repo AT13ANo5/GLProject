@@ -2,6 +2,10 @@
 #define _GAME_H_
 #include"Scene.h"
 
+class CMeshGround;
+class CMeshSphere;
+class CModel;
+
 class CGame :public CScene
 {
 public:
@@ -12,7 +16,11 @@ public:
 	void Uninit(void);
 	void Update(void);
 private:
+  static const float  RADIUS_SKY;   // 空の半径
 
+  CMeshGround*  Ground;   // 地形
+  CMeshSphere*  Sky;      // 空
+  CModel*       Player;   // プレイヤー
 };
 
 #endif

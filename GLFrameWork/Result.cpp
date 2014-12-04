@@ -3,6 +3,7 @@
 #include "ManagerGL.h"
 #include "Keyboard.h"
 #include "Polygon2D.h"
+#include "Model.h"
 CResult::CResult()
 {
 
