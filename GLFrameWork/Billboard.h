@@ -74,13 +74,15 @@ public:
 
 private:
 
-	VECTOR2 _Size;
 	UV uv;
 	VECTOR3 Vtx[4];
 	VECTOR3 Nor[4];
 	MATERIAL Material;
 
 	void ResizeVtx(void);
+
+protected:
+	VECTOR2 _Size;
 };
 
 #endif
