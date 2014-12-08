@@ -29,6 +29,11 @@ CMeshGround::~CMeshGround()
 		delete[] Nor;
 		Nor = nullptr;
 	}
+	if (Index != nullptr)
+	{
+		delete[] Index;
+		Index = nullptr;
+	}
 	if (NormalMap!=nullptr)
 	{
 		delete[] NormalMap;
@@ -219,6 +224,7 @@ void CMeshGround::Init(void)
 
 void CMeshGround::Uninit(void)
 {
+	delete this;
 }
 void CMeshGround::Update(void)
 {

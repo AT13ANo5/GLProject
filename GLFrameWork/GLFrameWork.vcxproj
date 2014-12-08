@@ -85,9 +85,12 @@
   <ItemGroup>
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CommonGL.cpp" />
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="Effect2D.cpp" />
     <ClCompile Include="Effect3D.cpp" />
     <ClCompile Include="Fade.cpp" />
@@ -100,6 +103,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerGL.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Polygon2D.cpp" />
     <ClCompile Include="Polygon3D.cpp" />
@@ -108,15 +112,23 @@
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="SoundAL.cpp" />
+    <ClCompile Include="Splash.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AL\al.h" />
+    <ClInclude Include="AL\alc.h" />
+    <ClInclude Include="AL\alut.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CBullet.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CommonGL.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="CPlayer.h" />
     <ClInclude Include="Effect2D.h" />
     <ClInclude Include="Effect3D.h" />
     <ClInclude Include="Fade.h" />
@@ -128,6 +140,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="ManagerGL.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="PlayerCamera.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Polygon2D.h" />
     <ClInclude Include="Polygon3D.h" />
@@ -138,6 +151,8 @@
     <ClInclude Include="MeshGround.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SoundAL.h" />
+    <ClInclude Include="Splash.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Title.h" />
   </ItemGroup>

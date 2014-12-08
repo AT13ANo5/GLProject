@@ -9,6 +9,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/miku.tga",
 	"data/texture/TitleLogo.dds",
 	"data/texture/ResultLogo.dds",
+	"data/texture/TeamLogo.dds",
+	"data/texture/Connection.dds",
 	"data/texture/Maro.tga",
 	"data/texture/Light.tga",
 	"data/texture/field000.dds",
@@ -186,7 +188,13 @@ void CTexture::LoadDDS(int id,const char* filename)
 	fread(pixel,sizeof(BYTE),pixel_size,file);
 
 	fclose(file);	//ファイルクローズ
-
+	bool flag =false;
+	if (!(dds_header.ddpfPixelFormat.dwRGBAlphaBitMask & 0xff000000))
+	{
+		flag = true;
+	}
+	
+	
 
 	//DDS画像がBGRAの順にデータが並んでいるのでRGBAの順に並び替える
 	BYTE r,g,b,a;
@@ -194,7 +202,7 @@ void CTexture::LoadDDS(int id,const char* filename)
 		b = pixel[i];
 		g = pixel[i + 1];
 		r = pixel[i + 2];
-		a = pixel[i + 3];
+		(flag) ? a = 255 : a = pixel[i + 3];
 		pixel[i] = r;
 		pixel[i + 1] = g;
 		pixel[i + 2] = b;

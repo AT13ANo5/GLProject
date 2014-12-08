@@ -95,6 +95,27 @@
     <Filter Include="03_リザルト">
       <UniqueIdentifier>{578904e1-7089-40bd-a0b6-7bc48e0ff8a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04＿スプラッシュ">
+      <UniqueIdentifier>{3e983107-7602-439c-b1ac-79b4a0f8ea29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_通信ロビー">
+      <UniqueIdentifier>{5e7e1077-cd30-4694-9a12-15700001e523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Sound">
+      <UniqueIdentifier>{a06c5286-164c-47ae-9700-d71637aceae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpenAL">
+      <UniqueIdentifier>{12c68dc9-8de3-4245-b431-1437112919a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_ゲーム\プレイヤー">
+      <UniqueIdentifier>{e86f6961-db8e-4be7-80fc-3146341f67c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_ゲーム\弾">
+      <UniqueIdentifier>{90df1a7b-5c1d-4151-9ee1-cb8cc61def85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_ゲーム\プレイヤー\カメラ">
+      <UniqueIdentifier>{c9c39c06-9288-453c-b8d4-987b0143b8b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -177,6 +198,24 @@
     </ClCompile>
     <ClCompile Include="Result.cpp">
       <Filter>03_リザルト</Filter>
+    </ClCompile>
+    <ClCompile Include="Splash.cpp">
+      <Filter>04＿スプラッシュ</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>05_通信ロビー</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundAL.cpp">
+      <Filter>00_システム\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>02_ゲーム\プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>02_ゲーム\弾</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCamera.cpp">
+      <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +302,33 @@
     </ClInclude>
     <ClInclude Include="Result.h">
       <Filter>03_リザルト</Filter>
+    </ClInclude>
+    <ClInclude Include="Splash.h">
+      <Filter>04＿スプラッシュ</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>05_通信ロビー</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundAL.h">
+      <Filter>00_システム\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="AL\al.h">
+      <Filter>OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="AL\alc.h">
+      <Filter>OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="AL\alut.h">
+      <Filter>OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>02_ゲーム\プレイヤー</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>02_ゲーム\弾</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCamera.h">
+      <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

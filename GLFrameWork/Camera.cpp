@@ -2,6 +2,9 @@
 #include "Mouse.h"
 #include <math.h>
 float ClickPosX;
+
+CCamera* CCamera::CurrentCamera = nullptr;
+
 CCamera::CCamera()
 {
 	_Eye.x = 
@@ -15,10 +18,13 @@ CCamera::CCamera()
 	_UpVec.x =
 	_UpVec.z = 0;
 	_UpVec.y = 1.0f;
+
+	CurrentCamera = this;
 }
 
 CCamera::~CCamera()
 {
+	CurrentCamera = nullptr;
 }
 
 void CCamera::Init(float posx,float posy,float posz,float lookx,float looky,float lookz)
@@ -94,4 +100,29 @@ void CCamera::Set(void)
 	gluLookAt(_Eye.x,_Eye.y,_Eye.z,//カメラ座標
 		_Lookat.x,_Lookat.y,_Lookat.z,//注視点座標
 		_UpVec.x,_UpVec.y,_UpVec.z);//上方向ベクトル
+}
+
+void CCamera::UpdateCur(void)
+{
+	if (CurrentCamera != nullptr)
+	{
+		CurrentCamera->Update();
+	}
+}
+
+void CCamera::SetCur(void)
+{
+	if (CurrentCamera != nullptr)
+	{
+		CurrentCamera->Set();
+	}
+}
+
+void CCamera::Release(void)
+{
+	if (CurrentCamera != nullptr)
+	{
+		delete CurrentCamera;
+		CurrentCamera = nullptr;
+	}
 }

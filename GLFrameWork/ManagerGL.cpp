@@ -5,14 +5,17 @@
 #include "Light.h"
 #include "Mouse.h"
 #include "Keyboard.h"
+#include "SoundAL.h"
 
 #include "Scene.h"
+#include "Splash.h"
 #include "Title.h"
+#include "Connection.h"
 #include "Game.h"
 #include "Result.h"
 #include "Fade.h"
 
-short	CManager::NextScene = SCENE_TITLE;
+short	CManager::NextScene = SCENE_SPLASH;
 bool	CManager::ChangeFlag = false;
 
 CManager::CManager()
@@ -37,6 +40,7 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 
 	pCamera = new CCamera;
 	pCamera->Init(0,30.0f,500.0f,0,0,0);
+	CSoundAL::Initialize();
 	CModel::Initialize();
 	CTexture::Initialize();
 	Light = new CLight;
@@ -46,7 +50,7 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 	Keyboard = new CKeyboard;
 	Keyboard->Init(hInstance,hWnd);
 
-	Scene = new CTitle();
+	Scene = new CSplash();
 	Scene->Init();
 	CFade::Set(0,60);
 
@@ -64,6 +68,7 @@ void CManager::Uninit(HWND hWnd)
 	delete Render;
 	Render=NULL;
 
+	CSoundAL::Finalize();
 	CModel::Finalize();
 	CTexture::Finalize();
 
@@ -81,11 +86,8 @@ void CManager::Uninit(HWND hWnd)
 		Keyboard = nullptr;
 	}
 
-	if(pCamera!=nullptr)
-	{
-		delete pCamera;
-		pCamera = nullptr;
-	}
+	CCamera::Release();
+	pCamera = nullptr;
 	if(Light != nullptr)
 	{
 		delete Light;
@@ -97,7 +99,8 @@ void CManager::Update(void)
 {
 	Mouse->Update();
 	Keyboard->Update();
-	pCamera->Update();
+	CSoundAL::UpdateAll();
+	CCamera::UpdateCur();
 	Light->Update();
 	Render->Update();
 
@@ -108,13 +111,27 @@ void CManager::Update(void)
 		Scene->Uninit();
 		delete Scene;
 		Scene = nullptr;
+		
+		if (NextScene!=SCENE_GAME&&pCamera == nullptr)
+		{ 
+			pCamera = new CCamera;
+			pCamera->Init(0,30.0f,500.0f,0,0,0);
+		}
 
 		switch (NextScene)
 		{
+		case SCENE_SPLASH:
+			Scene = new CSplash;
+			break;
 		case SCENE_TITLE:
 			Scene = new CTitle;
 			break;
+		case SCENE_CONNECTION:
+			Scene = new CConnection;
+			break;
 		case SCENE_GAME:
+			CCamera::Release();
+			pCamera = nullptr;
 			Scene = new CGame;
 			break;
 		case SCENE_RESULT:
@@ -134,13 +151,13 @@ void CManager::Update(void)
 
 void CManager::Draw(void)
 {
-	pCamera->Set();
+	CCamera::SetCur();
 	Render->Draw();
 }
 
 void CManager::ChangeScene(short next)
 {
-	if (CFade::Instance().State() == CFade::FADE_NONE)
+	if (CFade::Instance().State() == CFade::FADE_NONE&&ChangeFlag==false)
 	{
 		CFade::Set(1.0f,30);
 		NextScene = next;
