@@ -44,6 +44,8 @@ public:
 	VECTOR3 Lookat(void){return _Lookat;}
 	VECTOR3 UpVec(void){return _UpVec;}
 
+	static CCamera* Camera(void){return CurrentCamera;}
+
 protected:
 	VECTOR3 _Eye;
 	VECTOR3 _Lookat;
