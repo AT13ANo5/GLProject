@@ -113,6 +113,9 @@
     <Filter Include="02_ゲーム\弾">
       <UniqueIdentifier>{90df1a7b-5c1d-4151-9ee1-cb8cc61def85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_通信ロビー\PushStart">
+      <UniqueIdentifier>{6d90a029-8cc8-413e-8c74-21adba07d759}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -212,7 +215,7 @@
       <Filter>02_ゲーム\弾</Filter>
     </ClCompile>
     <ClCompile Include="CPushStart.cpp">
-      <Filter>05_通信ロビー</Filter>
+      <Filter>05_通信ロビー\PushStart</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,7 +328,7 @@
       <Filter>02_ゲーム\弾</Filter>
     </ClInclude>
     <ClInclude Include="CPushStart.h">
-      <Filter>05_通信ロビー</Filter>
+      <Filter>05_通信ロビー\PushStart</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
