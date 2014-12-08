@@ -18,6 +18,5 @@ public:
 private:
 
 	CPolygon2D* Logo;
-  CModel*     Player;
 };
 #endif

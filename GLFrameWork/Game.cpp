@@ -24,97 +24,101 @@ CGame::~CGame()
 
 void CGame::Init(void)
 {
-  // 地形生成
-  Ground = nullptr;
-  Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(50.0f, 50.0f), VECTOR2(20.0f, 20.0f));
-  Ground->SetTex(CTexture::Texture(TEX_FIELD));
+	// 地形生成
+	Ground = nullptr;
+	Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(50.0f, 50.0f), VECTOR2(20.0f, 20.0f));
+	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
-  // 空生成
-  Sky = nullptr;
-  Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
-  Sky->SetTex(CTexture::Texture(TEX_MIKU));
+	// 空生成
+	Sky = nullptr;
+	Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
+	Sky->SetTex(CTexture::Texture(TEX_SKY));
 
-  // プレイヤー生成
-  Player = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
-  Player->SetTex(CTexture::Texture(TEX_MIKU));
-  Player->SetScl(20.0f, 20.0f, 20.0f);
+	// プレイヤー生成
+	Player = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
+	Player->SetTex(CTexture::Texture(TEX_MIKU));
+	Player->SetScl(20.0f, 20.0f, 20.0f);
+#ifdef _DEBUG
+	// デバッグワイヤーフレーム
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 }
 
 void CGame::Uninit(void)
 {
-  // プレイヤー破棄
-  if (Player != nullptr)
-  {
-    Player->Release();
-    Player = nullptr;
-  }
+	// プレイヤー破棄
+	if (Player != nullptr)
+	{
+		Player->Release();
+		Player = nullptr;
+	}
 
-  // 空破棄
-  if (Sky != nullptr)
-  {
-    Sky->Release();
-    Sky = nullptr;
-  }
+	// 空破棄
+	if (Sky != nullptr)
+	{
+		Sky->Release();
+		Sky = nullptr;
+	}
 
-  // 地形破棄
-  if (Ground != nullptr)
-  {
-    Ground->Release();
-    Ground = nullptr;
-  }
+	// 地形破棄
+	if (Ground != nullptr)
+	{
+		Ground->Release();
+		Ground = nullptr;
+	}
 
 	CObject::ReleaseAll();
 }
 
 void CGame::Update(void)
 {
-  // プレイヤー移動
-  if (CKeyboard::GetPress(DIK_W))
-  {
-    Player->AddPosZ(1.0f);
-  }
-  else if (CKeyboard::GetPress(DIK_S))
-  {
-    Player->AddPosZ(-1.0f);
-  }
-  if (CKeyboard::GetPress(DIK_A))
-  {
-    Player->AddPosX(1.0f);
-  }
-  else if (CKeyboard::GetPress(DIK_D))
-  {
-    Player->AddPosX(-1.0f);
-  }
+	// プレイヤー移動
+	if (CKeyboard::GetPress(DIK_W))
+	{
+		Player->AddPosZ(1.0f);
+	}
+	else if (CKeyboard::GetPress(DIK_S))
+	{
+		Player->AddPosZ(-1.0f);
+	}
+	if (CKeyboard::GetPress(DIK_A))
+	{
+		Player->AddPosX(1.0f);
+	}
+	else if (CKeyboard::GetPress(DIK_D))
+	{
+		Player->AddPosX(-1.0f);
+	}
 
-  // 地形とのあたり判定
-  VECTOR3 NormalGround;   // 地形の法線
-  float   HeightGround;   // 地形の高さ
-  HeightGround = Ground->GetHeight(Player->Pos(), &NormalGround);
-  NormalGround.Normalize();
+	// 地形とのあたり判定
+	VECTOR3	NormalGround;		// 地形の法線
+	float	HeightGround;		// 地形の高さ
+	HeightGround = Ground->GetHeight(Player->Pos(), &NormalGround);
 
-  // 回転を求める
-  VECTOR3 VectorUpPlayer; // 上方向ベクトル
-  VECTOR3 VectorNormalYZ; // YZ平面上の法線ベクトル
-  VECTOR3 VectorNormalXY; // XY平面上の法線ベクトル
-  float   AnglePlayerX;   // プレイヤー回転X軸
-  float   AnglePlayerZ;   // プレイヤー回転Z軸
-  VectorUpPlayer.x = VectorUpPlayer.z = 0.0f;
-  VectorUpPlayer.y = 1.0f;
-  VectorNormalYZ.x = 0.0f;
-  VectorNormalYZ.y = NormalGround.y;
-  VectorNormalYZ.z = NormalGround.z;
-  VectorNormalYZ.Normalize();
-  AnglePlayerX = VECTOR3::Dot(VectorNormalYZ, VectorUpPlayer);
-  VectorNormalXY.x = NormalGround.x;
-  VectorNormalXY.y = NormalGround.y;
-  VectorNormalXY.z = 0.0f;
-  VectorNormalXY.Normalize();
-  AnglePlayerZ = VECTOR3::Dot(VectorNormalXY, VectorUpPlayer);
+	// 回転を求める
+	VECTOR3	VectorUpPlayer;		// 上方向ベクトル
+	VECTOR3	VectorNormalYZ;		// YZ平面上の法線ベクトル
+	VECTOR3	VectorNormalXY;		// XY平面上の法線ベクトル
+	float	AnglePlayerX;		// プレイヤー回転X軸
+	float	AnglePlayerZ;		// プレイヤー回転Z軸
+	VectorUpPlayer.x = VectorUpPlayer.z = 0.0f;
+	VectorUpPlayer.y = 1.0f;
+	VectorNormalYZ.x = 0.0f;
+	VectorNormalYZ.y = NormalGround.y;
+	VectorNormalYZ.z = NormalGround.z;
+	VectorNormalYZ.Normalize();
+	AnglePlayerX = VECTOR3::Dot(VectorNormalYZ, VectorUpPlayer);
+	VectorNormalXY.x = NormalGround.x;
+	VectorNormalXY.y = NormalGround.y;
+	VectorNormalXY.z = 0.0f;
+	VectorNormalXY.Normalize();
+	AnglePlayerZ = VECTOR3::Dot(VectorNormalXY, VectorUpPlayer);
 
-  // プレイヤーに設定する
-  Player->SetPosY(HeightGround);
-  Player->SetRot(180.0f / PI * AnglePlayerX, 0.0f, 180.0f / PI * AnglePlayerZ);
+	// プレイヤーに設定する
+	Player->SetPosY(HeightGround);
+	Player->SetRot(180.0f / PI * AnglePlayerX, 0.0f, 180.0f / PI * AnglePlayerZ);
 
+	// シーン遷移
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CManager::ChangeScene(SCENE_RESULT);

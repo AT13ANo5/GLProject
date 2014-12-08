@@ -16,11 +16,11 @@ public:
 	void Uninit(void);
 	void Update(void);
 private:
-  static const float  RADIUS_SKY;   // 空の半径
+	static const float  RADIUS_SKY;		// 空の半径
 
-  CMeshGround*  Ground;   // 地形
-  CMeshSphere*  Sky;      // 空
-  CModel*       Player;   // プレイヤー
+	CMeshGround*	Ground;		// 地形
+	CMeshSphere*	Sky;		// 空
+	CModel*			Player;		// プレイヤー
 };
 
 #endif

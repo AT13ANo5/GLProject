@@ -11,7 +11,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/ResultLogo.dds",
 	"data/texture/Maro.tga",
 	"data/texture/Light.tga",
-  "data/texture/field000.dds",
+	"data/texture/field000.dds",
+	"data/texture/sky000.tga",
 };
 
 void CTexture::Initialize(void)
