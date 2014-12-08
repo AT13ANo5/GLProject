@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF|_CRTDBG_LEAK_CHECK_DF);
 
-	//_CrtSetBreakAlloc(178);	//メモリを確保した場所を探すときは、この行のコメントを外して何番目に確保したかの番号を括弧内に書く
+	//_CrtSetBreakAlloc(98);	//メモリを確保した場所を探すときは、この行のコメントを外して何番目に確保したかの番号を括弧内に書く
 
 	WNDCLASSEX wcex =
 	{

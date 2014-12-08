@@ -4,25 +4,53 @@
 #include "Keyboard.h"
 #include "ManagerGL.h"
 #include "Model.h"
+#include "MeshGround.h"
+#include "MeshSphere.h"
+#include "Camera.h"
+#include <math.h>
+
+// static member
+const float CTitle::RADIUS_SKY = 500.0f;   // 空の半径
 
 CTitle::CTitle()
 {
-
+  Logo = nullptr;
+  Player = nullptr;
+  Ground = nullptr;
+  Sky = nullptr;
+  Camera = nullptr;
+  CameraRotation = 0.0f;
 }
 
 CTitle::~CTitle()
 {
-
 }
 
 void CTitle::Init(void)
 {
+  // Logo
 	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/2,SCREEN_HEIGHT/3.0f,0),VECTOR2(500.0f,250.0f));
 	Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
+
+  // Player
   Player = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
   Player->SetTex(CTexture::Texture(TEX_MIKU));
   Player->SetRot(0.0f, 180.0f, 0.0f);
   Player->SetScl(20.0f, 20.0f, 20.0f);
+
+  // Ground
+  Ground = nullptr;
+  Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(50.0f, 50.0f), VECTOR2(20.0f, 20.0f));
+  Ground->SetTex(CTexture::Texture(TEX_FIELD));
+
+  // Sky
+  Sky = nullptr;
+  Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
+  Sky->SetTex(CTexture::Texture(TEX_MIKU));
+
+  Camera = CCamera::Camera();
+
+  Camera->SetEye(VECTOR3(0.0f, 80.0f, 0.0f));
 }
 
 void CTitle::Uninit(void)
@@ -39,6 +67,11 @@ void CTitle::Uninit(void)
 
 void CTitle::Update(void)
 {
+  // TODO カメラ動かしてみるテスト（masuda）
+  const float cameraLength = 200.0f;
+  CameraRotation += 0.001f;
+  Camera->SetEye(VECTOR3(0.0f - sinf(CameraRotation) * cameraLength, 80.0f, 0.0f - cosf(CameraRotation) * cameraLength));
+
   if (CKeyboard::GetPress(DIK_W))
   {
     Player->AddPosZ(1.0f);

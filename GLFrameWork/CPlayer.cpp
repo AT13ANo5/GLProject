@@ -69,15 +69,15 @@ void CPlayer::Update()
 	// è„
 	if(CKeyboard::GetPress(DIK_W))
 	{
-		Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
-		Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
+		Movement.x += sinf(_Rot.y) * Speed;
+		Movement.z += cosf(_Rot.y) * Speed;
 	}
 
 	// â∫
 	else if (CKeyboard::GetPress(DIK_S))
 	{
-		Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
-		Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
+		Movement.x -= sinf(_Rot.y) * Speed;
+		Movement.z -= cosf(_Rot.y) * Speed;
 	}
 
 	// ç∂

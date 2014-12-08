@@ -113,9 +113,6 @@
     <Filter Include="02_ゲーム\弾">
       <UniqueIdentifier>{90df1a7b-5c1d-4151-9ee1-cb8cc61def85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_ゲーム\プレイヤー\カメラ">
-      <UniqueIdentifier>{c9c39c06-9288-453c-b8d4-987b0143b8b6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -213,9 +210,6 @@
     </ClCompile>
     <ClCompile Include="CBullet.cpp">
       <Filter>02_ゲーム\弾</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerCamera.cpp">
-      <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -326,9 +320,6 @@
     </ClInclude>
     <ClInclude Include="CBullet.h">
       <Filter>02_ゲーム\弾</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerCamera.h">
-      <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
