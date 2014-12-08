@@ -127,6 +127,24 @@ void CConnection::Uninit(void)
 			waitBackGround[count]->Release();
 			waitBackGround[ count ] = nullptr;
 		}
+
+		if (waitPlayer[count] != nullptr)
+		{
+			waitPlayer[count]->Release();
+			waitPlayer[count] = nullptr;
+		}
+	}
+
+	if (waitPlayer != nullptr)
+	{
+		delete[] waitPlayer;
+		waitPlayer = nullptr;
+	}
+
+	if (waitBackGround != nullptr)
+	{
+		delete[] waitBackGround;
+		waitBackGround = nullptr;
 	}
 
 	if (backGround != nullptr)

@@ -113,12 +113,6 @@
     <Filter Include="02_ゲーム\弾">
       <UniqueIdentifier>{90df1a7b-5c1d-4151-9ee1-cb8cc61def85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_通信ロビー\PushStart">
-      <UniqueIdentifier>{6d90a029-8cc8-413e-8c74-21adba07d759}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_ゲーム\プレイヤー\カメラ">
-      <UniqueIdentifier>{eb79cf26-28fd-409c-aabe-e67dc4d3d1a2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -217,12 +211,15 @@
     <ClCompile Include="CBullet.cpp">
       <Filter>02_ゲーム\弾</Filter>
     </ClCompile>
-    <ClCompile Include="CPushStart.cpp">
-      <Filter>05_通信ロビー\PushStart</Filter>
-    </ClCompile>
+<<<<<<< HEAD
+=======
     <ClCompile Include="PlayerCamera.cpp">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClCompile>
+    <ClCompile Include="CPushStart.cpp">
+      <Filter>05_通信ロビー</Filter>
+    </ClCompile>
+>>>>>>> origin/Nagasaki/network
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -333,11 +330,14 @@
     <ClInclude Include="CBullet.h">
       <Filter>02_ゲーム\弾</Filter>
     </ClInclude>
-    <ClInclude Include="CPushStart.h">
-      <Filter>05_通信ロビー\PushStart</Filter>
-    </ClInclude>
+<<<<<<< HEAD
+=======
     <ClInclude Include="PlayerCamera.h">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClInclude>
+    <ClInclude Include="CPushStart.h">
+      <Filter>05_通信ロビー</Filter>
+    </ClInclude>
+>>>>>>> origin/Nagasaki/network
   </ItemGroup>
 </Project>

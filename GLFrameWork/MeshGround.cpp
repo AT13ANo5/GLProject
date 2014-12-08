@@ -34,6 +34,11 @@ CMeshGround::~CMeshGround()
 		delete[] NormalMap;
 		NormalMap = nullptr;
 	}
+	if (Index != nullptr)
+	{
+		delete[] Index;
+		Index = nullptr;
+	}
 	if (HeightMap!=nullptr)
 	{
 		delete[] HeightMap;
@@ -219,6 +224,7 @@ void CMeshGround::Init(void)
 
 void CMeshGround::Uninit(void)
 {
+	delete this;
 }
 void CMeshGround::Update(void)
 {
