@@ -29,7 +29,6 @@ CModel::CModel(int priority):CObject(3)
 	_Scl = VECTOR3(1.0f,1.0f,1.0f);
 
 	FileName = nullptr;
-	Texture = nullptr;
 	MotionPos = nullptr;
 	MotionRot = nullptr;
 
@@ -242,9 +241,7 @@ void CModel::Draw(void)
 		glRotatef(rot.y,0,1.0f,0);
 		glRotatef(rot.x,1.0f,0,0);
 		
-		
-
-		glBindTexture(GL_TEXTURE_2D,texture);
+		glBindTexture(GL_TEXTURE_2D,Texture.TexID);
 
 		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(float*)&Material.ambient);
 		glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(float*)&Material.diffuse);

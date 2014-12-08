@@ -14,11 +14,11 @@ class CEffect3D :public CObject
 {
 public:
 	CEffect3D();
-	~CEffect3D(){}
-	void Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	virtual ~CEffect3D(){}
+	virtual void Init(void);
+	virtual void Uninit(void);
+	virtual void Update(void);
+	virtual void Draw(void);
 
 	//=============================================================================
 	//ê∂ê¨

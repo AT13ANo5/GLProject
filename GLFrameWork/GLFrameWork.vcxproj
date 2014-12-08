@@ -43,6 +43,8 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\</OutDir>
     <TargetName>$(ProjectName)_Debug</TargetName>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -61,6 +63,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,6 +90,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CommonGL.cpp" />
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Effect2D.cpp" />
     <ClCompile Include="Effect3D.cpp" />
@@ -108,14 +112,20 @@
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="SoundAL.cpp" />
+    <ClCompile Include="Splash.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AL\al.h" />
+    <ClInclude Include="AL\alc.h" />
+    <ClInclude Include="AL\alut.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CommonGL.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Effect2D.h" />
     <ClInclude Include="Effect3D.h" />
@@ -138,6 +148,8 @@
     <ClInclude Include="MeshGround.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SoundAL.h" />
+    <ClInclude Include="Splash.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Title.h" />
   </ItemGroup>

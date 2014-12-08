@@ -1,0 +1,49 @@
+﻿2014/11/20 15:59:34 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\たかひろ\Documents\GL31チームプロジェクト\GLproject\GLFrameWork - ビルボード\GLFrameWork.vcxproj" (build ターゲット)。
+       プロジェクト ファイルに ToolsVersion="12.0" が含まれています。このツールセットが不明であるか、存在しません。その場合は、適切なバージョンの MSBuild をインストールすることで解決できる可能性があります。または、ビルドがポリシー上の理由により、特定の ToolsVersion を使用するように強制されている場合があります。プロジェクトを ToolsVersion="4.0" として扱います。詳細については、http://go.microsoft.com/fwlink/?LinkId=291333 を参照してください。
+     1>InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Release\GLFrameWork.unsuccessfulbuild" を作成しています。
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp
+         Game.cpp
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\たかひろ\Documents\GL31チームプロジェクト\GLproject\GLFrameWork - ビルボード\\GLFrameWork.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\GLFrameWork.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\たかひろ\Documents\GL31チームプロジェクト\GLproject\GLFrameWork - ビルボード\GLFrameWork.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\たかひろ\Documents\GL31チームプロジェクト\GLproject\GLFrameWork - ビルボード\\GLFrameWork.lib" /MACHINE:X86 Release\Billboard.obj
+         Release\Camera.obj
+         Release\CInput.obj
+         Release\CommonGL.obj
+         Release\Console.obj
+         Release\Effect2D.obj
+         Release\Effect3D.obj
+         Release\Fade.obj
+         Release\Game.obj
+         Release\MeshGround.obj
+         Release\Object.obj
+         Release\GamePad.obj
+         Release\Keyboard.obj
+         Release\Light.obj
+         Release\main.obj
+         Release\ManagerGL.obj
+         Release\Mouse.obj
+         Release\Renderer.obj
+         Release\Polygon2D.obj
+         Release\Polygon3D.obj
+         Release\MeshCylinder.obj
+         Release\MeshField.obj
+         Release\MeshSphere.obj
+         Release\Model.obj
+         Release\Result.obj
+         Release\Texture.obj
+         Release\Title.obj
+         コード生成しています。
+         コード生成が終了しました。
+         GLFrameWork.vcxproj -> C:\Users\たかひろ\Documents\GL31チームプロジェクト\GLproject\GLFrameWork - ビルボード\\GLFrameWork.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\たかひろ\Documents\GL31チームプロジェクト\GLproject\GLFrameWork - ビルボード\\GLFrameWork.exe;#1" /manifest Release\GLFrameWork.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         ファイル "Release\GLFrameWork.unsuccessfulbuild" を削除しています。
+         "Release\GLFrameWork.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "C:\Users\たかひろ\Documents\GL31チームプロジェクト\GLproject\GLFrameWork - ビルボード\GLFrameWork.vcxproj" (build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:01.23
