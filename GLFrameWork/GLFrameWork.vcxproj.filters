@@ -217,6 +217,9 @@
     <ClCompile Include="PlayerCamera.cpp">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClCompile>
+    <ClCompile Include="CPushStart.cpp">
+      <Filter>05_通信ロビー</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -329,6 +332,9 @@
     </ClInclude>
     <ClInclude Include="PlayerCamera.h">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushStart.h">
+      <Filter>05_通信ロビー</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
