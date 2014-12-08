@@ -26,6 +26,7 @@ enum
 	TEX_CONNECTION,
 	TEX_TEST,
 	TEX_LIGHT,
+  TEX_FIELD,
 	TEX_MAX
 };
 

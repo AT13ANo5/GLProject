@@ -23,6 +23,7 @@ public:
 	typedef enum
 	{
 		SOUND_BGM1 = 0,
+<<<<<<< HEAD
 		SOUND_BGM2,
 		SOUND_BGM3,
 		SOUND_BGM4,
@@ -31,6 +32,8 @@ public:
 		SOUND_BGM7,
 		SOUND_BGM8,
 		SOUND_SE,
+=======
+>>>>>>> 24b6ce008e35316dd002e63a3f998df33727a3d6
 		SOUND_MAX
 
 	}SOUND;
