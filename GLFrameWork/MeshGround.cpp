@@ -316,7 +316,7 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 	}
 	if (flag)
 	{
-		return GetHeightPolygon(VertexPos[0],VertexPos[1],VertexPos[2],pos);
+		return GetHeightPolygon(VertexPos[0],VertexPos[1],VertexPos[2],pos, normal);
 	}
 	Vec0 = VertexPos[3]-VertexPos[1];
 	Vec1 = pos-VertexPos[1];
@@ -348,14 +348,10 @@ float CMeshGround::GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VE
 	Vec1 = p2-p0;
 	VECTOR3::Cross(&normal,Vec0,Vec1);
 	normal.Normalize();
-
-	// îíêÏ í«â¡ 2014/12/08
 	if (Normal != nullptr)
 	{
 		*Normal = normal;
 	}
-	// Ç±Ç±Ç‹Ç≈
-
 	if (normal.y==0.0f)
 	{
 		return 0;

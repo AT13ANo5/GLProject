@@ -33,7 +33,7 @@ void CTitle::Update(void)
 {
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
-		CManager::ChangeScene(SCENE_GAME);
+		CManager::ChangeScene(SCENE_CONNECTION);
 	}
 }
 
