@@ -211,6 +211,9 @@
     <ClCompile Include="CBullet.cpp">
       <Filter>02_ゲーム\弾</Filter>
     </ClCompile>
+    <ClCompile Include="CPushStart.cpp">
+      <Filter>05_通信ロビー</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -320,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="CBullet.h">
       <Filter>02_ゲーム\弾</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushStart.h">
+      <Filter>05_通信ロビー</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
