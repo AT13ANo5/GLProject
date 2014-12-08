@@ -33,7 +33,7 @@ unsigned int CurrentTime = 0;//DWORD dwCurrentTime;
 unsigned int PrevTime = 0;	 //DWORD dwExecLastTime;
 unsigned int FPSLastTime = 0;//DWORD dwFPSLastTime;
 unsigned int FrameCount = 0; //DWORD dwFrameCount;
-CManager* pManager = nullptr;
+CManager* pManager = NULL;
 //=============================================================================
 //ƒƒCƒ“
 //=============================================================================
@@ -134,7 +134,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 
 	pManager->Uninit(hWnd);
 	delete pManager;
-	pManager = nullptr;
+	pManager = NULL;
 	timeEndPeriod(1);// •ª‰ð”\‚ð–ß‚·
 
 	UnregisterClass("Test",wcex.hInstance);

@@ -17,11 +17,11 @@ struct MODEL_DATA
 {
 	MODEL_DATA()
 	{
-		Vtx = Nor = nullptr;
-		Tex = nullptr;
-		TriIndexPos = TriIndexNor = TriIndexTex = nullptr;
-		QuadIndexPos = QuadIndexNor = QuadIndexTex = nullptr;
-		TriIndexNum = QuadIndexNum = nullptr;
+		Vtx = Nor = NULL;
+		Tex = NULL;
+		TriIndexPos = TriIndexNor = TriIndexTex = NULL;
+		QuadIndexPos = QuadIndexNor = QuadIndexTex = NULL;
+		TriIndexNum = QuadIndexNum = NULL;
 		PartsNum = 0;
 		Max = Min = Size = VECTOR3(0,0,0);
 	};

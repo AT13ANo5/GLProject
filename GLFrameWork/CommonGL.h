@@ -5,23 +5,15 @@
 #define _COMMONGL_H_
 
 //デリートを簡略化したマクロ
-#define SafeDelete(x) if(x!=nullptr){	\
+#define SafeDelete(x) if(x!=NULL){	\
 						delete x;		\
-						x = nullptr; }
+						x = NULL; }
 
 //デリートを簡略化したマクロ(配列用)
-#define SafeDeletes(x) if(x!=nullptr){	\
+#define SafeDeletes(x) if(x!=NULL){	\
 						delete[] x;		\
-						x = nullptr; }
-// 角関連
-#define PI     (3.141592654f) // 円周率
-#define RAD_TO_DEG   (57.29577951f) // 1ラジアン→度
-#define DEG_TO_RAD   (0.017453293f) // 1度→ラジアン
-
-// 度→ラジアン
-#define DEG2RAD(degree)  ((degree) * DEG_TO_RAD)
-// ラジアン→度
-#define RAD2DEG(radian)  ((radian) * RAD_TO_DEG)
+						x = NULL; }
+#define PI (3.14159265359f)
 
 //===================================================================
 //XY

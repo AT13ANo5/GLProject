@@ -107,15 +107,6 @@
     <Filter Include="OpenAL">
       <UniqueIdentifier>{12c68dc9-8de3-4245-b431-1437112919a1}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
-=======
-    <Filter Include="02_ゲーム\プレイヤー">
-      <UniqueIdentifier>{e86f6961-db8e-4be7-80fc-3146341f67c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_ゲーム\弾">
-      <UniqueIdentifier>{90df1a7b-5c1d-4151-9ee1-cb8cc61def85}</UniqueIdentifier>
-    </Filter>
->>>>>>> 24b6ce008e35316dd002e63a3f998df33727a3d6
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -208,15 +199,9 @@
     <ClCompile Include="SoundAL.cpp">
       <Filter>00_システム\Sound</Filter>
     </ClCompile>
-<<<<<<< HEAD
-=======
-    <ClCompile Include="CPlayer.cpp">
-      <Filter>02_ゲーム\プレイヤー</Filter>
+    <ClCompile Include="Life.cpp">
+      <Filter>00_システム</Filter>
     </ClCompile>
-    <ClCompile Include="CBullet.cpp">
-      <Filter>02_ゲーム\弾</Filter>
-    </ClCompile>
->>>>>>> 24b6ce008e35316dd002e63a3f998df33727a3d6
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -321,14 +306,8 @@
     <ClInclude Include="AL\alut.h">
       <Filter>OpenAL</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
-    <ClInclude Include="CPlayer.h">
-      <Filter>02_ゲーム\プレイヤー</Filter>
+    <ClInclude Include="Life.h">
+      <Filter>00_システム</Filter>
     </ClInclude>
-    <ClInclude Include="CBullet.h">
-      <Filter>02_ゲーム\弾</Filter>
-    </ClInclude>
->>>>>>> 24b6ce008e35316dd002e63a3f998df33727a3d6
   </ItemGroup>
 </Project>

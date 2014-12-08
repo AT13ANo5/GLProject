@@ -27,11 +27,11 @@ void CTitle::Init(void)
 
 void CTitle::Uninit(void)
 {
-	if (Logo != nullptr)
+	if (Logo != NULL)
 	{
 		Logo->Release();
   }
-  if (Player != nullptr)
+  if (Player != NULL)
   {
     Player->Release();
   }
@@ -49,11 +49,11 @@ void CTitle::Update(void)
   }
   if (CKeyboard::GetPress(DIK_A))
   {
-    Player->AddRotY(1.0f);
+    Player->AddPosX(1.0f);
   }
   else if (CKeyboard::GetPress(DIK_D))
   {
-    Player->AddRotY(-1.0f);
+    Player->AddPosX(-1.0f);
   }
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{

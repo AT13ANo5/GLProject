@@ -32,7 +32,7 @@ public:
 	//=============================================================================
 	//çÇÇ≥ÇéÊìæ
 	//=============================================================================
-	float GetHeight(VECTOR3 pos,VECTOR3* normal = nullptr);
+	float GetHeight(VECTOR3 pos,VECTOR3* normal = NULL);
 
 	//ÉQÉbÉ^Å[
 	VECTOR3 Size(void)const{ return _Size; }
@@ -57,7 +57,7 @@ private:
 	int MapNum;
 
 	void GetPanelIndex(VECTOR3 pos,int* OutIndexX,int* OutIndexY);
-	float GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VECTOR3& p2,VECTOR3& pos,VECTOR3* Normal = nullptr);
+	float GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VECTOR3& p2,VECTOR3& pos,VECTOR3* Normal = NULL);
 };
 
 

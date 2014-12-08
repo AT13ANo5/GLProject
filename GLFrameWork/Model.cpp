@@ -6,8 +6,8 @@
 
 #define SCALE_MULTI (30.0f)
 
-CModel* CModel::Top = nullptr;
-CModel* CModel::Cur = nullptr;
+CModel* CModel::Top = NULL;
+CModel* CModel::Cur = NULL;
 int CModel::ModelNum = 0;
 MODEL_DATA CModel::ModelData[CModel::MODEL_MAX];
 
@@ -28,9 +28,9 @@ CModel::CModel(int priority):CObject(3)
 	_Rot = VECTOR3(0,0,0);
 	_Scl = VECTOR3(1.0f,1.0f,1.0f);
 
-	FileName = nullptr;
-	MotionPos = nullptr;
-	MotionRot = nullptr;
+	FileName = NULL;
+	MotionPos = NULL;
+	MotionRot = NULL;
 
 	MotionFrameNum = 0;
 	MotionID = 0;
@@ -49,7 +49,7 @@ CModel::CModel(int priority):CObject(3)
 CModel* CModel::Create(int id,const VECTOR3& pos)
 {
 	CModel* model = new CModel;
-	if (model == nullptr){ return nullptr; }
+	if (model == NULL){ return NULL; }
 
 	model->ModelID = id;
 	model->_Pos = pos;
@@ -62,20 +62,20 @@ CModel* CModel::Create(int id,const VECTOR3& pos)
 //=============================================================================
 void CModel::LinkList(void)
 {
-	if(Top != nullptr)//二つ目以降の処理
+	if(Top != NULL)//二つ目以降の処理
 	{
 		CModel* pScene = Cur;
 		pScene->Next = this;
 		Prev = pScene;
-		Next = nullptr;
+		Next = NULL;
 		Cur = this;
 	}
 	else//最初の一つの時の処理
 	{
 		Top = this;
 		Cur = this;
-		Prev = nullptr;
-		Next = nullptr;
+		Prev = NULL;
+		Next = NULL;
 	}
 }
 
@@ -84,30 +84,30 @@ void CModel::LinkList(void)
 //=============================================================================
 void CModel::UnlinkList(void)
 {
-	if(Prev == nullptr)//先頭
+	if(Prev == NULL)//先頭
 	{
-		if(Next != nullptr)//次がある
+		if(Next != NULL)//次がある
 		{
-			Next->Prev = nullptr;
+			Next->Prev = NULL;
 			Top = Next;
 		}
 		else//最後の一つだった
 		{
-			Top = nullptr;
-			Cur = nullptr;
+			Top = NULL;
+			Cur = NULL;
 		}
 	}
-	else if(Next == nullptr)//終端
+	else if(Next == NULL)//終端
 	{
-		if(Prev != nullptr)//前がある
+		if(Prev != NULL)//前がある
 		{
-			Prev->Next = nullptr;
+			Prev->Next = NULL;
 			Cur = Prev;
 		}
 		else//最後の一つだった
 		{
-			Top = nullptr;
-			Cur = nullptr;
+			Top = NULL;
+			Cur = NULL;
 		}
 	}
 	else//前後にデータがあるとき
@@ -116,8 +116,8 @@ void CModel::UnlinkList(void)
 		Next->Prev = Prev;
 	}
 
-	Prev = nullptr;
-	Next = nullptr;
+	Prev = NULL;
+	Next = NULL;
 
 	ModelNum--;
 }
@@ -126,11 +126,14 @@ void CModel::UnlinkList(void)
 //=============================================================================
 void CModel::Init(void)
 {
+
 	Material.ambient = COLOR(0.2f,0.2f,0.5f,1.0f);
 	Material.diffuse = COLOR(1.0f,1.0f,1.0f,1.0f);
 	Material.specular = COLOR(0,0,0,1.0f);
 	Material.emission = COLOR(0,0,0,1.0f);
 	Material.shininess = 0.0f;
+	
+	rot = -45.0f;
 }
 
 void CModel::Initialize(void)
@@ -140,29 +143,28 @@ void CModel::Initialize(void)
 		LoadModel(ModelFile[cnt],cnt);
 	}
 }
-
 //=============================================================================
 //終了処理
 //=============================================================================
 void CModel::Uninit(void)
 {
 
-	if (MotionPos != nullptr)
+	if (MotionPos != NULL)
 	{
 		for (int num = 0;num < ModelData[ModelID].PartsNum;num++)
 		{
-			if (MotionPos[num] != nullptr)
+			if (MotionPos[num] != NULL)
 			{
 				delete[] MotionPos[num];
 			}
 		}
 		delete[] MotionPos;
 	}
-	if (MotionRot != nullptr)
+	if (MotionRot != NULL)
 	{
 		for (int num = 0;num < ModelData[ModelID].PartsNum;num++)
 		{
-			if (MotionRot[num] != nullptr)
+			if (MotionRot[num] != NULL)
 			{
 				delete[] MotionRot[num];
 			}
@@ -220,12 +222,12 @@ void CModel::Draw(void)
 		glPushMatrix();//ビューマトリックスを退避
 		VECTOR3 pos(0,0,0),rot(0,0,0);
 		//描画設定
-		if (MotionPos != nullptr)
+		if (MotionPos != NULL)
 		{
 			pos = MotionPos[num][MotionID];
 			pos *= _Scl;
 		}
-		if (MotionRot != nullptr)
+		if (MotionRot != NULL)
 		{
 			rot = MotionRot[num][MotionID];
 			//rot /= 1.3f;
@@ -288,7 +290,7 @@ void CModel::Draw(void)
 bool CModel::LoadModel(const char* filename,int id)
 {
 	FILE* File = fopen(filename,"rb");
-	if (File == nullptr){ return false; }
+	if (File == NULL){ return false; }
 
 	unsigned short PosCount = 0,TexcoordCount = 0,NormalCount = 0;
 
@@ -365,7 +367,7 @@ CModel* CModel::GetModel(int id)
 		Model = Model->CModel::Next;
 	}
 
-	return nullptr;
+	return NULL;
 }
 
 void CModel::Scaling(int id,int posCount)
@@ -405,33 +407,33 @@ void CModel::Scaling(int id,int posCount)
 
 void CModel::LoadAnim(char* filename)
 {
-	if (MotionPos != nullptr)
+	if (MotionPos != NULL)
 	{
 		for (int num = 0;num < ModelData[ModelID].PartsNum;num++)
 		{
-			if (MotionPos[num] != nullptr)
+			if (MotionPos[num] != NULL)
 			{
 				delete[] MotionPos[num];
 			}
 		}
 		delete[] MotionPos;
 	}
-	if (MotionRot != nullptr)
+	if (MotionRot != NULL)
 	{
 		for (int num = 0;num < ModelData[ModelID].PartsNum;num++)
 		{
-			if (MotionRot[num] != nullptr)
+			if (MotionRot[num] != NULL)
 			{
 				delete[] MotionRot[num];
 			}
 		}
 		delete[] MotionRot;
 	}
-	FILE* Input = nullptr;
+	FILE* Input = NULL;
 	
 	fopen_s(&Input,filename,"rb");
 	
-	if (Input == nullptr)
+	if (Input == NULL)
 	{
 		return;
 	}

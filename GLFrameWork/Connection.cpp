@@ -5,7 +5,7 @@
 
 CConnection::CConnection()
 {
-	Logo = nullptr;
+	Logo = NULL;
 }
 
 CConnection::~CConnection()
@@ -21,10 +21,10 @@ void CConnection::Init(void)
 
 void CConnection::Uninit(void)
 {
-	if (Logo != nullptr)
+	if (Logo != NULL)
 	{
 		Logo->Release();
-		Logo = nullptr;
+		Logo = NULL;
 	}
 
 }

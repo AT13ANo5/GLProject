@@ -1,10 +1,10 @@
 #include "CInput.h"
 
-LPDIRECTINPUT8 CInput::DInput=nullptr;
+LPDIRECTINPUT8 CInput::DInput=NULL;
 
 CInput::CInput()
 {
-	pInputDevice = nullptr;
+	pInputDevice = NULL;
 }
 HRESULT CInput::Init(HINSTANCE hInstance,HWND hWnd)
 {
@@ -29,15 +29,15 @@ HRESULT CInput::Init(HINSTANCE hInstance,HWND hWnd)
 
 void CInput::Uninit(void)
 {
-	if(DInput!=nullptr)
+	if(DInput!=NULL)
 	{
 		DInput->Release();
-		DInput = nullptr;
+		DInput = NULL;
 	}
 
-	if(pInputDevice!=nullptr)
+	if(pInputDevice!=NULL)
 	{
 		pInputDevice->Release();
-		pInputDevice = nullptr;
+		pInputDevice = NULL;
 	}
 }

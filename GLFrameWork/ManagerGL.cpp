@@ -20,10 +20,10 @@ bool	CManager::ChangeFlag = false;
 
 CManager::CManager()
 {
-	Render = nullptr;
-	Mouse = nullptr;
-	Keyboard = nullptr;
-	Scene = nullptr;
+	Render = NULL;
+	Mouse = NULL;
+	Keyboard = NULL;
+	Scene = NULL;
 	ChangeFlag = false;
 
 	Console::Initialize();
@@ -58,11 +58,11 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 
 void CManager::Uninit(HWND hWnd)
 {
-	if (Scene != nullptr)
+	if (Scene != NULL)
 	{
 		Scene->Uninit();
 		delete Scene;
-		Scene = nullptr;
+		Scene = NULL;
 	}
 	CRenderer::Uninit(hWnd);
 	delete Render;
@@ -73,25 +73,25 @@ void CManager::Uninit(HWND hWnd)
 	CTexture::Finalize();
 
 	
-	if(Mouse != nullptr)
+	if(Mouse != NULL)
 	{
 		Mouse->Uninit();
 		delete Mouse;
-		Mouse = nullptr;
+		Mouse = NULL;
 	}
-	if(Keyboard != nullptr)
+	if(Keyboard != NULL)
 	{
 		Keyboard->Uninit();
 		delete Keyboard;
-		Keyboard = nullptr;
+		Keyboard = NULL;
 	}
 
-	if(pCamera!=nullptr)
+	if(pCamera!=NULL)
 	{
 		delete pCamera;
-		pCamera = nullptr;
+		pCamera = NULL;
 	}
-	if(Light != nullptr)
+	if(Light != NULL)
 	{
 		delete Light;
 	}
@@ -113,7 +113,7 @@ void CManager::Update(void)
 	{
 		Scene->Uninit();
 		delete Scene;
-		Scene = nullptr;
+		Scene = NULL;
 
 		switch (NextScene)
 		{
@@ -135,7 +135,7 @@ void CManager::Update(void)
 		default:
 			break;
 		}
-		if (Scene != nullptr)
+		if (Scene != NULL)
 		{
 			CFade::Set(0,30);
 			Scene->Init();

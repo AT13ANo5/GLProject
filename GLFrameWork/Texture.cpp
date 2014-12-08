@@ -13,7 +13,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/Connection.dds",
 	"data/texture/Maro.tga",
 	"data/texture/Light.tga",
-  "data/texture/field000.dds",
+	"data/texture/Life.dds",
+	
 };
 
 void CTexture::Initialize(void)
@@ -44,7 +45,7 @@ void CTexture::Finalize(void)
 
 void CTexture::LoadTga(int id,const char* filename)
 {
-	unsigned char* Image = nullptr;
+	unsigned char* Image = NULL;
 	unsigned short st = 0;
 	unsigned short bit = 0;
 	bool RightToLeft = false;
