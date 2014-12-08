@@ -9,10 +9,10 @@
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Model.h"
+#include "CPlayer.h"
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 500.0f;   // 空の半径
-#include "CPlayer.h"
 
 CPlayer* g_player;
 CModel* g_model;
@@ -29,16 +29,6 @@ CGame::~CGame()
 
 void CGame::Init(void)
 {
-  // 地形生成
-  Ground = nullptr;
-  Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(50.0f, 50.0f), VECTOR2(20.0f, 20.0f));
-  Ground->SetTex(CTexture::Texture(TEX_FIELD));
-
-  // 空生成
-  Sky = nullptr;
-  Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
-  Sky->SetTex(CTexture::Texture(TEX_MIKU));
-
   // プレイヤー生成
   Player = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
   Player->SetTex(CTexture::Texture(TEX_MIKU));
@@ -63,6 +53,15 @@ void CGame::Init(void)
 	g_model->SetRotY(180.0f);
 	*/
 
+  // 地形生成
+  Ground = nullptr;
+  Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(50.0f, 50.0f), VECTOR2(20.0f, 20.0f));
+  Ground->SetTex(CTexture::Texture(TEX_FIELD));
+
+  // 空生成
+  Sky = nullptr;
+  Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
+  Sky->SetTex(CTexture::Texture(TEX_MIKU));
 }
 
 void CGame::Uninit(void)
