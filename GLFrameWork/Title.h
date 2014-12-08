@@ -8,6 +8,7 @@ class CPolygon2D;
 class CModel;
 class CMeshGround;
 class CMeshSphere;
+class CCamera;
 
 class CTitle :public CScene
 {
@@ -25,6 +26,8 @@ private:
   CModel*     Player;
   CMeshGround*  Ground;   // ’nŒ`
   CMeshSphere*  Sky;      // ‹ó
+  CCamera* Camera;
+  float CameraRotation;
 
 };
 #endif

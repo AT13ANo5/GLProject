@@ -6,18 +6,24 @@
 #include "Model.h"
 #include "MeshGround.h"
 #include "MeshSphere.h"
+#include "Camera.h"
+#include <math.h>
 
 // static member
 const float CTitle::RADIUS_SKY = 500.0f;   // 空の半径
 
 CTitle::CTitle()
 {
-
+  Logo = nullptr;
+  Player = nullptr;
+  Ground = nullptr;
+  Sky = nullptr;
+  Camera = nullptr;
+  CameraRotation = 0.0f;
 }
 
 CTitle::~CTitle()
 {
-
 }
 
 void CTitle::Init(void)
@@ -42,7 +48,9 @@ void CTitle::Init(void)
   Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
   Sky->SetTex(CTexture::Texture(TEX_MIKU));
 
-  
+  Camera = CCamera::Camera();
+
+  Camera->SetEye(VECTOR3(0.0f, 80.0f, 0.0f));
 }
 
 void CTitle::Uninit(void)
@@ -59,6 +67,11 @@ void CTitle::Uninit(void)
 
 void CTitle::Update(void)
 {
+  // TODO カメラ動かしてみるテスト（masuda）
+  const float cameraLength = 200.0f;
+  CameraRotation += 0.001f;
+  Camera->SetEye(VECTOR3(0.0f - sinf(CameraRotation) * cameraLength, 80.0f, 0.0f - cosf(CameraRotation) * cameraLength));
+
   if (CKeyboard::GetPress(DIK_W))
   {
     Player->AddPosZ(1.0f);

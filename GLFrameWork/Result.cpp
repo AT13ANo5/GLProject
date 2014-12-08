@@ -13,7 +13,8 @@ const float CResult::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
 
 CResult::CResult()
 {
-
+  Ground = nullptr;
+  Sky = nullptr;
 }
 
 CResult::~CResult()
