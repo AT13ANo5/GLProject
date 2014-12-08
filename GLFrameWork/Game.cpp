@@ -9,6 +9,8 @@
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Model.h"
+#include "Camera.h"
+#include "PlayerCamera.h"
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 500.0f;   // 空の半径
@@ -29,6 +31,7 @@ CGame::~CGame()
 
 void CGame::Init(void)
 {
+
   // 地形生成
   Ground = nullptr;
   Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(50.0f, 50.0f), VECTOR2(20.0f, 20.0f));
@@ -43,6 +46,8 @@ void CGame::Init(void)
   Player = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
   Player->SetTex(CTexture::Texture(TEX_MIKU));
   Player->SetScl(20.0f, 20.0f, 20.0f);
+
+  
 	
 	//CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
 	//polygon->SetTex(CTexture::Texture(TEX_LIGHT));
@@ -54,6 +59,9 @@ void CGame::Init(void)
 	g_player = CPlayer::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
 	g_player->SetTex(CTexture::Texture(TEX_MIKU));
 	g_player->SetScl(VECTOR3(60.0f, 60.0f, 60.0f));
+
+	CPlayerCamera* camera = CPlayerCamera::Create(g_player,400.0f);
+	
 	//g_player->SetRotY(180.0f);
 	
 	/*
@@ -87,7 +95,7 @@ void CGame::Uninit(void)
     Ground->Release();
     Ground = nullptr;
   }
-
+  CCamera::Release();
 	CObject::ReleaseAll();
 }
 

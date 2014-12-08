@@ -103,6 +103,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerGL.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Polygon2D.cpp" />
     <ClCompile Include="Polygon3D.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="ManagerGL.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="PlayerCamera.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Polygon2D.h" />
     <ClInclude Include="Polygon3D.h" />
