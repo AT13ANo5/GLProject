@@ -19,5 +19,7 @@ private:
 
 	CPolygon2D* Logo;
   CModel*     Player;
+  CModel* Balel;
+
 };
 #endif

@@ -43,33 +43,34 @@ void CGame::Init(void)
   Sky->SetTex(CTexture::Texture(TEX_MIKU));
 
   // プレイヤー生成
-  Player = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
-  Player->SetTex(CTexture::Texture(TEX_MIKU));
-  Player->SetScl(20.0f, 20.0f, 20.0f);
+  Player = CModel::Create(CModel::TANK_YOUJO_NORMAL, VECTOR3(0.0f, 0.0f, 0.0f));
+  Player->SetTex(CTexture::Texture(TEX_YOUJO_RED));
+  Player->SetScl(1,1,1);
+  Player->SetRot(0,180,0);
 
   
-	
-	//CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
-	//polygon->SetTex(CTexture::Texture(TEX_LIGHT));
-	//polygon->SetColor(GREEN(1.0f));
-	CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));
+ 
+ //CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
+ //polygon->SetTex(CTexture::Texture(TEX_LIGHT));
+ //polygon->SetColor(GREEN(1.0f));
+ CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));
 
-	// 2014-12-01
-	// 宗像：テスト
-	g_player = CPlayer::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
-	g_player->SetTex(CTexture::Texture(TEX_MIKU));
-	g_player->SetScl(VECTOR3(60.0f, 60.0f, 60.0f));
+ // 2014-12-01
+ // 宗像：テスト
+ //g_player = CPlayer::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
+ //g_player->SetTex(CTexture::Texture(TEX_MIKU));
+ //g_player->SetScl(VECTOR3(60.0f, 60.0f, 60.0f));
 
-	CPlayerCamera* camera = CPlayerCamera::Create(g_player,400.0f);
-	
-	//g_player->SetRotY(180.0f);
-	
-	/*
-	g_model = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
-	//g_model->SetTex(CTexture::Texture(TEX_MIKU));
-	g_model->SetScl(VECTOR3(60.0f, 60.0f, 60.0f));
-	g_model->SetRotY(180.0f);
-	*/
+ CPlayerCamera* camera = CPlayerCamera::Create(g_player,400.0f);
+ 
+ //g_player->SetRotY(180.0f);
+ 
+ /*
+ g_model = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
+ //g_model->SetTex(CTexture::Texture(TEX_MIKU));
+ g_model->SetScl(VECTOR3(60.0f, 60.0f, 60.0f));
+ g_model->SetRotY(180.0f);
+ */
 
 }
 
@@ -96,7 +97,7 @@ void CGame::Uninit(void)
     Ground = nullptr;
   }
   CCamera::Release();
-	CObject::ReleaseAll();
+ CObject::ReleaseAll();
 }
 
 void CGame::Update(void)
@@ -148,8 +149,8 @@ void CGame::Update(void)
   Player->SetPosY(HeightGround);
   Player->SetRot(180.0f / PI * AnglePlayerX, 0.0f, 180.0f / PI * AnglePlayerZ);
 
-	if (CKeyboard::GetTrigger(DIK_RETURN))
-	{
-		CManager::ChangeScene(SCENE_RESULT);
-	}
+ if (CKeyboard::GetTrigger(DIK_RETURN))
+ {
+  CManager::ChangeScene(SCENE_RESULT);
+ }
 }

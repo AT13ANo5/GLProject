@@ -51,6 +51,10 @@ void CPlayer::Init(void)
 	a++;
 
 	CModel::Init();
+ Balel = CModel::Create(TANK_BALEL,_Pos);
+ Balel->Init();
+ Balel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
+
 }
 
 //------------------------------------------------------------------------------
@@ -110,6 +114,7 @@ void CPlayer::Update()
 
 	// Œ¸‘¬
 	Movement *= 0.95f;
+ Balel->SetPos(_Pos);
 }
 
 //------------------------------------------------------------------------------
@@ -128,6 +133,7 @@ CPlayer* CPlayer::Create(int id,const VECTOR3& pos)
 	model->ModelID = id;
 	model->_Pos = pos;
 	model->Init();
+
 
 	return model;
 }
