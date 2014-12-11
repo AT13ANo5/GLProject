@@ -99,6 +99,7 @@
     <ClCompile Include="Effect3D.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Life.cpp" />
     <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="GamePad.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Effect3D.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Life.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="Keyboard.h" />

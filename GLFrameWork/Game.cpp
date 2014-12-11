@@ -11,7 +11,7 @@
 #include "Model.h"
 #include "CPlayer.h"
 #include "PlayerCamera.h"
-
+#include "Life.h"
 // Ã“Iƒƒ“ƒo•Ï”
 const float CGame::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
 
@@ -49,31 +49,31 @@ void CGame::Init(void)
 	Player->SetTex(CTexture::Texture(TEX_MIKU));
 	Player->SetScl(20.0f, 20.0f, 20.0f);
 	CPlayerCamera::Create(Player,300.0f);
-}
+	CLife::Create(VECTOR3(50.0f, 40.0f, 0.0f), VECTOR2(100.0f, 100.0f));}
 
 void CGame::Uninit(void)
 {
-  // ƒvƒŒƒCƒ„[”jŠü
-  if (Player != nullptr)
-  {
-    Player->Release();
-    Player = nullptr;
-  }
-
-  // ‹ó”jŠü
-  if (Sky != nullptr)
-  {
-    Sky->Release();
-    Sky = nullptr;
-  }
-
-  // ’nŒ`”jŠü
-  if (Ground != nullptr)
-  {
-    Ground->Release();
-    Ground = nullptr;
-  }
-  CCamera::Release();
+	// ƒvƒŒƒCƒ„[”jŠü
+	if (Player != nullptr)
+	{
+		Player->Release();
+		Player = nullptr;
+	}
+	
+	// ‹ó”jŠü
+	if (Sky != nullptr)
+	{
+		Sky->Release();
+		Sky = nullptr;
+	}
+	
+	// ’nŒ`”jŠü
+	if (Ground != nullptr)
+	{
+		Ground->Release();
+		Ground = nullptr;
+	}
+	CCamera::Release();
 	CObject::ReleaseAll();
 }
 
