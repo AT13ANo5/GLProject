@@ -9,6 +9,7 @@
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Model.h"
+#include "Life.h"
 
 // Ã“Iƒƒ“ƒo•Ï”
 const float CGame::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
@@ -38,6 +39,8 @@ void CGame::Init(void)
   Player = CModel::Create(CModel::MIKU, VECTOR3(0.0f, 0.0f, 0.0f));
   Player->SetTex(CTexture::Texture(TEX_MIKU));
   Player->SetScl(20.0f, 20.0f, 20.0f);
+
+ // CLife::Create(VECTOR3(0, 0, 0), VECTOR2(50, 50));
 }
 
 void CGame::Uninit(void)
