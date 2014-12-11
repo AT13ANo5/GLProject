@@ -99,6 +99,15 @@ void CPlayer::Update()
 		rot.y -= 3.0f;
 	}
 
+	if(CKeyboard::GetPress(DIK_UP))
+	{
+		rot.x -= 3.0f;
+	}
+	else if(CKeyboard::GetPress(DIK_DOWN))
+	{
+		rot.x += 3.0f;
+	}
+
 	// キャラクターの回転
 	AddRot(rot);
 
@@ -119,13 +128,19 @@ void CPlayer::Update()
 	Movement *= 0.95f;
 
 	// 攻撃
-	if(CKeyboard::GetTrigger(DIK_SPACE))
+	//if(CKeyboard::GetTrigger(DIK_SPACE))
+	//{
+	//	if(Bullet == nullptr)
+	//	{
+	//		//LaunchFlag = true;
+	//		//Bullet = CBullet::Create(_Pos, VECTOR2(40.0f, 40.0f), VECTOR3(0.0f, 0.0f, 0.0f), WHITE(0.5f));
+	//		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
+	//	}
+	//}
+
+	if(CKeyboard::GetPress(DIK_SPACE))
 	{
-		if(LaunchFlag == false)
-		{
-			LaunchFlag = true;
-			Bullet = CBullet::Create(_Pos, VECTOR2(40.0f, 40.0f), VECTOR3(0.0f, 0.0f, 0.0f), WHITE(0.5f));
-		}
+		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
 	}
 }
 
