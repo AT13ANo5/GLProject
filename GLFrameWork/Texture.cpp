@@ -12,6 +12,12 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/TeamLogo.dds",
 	"data/texture/Connection.dds",
 	"data/texture/Maro.tga",
+	"data/texture/youjo_blue.dds",
+	"data/texture/youjo_green.dds",
+	"data/texture/youjo_orenge.dds",
+	"data/texture/youjo_red.dds",
+	"data/texture/youjo_water.dds",
+	"data/texture/youjo_yellow.dds",
 	"data/texture/Light.tga",
   "data/texture/field000.dds",
 };

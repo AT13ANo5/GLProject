@@ -14,6 +14,9 @@ MODEL_DATA CModel::ModelData[CModel::MODEL_MAX];
 const char* ModelFile[CModel::MODEL_MAX] = 
 {
 	"data/model/miku.mod",
+	"data/model/tank_barrel.mod",
+	"data/model/tank_youjo_normal.mod",
+	"tank/youjo_rinchan.mod",
 };
 //=============================================================================
 //OpenGL‚Ìƒ‚ƒfƒ‹ƒNƒ‰ƒX
