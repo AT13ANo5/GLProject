@@ -119,6 +119,9 @@
     <Filter Include="02_ゲーム\プレイヤー\カメラ">
       <UniqueIdentifier>{eb79cf26-28fd-409c-aabe-e67dc4d3d1a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03_リザルト\ResultSheet">
+      <UniqueIdentifier>{bc485464-c09c-4e0b-b253-d562c2face7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -222,6 +225,9 @@
     </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultSheet.cpp">
+      <Filter>03_リザルト\ResultSheet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="PlayerCamera.h">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultSheet.h">
+      <Filter>03_リザルト\ResultSheet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
