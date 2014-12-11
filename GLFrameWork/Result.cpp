@@ -6,6 +6,8 @@
 #include "Model.h"
 #include "MeshGround.h"
 #include "MeshSphere.h"
+#include "ResultSheet.h"
+#include "Fade.h"
 
 // Ã“Iƒƒ“ƒo•Ï”
 const float CResult::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
@@ -15,6 +17,8 @@ CResult::CResult()
 {
   Ground = nullptr;
   Sky = nullptr;
+  ResultSheet = nullptr;
+  Phase = PHASE_RESULTSHEET;
 }
 
 CResult::~CResult()
@@ -36,6 +40,12 @@ void CResult::Init(void)
   Sky = nullptr;
   Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
   Sky->SetTex(CTexture::Texture(TEX_MIKU));
+
+  ResultSheet = nullptr;
+  ResultSheet = CResultSheet::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f + 200.0f, 0),
+                                     VECTOR2(SCREEN_WIDTH*0.6f, 256.0f));
+  ResultSheet->SetTex(CTexture::Texture(TEX_TEST));
+  ResultSheet->SetAlpha(0.0f);
 }
 
 void CResult::Uninit(void)
@@ -45,9 +55,20 @@ void CResult::Uninit(void)
 
 void CResult::Update(void)
 {
+  switch (Phase)
+  {
+  case PHASE_RESULTSHEET:
+    ResultSheet->DrawEnable();
+    if (CKeyboard::GetTrigger(DIK_RETURN)){
+      Phase = PHASE_END;
+      ResultSheet->DrawDisable();
+    }
+    break;
 
-	if (CKeyboard::GetTrigger(DIK_RETURN))
-	{
-		CManager::ChangeScene(SCENE_TITLE);
-	}
+  case PHASE_END:
+    if (CKeyboard::GetTrigger(DIK_RETURN)){
+      CManager::ChangeScene(SCENE_TITLE);
+    }
+    break;
+  }
 }
