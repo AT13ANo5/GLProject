@@ -4,9 +4,9 @@ CMeshField::CMeshField(int priority):CObject(priority)
 {
 	_Pos = VECTOR3(0,0,0);
 	_Rot = VECTOR3(0,0,0);
-	Vtx = NULL;
-	Tex = NULL;
-	Nor = NULL;
+	Vtx = nullptr;
+	Tex = nullptr;
+	Nor = nullptr;
 }
 
 CMeshField::~CMeshField()
@@ -20,9 +20,9 @@ CMeshField::~CMeshField()
 CMeshField* CMeshField::Create(VECTOR3 Pos,VECTOR2 PanelSize,VECTOR2 PanelNum)
 {
 	CMeshField* Field = new CMeshField;
-	if(Field == NULL)
+	if(Field == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	Field->_Pos = Pos;
 	Field->PanelSize = PanelSize;

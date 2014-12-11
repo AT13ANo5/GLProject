@@ -5,6 +5,7 @@
 class CMeshGround;
 class CMeshSphere;
 class CModel;
+class CPlayer;
 
 class CGame :public CScene
 {
@@ -20,7 +21,7 @@ private:
 
   CMeshGround*  Ground;   // 地形
   CMeshSphere*  Sky;      // 空
-  CModel*       Player;   // プレイヤー
+  CPlayer*      Player;   // プレイヤー
 };
 
 #endif

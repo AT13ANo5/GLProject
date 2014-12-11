@@ -4,9 +4,9 @@
 #include "Console.h"
 
 COORD Console::Cursor = { 0,0 };
-HANDLE Console::ConsoleHandle = NULL;
+HANDLE Console::ConsoleHandle = nullptr;
 
-Console* Console::Self = NULL;
+Console* Console::Self = nullptr;
 
 Console::Console()
 {
@@ -36,7 +36,7 @@ void Console::Initialize(void)
 }
 void Console::Finalize(void)
 {
-	if (Self != NULL)
+	if (Self != nullptr)
 	{
 		delete Self;
 	}

@@ -1,6 +1,6 @@
 #include "Object.h"
-CObject* CObject::Top[] = {NULL};
-CObject* CObject::Cur[] = {NULL};
+CObject* CObject::Top[] = {nullptr};
+CObject* CObject::Cur[] = {nullptr};
 
 CObject::CObject(int priority)
 {
@@ -17,20 +17,20 @@ CObject::~CObject()
 //=============================================================================
 void CObject::LinkList(void)
 {
-	if(Top[Priority] != NULL)//二つ目以降の処理
+	if(Top[Priority] != nullptr)//二つ目以降の処理
 	{
 		CObject* pScene = Cur[Priority];
 		pScene->Next = this;
 		Prev = pScene;
-		Next = NULL;
+		Next = nullptr;
 		Cur[Priority] = this;
 	}
 	else//最初の一つの時の処理
 	{
 		Top[Priority] = this;
 		Cur[Priority] = this;
-		Prev = NULL;
-		Next = NULL;
+		Prev = nullptr;
+		Next = nullptr;
 	}
 }
 
@@ -39,30 +39,30 @@ void CObject::LinkList(void)
 //=============================================================================
 void CObject::UnlinkList(void)
 {
-	if(Prev == NULL)//先頭
+	if(Prev == nullptr)//先頭
 	{
-		if(Next != NULL)//次がある
+		if(Next != nullptr)//次がある
 		{
-			Next->Prev = NULL;
+			Next->Prev = nullptr;
 			Top[Priority] = Next;
 		}
 		else//最後の一つだった
 		{
-			Top[Priority] = NULL;
-			Cur[Priority] = NULL;
+			Top[Priority] = nullptr;
+			Cur[Priority] = nullptr;
 		}
 	}
-	else if(Next == NULL)//終端
+	else if(Next == nullptr)//終端
 	{
-		if(Prev != NULL)//前がある
+		if(Prev != nullptr)//前がある
 		{
-			Prev->Next = NULL;
+			Prev->Next = nullptr;
 			Cur[Priority] = Prev;
 		}
 		else//最後の一つだった
 		{
-			Top[Priority] = NULL;
-			Cur[Priority] = NULL;
+			Top[Priority] = nullptr;
+			Cur[Priority] = nullptr;
 		}
 	}
 	else//前後にデータがあるとき
@@ -71,15 +71,15 @@ void CObject::UnlinkList(void)
 		Next->Prev = Prev;
 	}
 
-	Prev = NULL;
-	Next = NULL;
+	Prev = nullptr;
+	Next = nullptr;
 }
 void CObject::Clear(void)
 {
 	for(int cnt=0;cnt<LAYER_NUM;cnt++)
 	{
-		Top[cnt] = NULL;
-		Cur[cnt] = NULL;
+		Top[cnt] = nullptr;
+		Cur[cnt] = nullptr;
 	}
 }
 
@@ -94,7 +94,7 @@ void CObject::UpdateAll(void)
 	for(int cnt=0;cnt<LAYER_NUM;cnt++)
 	{
 		CObject* Scene = Top[cnt];
-		CObject* Next = NULL;
+		CObject* Next = nullptr;
 		while(Scene)
 		{
 			Next = Scene->Next;
@@ -113,7 +113,7 @@ void CObject::DrawAll(void)
 	for(int cnt=0;cnt<LAYER_NUM;cnt++)
 	{
 		CObject* Scene = Top[cnt];
-		CObject* Next = NULL;
+		CObject* Next = nullptr;
 		while(Scene)
 		{
 			Next = Scene->Next;
@@ -128,7 +128,7 @@ void CObject::ReleaseAll(void)
 	for(int cnt=0;cnt<LAYER_NUM;cnt++)
 	{
 		CObject* Scene = Top[cnt];
-		CObject* Next = NULL;
+		CObject* Next = nullptr;
 		while(Scene)
 		{
 			Next = Scene->Next;

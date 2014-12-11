@@ -33,7 +33,7 @@ unsigned int CurrentTime = 0;//DWORD dwCurrentTime;
 unsigned int PrevTime = 0;	 //DWORD dwExecLastTime;
 unsigned int FPSLastTime = 0;//DWORD dwFPSLastTime;
 unsigned int FrameCount = 0; //DWORD dwFrameCount;
-CManager* pManager = NULL;
+CManager* pManager = nullptr;
 //=============================================================================
 //メイン
 //=============================================================================
@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF|_CRTDBG_LEAK_CHECK_DF);
 
-	//_CrtSetBreakAlloc(98);	//メモリを確保した場所を探すときは、この行のコメントを外して何番目に確保したかの番号を括弧内に書く
+	//_CrtSetBreakAlloc(161);	//メモリを確保した場所を探すときは、この行のコメントを外して何番目に確保したかの番号を括弧内に書く
 
 	WNDCLASSEX wcex =
 	{
@@ -134,7 +134,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 
 	pManager->Uninit(hWnd);
 	delete pManager;
-	pManager = NULL;
+	pManager = nullptr;
 	timeEndPeriod(1);// 分解能を戻す
 
 	UnregisterClass("Test",wcex.hInstance);

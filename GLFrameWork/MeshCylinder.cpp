@@ -6,9 +6,9 @@ CMeshCylinder::CMeshCylinder(int priority):CObject(priority)
 {
 	_Pos = VECTOR3(0,0,0);
 	_Rot = VECTOR3(0,0,0);
-	Vtx = NULL;
-	Tex = NULL;
-	Nor = NULL;
+	Vtx = nullptr;
+	Tex = nullptr;
+	Nor = nullptr;
 }
 
 CMeshCylinder::~CMeshCylinder()
@@ -22,9 +22,9 @@ CMeshCylinder::~CMeshCylinder()
 CMeshCylinder* CMeshCylinder::Create(VECTOR3 pos,float PanelHeight,VECTOR2 PanelNum,float radius,VECTOR2 TexDivide)
 {
 	CMeshCylinder* Field = new CMeshCylinder;
-	if(Field == NULL)
+	if(Field == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	Field->_Pos = pos;
 	Field->PanelHeight = PanelHeight;

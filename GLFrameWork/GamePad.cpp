@@ -89,7 +89,7 @@ BOOL CALLBACK CGamePad::EnumAxesCallback( const DIDEVICEOBJECTINSTANCE *pdidoi ,
 //=============================================================================
 void CGamePad::Update(void)
 {
-	if(pInputDevice != NULL)
+	if(pInputDevice != nullptr)
 	{
 		DIJOYSTATE CurrentPadState;
 		CurrentPadState.lX = 0;
@@ -148,7 +148,7 @@ void CGamePad::Update(void)
 
 float CGamePad::GetlX(void)
 {
-	if(pInputDevice!=NULL)
+	if(pInputDevice!=nullptr)
 	{
 		return (float)PadState.lX;
 	}
@@ -159,7 +159,7 @@ float CGamePad::GetlX(void)
 }
 float CGamePad::GetlY(void)
 {
-	if(pInputDevice!=NULL)
+	if(pInputDevice!=nullptr)
 	{
 		return (float)PadState.lY;
 	}
@@ -170,7 +170,7 @@ float CGamePad::GetlY(void)
 }
 float CGamePad::GetlRX(void)
 {
-	if(pInputDevice!=NULL)
+	if(pInputDevice!=nullptr)
 	{
 		return (float)PadState.lRx;
 	}
@@ -181,7 +181,7 @@ float CGamePad::GetlRX(void)
 }
 float CGamePad::GetlRY(void)
 {
-	if(pInputDevice!=NULL)
+	if(pInputDevice!=nullptr)
 	{
 		return (float)PadState.lRy;
 	}

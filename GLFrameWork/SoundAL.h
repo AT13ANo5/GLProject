@@ -23,14 +23,6 @@ public:
 	typedef enum
 	{
 		SOUND_BGM1 = 0,
-		SOUND_BGM2,
-		SOUND_BGM3,
-		SOUND_BGM4,
-		SOUND_BGM5,
-		SOUND_BGM6,
-		SOUND_BGM7,
-		SOUND_BGM8,
-		SOUND_SE,
 		SOUND_MAX
 
 	}SOUND;

@@ -17,11 +17,11 @@ struct MODEL_DATA
 {
 	MODEL_DATA()
 	{
-		Vtx = Nor = NULL;
-		Tex = NULL;
-		TriIndexPos = TriIndexNor = TriIndexTex = NULL;
-		QuadIndexPos = QuadIndexNor = QuadIndexTex = NULL;
-		TriIndexNum = QuadIndexNum = NULL;
+		Vtx = Nor = nullptr;
+		Tex = nullptr;
+		TriIndexPos = TriIndexNor = TriIndexTex = nullptr;
+		QuadIndexPos = QuadIndexNor = QuadIndexTex = nullptr;
+		TriIndexNum = QuadIndexNum = nullptr;
 		PartsNum = 0;
 		Max = Min = Size = VECTOR3(0,0,0);
 	};
@@ -71,6 +71,9 @@ public:
 	enum
 	{
 		MIKU = 0,
+		YOUJO,
+		RINCHAN,
+		TANK_BARREL,
 		MODEL_MAX
 	};
 

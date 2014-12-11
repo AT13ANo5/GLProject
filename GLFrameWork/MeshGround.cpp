@@ -6,46 +6,51 @@ CMeshGround::CMeshGround(int priority) :CObject(priority)
 {
 	_Pos = VECTOR3(0,0,0);
 	_Rot = VECTOR3(0,0,0);
-	Vtx = NULL;
-	Tex = NULL;
-	Nor = NULL;
-	NormalMap = NULL;
-	HeightMap = NULL;
+	Vtx = nullptr;
+	Tex = nullptr;
+	Nor = nullptr;
+	NormalMap = nullptr;
+	HeightMap = nullptr;
 }
 CMeshGround::~CMeshGround()
 {
-	if (Vtx!=NULL)
+	if (Vtx!=nullptr)
 	{
 		delete[] Vtx;
-		Vtx = NULL;
+		Vtx = nullptr;
 	}
-	if (Tex!=NULL)
+	if (Tex!=nullptr)
 	{
 		delete[] Tex;
-		Tex = NULL;
+		Tex = nullptr;
 	}
-	if (Nor!=NULL)
+	if (Nor!=nullptr)
 	{
 		delete[] Nor;
-		Nor = NULL;
+		Nor = nullptr;
 	}
-	if (NormalMap!=NULL)
+	if (NormalMap!=nullptr)
 	{
 		delete[] NormalMap;
-		NormalMap = NULL;
+		NormalMap = nullptr;
 	}
-	if (HeightMap!=NULL)
+	if (Index != nullptr)
+	{
+		delete[] Index;
+		Index = nullptr;
+	}
+	if (HeightMap!=nullptr)
 	{
 		delete[] HeightMap;
-		HeightMap = NULL;
+		HeightMap = nullptr;
 	}
 }
 CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum)
 {
 	CMeshGround* Ground = new CMeshGround;
-	if (Ground==NULL)
+	if (Ground==nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	Ground->_Pos = pos;
 	Ground->PanelSize = PanelSize;
@@ -219,6 +224,7 @@ void CMeshGround::Init(void)
 
 void CMeshGround::Uninit(void)
 {
+	delete this;
 }
 void CMeshGround::Update(void)
 {

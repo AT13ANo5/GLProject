@@ -2,8 +2,8 @@
 #include "SoundAL.h"
 #include<stdio.h>
 
-CSoundAL* CSoundAL::Top = NULL;
-CSoundAL* CSoundAL::Cur = NULL;
+CSoundAL* CSoundAL::Top = nullptr;
+CSoundAL* CSoundAL::Cur = nullptr;
 float CSoundAL::_DefaultMaxDistance = 1500.0f;
 float CSoundAL::_MasterVolume = 1.0f;
 int CSoundAL::_Num = 0;
@@ -22,15 +22,7 @@ typedef struct
 
 const PARAM File[CSoundAL::SOUND_MAX] =
 {
-	{ "data/sound/CosmicMind.wav",true },
-	{ "data/sound/Alice_in_Wonderland.wav",true },
-	{ "data/sound/ChineseTea.wav",true },
-	{ "data/sound/Greenwich_of_Sky.wav",true },
-	{ "data/sound/Lullaby.wav",true },
-	{ "data/sound/OldWorld.wav",true },
-	{ "data/sound/Port_of_Spring.wav",true },
-	{ "data/sound/ENCOUNTER.wav",true },
-	{ "data/sound/LockOn.wav",false }
+	{ "data/sound/BGM.wav",true },
 };
 
 SOUND_BUFF CSoundAL::Buffer[SOUND_MAX];
@@ -111,7 +103,7 @@ void CSoundAL::UnlinkList(void)
 void CSoundAL::Initialize(void)
 {
 	int argc = 0;
-	char* argv[] = { NULL };
+	char* argv[] = { nullptr };
 	ALboolean  succece = false;
 	succece = alutInit(&argc,argv);
 	alDistanceModel(AL_LINEAR_DISTANCE);
@@ -165,13 +157,13 @@ void CSoundAL::Finalize(void)
 CSoundAL* CSoundAL::Play(SOUND id,bool autoRelease)
 {
 	CSoundAL* sound = new CSoundAL;
-	if (sound == NULL){return NULL;}
+	if (sound == nullptr){return nullptr;}
 	sound->Type = id;
 	sound->CheckPlaying();
 	if (sound->id < 0)
 	{
 		sound->Release();
-		return NULL;
+		return nullptr;
 	}
 	sound->AutoRelease = autoRelease;
 	sound->Init();
@@ -274,7 +266,7 @@ void CSoundAL::Release(void)
 void CSoundAL::UpdateAll(void)
 {
 	CSoundAL* sound = Top;
-	CSoundAL* next = NULL;
+	CSoundAL* next = nullptr;
 	SetListenerOri();
 	while (sound)
 	{
@@ -287,7 +279,7 @@ void CSoundAL::UpdateAll(void)
 void CSoundAL::ReleaseAll(void)
 {
 	CSoundAL* sound = Top;
-	CSoundAL* next = NULL;
+	CSoundAL* next = nullptr;
 	while (sound)
 	{
 		next = sound->Next;
@@ -298,7 +290,7 @@ void CSoundAL::ReleaseAll(void)
 
 void CSoundAL::CrossFade(CSoundAL* FadeOut,CSoundAL* FadeIn,int frame,bool autoStop)
 {
-	if (FadeOut != NULL,FadeIn != NULL)
+	if (FadeOut != nullptr,FadeIn != nullptr)
 	{
 		FadeOut->SetFade(0,(int)(frame*0.8f),autoStop);
 		FadeIn->SetFade(1.0f,frame);

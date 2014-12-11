@@ -6,9 +6,9 @@ CMeshSphere::CMeshSphere(int priority):CObject(priority)
 {
 	_Pos = VECTOR3(0,0,0);
 	_Rot = VECTOR3(0,0,0);
-	Vtx = NULL;
-	Tex = NULL;
-	Nor = NULL;
+	Vtx = nullptr;
+	Tex = nullptr;
+	Nor = nullptr;
 }
 
 CMeshSphere::~CMeshSphere()
@@ -22,9 +22,9 @@ CMeshSphere::~CMeshSphere()
 CMeshSphere* CMeshSphere::Create(VECTOR3 pos,VECTOR2 PanelNum,float radius,VECTOR2 TexDivide)
 {
 	CMeshSphere* Field = new CMeshSphere;
-	if(Field == NULL)
+	if(Field == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	Field->_Pos = pos;
 	Field->PanelNum = PanelNum;

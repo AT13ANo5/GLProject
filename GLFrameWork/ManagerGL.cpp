@@ -20,10 +20,10 @@ bool	CManager::ChangeFlag = false;
 
 CManager::CManager()
 {
-	Render = NULL;
-	Mouse = NULL;
-	Keyboard = NULL;
-	Scene = NULL;
+	Render = nullptr;
+	Mouse = nullptr;
+	Keyboard = nullptr;
+	Scene = nullptr;
 	ChangeFlag = false;
 
 	Console::Initialize();
@@ -58,11 +58,11 @@ void CManager::Init(HINSTANCE hInstance,HWND hWnd)
 
 void CManager::Uninit(HWND hWnd)
 {
-	if (Scene != NULL)
+	if (Scene != nullptr)
 	{
 		Scene->Uninit();
 		delete Scene;
-		Scene = NULL;
+		Scene = nullptr;
 	}
 	CRenderer::Uninit(hWnd);
 	delete Render;
@@ -73,25 +73,22 @@ void CManager::Uninit(HWND hWnd)
 	CTexture::Finalize();
 
 	
-	if(Mouse != NULL)
+	if(Mouse != nullptr)
 	{
 		Mouse->Uninit();
 		delete Mouse;
-		Mouse = NULL;
+		Mouse = nullptr;
 	}
-	if(Keyboard != NULL)
+	if(Keyboard != nullptr)
 	{
 		Keyboard->Uninit();
 		delete Keyboard;
-		Keyboard = NULL;
+		Keyboard = nullptr;
 	}
 
-	if(pCamera!=NULL)
-	{
-		delete pCamera;
-		pCamera = NULL;
-	}
-	if(Light != NULL)
+	CCamera::Release();
+
+	if(Light != nullptr)
 	{
 		delete Light;
 	}
@@ -103,7 +100,7 @@ void CManager::Update(void)
 	Mouse->Update();
 	Keyboard->Update();
 	CSoundAL::UpdateAll();
-	pCamera->Update();
+	CCamera::UpdateCur();
 	Light->Update();
 	Render->Update();
 
@@ -113,7 +110,13 @@ void CManager::Update(void)
 	{
 		Scene->Uninit();
 		delete Scene;
-		Scene = NULL;
+		Scene = nullptr;
+
+		if (NextScene != SCENE_GAME&&pCamera==nullptr)
+		{
+			pCamera = new CCamera;
+			pCamera->Init(0,30.0f,500.0f,0,0,0);
+		}
 
 		switch (NextScene)
 		{
@@ -127,6 +130,8 @@ void CManager::Update(void)
 			Scene = new CConnection;
 			break;
 		case SCENE_GAME:
+			CCamera::Release();
+			pCamera = nullptr;
 			Scene = new CGame;
 			break;
 		case SCENE_RESULT:
@@ -135,7 +140,7 @@ void CManager::Update(void)
 		default:
 			break;
 		}
-		if (Scene != NULL)
+		if (Scene != nullptr)
 		{
 			CFade::Set(0,30);
 			Scene->Init();
@@ -146,7 +151,7 @@ void CManager::Update(void)
 
 void CManager::Draw(void)
 {
-	pCamera->Set();
+	CCamera::SetCur();
 	Render->Draw();
 }
 

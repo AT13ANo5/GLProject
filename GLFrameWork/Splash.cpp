@@ -6,7 +6,7 @@
 
 CSplash::CSplash()
 {
-	Logo = NULL;
+	Logo = nullptr;
 
 }
 
@@ -25,7 +25,7 @@ void CSplash::Init(void)
 void CSplash::Uninit(void)
 {
 	Logo->Release();
-	Logo = NULL;
+	Logo = nullptr;
 }
 
 void CSplash::Update(void)

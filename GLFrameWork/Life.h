@@ -8,18 +8,17 @@
 //インクルード
 //=============================================================================
 #include "main.h"
-#include "Object.h"
+#include "Polygon2D.h"
 
 //クラス定義
-class CLife :public CObject
+class CLife :public CPolygon2D
 {
 public:
 	CLife();
-	virtual ~CLife(){}
-	virtual void Init(void);
-	virtual void Uninit(void);
-	virtual void Update(void);
-	virtual void Draw(void);
+	~CLife(){}
+	void Init(void);
+	void Uninit(void);
+	void Update(void);
 
 	//=============================================================================
 	//作成
@@ -32,34 +31,6 @@ public:
 	static CLife* Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot = VECTOR3(0, 0, 0), const COLOR& color = COLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//=============================================================================
-	//セッター
-	//=============================================================================
-	void SetSize(float x, float y){ _Size.x = x; _Size.y = y; Resize(); }
-	void SetSize(const VECTOR2& pos){ _Size = pos; Resize(); }
-	void SetSizeX(float x){ _Size.x = x; Resize(); }
-	void SetSizeY(float y){ _Size.y = y; Resize(); }
-
-	void SetUV(float x, float y, float width, float height);
-	void SetUV_X(float x){ uv.x = x; uv.Set(); }
-	void SetUV_Y(float y){ uv.y = y; uv.Set(); }
-	void SetUV_Width(float width){ uv.width = width; uv.Set(); }
-	void SetUV_Height(float height){ uv.height = height; uv.Set(); }
-	void SetTex(TEX_INFO tex){ Texture = tex; uv.InverseH = tex.InverseH; uv.InverseV = tex.InverseV; }
-
-	//=============================================================================
-	//加算
-	//=============================================================================
-	void AddSize(float x, float y){ _Size.x += x; _Size.y += y; Resize(); }
-	void AddSize(const VECTOR2& pos){ _Size += pos; Resize(); }
-	void AddSizeX(float x){ _Size.x += x; Resize(); }
-	void AddSizeY(float y){ _Size.y += y; Resize(); }
-
-	void AddUV_X(float x){ uv.x += x; uv.Set(); }
-	void AddUV_Y(float y){ uv.y += y; uv.Set(); }
-	void AddUV_Width(float width){ uv.width += width; uv.Set(); }
-	void AddUV_Height(float height){ uv.height += height; uv.Set(); }
-
-	//=============================================================================
 	//ライフ増減
 	//=============================================================================
 	void LifeDamage(void){ LifePoint--; }	//ダメージ
@@ -67,19 +38,10 @@ public:
 	//=============================================================================
 	//ゲッター
 	//=============================================================================
-	VECTOR2 Size(void)const{ return _Size; }
-	UV Uv(void)const{ return uv; }
-
-	int GetLife(void){ return LifePoint; }
+	int GetLife(void){ return LifePoint; }//現在のライフ取得
 
 private:
-
-	VECTOR2 _Size;
-	VECTOR3 Vtx[4];
-	UV uv;
 	int LifePoint;//現在のライフ
-
-	void Resize(void);
 };
 
 #endif

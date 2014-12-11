@@ -1,6 +1,6 @@
 #include "Fade.h"
 
-CFade* CFade::Self = NULL;
+CFade* CFade::Self = nullptr;
 
 void CFade::Initialize(void)
 {
