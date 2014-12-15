@@ -49,9 +49,9 @@ CBullet::~CBullet()
 //------------------------------------------------------------------------------
 void CBullet::Init(void)
 {
-	Movement.x = sinf(DEG2RAD(_Rot.y)) * BULLET_SPEED;
+	Movement.x = sinf(DEG2RAD(_Rot.y)) * (cosf(_Rot.x)*BULLET_SPEED);
 	Movement.y = -sin(DEG2RAD(_Rot.x)) * BULLET_SPEED;
-	Movement.z = cosf(DEG2RAD(_Rot.y)) * BULLET_SPEED;
+	Movement.z = (_Rot.x <= 0 ) ? cosf(DEG2RAD(_Rot.y)) * (cosf(_Rot.x)*BULLET_SPEED) : cosf(DEG2RAD(_Rot.y)) * (-cosf(_Rot.x)*BULLET_SPEED);
 
 	CBillboard::Init();
 }
@@ -73,6 +73,7 @@ void CBullet::Update(void)
 
 	// ‘¬“x‚ÌŒ¸‘Þ
 	Movement.y -= 0.25f;
+
 }
 
 //------------------------------------------------------------------------------

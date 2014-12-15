@@ -158,6 +158,11 @@ void CPlayer::Update()
 		}
 	}
 
+#ifdef _DEBUG
+	Console::SetCursorPos(1,1);
+	Console::Print("Rot.x:%f\nRot.y:%f\n",_Rot.x,_Rot.y);
+#endif
+
 }
 
 //------------------------------------------------------------------------------
