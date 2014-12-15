@@ -20,10 +20,16 @@ const float CGame::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
 
 // ’è”
 namespace{
-	const VECTOR3   GAUGE_POS = VECTOR3(20.0f,20.0f,0.0f);
-	const VECTOR2   GAUGE_SIZE = VECTOR2(400.0f,80.0f);
-	const VECTOR3   GAUGE_STR_POS = VECTOR3(80.0f,20.0f,0.0f);
-	const VECTOR2   GAUGE_STR_SIZE = VECTOR2(150.0f,60.0f);
+  const float     GAUGE_POS_Y = 70.0f;
+  const float     GAUGE_POS_X = 80.0f;
+  const VECTOR3   GAUGE_POS = VECTOR3(GAUGE_POS_X, GAUGE_POS_Y, 0.0f);
+	const VECTOR2   GAUGE_SIZE = VECTOR2(300.0f,50.0f);
+  const float     GAUGE_STR_OFFSET = 50.0f;
+  const VECTOR3   GAUGE_STR_POS = VECTOR3(GAUGE_POS_X + GAUGE_STR_OFFSET, GAUGE_POS_Y, 0.0f);
+	const VECTOR2   GAUGE_STR_SIZE = VECTOR2(180.0f,50.0f);
+  const COLOR     GAUGE_COLOR = COLOR(0.4f, 0.5f, 1.0f, 1.0f);
+  const float     ICON_SIZE = 50.0f;
+  const VECTOR3   ICON_POS = VECTOR3(20.0f + ICON_SIZE / 2, GAUGE_POS_Y + ICON_SIZE / 2, 0.0f);
 }
 
 
@@ -31,8 +37,8 @@ CGame::CGame()
 {
 	loadGauge = nullptr;
 	loadString = nullptr;
-	testTimer = 0;
 }
+
 CGame::~CGame()
 {
 
@@ -62,18 +68,26 @@ void CGame::Init(void)
 	Player->SetTex(CTexture::Texture(TEX_MIKU));
 	Player->SetScl(20.0f,20.0f,20.0f);
 	CPlayerCamera::Create(Player,300.0f);
-	CLife::Create(VECTOR3(50.0f,40.0f,0.0f),VECTOR2(100.0f,100.0f));// ‘•“UƒQ[ƒW
+	CLife::Create(VECTOR3(50.0f,40.0f,0.0f),VECTOR2(100.0f,100.0f));
+
+  // ‘•“UƒQ[ƒW
 	CLoadGauge* load_gauge = nullptr;
 	load_gauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
 	load_gauge->SetTex(CTexture::Texture(TEX_TEAM_LOGO));
 
 	loadGauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
-	loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
+  loadGauge->SetDefaultColor(GAUGE_COLOR);
+//	loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
 
 	// ‘•“U’†•¶Žš
 	loadString = CLoadString::Create(GAUGE_STR_POS,GAUGE_STR_SIZE);
 	loadString->SetTex(CTexture::Texture(TEX_CONNECTION));
 	loadString->DrawEnable();
+
+  CPolygon2D* canonIcon = nullptr;
+  canonIcon = CPolygon2D::Create(ICON_POS, VECTOR2(ICON_SIZE,ICON_SIZE));
+  canonIcon->SetTex(CTexture::Texture(TEX_MIKU));
+
 }
 void CGame::Uninit(void)
 {
@@ -133,17 +147,18 @@ void CGame::Update(void)
 	//Player->SetPosY(HeightGround);
 	//Player->SetRot(180.0f / PI * AnglePlayerX, 0.0f, 180.0f / PI * AnglePlayerZ);
 
-	const int max_time = 200;
-	testTimer++;
-	if (testTimer >= max_time + 50){
-		testTimer = 0;
-	}
-	float rate = (float)testTimer / (float)max_time;
-	if (rate > 1.0f){
-		rate = 1.0f;
-	}
-	loadGauge->SetRate(rate);
+  // ‘•“UƒQ[ƒW
+  const float currentTimer = (float)Player->ReloadTimer();
+  const float maxTimer = (float)PLAYER_RELOAD_TIME;
+  const float rate = currentTimer / maxTimer;
 
+  loadGauge->SetRate(rate);
+  if (rate >= 1.0f){
+    loadString->DrawDisable();
+  }
+  if (rate <= 0.0f){
+    loadString->DrawEnable();
+  }
 
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{

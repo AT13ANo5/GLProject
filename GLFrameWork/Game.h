@@ -26,8 +26,6 @@ private:
 	CPlayer*      Player;     // プレイヤー
 	CLoadGauge*   loadGauge;  // 装填ゲージ
 	CLoadString*  loadString; // 装填中の文字
-
-	int           testTimer;
 };
 
 #endif

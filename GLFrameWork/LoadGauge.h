@@ -44,9 +44,12 @@ public:
   void SetRate(int currentCount, int maxCount){ rateCurrent = (float)currentCount / (float)maxCount; }
   float GetRate(void){ return rateCurrent; }
 
+  void SetDefaultColor(COLOR col);
+
 private:
 
   float rateCurrent;
+  COLOR color;
 };
 
 #endif
