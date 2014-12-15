@@ -41,6 +41,7 @@ public:
 
   // Getter / Setter
   void SetRate(float rate){ rateCurrent = rate; }
+  void SetRate(int currentCount, int maxCount){ rateCurrent = (float)currentCount / (float)maxCount; }
   float GetRate(void){ return rateCurrent; }
 
 private:

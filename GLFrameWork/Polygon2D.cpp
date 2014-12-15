@@ -84,6 +84,7 @@ void CPolygon2D::Draw(void)
 	glScalef(1.0f,1.0f,1.0f);
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
 	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_DEPTH_TEST);
 
 	//ポリゴン描画
 	glBegin(GL_TRIANGLE_STRIP);
@@ -98,6 +99,7 @@ void CPolygon2D::Draw(void)
 
 	glEnd();
 
+  glEnable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D,0);
 
 	//ビュー行列を戻す

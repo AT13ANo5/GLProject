@@ -26,7 +26,7 @@ namespace{
 //=============================================================================
 CLoadGauge::CLoadGauge() :CPolygon2D()
 {
-  rateCurrent = 0.0f;
+  rateCurrent = 1.0f;
 }
 
 //=============================================================================
@@ -49,9 +49,9 @@ CLoadGauge* CLoadGauge::Create(const VECTOR3& pos,const VECTOR2& size,const VECT
 //=============================================================================
 void CLoadGauge::Init(void)
 {
-  Vtx[0] = VECTOR3(_Size.x, 0, 0);
+  Vtx[0] = VECTOR3(_Size.x * rateCurrent, 0, 0);
   Vtx[1] = VECTOR3(0, 0, 0);
-  Vtx[2] = VECTOR3(_Size.x, _Size.y, 0);
+  Vtx[2] = VECTOR3(_Size.x * rateCurrent, _Size.y, 0);
   Vtx[3] = VECTOR3(0, _Size.y, 0);
 }
 
@@ -60,11 +60,6 @@ void CLoadGauge::Init(void)
 //=============================================================================
 void CLoadGauge::Update(void)
 {
-  rateCurrent += 0.01f;
-  if (rateCurrent >= 1.0f){
-    rateCurrent = 0.0f;
-  }
-
   if (rateCurrent < 1.0f){
     SetColor(LOAD_COLOR);
   } else {
