@@ -23,6 +23,10 @@
 // ƒ‰ƒWƒAƒ“¨“x
 #define RAD2DEG(radian)  ((radian) * RAD_TO_DEG)
 
+// Šp“x‚Ì³‹K‰»(PI`-PI)
+#define REVISE_PI(radian) {if((radian) > PI){(radian) -= (2.0f * PI);}\
+				else if((radian) < -PI){(radian) += (2.0f * PI);}}
+
 //===================================================================
 //XY
 //===================================================================

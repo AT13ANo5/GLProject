@@ -26,6 +26,7 @@ CBullet::CBullet():CBillboard()
 
 	// テクスチャ
 	Texture = CTexture::Texture(TEX_TEST);
+	SetUV(0,0,1.0f,1.0f);
 }
 
 //------------------------------------------------------------------------------
@@ -49,9 +50,16 @@ CBullet::~CBullet()
 //------------------------------------------------------------------------------
 void CBullet::Init(void)
 {
-	Movement.x = sinf(DEG2RAD(_Rot.y)) * (cosf(_Rot.x)*BULLET_SPEED);
-	Movement.y = -sin(DEG2RAD(_Rot.x)) * BULLET_SPEED;
-	Movement.z = (_Rot.x <= 0 ) ? cosf(DEG2RAD(_Rot.y)) * (cosf(_Rot.x)*BULLET_SPEED) : cosf(DEG2RAD(_Rot.y)) * (-cosf(_Rot.x)*BULLET_SPEED);
+	VECTOR3 rot;
+	rot.x = DEG2RAD(_Rot.x);
+	rot.y = DEG2RAD(_Rot.y);
+	rot.z = 0;
+
+	REVISE_PI(rot.x);
+	REVISE_PI(rot.y);
+	Movement.x = sinf(rot.y) * (cosf(rot.x)*BULLET_SPEED);
+	Movement.y = -sinf(rot.x) * BULLET_SPEED;
+	Movement.z = cosf(rot.y) * (cosf(rot.x)*BULLET_SPEED);
 
 	CBillboard::Init();
 }
