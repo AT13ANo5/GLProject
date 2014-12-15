@@ -8,6 +8,8 @@
 //------------------------------------------------------------------------------
 // マクロ定義
 //------------------------------------------------------------------------------
+#define BULLET_SIZE (40.0f)
+#define BULLET_SPEED (10.0f)
 
 //------------------------------------------------------------------------------
 // ヘッダインクルード
@@ -23,6 +25,7 @@ public:
 	CBullet();
 	~CBullet();
 
+	void Init(void);
 	void Update(void);
 
 	static CBullet* Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color);
