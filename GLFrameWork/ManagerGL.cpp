@@ -87,7 +87,7 @@ void CManager::Uninit(HWND hWnd)
 	}
 
 	CCamera::Release();
-	pCamera = nullptr;
+
 	if(Light != nullptr)
 	{
 		delete Light;
@@ -111,9 +111,9 @@ void CManager::Update(void)
 		Scene->Uninit();
 		delete Scene;
 		Scene = nullptr;
-		
-		if (NextScene!=SCENE_GAME&&pCamera == nullptr)
-		{ 
+
+		if (NextScene != SCENE_GAME&&pCamera==nullptr)
+		{
 			pCamera = new CCamera;
 			pCamera->Init(0,30.0f,500.0f,0,0,0);
 		}

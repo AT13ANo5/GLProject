@@ -35,8 +35,8 @@ void CBillboard::Init(void)
 	Vtx[1] = VECTOR3(-_Size.x / 2.0f,_Size.y / 2.0f,0);
 	Vtx[2] = VECTOR3(_Size.x / 2.0f,-_Size.y / 2.0f,0);
 	Vtx[3] = VECTOR3(-_Size.x / 2.0f,-_Size.y / 2.0f,0);
-
 }
+
 CBillboard* CBillboard::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
 	CBillboard* Scene = new CBillboard;
@@ -113,8 +113,6 @@ void CBillboard::Draw(void)
 
 	glPopMatrix();//ビューマトリックスを戻す
 	glBindTexture(GL_TEXTURE_2D,0);
-
-
 }
 
 void CBillboard::SetUV(float x,float y,float width,float height)

@@ -29,15 +29,15 @@ CMeshGround::~CMeshGround()
 		delete[] Nor;
 		Nor = nullptr;
 	}
-	if (Index != nullptr)
-	{
-		delete[] Index;
-		Index = nullptr;
-	}
 	if (NormalMap!=nullptr)
 	{
 		delete[] NormalMap;
 		NormalMap = nullptr;
+	}
+	if (Index != nullptr)
+	{
+		delete[] Index;
+		Index = nullptr;
 	}
 	if (HeightMap!=nullptr)
 	{

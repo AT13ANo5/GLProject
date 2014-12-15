@@ -64,7 +64,7 @@ public:
 	VECTOR2 Size(void)const{ return _Size; }
 	UV Uv(void)const{ return uv; }
 
-private:
+protected:
 
 	VECTOR2 _Size;
 	VECTOR3 Vtx[4];

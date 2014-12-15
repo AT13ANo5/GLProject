@@ -13,6 +13,11 @@
 #define SafeDeletes(x) if(x!=nullptr){	\
 						delete[] x;		\
 						x = nullptr; }
+//リリースを簡略化したマクロ(配列用)
+#define SafeRelease(x) if(x!=nullptr){	\
+						x->Release();		\
+						x = nullptr; }
+
 // 角関連
 #define PI     (3.141592654f) // 円周率
 #define RAD_TO_DEG   (57.29577951f) // 1ラジアン→度

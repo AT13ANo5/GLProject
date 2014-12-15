@@ -14,6 +14,8 @@
 #include "CPlayer.h"
 #include "Keyboard.h"
 #include "Camera.h"
+#include "CBullet.h"
+#include "CommonGL.h"
 
 //------------------------------------------------------------------------------
 // コンストラクタ
@@ -23,7 +25,11 @@
 //------------------------------------------------------------------------------
 CPlayer::CPlayer():CModel()
 {
-	Speed = 2.0f;
+	// 移動速度
+	Speed = PLAYER_MOVE_SPEED;
+
+	// 弾初期化
+	Bullet = nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -47,13 +53,14 @@ CPlayer::~CPlayer()
 //------------------------------------------------------------------------------
 void CPlayer::Init(void)
 {
-	int a = 0;
-	a++;
+	// 弾
+	Bullet = nullptr;
 
+	// 継承元の初期化
 	CModel::Init();
- Balel = CModel::Create(TANK_BALEL,_Pos);
- Balel->Init();
- Balel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
+ Barrel = CModel::Create(TANK_BARREL,_Pos);
+ Barrel->Init();
+ Barrel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
 
 }
 
@@ -97,24 +104,34 @@ void CPlayer::Update()
 	}
 
 	// キャラクターの回転
-	_Rot += rot;
+	AddRot(rot);
 
 	// 値の丸め込み
-	if(_Rot.y > 360.0f)
+	if( Rot().y > 360.0f)
 	{
-		_Rot.y -= 2 * 360.0f;
+		SetRotY(Rot().y - 2 * 360.0f);
 	}
-	else if (_Rot.y < -360.0f)
+	else if (Rot().y < -360.0f)
 	{
-		_Rot.y += 2 * 360.0f;
+		SetRotY(Rot().y + 2 * 360.0f);
 	}
 
 	// キャラクターの移動
-	_Pos += Movement;
+	AddPos(Movement);
 
 	// 減速
 	Movement *= 0.95f;
- Balel->SetPos(_Pos);
+ Barrel->SetPos(_Pos);
+
+	// 攻撃
+	if(CKeyboard::GetTrigger(DIK_SPACE))
+	{
+		if(LaunchFlag == false)
+		{
+			LaunchFlag = true;
+			Bullet = CBullet::Create(_Pos, VECTOR2(40.0f, 40.0f), VECTOR3(0.0f, 0.0f, 0.0f), WHITE(0.5f));
+		}
+	}
 }
 
 //------------------------------------------------------------------------------

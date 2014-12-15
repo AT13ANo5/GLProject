@@ -113,10 +113,18 @@
     <Filter Include="02_ゲーム\弾">
       <UniqueIdentifier>{90df1a7b-5c1d-4151-9ee1-cb8cc61def85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_ゲーム\プレイヤー\カメラ">
-      <UniqueIdentifier>{c9c39c06-9288-453c-b8d4-987b0143b8b6}</UniqueIdentifier>
+    <Filter Include="05_通信ロビー\PushStart">
+      <UniqueIdentifier>{6d90a029-8cc8-413e-8c74-21adba07d759}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
+    <Filter Include="02_ゲーム\プレイヤー\カメラ">
+      <UniqueIdentifier>{eb79cf26-28fd-409c-aabe-e67dc4d3d1a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Life">
+      <UniqueIdentifier>{10377f8d-972a-428e-a5a2-30a6d61dc57a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_リザルト\ResultSheet">
+      <UniqueIdentifier>{bc485464-c09c-4e0b-b253-d562c2face7c}</UniqueIdentifier>
+    </Filter>  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>00_システム\main</Filter>
@@ -214,10 +222,18 @@
     <ClCompile Include="CBullet.cpp">
       <Filter>02_ゲーム\弾</Filter>
     </ClCompile>
+    <ClCompile Include="CPushStart.cpp">
+      <Filter>05_通信ロビー\PushStart</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClCompile>
-  </ItemGroup>
+    <ClCompile Include="Life.cpp">
+      <Filter>00_システム\Life</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultSheet.cpp">
+      <Filter>03_リザルト\ResultSheet</Filter>
+    </ClCompile>  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>00_システム\main</Filter>
@@ -327,8 +343,14 @@
     <ClInclude Include="CBullet.h">
       <Filter>02_ゲーム\弾</Filter>
     </ClInclude>
+    <ClInclude Include="CPushStart.h">
+      <Filter>05_通信ロビー\PushStart</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerCamera.h">
       <Filter>02_ゲーム\プレイヤー\カメラ</Filter>
     </ClInclude>
-  </ItemGroup>
+    <ClInclude Include="Life.h">
+      <Filter>00_システム\Life</Filter>
+    </ClInclude>    <ClInclude Include="ResultSheet.h">
+      <Filter>03_リザルト\ResultSheet</Filter>    </ClInclude>  </ItemGroup>
 </Project>

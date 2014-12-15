@@ -13,10 +13,11 @@ MODEL_DATA CModel::ModelData[CModel::MODEL_MAX];
 
 const char* ModelFile[CModel::MODEL_MAX] = 
 {
- "data/model/miku.mod",
- "data/model/tank_youjo_normal.mod",
+	"data/model/miku.mod",
+	"data/model/tank_barrel.mod",
+	"data/model/tank_youjo_normal.mod",
  "data/model/tank_youjo_rinchan.mod",
- "data/model/tank_balel.mod",
+ "data/model/rock.mod",
 };
 //=============================================================================
 //OpenGL‚Ìƒ‚ƒfƒ‹ƒNƒ‰ƒX
@@ -149,7 +150,6 @@ void CModel::Initialize(void)
 //=============================================================================
 void CModel::Uninit(void)
 {
-
 	if (MotionPos != nullptr)
 	{
 		for (int num = 0;num < ModelData[ModelID].PartsNum;num++)
