@@ -58,6 +58,10 @@ void CPlayer::Init(void)
 
 	// Œp³Œ³‚Ì‰Šú‰»
 	CModel::Init();
+ Barrel = CModel::Create(TANK_BARREL,_Pos);
+ Barrel->Init();
+ Barrel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
+
 }
 
 //------------------------------------------------------------------------------
@@ -126,6 +130,7 @@ void CPlayer::Update()
 
 	// Œ¸‘¬
 	Movement *= 0.95f;
+ Barrel->SetPos(_Pos);
 
 	// UŒ‚
 	//if(CKeyboard::GetTrigger(DIK_SPACE))
@@ -181,6 +186,7 @@ CPlayer* CPlayer::Create(int id,const VECTOR3& pos)
 	model->ModelID = id;
 	model->_Pos = pos;
 	model->Init();
+
 
 	return model;
 }

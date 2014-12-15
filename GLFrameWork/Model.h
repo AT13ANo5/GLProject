@@ -71,9 +71,10 @@ public:
 	enum
 	{
 		MIKU = 0,
-		YOUJO,
+  TANK_BARREL,
+  YOUJO,
 		RINCHAN,
-		TANK_BARREL,
+  ROCK,
 		MODEL_MAX
 	};
 

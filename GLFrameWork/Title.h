@@ -24,10 +24,11 @@ private:
 
 	CPolygon2D* Logo;
   CModel*     Player;
+  CModel* Barrel;
+  CModel* Rock;
   CMeshGround*  Ground;   // ’nŒ`
   CMeshSphere*  Sky;      // ‹ó
   CCamera* Camera;
   float CameraRotation;
-
 };
 #endif

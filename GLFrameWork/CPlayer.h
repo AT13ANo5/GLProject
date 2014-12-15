@@ -39,6 +39,7 @@ public:
 	static CPlayer* Create(int id, const VECTOR3& pos);
 
 private:
+CModel* Barrel;
 	CBullet* Bullet;	// ’e
 	VECTOR3 Movement;	// ˆÚ“®—Ê
 	float Speed;		// ˆÚ“®‘¬“x
