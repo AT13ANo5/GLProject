@@ -26,7 +26,7 @@ CResult::~CResult()
 
 void CResult::Init(void)
 {
-	CPolygon2D* polygon = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f - 100.0f,0),VECTOR2(512.0f,128.0f));
+	CPolygon2D* polygon = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f - 300.0f,0),VECTOR2(512.0f,128.0f));
 	polygon->SetTex(CTexture::Texture(TEX_RESULT_LOGO));
 	// ’nŒ`¶¬
 	Ground = nullptr;
@@ -35,7 +35,7 @@ void CResult::Init(void)
 
 	ResultSheet = nullptr;
 	ResultSheet = CResultSheet::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f + 200.0f,0),VECTOR2(SCREEN_WIDTH*0.6f,256.0f));
-	ResultSheet->SetTex(CTexture::Texture(TEX_TEST));
+	ResultSheet->SetTex(CTexture::Texture(TEX_RESULT_TEXT));
 	ResultSheet->SetAlpha(0.0f);
 }
 

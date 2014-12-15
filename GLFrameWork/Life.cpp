@@ -44,7 +44,7 @@ CLife* CLife::Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot
 	{
 		Life[i] = new CLife;
 		Life[i]->_Pos = pos;
-		Life[i]->_Pos.x = (i * 100.0f);
+		Life[i]->_Pos.x += (i * 100.0f);
 		Life[i]->_Rot = rot;
 		Life[i]->SetSize(size);
 		Life[i]->_Color = color;

@@ -7,8 +7,8 @@ TEX_INFO CTexture::Tex[TEX_MAX];
 static std::string TexFile[TEX_MAX] = 
 {
 	"data/texture/miku.tga",
-	"data/texture/TitleLogo.dds",
-	"data/texture/ResultLogo.dds",
+	"data/texture/titleLogo.tga",
+	"data/texture/resultLogo.tga",
 	"data/texture/TeamLogo.dds",
 	"data/texture/Connection.dds",
 	"data/texture/Maro.tga",
@@ -19,8 +19,9 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/youjo_water.dds",
 	"data/texture/youjo_yellow.dds",
 	"data/texture/Light.tga",
-  "data/texture/field000.dds",
-  "data/texture/Life.dds",
+	"data/texture/field000.dds",
+	"data/texture/Life.dds",
+	"data/texture/resultText.tga",
 };
 
 void CTexture::Initialize(void)
