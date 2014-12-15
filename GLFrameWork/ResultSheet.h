@@ -38,9 +38,9 @@ public:
 	//===========================================================================
 	static CResultSheet* Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot=VECTOR3(0,0,0),const COLOR& color=COLOR(1.0f,1.0f,1.0f,1.0f));
 
-  // Geter / Seter
-  void DrawEnable(void){ drawFlag = true; }
-  void DrawDisable(void){ drawFlag = false; }
+	// Geter / Seter
+	void DrawEnable(void){ drawFlag = true; }
+	void DrawDisable(void){ drawFlag = false; }
 
 private:
 

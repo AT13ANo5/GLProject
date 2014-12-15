@@ -100,6 +100,8 @@
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Life.cpp" />
+    <ClCompile Include="LoadGauge.cpp" />
+    <ClCompile Include="LoadString.cpp" />
     <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="GamePad.cpp" />
@@ -141,6 +143,8 @@
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Life.h" />
+    <ClInclude Include="LoadGauge.h" />
+    <ClInclude Include="LoadString.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="Keyboard.h" />

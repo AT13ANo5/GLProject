@@ -21,9 +21,13 @@ public:
 private:
 	static const float  RADIUS_SKY;   // 空の半径
 
-  CLoadGauge*   loadGauge;  // 装填ゲージ
-  CLoadString*  loadString; // 装填中の文字
+	CMeshGround*  Ground;     // フィールド
+	CMeshSphere*  Sky;        // 空
+	CPlayer*      Player;     // プレイヤー
+	CLoadGauge*   loadGauge;  // 装填ゲージ
+	CLoadString*  loadString; // 装填中の文字
 
-  int           testTimer;};
+	int           testTimer;
+};
 
 #endif

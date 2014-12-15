@@ -33,8 +33,10 @@ void CResult::Init(void)
 	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(50.0f,50.0f),VECTOR2(20.0f,20.0f));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
-
-
+	ResultSheet = nullptr;
+	ResultSheet = CResultSheet::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f + 200.0f,0),VECTOR2(SCREEN_WIDTH*0.6f,256.0f));
+	ResultSheet->SetTex(CTexture::Texture(TEX_TEST));
+	ResultSheet->SetAlpha(0.0f);
 }
 
 void CResult::Uninit(void)
