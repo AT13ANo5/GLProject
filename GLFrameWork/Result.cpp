@@ -8,6 +8,7 @@
 #include "MeshSphere.h"
 #include "ResultSheet.h"
 #include "Fade.h"
+#include "LoadGauge.h"
 
 // Ã“Iƒƒ“ƒo•Ï”
 const float CResult::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
@@ -41,11 +42,16 @@ void CResult::Init(void)
   Sky = CMeshSphere::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(16.0f, 8.0f), RADIUS_SKY);
   Sky->SetTex(CTexture::Texture(TEX_MIKU));
 
+  // ¬Ñ•\
   ResultSheet = nullptr;
   ResultSheet = CResultSheet::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f + 200.0f, 0),
                                      VECTOR2(SCREEN_WIDTH*0.6f, 256.0f));
   ResultSheet->SetTex(CTexture::Texture(TEX_TEST));
   ResultSheet->SetAlpha(0.0f);
+
+  CLoadGauge* loadGage = nullptr;
+  loadGage = CLoadGauge::Create(VECTOR3(0, 0, 0), VECTOR2(SCREEN_WIDTH*0.4f, 128.0f));
+  loadGage->SetTex(CTexture::Texture(TEX_MIKU));
 }
 
 void CResult::Uninit(void)
