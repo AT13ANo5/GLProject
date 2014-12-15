@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// ê¨ê—ï\ [ResultSheet.h]
+// ëïìUÉQÅ[ÉW [LoadGauge.cpp]
 //
 // Auther : masato masuda
 //
@@ -9,33 +9,32 @@
 //=============================================================================
 // include
 //=============================================================================
-#include "ResultSheet.h"
-#include <math.h>
+#include "LoadGauge.h"
 #include "Texture.h"
 
 //=============================================================================
 // macro
 //=============================================================================
 namespace{
-  const float ALPHA_MOVE_SPEED = 0.05f;
+  const COLOR DEFAULT_COLOR = COLOR(1.0f, 1.0f, 1.0f, 1.0f );
+  const COLOR LOAD_COLOR    = COLOR(1.0f, 0.5f, 0.5f, 1.0f);
 }
 
 
 //=============================================================================
 // constructor
 //=============================================================================
-CResultSheet::CResultSheet() :CPolygon2D()
+CLoadGauge::CLoadGauge() :CPolygon2D()
 {
-  drawFlag = true;
-//  Alpha = 1.0f;
+  rateCurrent = 1.0f;
 }
 
 //=============================================================================
 // create
 //=============================================================================
-CResultSheet* CResultSheet::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
+CLoadGauge* CLoadGauge::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
-	CResultSheet* Scene = new CResultSheet;
+	CLoadGauge* Scene = new CLoadGauge;
 	Scene->_Pos = pos;
 	Scene->_Rot = rot;
 	Scene->_Size = size;
@@ -46,21 +45,31 @@ CResultSheet* CResultSheet::Create(const VECTOR3& pos,const VECTOR2& size,const 
 }
 
 //=============================================================================
+// iinit
+//=============================================================================
+void CLoadGauge::Init(void)
+{
+  Vtx[0] = VECTOR3(_Size.x * rateCurrent, 0, 0);
+  Vtx[1] = VECTOR3(0, 0, 0);
+  Vtx[2] = VECTOR3(_Size.x * rateCurrent, _Size.y, 0);
+  Vtx[3] = VECTOR3(0, _Size.y, 0);
+}
+
+//=============================================================================
 // update
 //=============================================================================
-void CResultSheet::Update(void)
+void CLoadGauge::Update(void)
 {
-  if (drawFlag == true){
-    if (Color().a < 1.0f){
-      float alpha = Color().a + ALPHA_MOVE_SPEED;
-      _Color.a = alpha;
-    }
-  }else {
-    if (Color().a > 0.0f){
-      float alpha = Color().a - ALPHA_MOVE_SPEED;
-      _Color.a = alpha;
-    }
+  if (rateCurrent < 1.0f){
+    SetColor(LOAD_COLOR);
+  } else {
+    SetColor(DEFAULT_COLOR);
   }
+
+  Vtx[0] = VECTOR3(_Size.x * rateCurrent, 0, 0);
+  Vtx[1] = VECTOR3(0, 0, 0);
+  Vtx[2] = VECTOR3(_Size.x * rateCurrent, _Size.y, 0);
+  Vtx[3] = VECTOR3(0, _Size.y, 0);
 }
 
 // end of file

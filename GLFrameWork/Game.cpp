@@ -11,13 +11,26 @@
 #include "Model.h"
 #include "CPlayer.h"
 #include "PlayerCamera.h"
-#include "Life.h"
+
+#include "LoadGauge.h"
+#include "LoadString.h"#include "Life.h"
 // Ã“Iƒƒ“ƒo•Ï”
 const float CGame::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
 
+// ’è”
+namespace{
+  const VECTOR3   GAUGE_POS      = VECTOR3(20.0f, 20.0f, 0.0f);
+  const VECTOR2   GAUGE_SIZE     = VECTOR2(400.0f, 80.0f);
+  const VECTOR3   GAUGE_STR_POS  = VECTOR3(80.0f, 20.0f, 0.0f);
+  const VECTOR2   GAUGE_STR_SIZE = VECTOR2(150.0f, 60.0f);
+}
+
+
 CGame::CGame()
 {
-
+  loadGauge = nullptr;
+  loadString = nullptr;
+  testTimer = 0;
 }
 CGame::~CGame()
 {
@@ -49,8 +62,20 @@ void CGame::Init(void)
 	Player->SetTex(CTexture::Texture(TEX_MIKU));
 	Player->SetScl(20.0f, 20.0f, 20.0f);
 	CPlayerCamera::Create(Player,300.0f);
-	CLife::Create(VECTOR3(50.0f, 40.0f, 0.0f), VECTOR2(100.0f, 100.0f));}
 
+CLife::Create(VECTOR3(50.0f, 40.0f, 0.0f), VECTOR2(100.0f, 100.0f));}// ‘•“UƒQ[ƒW
+  CLoadGauge* load_gauge = nullptr;
+  load_gauge = CLoadGauge::Create(GAUGE_POS, GAUGE_SIZE);
+  load_gauge->SetTex(CTexture::Texture(TEX_TEAM_LOGO));
+
+  loadGauge = CLoadGauge::Create(GAUGE_POS, GAUGE_SIZE);
+  loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
+
+  // ‘•“U’†•¶Žš
+  loadString = CLoadString::Create(GAUGE_STR_POS, GAUGE_STR_SIZE);
+  loadString->SetTex(CTexture::Texture(TEX_CONNECTION));
+  loadString->DrawEnable();
+}
 void CGame::Uninit(void)
 {
 	// ƒvƒŒƒCƒ„[”jŠü
@@ -108,6 +133,18 @@ void CGame::Update(void)
 	// ƒvƒŒƒCƒ„[‚ÉÝ’è‚·‚é
 	//Player->SetPosY(HeightGround);
 	//Player->SetRot(180.0f / PI * AnglePlayerX, 0.0f, 180.0f / PI * AnglePlayerZ);
+
+  const int max_time = 200;
+  testTimer++;
+  if (testTimer >= max_time + 50){
+    testTimer =  0;
+  }
+  float rate = (float)testTimer / (float)max_time;
+  if (rate > 1.0f){
+    rate = 1.0f;
+  }
+  loadGauge->SetRate(rate);
+
 
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
