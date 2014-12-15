@@ -5,7 +5,9 @@
 class CMeshGround;
 class CMeshSphere;
 class CModel;
-class CCamera;
+class CPlayer;
+class CLoadGauge;
+class CLoadString;
 
 class CGame :public CScene
 {
@@ -21,10 +23,11 @@ private:
 
 	CMeshGround*	Ground;		// 地形
 	CMeshSphere*	Sky;		// 空
+	CPlayer*		Player;		// プレイヤー
+	CLoadGauge*		loadGauge;	// 装填ゲージ
+	CLoadString*	loadString;	// 装填中の文字
 
-#ifdef _DEBUG
-	CModel*			PlayerTest;	// テスト用プレイヤー
-#endif
+	int				testTimer;
 };
 
 #endif
