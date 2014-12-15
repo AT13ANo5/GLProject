@@ -138,10 +138,26 @@ void CPlayer::Update()
 	//	}
 	//}
 
-	if(CKeyboard::GetPress(DIK_SPACE))
+	if(LaunchFlag == false)
 	{
-		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
+		if(CKeyboard::GetTrigger(DIK_SPACE))
+		{
+			Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
+			LaunchFlag = true;
+			_ReloadTimer = 0;
+		}
 	}
+	else
+	{
+		_ReloadTimer++;
+
+		if(_ReloadTimer >= PLAYER_RELOAD_TIME)
+		{
+			LaunchFlag = false;
+			_ReloadTimer = PLAYER_RELOAD_TIME;
+		}
+	}
+
 }
 
 //------------------------------------------------------------------------------

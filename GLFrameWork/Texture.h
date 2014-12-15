@@ -33,6 +33,7 @@ enum
 	TEX_YOUJO_YELLOW,
 	TEX_LIGHT,
   TEX_FIELD,
+  TEX_LIFE,
 	TEX_MAX
 };
 

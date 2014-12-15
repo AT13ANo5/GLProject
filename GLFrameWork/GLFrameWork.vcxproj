@@ -99,6 +99,7 @@
     <ClCompile Include="Effect3D.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Life.cpp" />
     <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="GamePad.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="ResultSheet.cpp" />
     <ClCompile Include="SoundAL.cpp" />
     <ClCompile Include="Splash.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -138,6 +140,7 @@
     <ClInclude Include="Effect3D.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Life.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="Keyboard.h" />
@@ -155,6 +158,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="MeshGround.h" />
     <ClInclude Include="Result.h" />
+    <ClInclude Include="ResultSheet.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SoundAL.h" />
     <ClInclude Include="Splash.h" />

@@ -20,6 +20,7 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/youjo_yellow.dds",
 	"data/texture/Light.tga",
   "data/texture/field000.dds",
+  "data/texture/Life.dds",
 };
 
 void CTexture::Initialize(void)
