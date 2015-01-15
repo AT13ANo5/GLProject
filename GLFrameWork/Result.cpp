@@ -8,6 +8,7 @@
 #include "MeshSphere.h"
 #include "ResultSheet.h"
 #include "Fade.h"
+#include "Confetti.h"
 
 // Ã“Iƒƒ“ƒo•Ï”
 const float CResult::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
@@ -46,6 +47,18 @@ void CResult::Uninit(void)
 
 void CResult::Update(void)
 {
+	Frame++;
+	if (Frame % 2 == 0)
+	{
+		VECTOR3 pos = VECTOR3(0,0,400.0f);
+		pos.x = rand()%101-50.0f;
+		pos.y = 300.0f;
+		pos.z = rand()%101-50.0f;
+		for (int cnt = 0;cnt < 10;cnt++)
+		{
+			CConfetti::Create();
+		}
+	}
 	switch (Phase)
 	{
 	case PHASE_RESULTSHEET:

@@ -245,12 +245,18 @@ void CMeshGround::Draw(void)
 	glScalef(1.0f,1.0f,1.0f);
 
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
+	MATERIAL Material;
+	Material.ambient = COLOR(0.3f,0.3f,0.3f,1.0f);
+	Material.diffuse = _Color;
+	Material.specular = COLOR(0,0,0,1.0f);
+	Material.emission = COLOR(0,0,0,1.0f);
+	Material.shininess = 0.0f;
 
-	//glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(float*)&Material.ambient);
-	//glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(float*)&Material.diffuse);
-	//glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(float*)&Material.specular);
-	//glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,(float*)&Material.emission);
-	//glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(float*)&Material.ambient);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(float*)&Material.diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(float*)&Material.specular);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,(float*)&Material.emission);
+	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
 	//ƒ|ƒŠƒSƒ“•`‰æ
 	glBegin(GL_TRIANGLE_STRIP);
