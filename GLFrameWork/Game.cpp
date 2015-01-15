@@ -11,6 +11,7 @@
 #include "Model.h"
 #include "CPlayer.h"
 #include "PlayerCamera.h"
+#include "Report.h"
 
 #include "LoadGauge.h"
 #include "LoadString.h"
@@ -30,6 +31,9 @@ namespace{
   const COLOR     GAUGE_COLOR = COLOR(0.4f, 0.5f, 1.0f, 1.0f);
   const float     ICON_SIZE = 50.0f;
   const VECTOR3   ICON_POS = VECTOR3(20.0f + ICON_SIZE / 2, GAUGE_POS_Y + ICON_SIZE / 2, 0.0f);
+  const VECTOR3   REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f, 0.0f);
+  const COLOR     REPORT_BG_COLOR = COLOR(0.0f, 0.05f, 0.0f, 0.6f);
+
 }
 
 
@@ -37,6 +41,8 @@ CGame::CGame()
 {
 	loadGauge = nullptr;
 	loadString = nullptr;
+  reportBg = nullptr;
+  report = nullptr;
 }
 
 CGame::~CGame()
@@ -84,9 +90,19 @@ void CGame::Init(void)
 	loadString->SetTex(CTexture::Texture(TEX_CONNECTION));
 	loadString->DrawEnable();
 
+  // ’eƒAƒCƒRƒ“
   CPolygon2D* canonIcon = nullptr;
   canonIcon = CPolygon2D::Create(ICON_POS, VECTOR2(ICON_SIZE,ICON_SIZE));
   canonIcon->SetTex(CTexture::Texture(TEX_MIKU));
+
+  // ¬Ñ•\‚Ì”wŒi
+  reportBg = CReport::Create(REPORT_BG_POS, VECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+  reportBg->SetColor(REPORT_BG_COLOR);
+
+  // ¬Ñ•\
+  const float scl = 0.7f;
+  report = CReport::Create(REPORT_BG_POS, VECTOR2(SCREEN_WIDTH * scl, SCREEN_HEIGHT * scl));
+  report->SetTex(CTexture::Texture(TEX_REPORT));
 
 }
 void CGame::Uninit(void)
@@ -164,4 +180,14 @@ void CGame::Update(void)
 	{
 		CManager::ChangeScene(SCENE_RESULT);
 	}
+
+  if (CKeyboard::GetPress(DIK_P)){
+    reportBg->SetDrawFlag(true);
+    report->SetDrawFlag(true);
+  }
+  else {
+    reportBg->SetDrawFlag(false);
+    report->SetDrawFlag(false);
+  }
+
 }

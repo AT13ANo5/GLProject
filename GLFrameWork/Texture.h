@@ -37,6 +37,7 @@ enum
 	TEX_LIFE,
 	TEX_RESULT_TEXT,
 	TEX_ROCK,
+  TEX_REPORT,
 	TEX_MAX
 };
 
