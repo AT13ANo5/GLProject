@@ -69,6 +69,7 @@ protected:
 	VECTOR2 _Size;
 	VECTOR3 Vtx[4];
 	UV uv;
+	MATERIAL Material;
 
 	void Resize(void);
 

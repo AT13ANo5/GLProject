@@ -15,6 +15,7 @@
 #include "LoadGauge.h"
 #include "LoadString.h"
 #include "Life.h"
+
 // Ã“Iƒƒ“ƒo•Ï”
 const float CGame::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
 

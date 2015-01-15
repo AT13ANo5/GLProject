@@ -24,6 +24,12 @@ CPolygon2D::CPolygon2D():CObject(LAYER_NUM-2)
 void CPolygon2D::Init(void)
 {
 
+	Material.ambient = COLOR(0.3f,0.3f,0.3f,1.0f);
+	Material.diffuse = _Color;
+	Material.specular = COLOR(0,0,0,1.0f);
+	Material.emission = COLOR(0,0,0,1.0f);
+	Material.shininess = 0.0f;
+
 	Vtx[0] = VECTOR3(_Size.x / 2,-_Size.y / 2.0f,0);
 	Vtx[1] = VECTOR3(-_Size.x / 2,-_Size.y / 2.0f,0);
 	Vtx[2] = VECTOR3(_Size.x / 2,_Size.y / 2.0f,0);
@@ -84,7 +90,13 @@ void CPolygon2D::Draw(void)
 	glScalef(1.0f,1.0f,1.0f);
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
 	//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
+	Material.diffuse = _Color;
+	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(float*)&Material.ambient);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(float*)&Material.diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(float*)&Material.specular);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,(float*)&Material.emission);
+	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
 	//ポリゴン描画
 	glBegin(GL_TRIANGLE_STRIP);
@@ -99,7 +111,7 @@ void CPolygon2D::Draw(void)
 
 	glEnd();
 
-  glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D,0);
 
 	//ビュー行列を戻す
