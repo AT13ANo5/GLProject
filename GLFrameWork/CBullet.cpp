@@ -25,7 +25,7 @@ CBullet::CBullet():CBillboard()
 	Movement = VECTOR3(0.0f, 0.0f, 0.0f);
 
 	// テクスチャ
-	Texture = CTexture::Texture(TEX_TEST);
+	Texture = CTexture::Texture(TEX_BULLET);
 	SetUV(0,0,1.0f,1.0f);
 }
 

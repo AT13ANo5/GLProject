@@ -23,11 +23,11 @@ namespace{
   const float     GAUGE_POS_Y = 70.0f;
   const float     GAUGE_POS_X = 80.0f;
   const VECTOR3   GAUGE_POS = VECTOR3(GAUGE_POS_X, GAUGE_POS_Y, 0.0f);
-	const VECTOR2   GAUGE_SIZE = VECTOR2(300.0f,50.0f);
+  const VECTOR2   GAUGE_SIZE = VECTOR2(300.0f,50.0f);
   const float     GAUGE_STR_OFFSET = 50.0f;
   const VECTOR3   GAUGE_STR_POS = VECTOR3(GAUGE_POS_X + GAUGE_STR_OFFSET, GAUGE_POS_Y, 0.0f);
-	const VECTOR2   GAUGE_STR_SIZE = VECTOR2(180.0f,50.0f);
-  const COLOR     GAUGE_COLOR = COLOR(0.4f, 0.5f, 1.0f, 1.0f);
+  const VECTOR2   GAUGE_STR_SIZE = VECTOR2(180.0f,50.0f);
+  const COLOR     GAUGE_COLOR = COLOR(0.0f, 1.0f, 0.0f, 1.0f);
   const float     ICON_SIZE = 50.0f;
   const VECTOR3   ICON_POS = VECTOR3(20.0f + ICON_SIZE / 2, GAUGE_POS_Y + ICON_SIZE / 2, 0.0f);
 }
@@ -52,7 +52,6 @@ void CGame::Init(void)
 	//polygon->SetColor(GREEN(1.0f));
 	CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));
 
-
 	// 地形生成
 	Ground = nullptr;
 	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(50.0f,50.0f),VECTOR2(20.0f,20.0f));
@@ -61,19 +60,23 @@ void CGame::Init(void)
 	// 空生成
 	Sky = nullptr;
 	Sky = CMeshSphere::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(16.0f,8.0f),RADIUS_SKY);
-	Sky->SetTex(CTexture::Texture(TEX_MIKU));
+	Sky->SetTex(CTexture::Texture(TEX_SKY));
 
 	// プレイヤー生成
-	Player = CPlayer::Create(CModel::MIKU,VECTOR3(0.0f,0.0f,0.0f));
-	Player->SetTex(CTexture::Texture(TEX_MIKU));
-	Player->SetScl(20.0f,20.0f,20.0f);
+	Player = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f, 0.0f, 0.0f));
+	Player->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+	Player->SetRot(0.0f, 180.0f, 0.0f);
+	
+	//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player,300.0f);
+
+	//ライフ生成
 	CLife::Create(VECTOR3(50.0f,40.0f,0.0f),VECTOR2(100.0f,100.0f));
 
-  // 装填ゲージ
+	// 装填ゲージ
 	CLoadGauge* load_gauge = nullptr;
 	load_gauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
-	load_gauge->SetTex(CTexture::Texture(TEX_TEAM_LOGO));
+	load_gauge->SetTex(CTexture::Texture(TEX_RELOAD));
 
 	loadGauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
   loadGauge->SetDefaultColor(GAUGE_COLOR);
@@ -81,12 +84,12 @@ void CGame::Init(void)
 
 	// 装填中文字
 	loadString = CLoadString::Create(GAUGE_STR_POS,GAUGE_STR_SIZE);
-	loadString->SetTex(CTexture::Texture(TEX_CONNECTION));
+	loadString->SetTex(CTexture::Texture(TEX_RELOAD));
 	loadString->DrawEnable();
 
   CPolygon2D* canonIcon = nullptr;
   canonIcon = CPolygon2D::Create(ICON_POS, VECTOR2(ICON_SIZE,ICON_SIZE));
-  canonIcon->SetTex(CTexture::Texture(TEX_MIKU));
+  canonIcon->SetTex(CTexture::Texture(TEX_GAUGE_ICON));
 
 }
 void CGame::Uninit(void)

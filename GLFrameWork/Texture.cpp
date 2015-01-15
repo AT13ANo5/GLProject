@@ -23,6 +23,21 @@ static std::string TexFile[TEX_MAX] =
  	"data/texture/Life.dds",
 	"data/texture/resultText.tga",
 	"data/texture/rock.dds",
+	"data/texture/bullet100.tga",
+	"data/texture/gaugeIcon.tga",
+	"data/texture/number011.tga",
+	"data/texture/pause.tga",
+	"data/texture/player1.tga",
+	"data/texture/player2.tga",
+	"data/texture/player3.tga",
+	"data/texture/player4.tga",
+	"data/texture/player5.tga",
+	"data/texture/player6.tga",
+	"data/texture/sky000.tga",
+	"data/texture/reload.tga.tga",
+
+
+
 };
 
 void CTexture::Initialize(void)

@@ -17,7 +17,7 @@
 //=============================================================================
 namespace{
   const COLOR DEFAULT_COLOR = COLOR(1.0f, 1.0f, 1.0f, 1.0f );
-  const COLOR LOAD_COLOR = COLOR(1.0f, 0.4f, 0.5f, 1.0f);
+  const COLOR LOAD_COLOR = COLOR(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
 
