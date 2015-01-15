@@ -16,7 +16,7 @@
 // macro
 //=============================================================================
 namespace{
-  const float ALPHA_MOVE_SPEED = 0.01f;
+  const float ALPHA_MOVE_SPEED = 0.025f;
 }
 
 
@@ -25,7 +25,8 @@ namespace{
 //=============================================================================
 CLoadString::CLoadString() :CPolygon2D()
 {
-  drawFlag = true;
+  drawFlag  = true;
+  alphaMode = true;
 }
 
 //=============================================================================
@@ -60,13 +61,29 @@ void CLoadString::Init(void)
 void CLoadString::Update(void)
 {
   if (drawFlag == true){
-    if (_Color.a <= 1.0f){
+    if (alphaMode == true){
       _Color.a += ALPHA_MOVE_SPEED;
-    }
-    else if (_Color.a <= 1.0f){
+      if (_Color.a >= 1.0f){
+        alphaMode = false;
+      }
+    } else {
       _Color.a -= ALPHA_MOVE_SPEED;
+      if (_Color.a <= 0.0f){
+        alphaMode = true;
+      }
     }
   }
+
+
+  //  if (_Color.a <= 1.0f){
+  //    _Color.a += ALPHA_MOVE_SPEED;
+  //    if (_Color.a >= 0.0f){
+
+  //    }
+  //  }
+  //  else if (_Color.a >= 0.0f){
+  //    _Color.a -= ALPHA_MOVE_SPEED;
+  //  }
 }
 
 //=============================================================================
@@ -75,6 +92,7 @@ void CLoadString::Update(void)
 void CLoadString::DrawEnable(void)
 {
   drawFlag = true;
+  alphaMode = false;
   _Color.a = 1.0f;
 }
 

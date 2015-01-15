@@ -30,6 +30,8 @@ CPlayer::CPlayer():CModel()
 
 	// íeèâä˙âª
 	Bullet = nullptr;
+
+  _ReloadTimer = PLAYER_RELOAD_TIME;
 }
 
 //------------------------------------------------------------------------------

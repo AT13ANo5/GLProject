@@ -48,6 +48,7 @@ public:
 private:
 
   bool  drawFlag;
+  bool  alphaMode;
   float alphaMove;
 };
 
