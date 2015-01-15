@@ -119,6 +119,7 @@
     <ClCompile Include="MeshField.cpp" />
     <ClCompile Include="MeshSphere.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Report.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="ResultSheet.cpp" />
     <ClCompile Include="SoundAL.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="MeshSphere.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MeshGround.h" />
+    <ClInclude Include="Report.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="ResultSheet.h" />
     <ClInclude Include="Scene.h" />

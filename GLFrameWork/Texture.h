@@ -49,7 +49,8 @@ enum
 	TEX_PLAYER6,
 	TEX_SKY,
 	TEX_RELOAD,
-	TEX_MAX,
+	TEX_REPORT,
+	TEX_MAX
 };
 
 class CTexture

@@ -134,6 +134,9 @@
     <Filter Include="03_リザルト\Confetti">
       <UniqueIdentifier>{ab781ee7-c37f-4f38-9f5a-9e2e509b4e64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム\Report">
+      <UniqueIdentifier>{ff125e57-a07b-4d15-b8dd-807c480d12a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -252,6 +255,9 @@
     </ClCompile>
     <ClCompile Include="Confetti.cpp">
       <Filter>03_リザルト\Confetti</Filter>
+    </ClCompile>
+    <ClCompile Include="Report.cpp">
+      <Filter>02_ゲーム\Report</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="Confetti.h">
       <Filter>03_リザルト\Confetti</Filter>
+    </ClInclude>
+    <ClInclude Include="Report.h">
+      <Filter>02_ゲーム\Report</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
