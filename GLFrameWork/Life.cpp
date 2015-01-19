@@ -2,25 +2,16 @@
 //インクルード
 //=============================================================================
 #include "Polygon2D.h"
-#include <math.h>
 #include "Texture.h"
 #include "Life.h"
 
-CLife* Life[3] = {NULL};
 //=============================================================================
 //コストラクタ
 //=============================================================================
 CLife::CLife()
 {
-	_Pos.x =
-		_Pos.y =
-		_Pos.z = 0;
-
-	_Rot.x =
-		_Rot.y =
-		_Rot.z = 0;
-
-	LifePoint = 3;
+  memset(Life, NULL, sizeof(Life));
+  LifePoint = LIFE_MAX;
 
 }
 //=============================================================================
@@ -28,72 +19,43 @@ CLife::CLife()
 //=============================================================================
 void CLife::Init(void)
 {
-	CPolygon2D::Init();
+  CPolygon2D::Init();
 
-	Texture = CTexture::Texture(TEX_LIFE);
-	SetUV(0,0,1.0f,1.0f);
+  const VECTOR2 SIZE = VECTOR2(100.0f, 100.0f);
 
+  for (int i = 0; i < LIFE_MAX; i++)
+  {
+    const VECTOR3 pos = VECTOR3((SIZE.x / 2) + SIZE.x*i, SIZE.y/2, 0.0f);
+    Life[i] = CPolygon2D::Create(pos, SIZE);
+    Life[i]->SetTex(CTexture::Texture(TEX_LIFE));
+  }
 }
 //=============================================================================
 //作成
 //=============================================================================
 CLife* CLife::Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot, const COLOR& color)
 {
+  CLife* life = new CLife();
 
-	for (int i = 0; i < 3; i++)
-	{
-		Life[i] = new CLife;
-		Life[i]->_Pos = pos;
-		Life[i]->_Pos.x += (i * 100.0f);
-		Life[i]->_Rot = rot;
-		Life[i]->SetSize(size);
-		Life[i]->_Color = color;
-		Life[i]->Init();
-	}
+  life->Init();
 
-	return *Life;
+  return life;
 }
 
-//=============================================================================
-//終了処理
-//=============================================================================
-void CLife::Uninit(void)
-{
-	delete this;
-}
 //=============================================================================
 //更新
 //=============================================================================
 void CLife::Update(void)
 {
-	switch (LifePoint)
-	{
-	case 0:
-		if (Life[0]->_Color.a != 0)
-		{
-			Life[0]->_Color.a = 0;
-		}
-		break;
-	//ライフ残り１
-	case 1:
-		if (Life[1]->_Color.a != 0)
-		{
-			Life[1]->_Color.a = 0;
-		}
-		break;
-	//ライフ残り２
-	case 2:
-		if (Life[2]->_Color.a != 0)
-		{
-			Life[2]->_Color.a = 0;
-		}
-		break;
-	//ライフ残り3
-	case 3:
-		break;
-
-	}
+  for (int i = 0; i < LIFE_MAX; i++){
+    if (i <= LifePoint-1){
+      Life[i]->SetAlpha(1.0f);
+    } else {
+      Life[i]->SetAlpha(0.0f);
+    }
+  }
 }
+
 //=============================================================================
 //描画
 //=============================================================================
