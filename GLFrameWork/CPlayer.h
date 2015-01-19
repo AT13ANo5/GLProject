@@ -45,6 +45,7 @@ CModel* Barrel;
 	float Speed;		// 移動速度
 	bool LaunchFlag;	// 弾発射フラグ（true / 使用：false / 不使用）
 	int _ReloadTimer;	// 現在の装填時間
+	float BarrelRotX;	// 砲身のX軸回転量
 };
 
 //------------------------------------------------------------------------------

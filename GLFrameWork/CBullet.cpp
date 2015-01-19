@@ -82,6 +82,11 @@ void CBullet::Update(void)
 	// 速度の減退
 	Movement.y -= 0.25f;
 
+	// 消滅処理
+	if(_Pos.y <= -100.0f)
+	{
+		Release();
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -93,7 +98,7 @@ void CBullet::Update(void)
 //  rot : 回転
 //  color : 色
 // 戻り値
-//  なし
+//  CBullet : 生成した弾のポインタ
 //------------------------------------------------------------------------------
 CBullet* CBullet::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {

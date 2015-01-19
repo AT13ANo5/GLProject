@@ -31,7 +31,11 @@ CPlayer::CPlayer():CModel()
 	// 弾初期化
 	Bullet = nullptr;
 
-  _ReloadTimer = PLAYER_RELOAD_TIME;
+	// 装填時間
+	_ReloadTimer = PLAYER_RELOAD_TIME;
+
+	// 砲身のX軸回転量
+	BarrelRotX = 0.0f;
 }
 
 //------------------------------------------------------------------------------
@@ -60,10 +64,11 @@ void CPlayer::Init(void)
 
 	// 継承元の初期化
 	CModel::Init();
- Barrel = CModel::Create(TANK_BARREL,_Pos);
- Barrel->Init();
- Barrel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
 
+	// 砲身
+	Barrel = CModel::Create(TANK_BARREL,_Pos);
+	Barrel->Init();
+	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
 }
 
 //------------------------------------------------------------------------------
@@ -107,44 +112,49 @@ void CPlayer::Update()
 
 	if(CKeyboard::GetPress(DIK_UP))
 	{
-		rot.x -= 3.0f;
+		BarrelRotX -= 3.0f;
 	}
 	else if(CKeyboard::GetPress(DIK_DOWN))
 	{
-		rot.x += 3.0f;
+		BarrelRotX += 3.0f;
 	}
 
 	// キャラクターの回転
 	AddRot(rot);
 
 	// 値の丸め込み
-	if( Rot().y > 360.0f)
+	// プレイヤーの回転量
+	if(Rot().y > 360.0f)
 	{
 		SetRotY(Rot().y - 2 * 360.0f);
 	}
-	else if (Rot().y < -360.0f)
+	else if(Rot().y < -360.0f)
 	{
 		SetRotY(Rot().y + 2 * 360.0f);
 	}
 
-	// キャラクターの移動
+	// 砲身
+	if( BarrelRotX > 0.0f)
+	{
+		BarrelRotX = 0.0f;
+	}
+	else if(BarrelRotX < -45.0f)
+	{
+		BarrelRotX = -45.0f;
+	}
+	
+	// キャラクターの移動値を加算
 	AddPos(Movement);
 
 	// 減速
 	Movement *= 0.95f;
- Barrel->SetPos(_Pos);
 
-	// 攻撃
-	//if(CKeyboard::GetTrigger(DIK_SPACE))
-	//{
-	//	if(Bullet == nullptr)
-	//	{
-	//		//LaunchFlag = true;
-	//		//Bullet = CBullet::Create(_Pos, VECTOR2(40.0f, 40.0f), VECTOR3(0.0f, 0.0f, 0.0f), WHITE(0.5f));
-	//		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
-	//	}
-	//}
+	// 砲身の位置、回転を更新
+	Barrel->SetPos(_Pos);			// 位置
+	Barrel->SetRot(_Rot);			// 回転
+	Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
 
+	// 弾の発射
 	if(LaunchFlag == false)
 	{
 		if(CKeyboard::GetTrigger(DIK_SPACE))
@@ -166,19 +176,31 @@ void CPlayer::Update()
 	}
 
 #ifdef _DEBUG
+	// デバッグ用
+	// 連射
+	if(CKeyboard::GetPress(DIK_V))
+	{
+		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+	}
+#endif
+
+#ifdef _DEBUG
 	Console::SetCursorPos(1,1);
 	Console::Print("Rot.x:%f\nRot.y:%f\n",_Rot.x,_Rot.y);
+	Console::SetCursorPos(1, 3);
+	Console::Print("barrel@rot.x : %f rot.y : %f rot.z : %f", Barrel->Rot().x, Barrel->Rot().y, Barrel->Rot().z);
 #endif
 
 }
 
 //------------------------------------------------------------------------------
-// 
+// 生成
 //------------------------------------------------------------------------------
 // 引数
-//  なし
+//  id : モデルのID
+//  pos : 初期位置
 // 戻り値
-//  なし
+//  CPlayer* : 生成したプレイヤーのポインタ
 //------------------------------------------------------------------------------
 CPlayer* CPlayer::Create(int id,const VECTOR3& pos)
 {
@@ -188,7 +210,6 @@ CPlayer* CPlayer::Create(int id,const VECTOR3& pos)
 	model->ModelID = id;
 	model->_Pos = pos;
 	model->Init();
-
 
 	return model;
 }
