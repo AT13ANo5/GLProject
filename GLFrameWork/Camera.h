@@ -12,6 +12,9 @@
 //クラス定義
 class CCamera
 {
+private:
+	void LinkList(void);
+	void UnlinkList(void);
 public:
 	CCamera();
 	virtual ~CCamera();
@@ -22,9 +25,9 @@ public:
 	//カメラをセットする
 	void Set(void);
 	//他のシーンで作ったカメラでも動くように修正
-	static void SetCur(void);
-	static void UpdateCur(void);
-	static void Release(void);
+	static void Set(int num);
+	static void UpdateAll(void);
+	static void ReleaseAll(void);
 
 	void SetEye(float posx,float posy,float posz){_Eye.x = posx;_Eye.y = posy;_Eye.z = posz;}
 	void SetEye(const VECTOR3& pos){_Eye = pos;}
@@ -44,7 +47,7 @@ public:
 	VECTOR3 Lookat(void){return _Lookat;}
 	VECTOR3 UpVec(void){return _UpVec;}
 
-	static CCamera* Camera(void){return CurrentCamera;}
+	static CCamera* Camera(int num);
 
 protected:
 	VECTOR3 _Eye;
@@ -53,7 +56,11 @@ protected:
 	VECTOR3 Rot;
 	float Length;
 	VECTOR3 Angle;
-	static CCamera* CurrentCamera;
+	static CCamera* Top;
+	static CCamera* Cur;
+
+	CCamera* Next;
+	CCamera* Prev;
 };
 
 

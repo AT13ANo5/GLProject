@@ -1,9 +1,11 @@
 #include "Camera.h"
 #include "Mouse.h"
 #include <math.h>
+
 float ClickPosX;
 
-CCamera* CCamera::CurrentCamera = nullptr;
+CCamera* CCamera::Top = nullptr;
+CCamera* CCamera::Cur = nullptr;
 
 CCamera::CCamera()
 {
@@ -19,12 +21,75 @@ CCamera::CCamera()
 	_UpVec.z = 0;
 	_UpVec.y = 1.0f;
 
-	CurrentCamera = this;
+	LinkList();
 }
 
 CCamera::~CCamera()
 {
-	CurrentCamera = nullptr;
+	UnlinkList();
+}
+
+//=============================================================================
+//自身をリストに追加
+//=============================================================================
+void CCamera::LinkList(void)
+{
+	if (Top != nullptr)//二つ目以降の処理
+	{
+		CCamera* pScene = Cur;
+		pScene->Next = this;
+		Prev = pScene;
+		Next = nullptr;
+		Cur = this;
+	}
+	else//最初の一つの時の処理
+	{
+		Top = this;
+		Cur = this;
+		Prev = nullptr;
+		Next = nullptr;
+	}
+}
+
+//=============================================================================
+//自身をリストから削除
+//=============================================================================
+void CCamera::UnlinkList(void)
+{
+	if (Prev == nullptr)//先頭
+	{
+		if (Next != nullptr)//次がある
+		{
+			Next->Prev = nullptr;
+			Top = Next;
+		}
+		else//最後の一つだった
+		{
+			Top = nullptr;
+			Cur = nullptr;
+		}
+	}
+	else if (Next == nullptr)//終端
+	{
+		if (Prev != nullptr)//前がある
+		{
+			Prev->Next = nullptr;
+			Cur = Prev;
+		}
+		else//最後の一つだった
+		{
+			Top = nullptr;
+			Cur = nullptr;
+		}
+	}
+	else//前後にデータがあるとき
+	{
+		Prev->Next = Next;
+		Next->Prev = Prev;
+	}
+
+	Prev = nullptr;
+	Next = nullptr;
 }
 
 void CCamera::Init(float posx,float posy,float posz,float lookx,float looky,float lookz)
@@ -86,6 +151,17 @@ void CCamera::Update(void)
 	_Eye.z = cosf(Angle.y)*Length+_Lookat.z;
 }
 
+void CCamera::UpdateAll(void)
+{
+	CCamera* camera = Top;
+
+	while (camera)
+	{
+		camera->Update();
+		camera = camera->Next;
+	}
+}
+
 void CCamera::Set(void)
 {
 	//3Dの設定
@@ -102,27 +178,49 @@ void CCamera::Set(void)
 		_UpVec.x,_UpVec.y,_UpVec.z);//上方向ベクトル
 }
 
-void CCamera::UpdateCur(void)
+void CCamera::Set(int num)
 {
-	if (CurrentCamera != nullptr)
+	CCamera* camera = Top;
+	int cnt = 0;
+
+	while (camera)
 	{
-		CurrentCamera->Update();
+		if (cnt == num)
+		{
+			camera->Set();
+			break;
+		}
+		camera = camera->Next;
+		cnt++;
 	}
 }
 
-void CCamera::SetCur(void)
+void CCamera::ReleaseAll(void)
 {
-	if (CurrentCamera != nullptr)
+	CCamera* camera = Top;
+	CCamera* next = nullptr;
+	while (camera)
 	{
-		CurrentCamera->Set();
+		next = camera->Next;
+		delete camera;
+		camera = nullptr;
+		camera = next;
 	}
 }
 
-void CCamera::Release(void)
+CCamera* CCamera::Camera(int num)
 {
-	if (CurrentCamera != nullptr)
+	CCamera* camera = Top;
+	int cnt = 0;
+
+	while (camera)
 	{
-		delete CurrentCamera;
-		CurrentCamera = nullptr;
+		if (cnt == num)
+		{
+			return camera;
+		}
+		camera = camera->Next;
+		cnt++;
 	}
+	return nullptr;
 }

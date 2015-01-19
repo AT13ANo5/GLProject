@@ -86,7 +86,7 @@ void CManager::Uninit(HWND hWnd)
 		Keyboard = nullptr;
 	}
 
-	CCamera::Release();
+	CCamera::ReleaseAll();
 
 	if(Light != nullptr)
 	{
@@ -100,7 +100,7 @@ void CManager::Update(void)
 	Mouse->Update();
 	Keyboard->Update();
 	CSoundAL::UpdateAll();
-	CCamera::UpdateCur();
+	CCamera::UpdateAll();
 	Light->Update();
 	Render->Update();
 
@@ -130,7 +130,7 @@ void CManager::Update(void)
 			Scene = new CConnection;
 			break;
 		case SCENE_GAME:
-			CCamera::Release();
+			CCamera::ReleaseAll();
 			pCamera = nullptr;
 			Scene = new CGame;
 			break;
@@ -151,7 +151,7 @@ void CManager::Update(void)
 
 void CManager::Draw(void)
 {
-	CCamera::SetCur();
+	CCamera::Set(0);
 	Render->Draw();
 }
 

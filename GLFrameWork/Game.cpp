@@ -139,7 +139,7 @@ void CGame::Uninit(void)
 		Ground = nullptr;
 	}
 	SafeDelete(MiniMap);
-	CCamera::Release();
+	CCamera::ReleaseAll();
 	CObject::ReleaseAll();
 }
 

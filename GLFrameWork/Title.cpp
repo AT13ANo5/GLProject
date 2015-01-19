@@ -56,7 +56,7 @@ void CTitle::Init(void)
 	Sky = CMeshSphere::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(16.0f,8.0f),RADIUS_SKY);
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
 
-	Camera = CCamera::Camera();
+	Camera = CCamera::Camera(0);
 
 	Camera->SetEye(VECTOR3(0.0f,80.0f,0.0f));
 }

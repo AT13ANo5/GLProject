@@ -13,7 +13,7 @@
 //スタティック変数
 //============================================================================
 VECTOR3 CMiniMap::FieldSize = VECTOR3(0,0,0);
-
+int CMiniMap::_SelfId = 0;
 //============================================================================
 //コンスト変数
 //============================================================================
@@ -54,6 +54,7 @@ void CMiniMap::Init(void)
 		Player[cnt] = CPolygon2D::Create(Map->Pos(),VECTOR2(24.0f,24.0f),VECTOR3(0,0,0),ArrowColor[cnt]);
 		Player[cnt]->SetTex(CTexture::Texture(TEX_MINIMAP_ARROW));
 	}
+
 }
 //============================================================================
 //更新
@@ -65,6 +66,7 @@ void CMiniMap::Update(void)
 		Player[cnt]->SetPos(PlayerPos[cnt]);
 		Player[cnt]->SetRot(PlayerRot[cnt]);
 	}
+	
 }
 
 //============================================================================
