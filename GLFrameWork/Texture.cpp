@@ -33,9 +33,12 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/player4.tga",
 	"data/texture/player5.tga",
 	"data/texture/player6.tga",
-	"data/texture/sky000.tga",
+	"data/texture/sky000.dds",
 	"data/texture/reload.tga",
 	"data/texture/pause.tga",
+	"data/texture/pushEnter.tga",
+	"data/texture/wall100.dds",
+
 };
 
 void CTexture::Initialize(void)
