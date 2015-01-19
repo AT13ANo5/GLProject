@@ -9,6 +9,7 @@ class CPlayer;
 class CLoadGauge;
 class CLoadString;
 class CReport;
+class CNumberManager;
 
 class CGame :public CScene
 {
@@ -22,13 +23,14 @@ public:
 private:
 	static const float  RADIUS_SKY;   // 空の半径
 
-	CMeshGround*  Ground;     // フィールド
-	CMeshSphere*  Sky;        // 空
-	CPlayer*      Player;     // プレイヤー
-	CLoadGauge*   loadGauge;  // 装填ゲージ
-	CLoadString*  loadString; // 装填中の文字
-  CReport*      reportBg;
-  CReport*      report;
+	CMeshGround*    Ground;     // フィールド
+	CMeshSphere*    Sky;        // 空
+	CPlayer*        Player;     // プレイヤー
+	CLoadGauge*     loadGauge;  // 装填ゲージ
+	CLoadString*    loadString; // 装填中の文字
+  CReport*        reportBg;
+  CReport*        report;
+  CNumberManager* numberManager;
 };
 
 #endif

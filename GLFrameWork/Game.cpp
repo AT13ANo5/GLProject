@@ -16,6 +16,7 @@
 #include "LoadGauge.h"
 #include "LoadString.h"
 #include "Life.h"
+#include "NumberManager.h"
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 500.0f;   // 空の半径
@@ -44,6 +45,7 @@ CGame::CGame()
 	loadString = nullptr;
   reportBg = nullptr;
   report = nullptr;
+  numberManager = nullptr;
 }
 
 CGame::~CGame()
@@ -104,9 +106,12 @@ void CGame::Init(void)
   reportBg->SetColor(REPORT_BG_COLOR);
 
   // 成績表
-  const float scl = 0.7f;
+  const float scl = 0.8f;
   report = CReport::Create(REPORT_BG_POS, VECTOR2(SCREEN_WIDTH * scl, SCREEN_HEIGHT * scl));
   report->SetTex(CTexture::Texture(TEX_REPORT));
+
+  // 成績表の数値
+  numberManager = CNumberManager::Create();
 
 }
 void CGame::Uninit(void)
@@ -188,10 +193,12 @@ void CGame::Update(void)
   if (CKeyboard::GetPress(DIK_P)){
     reportBg->SetDrawFlag(true);
     report->SetDrawFlag(true);
+    numberManager->SetDrawFlag(true);
   }
   else {
     reportBg->SetDrawFlag(false);
     report->SetDrawFlag(false);
+    numberManager->SetDrawFlag(false);
   }
 
 }
