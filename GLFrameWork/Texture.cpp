@@ -20,6 +20,7 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/youjo_yellow.dds",
 	"data/texture/Light.tga",
  	"data/texture/field000.dds",
+	"data/texture/sky000.tga",
  	"data/texture/Life.dds",
 	"data/texture/resultText.tga",
 	"data/texture/rock.dds",

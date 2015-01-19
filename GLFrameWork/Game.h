@@ -19,13 +19,15 @@ public:
 	void Uninit(void);
 	void Update(void);
 private:
-	static const float  RADIUS_SKY;   // 空の半径
+	static const float  RADIUS_SKY;		// 空の半径
 
-	CMeshGround*  Ground;     // フィールド
-	CMeshSphere*  Sky;        // 空
-	CPlayer*      Player;     // プレイヤー
-	CLoadGauge*   loadGauge;  // 装填ゲージ
-	CLoadString*  loadString; // 装填中の文字
+	CMeshGround*	Ground;		// 地形
+	CMeshSphere*	Sky;		// 空
+	CPlayer*		Player;		// プレイヤー
+	CLoadGauge*		loadGauge;	// 装填ゲージ
+	CLoadString*	loadString;	// 装填中の文字
+
+	int				testTimer;
 };
 
 #endif
