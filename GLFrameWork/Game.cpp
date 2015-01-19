@@ -44,7 +44,7 @@ void CGame::Init(void)
 {
 	// 地形生成
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(300.0f, 300.0f), VECTOR2(20.0f, 20.0f));
+	Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(100.0f, 100.0f), VECTOR2(20.0f, 20.0f));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
 	// 空生成
@@ -133,12 +133,12 @@ void CGame::Update(void)
 	VectorNormalYZ.y = NormalGround.y;
 	VectorNormalYZ.z = NormalGround.z;
 	VectorNormalYZ.Normalize();
-	AnglePlayerX = acosf(VECTOR3::Dot(VectorNormalYZ, VectorUpPlayer));
+	AnglePlayerX = -acosf(VECTOR3::Dot(VectorNormalYZ, VectorUpPlayer));
 	VectorNormalXY.x = NormalGround.x;
 	VectorNormalXY.y = NormalGround.y;
 	VectorNormalXY.z = 0.0f;
 	VectorNormalXY.Normalize();
-	AnglePlayerZ = acosf(VECTOR3::Dot(VectorNormalXY, VectorUpPlayer));
+	AnglePlayerZ = -acosf(VECTOR3::Dot(VectorNormalXY, VectorUpPlayer));
 
 	// プレイヤー情報のデバッグ表示
 	VECTOR3	positionPlayer = Player->Pos();

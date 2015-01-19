@@ -364,6 +364,7 @@ float CMeshGround::GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VE
 	{
 		return 0;
 	}
+	*Normal = normal;
 
 	float Height = p0.y - (-normal.x*(pos.x - p0.x) + normal.z*(pos.z - p0.z)) / normal.y;
 	Console::Print("Height : %9.3f\n", Height);
