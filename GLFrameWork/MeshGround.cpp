@@ -72,7 +72,7 @@ void CMeshGround::Init(void)
 	HeightMap = new float[VertexNum];
 	for (int cnt = 0;cnt<VertexNum;cnt++)
 	{
-		HeightMap[cnt] = rand() % 60 + 0.0f; //20.0f * cnt;// rand() % 60 + 0.0f;
+		HeightMap[cnt] = 2.0f * (rand() % 60) + 0.0f; //20.0f * cnt;// rand() % 60 + 0.0f;
 	}
 
 	Vtx = new VECTOR3[VertexNum];
@@ -275,8 +275,8 @@ void CMeshGround::GetPanelIndex(VECTOR3 pos,int* OutIndexX,int* OutIndexY)
 	pos.x = _Size.x / 2 + (pos.x);
 	pos.z = _Size.z / 2 + (pos.z);
 
-	*OutIndexX = (int)(pos.x/PanelSize.x);
-	*OutIndexY = (int)(pos.z/PanelSize.y);
+	*OutIndexX = (int)(PanelNum.x - pos.x / PanelSize.x);
+	*OutIndexY = (int)(pos.z / PanelSize.y);
 
 	Console::SetCursorPos(1, 3);
 	Console::Print("GroundIndex : (%03d, %03d)\n", *OutIndexX, *OutIndexY);
@@ -289,10 +289,10 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 	GetPanelIndex(pos,&IndexX,&IndexY);
 	int Index = (int)(IndexX+(IndexY*(PanelNum.x+1)));
 	VECTOR3 VertexPos[4];
-	VertexPos[0] = VECTOR3(IndexX * PanelSize.x,		HeightMap[Index + ((int)PanelNum.x + 2)],	IndexY * PanelSize.y);
-	VertexPos[1] = VECTOR3(IndexX * PanelSize.x,		HeightMap[Index + 1],						(IndexY - 1) * PanelSize.y);
-	VertexPos[2] = VECTOR3((IndexX - 1) * PanelSize.x,	HeightMap[Index + ((int)PanelNum.x + 1)],	IndexY * PanelSize.y);
-	VertexPos[3] = VECTOR3((IndexX - 1) * PanelSize.x,	HeightMap[Index],							(IndexY - 1) * PanelSize.y);
+	VertexPos[0] = VECTOR3((0.5f * PanelNum.x - IndexX) * PanelSize.x,		HeightMap[Index],							(-0.5f * PanelNum.y + IndexY) * PanelSize.y);
+	VertexPos[1] = VECTOR3((0.5f * PanelNum.x - IndexX - 1) * PanelSize.x,	HeightMap[Index + 1],						(-0.5f * PanelNum.y + IndexY) * PanelSize.y);
+	VertexPos[2] = VECTOR3((0.5f * PanelNum.x - IndexX - 1) * PanelSize.x,	HeightMap[Index + ((int)PanelNum.x + 2)],	(-0.5f * PanelNum.y + IndexY + 1) * PanelSize.y);
+	VertexPos[3] = VECTOR3((0.5f * PanelNum.x - IndexX) * PanelSize.x,		HeightMap[Index + ((int)PanelNum.x + 1)],	(-0.5f * PanelNum.y + IndexY + 1) * PanelSize.y);
 
 	for (int cntVertex = 0; cntVertex < 4; ++cntVertex)
 	{
@@ -300,10 +300,10 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 		Console::Print("Vertex[%d] : (%9.3f, %9.3f) : Height(%9.3f)\n", cntVertex, VertexPos[cntVertex].x, VertexPos[cntVertex].z, VertexPos[cntVertex].y);
 	}
 	Console::SetCursorPos(1, 8);
-	Console::Print("VertexIndex[0] : %2d\n", Index + ((int)PanelNum.x + 2));
-	Console::Print("VertexIndex[1] : %2d\n", Index + 1);
-	Console::Print("VertexIndex[2] : %2d\n", Index + ((int)PanelNum.x + 1));
-	Console::Print("VertexIndex[3] : %2d\n", Index);
+	Console::Print("VertexIndex[0] : %2d : %9.3f\n", Index,							VertexPos[0].y);
+	Console::Print("VertexIndex[1] : %2d : %9.3f\n", Index + 1,						VertexPos[1].y);
+	Console::Print("VertexIndex[2] : %2d : %9.3f\n", Index + ((int)PanelNum.x + 2),	VertexPos[2].y);
+	Console::Print("VertexIndex[3] : %2d : %9.3f\n", Index + ((int)PanelNum.x + 1),	VertexPos[3].y);
 #if 0
 	for (int cnt = 0;cnt<4;cnt++)
 	{
@@ -334,27 +334,13 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 	{
 		Console::SetCursorPos(1, 12);
 		Console::Print("ã\n");
-		return GetHeightPolygon(VertexPos[0],VertexPos[1],VertexPos[2],pos, normal);
+		return GetHeightPolygon(VertexPos[1],VertexPos[2],VertexPos[0],pos, normal);
 	}
-	Vec0 = VertexPos[3]-VertexPos[1];
-	Vec1 = pos-VertexPos[1];
-	if ((Vec0.z*Vec1.x-Vec0.x*Vec1.z)>=0)
+	else
 	{
-		Vec0 = VertexPos[2]-VertexPos[3];
-		Vec1 = pos-VertexPos[3];
-		if ((Vec0.z*Vec1.x-Vec0.x*Vec1.z)>=0)
-		{
-			Vec0 = VertexPos[1]-VertexPos[2];
-			Vec1 = pos-VertexPos[2];
-			if ((Vec0.z*Vec1.x-Vec0.x*Vec1.z)>=0)
-			{
-				Console::SetCursorPos(1, 12);
-				Console::Print("‰º\n");
-				return GetHeightPolygon(VertexPos[3],VertexPos[1],VertexPos[2],pos, normal);
-			}
-
-		}
-
+		Console::SetCursorPos(1, 12);
+		Console::Print("‰º\n");
+		return GetHeightPolygon(VertexPos[3],VertexPos[0],VertexPos[2],pos, normal);
 	}
 
 	return 0;
@@ -379,7 +365,7 @@ float CMeshGround::GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VE
 		return 0;
 	}
 
-	float Height = p0.y - (normal.x*(pos.x - p0.x) + normal.z*(pos.z - p0.z)) / normal.y;
+	float Height = p0.y - (-normal.x*(pos.x - p0.x) + normal.z*(pos.z - p0.z)) / normal.y;
 	Console::Print("Height : %9.3f\n", Height);
 	Console::Print("Normal : (%9.3f, %9.3f, %9.3f)\n", normal.x, normal.y, normal.z);
 

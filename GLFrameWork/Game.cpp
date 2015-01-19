@@ -44,7 +44,7 @@ void CGame::Init(void)
 {
 	// 地形生成
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(200.0f, 200.0f), VECTOR2(2.0f, 2.0f));
+	Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(300.0f, 300.0f), VECTOR2(20.0f, 20.0f));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
 	// 空生成
@@ -54,7 +54,7 @@ void CGame::Init(void)
 
 #ifdef _DEBUG
 	// デバッグワイヤーフレーム
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
 
 	// プレイヤー生成
