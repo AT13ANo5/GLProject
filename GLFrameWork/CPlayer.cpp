@@ -110,6 +110,7 @@ void CPlayer::Update()
 		rot.y -= 3.0f;
 	}
 
+	// 砲身の上下
 	if(CKeyboard::GetPress(DIK_UP))
 	{
 		BarrelRotX -= 3.0f;
@@ -134,13 +135,13 @@ void CPlayer::Update()
 	}
 
 	// 砲身
-	if( BarrelRotX > 0.0f)
+	if( BarrelRotX > BARREL_ROT_MIN)
 	{
-		BarrelRotX = 0.0f;
+		BarrelRotX = BARREL_ROT_MIN;
 	}
-	else if(BarrelRotX < -45.0f)
+	else if(BarrelRotX < BARREL_ROT_MAX)
 	{
-		BarrelRotX = -45.0f;
+		BarrelRotX = BARREL_ROT_MAX;
 	}
 	
 	// キャラクターの移動値を加算
@@ -159,7 +160,7 @@ void CPlayer::Update()
 	{
 		if(CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
+			Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
 			LaunchFlag = true;
 			_ReloadTimer = 0;
 		}
@@ -181,6 +182,11 @@ void CPlayer::Update()
 	if(CKeyboard::GetPress(DIK_V))
 	{
 		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+	}
+
+	if(CKeyboard::GetPress(DIK_L))
+	{
+		_PlayerLife--;
 	}
 #endif
 
