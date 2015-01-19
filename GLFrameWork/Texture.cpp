@@ -36,6 +36,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/sky000.tga",
 	"data/texture/reload.tga",
 	"data/texture/pause.tga",
+	"data/texture/MiniMap.dds",
+	"data/texture/MiniMapArrow.dds",
 };
 
 void CTexture::Initialize(void)

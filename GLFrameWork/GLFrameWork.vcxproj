@@ -104,6 +104,7 @@
     <ClCompile Include="LoadGauge.cpp" />
     <ClCompile Include="LoadString.cpp" />
     <ClCompile Include="MeshGround.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="Keyboard.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Life.h" />
     <ClInclude Include="LoadGauge.h" />
     <ClInclude Include="LoadString.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="Keyboard.h" />

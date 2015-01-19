@@ -137,6 +137,9 @@
     <Filter Include="02_ゲーム\Report">
       <UniqueIdentifier>{ff125e57-a07b-4d15-b8dd-807c480d12a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム\ミニマップ">
+      <UniqueIdentifier>{8e739737-28f7-44fd-9e5b-60816a92c411}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -258,6 +261,9 @@
     </ClCompile>
     <ClCompile Include="Report.cpp">
       <Filter>02_ゲーム\Report</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>02_ゲーム\ミニマップ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -392,6 +398,9 @@
     </ClInclude>
     <ClInclude Include="Report.h">
       <Filter>02_ゲーム\Report</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMap.h">
+      <Filter>02_ゲーム\ミニマップ</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

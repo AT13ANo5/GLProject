@@ -16,24 +16,25 @@
 #include "LoadGauge.h"
 #include "LoadString.h"
 #include "Life.h"
+#include "MiniMap.h"
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 500.0f;   // 空の半径
 
 // 定数
 namespace{
-  const float     GAUGE_POS_Y = 70.0f;
-  const float     GAUGE_POS_X = 80.0f;
-  const VECTOR3   GAUGE_POS = VECTOR3(GAUGE_POS_X, GAUGE_POS_Y, 0.0f);
-  const VECTOR2   GAUGE_SIZE = VECTOR2(300.0f,50.0f);
-  const float     GAUGE_STR_OFFSET = 50.0f;
-  const VECTOR3   GAUGE_STR_POS = VECTOR3(GAUGE_POS_X + GAUGE_STR_OFFSET, GAUGE_POS_Y, 0.0f);
-  const VECTOR2   GAUGE_STR_SIZE = VECTOR2(180.0f,50.0f);
-  const COLOR     GAUGE_COLOR = COLOR(0.0f, 1.0f, 0.0f, 1.0f);
-  const float     ICON_SIZE = 50.0f;
-  const VECTOR3   ICON_POS = VECTOR3(20.0f + ICON_SIZE / 2, GAUGE_POS_Y + ICON_SIZE / 2, 0.0f);
-  const VECTOR3   REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f, 0.0f);
-  const COLOR     REPORT_BG_COLOR = COLOR(0.0f, 0.05f, 0.0f, 0.6f);
+	const float     GAUGE_POS_Y = 70.0f;
+	const float     GAUGE_POS_X = 80.0f;
+	const VECTOR3   GAUGE_POS = VECTOR3(GAUGE_POS_X,GAUGE_POS_Y,0.0f);
+	const VECTOR2   GAUGE_SIZE = VECTOR2(300.0f,50.0f);
+	const float     GAUGE_STR_OFFSET = 50.0f;
+	const VECTOR3   GAUGE_STR_POS = VECTOR3(GAUGE_POS_X + GAUGE_STR_OFFSET,GAUGE_POS_Y,0.0f);
+	const VECTOR2   GAUGE_STR_SIZE = VECTOR2(180.0f,50.0f);
+	const COLOR     GAUGE_COLOR = COLOR(0.0f,1.0f,0.0f,1.0f);
+	const float     ICON_SIZE = 50.0f;
+	const VECTOR3   ICON_POS = VECTOR3(20.0f + ICON_SIZE / 2,GAUGE_POS_Y + ICON_SIZE / 2,0.0f);
+	const VECTOR3   REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f,SCREEN_HEIGHT*0.5f,0.0f);
+	const COLOR     REPORT_BG_COLOR = COLOR(0.0f,0.05f,0.0f,0.6f);
 
 }
 
@@ -42,8 +43,9 @@ CGame::CGame()
 {
 	loadGauge = nullptr;
 	loadString = nullptr;
-  reportBg = nullptr;
-  report = nullptr;
+	reportBg = nullptr;
+	report = nullptr;
+	MiniMap = nullptr;
 }
 
 CGame::~CGame()
@@ -70,10 +72,10 @@ void CGame::Init(void)
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
 
 	// プレイヤー生成
-	Player = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f, 0.0f, 0.0f));
+	Player = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f,0.0f,0.0f));
 	Player->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
-	Player->SetRot(0.0f, 180.0f, 0.0f);
-	
+	Player->SetRot(0.0f,180.0f,0.0f);
+
 	//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player,300.0f);
 
@@ -86,27 +88,32 @@ void CGame::Init(void)
 	load_gauge->SetTex(CTexture::Texture(TEX_RELOAD));
 
 	loadGauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
-  loadGauge->SetDefaultColor(GAUGE_COLOR);
-//	loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
+	loadGauge->SetDefaultColor(GAUGE_COLOR);
+	//	loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
 
 	// 装填中文字
 	loadString = CLoadString::Create(GAUGE_STR_POS,GAUGE_STR_SIZE);
 	loadString->SetTex(CTexture::Texture(TEX_RELOAD));
 	loadString->DrawEnable();
 
-  // 弾アイコン
-  CPolygon2D* canonIcon = nullptr;
-  canonIcon = CPolygon2D::Create(ICON_POS, VECTOR2(ICON_SIZE,ICON_SIZE));
-  canonIcon->SetTex(CTexture::Texture(TEX_GAUGE_ICON));
+	// 弾アイコン
+	CPolygon2D* canonIcon = nullptr;
+	canonIcon = CPolygon2D::Create(ICON_POS,VECTOR2(ICON_SIZE,ICON_SIZE));
+	canonIcon->SetTex(CTexture::Texture(TEX_GAUGE_ICON));
 
-  // 成績表の背景
-  reportBg = CReport::Create(REPORT_BG_POS, VECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
-  reportBg->SetColor(REPORT_BG_COLOR);
+	//ミニマップの初期化
+	MiniMap = new CMiniMap;
+	MiniMap->Init();
+	CMiniMap::SetFieldSize(Ground->Size());
 
-  // 成績表
-  const float scl = 0.7f;
-  report = CReport::Create(REPORT_BG_POS, VECTOR2(SCREEN_WIDTH * scl, SCREEN_HEIGHT * scl));
-  report->SetTex(CTexture::Texture(TEX_REPORT));
+	// 成績表の背景
+	reportBg = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
+	reportBg->SetColor(REPORT_BG_COLOR);
+
+	// 成績表
+	const float scl = 0.7f;
+	report = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH * scl,SCREEN_HEIGHT * scl));
+	report->SetTex(CTexture::Texture(TEX_REPORT));
 
 }
 void CGame::Uninit(void)
@@ -131,6 +138,7 @@ void CGame::Uninit(void)
 		Ground->Release();
 		Ground = nullptr;
 	}
+	SafeDelete(MiniMap);
 	CCamera::Release();
 	CObject::ReleaseAll();
 }
@@ -167,31 +175,35 @@ void CGame::Update(void)
 	//Player->SetPosY(HeightGround);
 	//Player->SetRot(180.0f / PI * AnglePlayerX, 0.0f, 180.0f / PI * AnglePlayerZ);
 
-  // 装填ゲージ
-  const float currentTimer = (float)Player->ReloadTimer();
-  const float maxTimer = (float)PLAYER_RELOAD_TIME;
-  const float rate = currentTimer / maxTimer;
+	// 装填ゲージ
+	const float currentTimer = (float)Player->ReloadTimer();
+	const float maxTimer = (float)PLAYER_RELOAD_TIME;
+	const float rate = currentTimer / maxTimer;
 
-  loadGauge->SetRate(rate);
-  if (rate >= 1.0f){
-    loadString->DrawDisable();
-  }
-  if (rate <= 0.0f){
-    loadString->DrawEnable();
-  }
+	loadGauge->SetRate(rate);
+	if (rate >= 1.0f){
+		loadString->DrawDisable();
+	}
+	if (rate <= 0.0f){
+		loadString->DrawEnable();
+	}
 
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CManager::ChangeScene(SCENE_RESULT);
 	}
 
-  if (CKeyboard::GetPress(DIK_P)){
-    reportBg->SetDrawFlag(true);
-    report->SetDrawFlag(true);
-  }
-  else {
-    reportBg->SetDrawFlag(false);
-    report->SetDrawFlag(false);
-  }
+	if (CKeyboard::GetPress(DIK_P)){
+		reportBg->SetDrawFlag(true);
+		report->SetDrawFlag(true);
+	}
+	else {
+		reportBg->SetDrawFlag(false);
+		report->SetDrawFlag(false);
+	}
+
+	MiniMap->SetPlayer(0,Player->Pos(),Player->Rot().y);
+
+	MiniMap->Update();
 
 }
