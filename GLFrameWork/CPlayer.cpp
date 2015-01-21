@@ -31,7 +31,11 @@ CPlayer::CPlayer():CModel()
 	// ’e‰Šú‰»
 	Bullet = nullptr;
 
-  _ReloadTimer = PLAYER_RELOAD_TIME;
+	// ‘•“UŽžŠÔ
+	_ReloadTimer = PLAYER_RELOAD_TIME;
+
+	// –Cg‚ÌXŽ²‰ñ“]—Ê
+	BarrelRotX = 0.0f;
 }
 
 //------------------------------------------------------------------------------
@@ -60,10 +64,11 @@ void CPlayer::Init(void)
 
 	// Œp³Œ³‚Ì‰Šú‰»
 	CModel::Init();
- Barrel = CModel::Create(TANK_BARREL,_Pos);
- Barrel->Init();
- Barrel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
 
+	// –Cg
+	Barrel = CModel::Create(TANK_BARREL,_Pos);
+	Barrel->Init();
+	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
 }
 
 //------------------------------------------------------------------------------
@@ -105,51 +110,57 @@ void CPlayer::Update()
 		rot.y -= 3.0f;
 	}
 
+	// –Cg‚Ìã‰º
 	if(CKeyboard::GetPress(DIK_UP))
 	{
-		rot.x -= 3.0f;
+		BarrelRotX -= 3.0f;
 	}
 	else if(CKeyboard::GetPress(DIK_DOWN))
 	{
-		rot.x += 3.0f;
+		BarrelRotX += 3.0f;
 	}
 
 	// ƒLƒƒƒ‰ƒNƒ^[‚Ì‰ñ“]
 	AddRot(rot);
 
 	// ’l‚ÌŠÛ‚ßž‚Ý
-	if( Rot().y > 360.0f)
+	// ƒvƒŒƒCƒ„[‚Ì‰ñ“]—Ê
+	if(Rot().y > 360.0f)
 	{
 		SetRotY(Rot().y - 2 * 360.0f);
 	}
-	else if (Rot().y < -360.0f)
+	else if(Rot().y < -360.0f)
 	{
 		SetRotY(Rot().y + 2 * 360.0f);
 	}
 
-	// ƒLƒƒƒ‰ƒNƒ^[‚ÌˆÚ“®
+	// –Cg
+	if( BarrelRotX > BARREL_ROT_MIN)
+	{
+		BarrelRotX = BARREL_ROT_MIN;
+	}
+	else if(BarrelRotX < BARREL_ROT_MAX)
+	{
+		BarrelRotX = BARREL_ROT_MAX;
+	}
+	
+	// ƒLƒƒƒ‰ƒNƒ^[‚ÌˆÚ“®’l‚ð‰ÁŽZ
 	AddPos(Movement);
 
 	// Œ¸‘¬
 	Movement *= 0.95f;
- Barrel->SetPos(_Pos);
 
-	// UŒ‚
-	//if(CKeyboard::GetTrigger(DIK_SPACE))
-	//{
-	//	if(Bullet == nullptr)
-	//	{
-	//		//LaunchFlag = true;
-	//		//Bullet = CBullet::Create(_Pos, VECTOR2(40.0f, 40.0f), VECTOR3(0.0f, 0.0f, 0.0f), WHITE(0.5f));
-	//		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
-	//	}
-	//}
+	// –Cg‚ÌˆÊ’uA‰ñ“]‚ðXV
+	Barrel->SetPos(_Pos);			// ˆÊ’u
+	Barrel->SetRot(_Rot);			// ‰ñ“]
+	Barrel->AddRotX(BarrelRotX);	// ã‚ÅÝ’è‚µ‚½‰ñ“]—Ê‚É–Cg‚ÌXŽ²‰ñ“]—Ê‚ð‰ÁŽZ
 
+	// ’e‚Ì”­ŽË
 	if(LaunchFlag == false)
 	{
 		if(CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), _Rot, WHITE(0.5f));
+			Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
 			LaunchFlag = true;
 			_ReloadTimer = 0;
 		}
@@ -166,19 +177,36 @@ void CPlayer::Update()
 	}
 
 #ifdef _DEBUG
+	// ƒfƒoƒbƒO—p
+	// ˜AŽË
+	if(CKeyboard::GetPress(DIK_V))
+	{
+		Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+	}
+
+	if(CKeyboard::GetPress(DIK_L))
+	{
+		_PlayerLife--;
+	}
+#endif
+
+#ifdef _DEBUG
 	Console::SetCursorPos(1,1);
 	Console::Print("Rot.x:%f\nRot.y:%f\n",_Rot.x,_Rot.y);
+	Console::SetCursorPos(1, 3);
+	Console::Print("barrel@rot.x : %f rot.y : %f rot.z : %f", Barrel->Rot().x, Barrel->Rot().y, Barrel->Rot().z);
 #endif
 
 }
 
 //------------------------------------------------------------------------------
-// 
+// ¶¬
 //------------------------------------------------------------------------------
 // ˆø”
-//  ‚È‚µ
+//  id : ƒ‚ƒfƒ‹‚ÌID
+//  pos : ‰ŠúˆÊ’u
 // –ß‚è’l
-//  ‚È‚µ
+//  CPlayer* : ¶¬‚µ‚½ƒvƒŒƒCƒ„[‚Ìƒ|ƒCƒ“ƒ^
 //------------------------------------------------------------------------------
 CPlayer* CPlayer::Create(int id,const VECTOR3& pos)
 {
@@ -188,7 +216,6 @@ CPlayer* CPlayer::Create(int id,const VECTOR3& pos)
 	model->ModelID = id;
 	model->_Pos = pos;
 	model->Init();
-
 
 	return model;
 }
