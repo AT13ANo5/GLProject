@@ -16,8 +16,8 @@
 #include "LoadGauge.h"
 #include "LoadString.h"
 #include "Life.h"
+#include "NumberManager.h"
 #include "MiniMap.h"
-
 // Ã“Iƒƒ“ƒo•Ï”
 const float CGame::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
 
@@ -46,6 +46,7 @@ CGame::CGame()
 	reportBg = nullptr;
 	report = nullptr;
 	MiniMap = nullptr;
+  numberManager = nullptr;
 }
 
 CGame::~CGame()
@@ -106,16 +107,18 @@ void CGame::Init(void)
 	MiniMap->Init();
 	CMiniMap::SetFieldSize(Ground->Size());
 
-	// ¬Ñ•\‚Ì”wŒi
+// ¬Ñ•\‚Ì”wŒi
 	reportBg = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
 	reportBg->SetColor(REPORT_BG_COLOR);
 
-	// ¬Ñ•\
-	const float scl = 0.7f;
-	report = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH * scl,SCREEN_HEIGHT * scl));
-	report->SetTex(CTexture::Texture(TEX_REPORT));
 
-}
+
+
+	// ¬Ñ•\
+	 const float scl = 0.8f;
+  report = CReport::Create(REPORT_BG_POS, VECTOR2(SCREEN_WIDTH * scl, SCREEN_HEIGHT * scl));
+  report->SetTex(CTexture::Texture(TEX_REPORT));// ¬Ñ•\‚Ì”’l
+  numberManager = CNumberManager::Create();}
 void CGame::Uninit(void)
 {
 	// ƒvƒŒƒCƒ„[”jŠü
@@ -193,15 +196,16 @@ void CGame::Update(void)
 		CManager::ChangeScene(SCENE_RESULT);
 	}
 
-	if (CKeyboard::GetPress(DIK_P)){
-		reportBg->SetDrawFlag(true);
-		report->SetDrawFlag(true);
-	}
-	else {
-		reportBg->SetDrawFlag(false);
-		report->SetDrawFlag(false);
-	}
-
+ if (CKeyboard::GetPress(DIK_P)){
+    reportBg->SetDrawFlag(true);
+    report->SetDrawFlag(true);
+    numberManager->SetDrawFlag(true);
+  }
+  else {
+    reportBg->SetDrawFlag(false);
+    report->SetDrawFlag(false);
+    numberManager->SetDrawFlag(false);
+  }
 	MiniMap->SetPlayer(0,Player->Pos(),Player->Rot().y);
 
 	MiniMap->Update();

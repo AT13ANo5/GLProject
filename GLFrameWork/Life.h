@@ -14,11 +14,15 @@
 class CLife :public CPolygon2D
 {
 public:
+
+  static const int LIFE_MAX = 3;
+
 	CLife();
 	~CLife(){}
 	void Init(void);
-	void Uninit(void);
+//	void Uninit(void);
 	void Update(void);
+  void Draw(void){}
 
 	//=============================================================================
 	//作成
@@ -33,15 +37,19 @@ public:
 	//=============================================================================
 	//ライフ増減
 	//=============================================================================
-	void LifeDamage(void){ LifePoint--; }	//ダメージ
-	void LifeReset(void){ LifePoint = 3; }	//復活
+  void LifeDamage(void){ LifePoint--; if (LifePoint < 0){ LifePoint = 0; } }	//ダメージ
+  void LifeReset(void){ LifePoint = LIFE_MAX; }	//復活
 	//=============================================================================
 	//ゲッター
 	//=============================================================================
 	int GetLife(void){ return LifePoint; }//現在のライフ取得
+  int SetLife(int life){ LifePoint = life; }
 
 private:
-	int LifePoint;//現在のライフ
+
+  int LifePoint;//現在のライフ
+  CPolygon2D* Life[LIFE_MAX];
+
 };
 
 #endif
