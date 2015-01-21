@@ -140,6 +140,12 @@
     <Filter Include="02_ゲーム\ミニマップ">
       <UniqueIdentifier>{8e739737-28f7-44fd-9e5b-60816a92c411}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\NumberManager">
+      <UniqueIdentifier>{1d7a4112-3b37-45e8-b44d-a4c9b470bbd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\NumberManager\Number2D">
+      <UniqueIdentifier>{2ae40a32-fc4b-4ed1-b860-2a3575f4f2de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -264,6 +270,12 @@
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
       <Filter>02_ゲーム\ミニマップ</Filter>
+    </ClCompile>
+    <ClCompile Include="NumberManager.cpp">
+      <Filter>00_システム\NumberManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Number2D.cpp">
+      <Filter>00_システム\NumberManager\Number2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -401,6 +413,12 @@
     </ClInclude>
     <ClInclude Include="MiniMap.h">
       <Filter>02_ゲーム\ミニマップ</Filter>
+    </ClInclude>
+    <ClInclude Include="NumberManager.h">
+      <Filter>00_システム\NumberManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Number2D.h">
+      <Filter>00_システム\NumberManager\Number2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

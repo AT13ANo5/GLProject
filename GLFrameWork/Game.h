@@ -20,7 +20,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 private:
-	static const float  RADIUS_SKY;   // 空の半径
+	static const float  RADIUS_SKY;		// 空の半径
 
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
@@ -30,6 +30,6 @@ private:
   CReport*        reportBg;
   CReport*        report;
   CNumberManager* numberManager;
-	CMiniMap*	MiniMap;};
-
+	CMiniMap*	MiniMap;
+};
 #endif

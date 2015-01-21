@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "main.h"
 #include "Game.h"
 #include "ManagerGL.h"
@@ -34,9 +36,7 @@ namespace{
 	const float     ICON_SIZE = 50.0f;
 	const VECTOR3   ICON_POS = VECTOR3(20.0f + ICON_SIZE / 2,GAUGE_POS_Y + ICON_SIZE / 2,0.0f);
 	const VECTOR3   REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f,SCREEN_HEIGHT*0.5f,0.0f);
-	const COLOR     REPORT_BG_COLOR = COLOR(0.0f,0.05f,0.0f,0.6f);
-
-}
+	const COLOR     REPORT_BG_COLOR = COLOR(0.0f,0.05f,0.0f,0.6f);}
 
 
 CGame::CGame()
@@ -46,9 +46,7 @@ CGame::CGame()
 	reportBg = nullptr;
 	report = nullptr;
 	MiniMap = nullptr;
-  numberManager = nullptr;
-}
-
+  numberManager = nullptr;}
 CGame::~CGame()
 {
 
@@ -56,21 +54,22 @@ CGame::~CGame()
 
 void CGame::Init(void)
 {
-
 	//CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
 	//polygon->SetTex(CTexture::Texture(TEX_LIGHT));
 	//polygon->SetColor(GREEN(1.0f));
-	CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));
-
-	// 地形生成
+	CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));	// 地形生成
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(50.0f,50.0f),VECTOR2(20.0f,20.0f));
+	Ground = CMeshGround::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(100.0f, 100.0f), VECTOR2(20.0f, 20.0f));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
 	// 空生成
 	Sky = nullptr;
 	Sky = CMeshSphere::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(16.0f,8.0f),RADIUS_SKY);
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
+#ifdef _DEBUG
+	// デバッグワイヤーフレーム
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 
 	// プレイヤー生成
 	Player = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f,0.0f,0.0f));
@@ -83,19 +82,18 @@ void CGame::Init(void)
 	//ライフ生成
 	CLife::Create(VECTOR3(50.0f,40.0f,0.0f),VECTOR2(100.0f,100.0f));
 
-	// 装填ゲージ
-	CLoadGauge* load_gauge = nullptr;
+	// 装填ゲージ	CLoadGauge* load_gauge = nullptr;
 	load_gauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
 	load_gauge->SetTex(CTexture::Texture(TEX_RELOAD));
 
 	loadGauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
 	loadGauge->SetDefaultColor(GAUGE_COLOR);
 	//	loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
-
 	// 装填中文字
 	loadString = CLoadString::Create(GAUGE_STR_POS,GAUGE_STR_SIZE);
 	loadString->SetTex(CTexture::Texture(TEX_RELOAD));
 	loadString->DrawEnable();
+}
 
 	// 弾アイコン
 	CPolygon2D* canonIcon = nullptr;
@@ -118,8 +116,7 @@ void CGame::Init(void)
 	 const float scl = 0.8f;
   report = CReport::Create(REPORT_BG_POS, VECTOR2(SCREEN_WIDTH * scl, SCREEN_HEIGHT * scl));
   report->SetTex(CTexture::Texture(TEX_REPORT));// 成績表の数値
-  numberManager = CNumberManager::Create();}
-void CGame::Uninit(void)
+  numberManager = CNumberManager::Create();}void CGame::Uninit(void)
 {
 	// プレイヤー破棄
 	if (Player != nullptr)
@@ -142,41 +139,57 @@ void CGame::Uninit(void)
 		Ground = nullptr;
 	}
 	SafeDelete(MiniMap);
-	CCamera::ReleaseAll();
-	CObject::ReleaseAll();
+	CCamera::ReleaseAll();	CObject::ReleaseAll();
 }
 
 void CGame::Update(void)
 {
-	// TODO：以下一行コメントアウトは作業しにくいから。終了し次第消します
+	const int max_time = 200;
+	testTimer++;
+	if (testTimer >= max_time + 50){
+		testTimer = 0;
+	}
+	float rate = (float)testTimer / (float)max_time;
+	if (rate > 1.0f){
+		rate = 1.0f;
+	}
+	loadGauge->SetRate(rate);
+
 	// 地形とのあたり判定
-	VECTOR3 NormalGround;   // 地形の法線
-	//float   HeightGround;   // 地形の高さ
-	//HeightGround = Ground->GetHeight(Player->Pos(), &NormalGround);
-	NormalGround.Normalize();
+	VECTOR3	NormalGround;		// 地形の法線
+	float	HeightGround;		// 地形の高さ
+	HeightGround = Ground->GetHeight(Player->Pos(), &NormalGround);
 
 	// 回転を求める
-	VECTOR3 VectorUpPlayer; // 上方向ベクトル
-	VECTOR3 VectorNormalYZ; // YZ平面上の法線ベクトル
-	VECTOR3 VectorNormalXY; // XY平面上の法線ベクトル
-	float   AnglePlayerX;   // プレイヤー回転X軸
-	float   AnglePlayerZ;   // プレイヤー回転Z軸
+	VECTOR3	VectorUpPlayer;		// 上方向ベクトル
+	VECTOR3	VectorNormalYZ;		// YZ平面上の法線ベクトル
+	VECTOR3	VectorNormalXY;		// XY平面上の法線ベクトル
+	float	AnglePlayerX;		// プレイヤー回転X軸
+	float	AnglePlayerZ;		// プレイヤー回転Z軸
 	VectorUpPlayer.x = VectorUpPlayer.z = 0.0f;
 	VectorUpPlayer.y = 1.0f;
 	VectorNormalYZ.x = 0.0f;
 	VectorNormalYZ.y = NormalGround.y;
 	VectorNormalYZ.z = NormalGround.z;
 	VectorNormalYZ.Normalize();
-	AnglePlayerX = VECTOR3::Dot(VectorNormalYZ,VectorUpPlayer);
+	AnglePlayerX = -acosf(VECTOR3::Dot(VectorNormalYZ, VectorUpPlayer));
 	VectorNormalXY.x = NormalGround.x;
 	VectorNormalXY.y = NormalGround.y;
 	VectorNormalXY.z = 0.0f;
 	VectorNormalXY.Normalize();
-	AnglePlayerZ = VECTOR3::Dot(VectorNormalXY,VectorUpPlayer);
+	AnglePlayerZ = -acosf(VECTOR3::Dot(VectorNormalXY, VectorUpPlayer));
+
+	// プレイヤー情報のデバッグ表示
+	VECTOR3	positionPlayer = Player->Pos();
+	VECTOR3	rotaionPlayer = Player->Rot();
+	Console::SetCursorPos(1, 1);
+	Console::Print("Pos : (%9.3f, %9.3f, %9.3f)\n", positionPlayer.x, HeightGround, positionPlayer.z);
+	Console::Print("Rot : (%9.3f, %9.3f, %9.3f)\n", 180.0f / PI * AnglePlayerX, rotaionPlayer.y, 180.0f / PI * AnglePlayerZ);
 
 	// プレイヤーに設定する
-	//Player->SetPosY(HeightGround);
-	//Player->SetRot(180.0f / PI * AnglePlayerX, 0.0f, 180.0f / PI * AnglePlayerZ);
+	Player->SetPosY(HeightGround);
+	Player->SetRotX(AnglePlayerX * 180.0f / PI);
+	Player->SetRotZ(AnglePlayerZ * 180.0f / PI);
 
 	// 装填ゲージ
 	const float currentTimer = (float)Player->ReloadTimer();
@@ -190,7 +203,6 @@ void CGame::Update(void)
 	if (rate <= 0.0f){
 		loadString->DrawEnable();
 	}
-
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CManager::ChangeScene(SCENE_RESULT);
