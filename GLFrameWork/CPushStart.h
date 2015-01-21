@@ -40,6 +40,9 @@ public:
 	void SetSizeX(float x){ _Size.x = x; Resize();}
 	void SetSizeY(float y){ _Size.y = y; Resize();}
 
+	//菊島　点滅速度変えられるようにしました。
+	void SetAlphaSpeed(float Speed){ moveAlpha = Speed;}
+
 	void SetTex(TEX_INFO tex){ Texture = tex;uv.InverseH = tex.InverseH;uv.InverseV = tex.InverseV; }
 
 	//=============================================================================

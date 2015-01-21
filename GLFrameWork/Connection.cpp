@@ -52,8 +52,14 @@ CConnection::~CConnection()
 
 void CConnection::Init(void)
 {
+
+
+	backGround = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0), VECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	backGround->SetTex(CTexture::Texture(TEX_WALL));
+	//backGround->SetColor(COLOR(0.0f,0.0f,0.0f,1.0f));
+
 	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/2.0f,100.0f,0),VECTOR2(512.0f,200.0f));
-	Logo->SetTex(CTexture::Texture(TEX_MIKU));
+	Logo->SetTex(CTexture::Texture(TEX_CONNECTION));
 	
 	pushStart = CPushStart::Create(VECTOR3(SCREEN_WIDTH / 2.0f, 650.0f, 0), VECTOR2(512.0f, 100.0f));
 	pushStart->SetTex(CTexture::Texture(TEX_CONNECTION));
@@ -102,8 +108,6 @@ void CConnection::Init(void)
 	}
 
 
-	backGround = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0), VECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
-	backGround->SetTex(CTexture::Texture(TEX_FIELD));
 }
 
 void CConnection::Uninit(void)

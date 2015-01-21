@@ -9,6 +9,7 @@ class CModel;
 class CMeshGround;
 class CMeshSphere;
 class CCamera;
+class CPushStart;
 
 class CTitle :public CScene
 {
@@ -23,6 +24,7 @@ private:
   static const float  RADIUS_SKY;   // ‹ó‚Ì”¼Œa
 
 	CPolygon2D* Logo;
+	CPushStart* PushEnter;
   CModel*     Player;
   CModel* Barrel;
   CModel* Rock;

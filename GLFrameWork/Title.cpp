@@ -7,6 +7,7 @@
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Camera.h"
+#include "CPushStart.h"
 #include <math.h>
 
 // static member
@@ -15,6 +16,7 @@ const float CTitle::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
 CTitle::CTitle()
 {
 	Logo = nullptr;
+	PushEnter = nullptr;
 	Player = nullptr;
 	Ground = nullptr;
 	Sky = nullptr;
@@ -31,6 +33,11 @@ void CTitle::Init(void)
 	// Logo
 	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 3.0f,0),VECTOR2(750.0f,375.0f));
 	Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
+
+	// pushenter
+	PushEnter = CPushStart::Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 1.25f, 0), VECTOR2(400.0f, 64.0f));
+	PushEnter->SetTex(CTexture::Texture(TEX_PUSH_ENTER));
+	PushEnter->SetAlphaSpeed(0.015f);
 
 	// Player
 	Player = CModel::Create(CModel::RINCHAN,VECTOR3(0.0f,0.0f,0.0f));
