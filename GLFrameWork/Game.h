@@ -27,9 +27,10 @@ private:
 	CPlayer*        Player;     // ƒvƒŒƒCƒ„[
 	CLoadGauge*     loadGauge;  // ‘•“UƒQ[ƒW
 	CLoadString*    loadString; // ‘•“U’†‚Ì•¶š
-  CReport*        reportBg;
-  CReport*        report;
-  CNumberManager* numberManager;
+	CReport*        reportBg;
+	CReport*        report;
+	CNumberManager* numberManager;
 	CMiniMap*	MiniMap;
+
 };
 #endif
