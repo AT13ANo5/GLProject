@@ -167,7 +167,7 @@ void CCamera::Set(void)
 	//3DÇÃê›íË
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0f,SCREEN_WIDTH/SCREEN_HEIGHT,1.0f,1500.0f);
+	gluPerspective(60.0f,SCREEN_WIDTH/SCREEN_HEIGHT,1.0f,3000.0f);
 	//ÉrÉÖÅ[çsóÒ
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

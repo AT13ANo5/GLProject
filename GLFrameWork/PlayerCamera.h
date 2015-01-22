@@ -15,6 +15,8 @@ public:
 
 private:
 	CObject* Parent;
+
+	VECTOR3 DestEye;
 	
 };
 

@@ -176,8 +176,8 @@ void CGame::Update(void)
 	VECTOR3	positionPlayer = Player->Pos();
 	VECTOR3	rotaionPlayer = Player->Rot();
 	Console::SetCursorPos(1,1);
-	Console::Print("Pos : (%9.3f, %9.3f, %9.3f)\n",positionPlayer.x,HeightGround,positionPlayer.z);
-	Console::Print("Rot : (%9.3f, %9.3f, %9.3f)\n",180.0f / PI * AnglePlayerX,rotaionPlayer.y,180.0f / PI * AnglePlayerZ);
+	Console::Print("Pos : (%9.3f, %9.3f, %9.3f)",positionPlayer.x,HeightGround,positionPlayer.z);
+	Console::Print("Rot : (%9.3f, %9.3f, %9.3f)",180.0f / PI * AnglePlayerX,rotaionPlayer.y,180.0f / PI * AnglePlayerZ);
 
 	// ƒvƒŒƒCƒ„[‚ÉÝ’è‚·‚é
 	Player->SetPosY(HeightGround);

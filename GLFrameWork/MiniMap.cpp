@@ -19,7 +19,7 @@ int CMiniMap::_SelfId = 0;
 //============================================================================
 const COLOR ArrowColor[PLAYER_MAX] =
 {
-	BLUE(1.0f),
+	CYAN(1.0f),
 	GREEN(1.0f),
 	COLOR(1.0f,0.7f,0,1.0f),
 	RED(1.0f),

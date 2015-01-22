@@ -190,13 +190,6 @@ void CPlayer::Update()
 	}
 #endif
 
-#ifdef _DEBUG
-	Console::SetCursorPos(1,1);
-	Console::Print("Rot.x:%f\nRot.y:%f\n",_Rot.x,_Rot.y);
-	Console::SetCursorPos(1, 3);
-	Console::Print("barrel@rot.x : %f rot.y : %f rot.z : %f", Barrel->Rot().x, Barrel->Rot().y, Barrel->Rot().z);
-#endif
-
 }
 
 //------------------------------------------------------------------------------
