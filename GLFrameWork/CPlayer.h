@@ -21,6 +21,19 @@
 #include "Model.h"
 
 //------------------------------------------------------------------------------
+// 列挙体宣言
+//------------------------------------------------------------------------------
+typedef enum
+{
+	PLAYER_STATE_WAIT = 0,	// 停止中
+	PLAYER_STATE_MOVE,		// 移動中
+	PLAYER_STATE_DAMAGE,	// 非ダメージ
+	PLAYER_STATE_DEATH,		// 死亡
+	PLAYER_STATE_RESPAWN,	// 復活中
+	PLAYER_STATE_MAX,		// 最大数の退避
+}PLAYER_STATE;
+
+//------------------------------------------------------------------------------
 // 前方宣言
 //------------------------------------------------------------------------------
 class CBullet;
@@ -43,17 +56,21 @@ public:
 	// 体力ゲッター
 	int PlayerLife(void){return _PlayerLife;}
 
-	static CPlayer* Create(int id, const VECTOR3& pos);
+	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
+
+	// 弾ポインタゲッター
+	CBullet* Bullet(void){return _Bullet;}
 
 private:
 	CModel* Barrel;		// 砲身
-	CBullet* Bullet;	// 弾
+	CBullet* _Bullet;	// 弾
 	VECTOR3 Movement;	// 移動量
 	float Speed;		// 移動速度
 	float BarrelRotX;	// 砲身のX軸回転量
-	bool LaunchFlag;	// 弾発射フラグ（true / 使用：false / 不使用）
+	bool LaunchFlag;	// 弾発射フラグ（true : 使用 / false : 不使用）
 	int _ReloadTimer;	// 現在の装填時間
 	int _PlayerLife;	// 体力
+	int PlayerID;		// プレイヤー判別用ID
 };
 
 //------------------------------------------------------------------------------
