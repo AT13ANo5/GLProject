@@ -85,7 +85,7 @@ void CGame::Init(void)
 	//ライフ生成
 	CLife::Create(LIFE_POS,VECTOR2(100.0f,100.0f));
 
-	// 装填ゲージ	
+	// 装填ゲージ
 	CLoadGauge* load_gauge = nullptr;
 	load_gauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
 	load_gauge->SetDefaultColor(COLOR(0,0,0,1));
@@ -97,7 +97,6 @@ void CGame::Init(void)
 	loadString = CLoadString::Create(GAUGE_STR_POS,GAUGE_STR_SIZE);
 	loadString->SetTex(CTexture::Texture(TEX_RELOAD));
 	loadString->DrawEnable();
-	
 
 	// 弾アイコン
 	CPolygon2D* canonIcon = nullptr;
