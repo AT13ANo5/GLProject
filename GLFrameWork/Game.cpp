@@ -168,7 +168,6 @@ void CGame::Init(void)
 	report = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH * scl,SCREEN_HEIGHT * scl));
 	report->SetTex(CTexture::Texture(TEX_REPORT));// ¬Ñ•\‚Ì”’l
 	numberManager = CNumberManager::Create();
-}
 
 	// Šâ‚Ì¶¬
 	ppRock_ = new CModel*[MAX_ROCK];

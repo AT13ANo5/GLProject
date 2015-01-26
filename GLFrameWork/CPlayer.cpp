@@ -89,22 +89,22 @@ void CPlayer::Init(void)
 //------------------------------------------------------------------------------
 void CPlayer::Update()
 {
-	if(PlayerFlag == true)
+	if (PlayerFlag == true)
 	{
 		// 操作キャラクター
 
 		// 弾の使用状態を確定
-		if(_Bullet == nullptr)
+		if (_Bullet == nullptr)
 		{
 			_BulletUseFlag = false;
 		}
 
 		// 初期化
-		VECTOR3 rot = VECTOR3(0.0f, 0.0f, 0.0f);
+		VECTOR3 rot = VECTOR3(0.0f,0.0f,0.0f);
 
 		// 移動
 		// 上
-		if(CKeyboard::GetPress(DIK_W))
+		if (CKeyboard::GetPress(DIK_W))
 		{
 			Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
 			Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
@@ -118,23 +118,23 @@ void CPlayer::Update()
 		}
 
 		// 左
-		if(CKeyboard::GetPress(DIK_A))
+		if (CKeyboard::GetPress(DIK_A))
 		{
 			rot.y += 3.0f;
 		}
 
 		// 右
-		else if(CKeyboard::GetPress(DIK_D))
+		else if (CKeyboard::GetPress(DIK_D))
 		{
 			rot.y -= 3.0f;
 		}
 
 		// 砲身の上下
-		if(CKeyboard::GetPress(DIK_UP))
+		if (CKeyboard::GetPress(DIK_UP))
 		{
 			BarrelRotX -= 3.0f;
 		}
-		else if(CKeyboard::GetPress(DIK_DOWN))
+		else if (CKeyboard::GetPress(DIK_DOWN))
 		{
 			BarrelRotX += 3.0f;
 		}
@@ -144,25 +144,25 @@ void CPlayer::Update()
 
 		// 値の丸め込み
 		// プレイヤーの回転量
-		if(Rot().y > 360.0f)
+		if (Rot().y > 360.0f)
 		{
 			SetRotY(Rot().y - 2 * 360.0f);
 		}
-		else if(Rot().y < -360.0f)
+		else if (Rot().y < -360.0f)
 		{
 			SetRotY(Rot().y + 2 * 360.0f);
 		}
 
 		// 砲身
-		if( BarrelRotX > BARREL_ROT_MIN)
+		if (BarrelRotX > BARREL_ROT_MIN)
 		{
 			BarrelRotX = BARREL_ROT_MIN;
 		}
-		else if(BarrelRotX < BARREL_ROT_MAX)
+		else if (BarrelRotX < BARREL_ROT_MAX)
 		{
 			BarrelRotX = BARREL_ROT_MAX;
 		}
-	
+
 		// キャラクターの移動値を加算
 		AddPos(Movement);
 
@@ -174,44 +174,46 @@ void CPlayer::Update()
 		Barrel->SetRot(_Rot);			// 回転
 		Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
 
-  // 弾道の更新
-  Ballistic->Update(_Pos, VECTOR3(BarrelRotX, _Rot.y, _Rot.z));
+		// 弾道の更新
+		Ballistic->Update(_Pos,VECTOR3(BarrelRotX,_Rot.y,_Rot.z));
 
-	// 弾の発射
-	if(LaunchFlag == false)
-	{
-		if(CKeyboard::GetTrigger(DIK_SPACE))		{
-			if(CKeyboard::GetTrigger(DIK_SPACE))
-			{
-				_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
-				LaunchFlag = true;
-				_BulletUseFlag = true;
-				_ReloadTimer = 0;
+		// 弾の発射
+		if (LaunchFlag == false)
+		{
+			if (CKeyboard::GetTrigger(DIK_SPACE))		{
+				if (CKeyboard::GetTrigger(DIK_SPACE))
+				{
+					_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
+					LaunchFlag = true;
+					_BulletUseFlag = true;
+					_ReloadTimer = 0;
+				}
 			}
-		}
-		else
-		{
-			_ReloadTimer++;
-
-			if(_ReloadTimer >= PLAYER_RELOAD_TIME)
+			else
 			{
-				LaunchFlag = false;
-				_ReloadTimer = PLAYER_RELOAD_TIME;
-			}		}
+				_ReloadTimer++;
 
-	#ifdef _DEBUG
-		// デバッグ用
-		// 連射
-		if(CKeyboard::GetPress(DIK_V))
-		{
-			CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
-		}
+				if (_ReloadTimer >= PLAYER_RELOAD_TIME)
+				{
+					LaunchFlag = false;
+					_ReloadTimer = PLAYER_RELOAD_TIME;
+				}
+			}
 
-		if(CKeyboard::GetPress(DIK_L))
-		{
-			_PlayerLife--;
+#ifdef _DEBUG
+			// デバッグ用
+			// 連射
+			if (CKeyboard::GetPress(DIK_V))
+			{
+				CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
+			}
+
+			if (CKeyboard::GetPress(DIK_L))
+			{
+				_PlayerLife--;
+			}
+#endif
 		}
-	#endif
 	}
 	else 
 	{

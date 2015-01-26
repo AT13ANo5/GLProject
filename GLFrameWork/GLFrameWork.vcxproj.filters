@@ -149,6 +149,12 @@
     <Filter Include="02_ゲーム\プレイヤー\弾道">
       <UniqueIdentifier>{38dd6d10-4bc9-48ed-ad99-f093138db667}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03_リザルト\UIManager">
+      <UniqueIdentifier>{4c964f2b-a678-4a44-aebb-034b10d375ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_リザルト\NumberManager">
+      <UniqueIdentifier>{9c27d603-b2cc-468f-8faa-d8fecb278fc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -282,6 +288,12 @@
     </ClCompile>
     <ClCompile Include="Ballistic.cpp">
       <Filter>02_ゲーム\プレイヤー\弾道</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultUIManager.cpp">
+      <Filter>03_リザルト\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultNumberManager.cpp">
+      <Filter>03_リザルト\NumberManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -426,11 +438,17 @@
     <ClInclude Include="Number2D.h">
       <Filter>00_システム\NumberManager\Number2D</Filter>
     </ClInclude>
-	<ClInclude Include="netData.h">
+    <ClInclude Include="netData.h">
       <Filter>05_通信ロビー</Filter>
     </ClInclude>
-	<ClInclude Include="Ballistic.h">
+    <ClInclude Include="Ballistic.h">
       <Filter>02_ゲーム\プレイヤー\弾道</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultUIManager.h">
+      <Filter>03_リザルト\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultNumberManager.h">
+      <Filter>03_リザルト\NumberManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

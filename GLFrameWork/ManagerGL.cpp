@@ -96,14 +96,14 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 
 
 	FILE* fp;
-	char add[256];
+	char add[256] = { '\0' };
 
 	//	ユーザー情報の初期化
 	initUserInfo();
 
 	//	サーバーのアドレス取得
 	fp = fopen("address.txt", "r");
-	fscanf(fp, "%s", &add);
+	fscanf(fp, "%s", add);
 
 	//ネットワーク処理
 	//-----------------------------------------------------------------
