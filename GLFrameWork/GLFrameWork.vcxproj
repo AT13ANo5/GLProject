@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ballistic.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CBullet.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="AL\al.h" />
     <ClInclude Include="AL\alc.h" />
     <ClInclude Include="AL\alut.h" />
+    <ClInclude Include="Ballistic.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CBullet.h" />
