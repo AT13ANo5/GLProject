@@ -23,6 +23,9 @@
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 1500.0f;   // 空の半径
+const float	CGame::RADIUS_DEFENSE_CHARACTER = 10.0f;	// キャラクターの防御半径
+const float	CGame::RADIUS_OFFENSE_BULLET = 10.0f;		// 砲弾の攻撃半径
+const float	CGame::RADIUS_PUSH_CHARACTER = 10.0f;		// キャラクターの押し戻し半径
 
 // 定数
 namespace{
@@ -148,42 +151,6 @@ void CGame::Uninit(void)
 
 void CGame::Update(void)
 {
-	// 地形とのあたり判定
-	VECTOR3	NormalGround;		// 地形の法線
-	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(Player->Pos(),&NormalGround);
-
-	// 回転を求める
-	VECTOR3	VectorUpPlayer;		// 上方向ベクトル
-	VECTOR3	VectorNormalYZ;		// YZ平面上の法線ベクトル
-	VECTOR3	VectorNormalXY;		// XY平面上の法線ベクトル
-	float	AnglePlayerX;		// プレイヤー回転X軸
-	float	AnglePlayerZ;		// プレイヤー回転Z軸
-	VectorUpPlayer.x = VectorUpPlayer.z = 0.0f;
-	VectorUpPlayer.y = 1.0f;
-	VectorNormalYZ.x = 0.0f;
-	VectorNormalYZ.y = NormalGround.y;
-	VectorNormalYZ.z = NormalGround.z;
-	VectorNormalYZ.Normalize();
-	AnglePlayerX = -acosf(VECTOR3::Dot(VectorNormalYZ,VectorUpPlayer));
-	VectorNormalXY.x = NormalGround.x;
-	VectorNormalXY.y = NormalGround.y;
-	VectorNormalXY.z = 0.0f;
-	VectorNormalXY.Normalize();
-	AnglePlayerZ = -acosf(VECTOR3::Dot(VectorNormalXY,VectorUpPlayer));
-
-	// プレイヤー情報のデバッグ表示
-	VECTOR3	positionPlayer = Player->Pos();
-	VECTOR3	rotaionPlayer = Player->Rot();
-	Console::SetCursorPos(1,1);
-	Console::Print("Pos : (%9.3f, %9.3f, %9.3f)",positionPlayer.x,HeightGround,positionPlayer.z);
-	Console::Print("Rot : (%9.3f, %9.3f, %9.3f)",180.0f / PI * AnglePlayerX,rotaionPlayer.y,180.0f / PI * AnglePlayerZ);
-
-	// プレイヤーに設定する
-	Player->SetPosY(HeightGround);
-	Player->SetRotX(AnglePlayerX * 180.0f / PI);
-	Player->SetRotZ(AnglePlayerZ * 180.0f / PI);
-
 	// 装填ゲージ
 	const float currentTimer = (float)Player->ReloadTimer();
 	const float maxTimer = (float)PLAYER_RELOAD_TIME;
@@ -211,8 +178,72 @@ void CGame::Update(void)
 		report->SetDrawFlag(false);
 		numberManager->SetDrawFlag(false);
 	}
+
+	// 攻撃判定
+	CheckHit();
+
+	// キャラクター同士の押し戻し
+	PushBackCharacter();
+
+	// 地形との押し戻し
+	PushBackField();
+
+
 	MiniMap->SetPlayer(0,Player->Pos(),Player->Rot().y);
 
 	MiniMap->Update();
 
+}
+
+//==============================================================================
+// 攻撃判定の当たり判定
+//==============================================================================
+void CGame::CheckHit(void)
+{
+}
+
+//==============================================================================
+// キャラクター同士の押し戻し
+//==============================================================================
+void CGame::PushBackCharacter(void)
+{
+}
+
+//==============================================================================
+// 地形の押し戻し
+//==============================================================================
+void CGame::PushBackField(void)
+{
+	// 地形とのあたり判定
+	VECTOR3	NormalGround;		// 地形の法線
+	float	HeightGround;		// 地形の高さ
+	HeightGround = Ground->GetHeight(Player->Pos(), &NormalGround);
+
+	// 回転を求める
+	VECTOR3	VectorUpPlayer;		// 上方向ベクトル
+	VECTOR3	VectorNormalYZ;		// YZ平面上の法線ベクトル
+	VECTOR3	VectorNormalXY;		// XY平面上の法線ベクトル
+	float	AnglePlayerX;		// プレイヤー回転X軸
+	float	AnglePlayerZ;		// プレイヤー回転Z軸
+	VectorUpPlayer.x = VectorUpPlayer.z = 0.0f;
+	VectorUpPlayer.y = 1.0f;
+	VectorNormalYZ.x = 0.0f;
+	VectorNormalYZ.y = NormalGround.y;
+	VectorNormalYZ.z = NormalGround.z;
+	VectorNormalYZ.Normalize();
+	AnglePlayerX = -acosf(VECTOR3::Dot(VectorNormalYZ, VectorUpPlayer));
+	VectorNormalXY.x = NormalGround.x;
+	VectorNormalXY.y = NormalGround.y;
+	VectorNormalXY.z = 0.0f;
+	VectorNormalXY.Normalize();
+	AnglePlayerZ = -acosf(VECTOR3::Dot(VectorNormalXY, VectorUpPlayer));
+
+	// プレイヤー情報のデバッグ表示
+	VECTOR3	positionPlayer = Player->Pos();
+	VECTOR3	rotaionPlayer = Player->Rot();
+
+	// プレイヤーに設定する
+	Player->SetPosY(HeightGround);
+//	Player->SetRotX(AnglePlayerX * 180.0f / PI);
+//	Player->SetRotZ(AnglePlayerZ * 180.0f / PI);
 }
