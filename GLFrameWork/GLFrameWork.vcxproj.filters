@@ -41,6 +41,9 @@
     <Filter Include="00_システム\Light">
       <UniqueIdentifier>{bbcc5d08-858a-45dd-a210-6c472c29ed5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\main">
+      <UniqueIdentifier>{c067ca8e-23ef-4d7c-80d3-78b92575b7d6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="00_システム\Manager">
       <UniqueIdentifier>{56236559-af7b-4543-a17d-4d90f7e1fd4c}</UniqueIdentifier>
     </Filter>
@@ -143,13 +146,10 @@
     <Filter Include="00_システム\NumberManager\Number2D">
       <UniqueIdentifier>{2ae40a32-fc4b-4ed1-b860-2a3575f4f2de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00_システム\Input\main">
-      <UniqueIdentifier>{c067ca8e-23ef-4d7c-80d3-78b92575b7d6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>00_システム\Input\main</Filter>
+      <Filter>00_システム\main</Filter>
     </ClCompile>
     <ClCompile Include="ManagerGL.cpp">
       <Filter>00_システム\Manager</Filter>
@@ -280,7 +280,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
-      <Filter>00_システム\Input\main</Filter>
+      <Filter>00_システム\main</Filter>
     </ClInclude>
     <ClInclude Include="ManagerGL.h">
       <Filter>00_システム\Manager</Filter>
@@ -357,6 +357,9 @@
     <ClInclude Include="Title.h">
       <Filter>01_タイトル</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>02_ゲーム</Filter>
+    </ClInclude>
     <ClInclude Include="Result.h">
       <Filter>03_リザルト</Filter>
     </ClInclude>
@@ -419,9 +422,6 @@
     </ClInclude>
     <ClInclude Include="netData.h">
       <Filter>05_通信ロビー</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>02_ゲーム</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
