@@ -197,8 +197,7 @@ void CPlayer::Update()
 			{
 				LaunchFlag = false;
 				_ReloadTimer = PLAYER_RELOAD_TIME;
-			}
-		}
+			}		}
 
 	#ifdef _DEBUG
 		// デバッグ用
@@ -236,8 +235,7 @@ void CPlayer::Update()
 //------------------------------------------------------------------------------
 CPlayer* CPlayer::Create(int modelID, const VECTOR3& pos, int playerID)
 {
-	CPlayer* model = new CPlayer();
-
+	CPlayer* model = new CPlayer;
 	if (model == nullptr)
 	{
 		return nullptr;

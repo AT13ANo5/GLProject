@@ -64,7 +64,6 @@ public:
 
 	// 生成（ポインタ版）
 	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
-
 	// 弾ポインタゲッター
 	CBullet* Bullet(void){return _Bullet;}
 
@@ -73,7 +72,6 @@ public:
 
 	void SetPLayerFlag(bool flag){PlayerFlag = flag;}
 	bool BulletUseFlag(void){return _BulletUseFlag;}
-
 private:
 	PLAYER_STATE _State;	// プレイヤーの状態
 	CModel* Barrel;			// 砲身
@@ -87,7 +85,7 @@ private:
 	int _PlayerLife;		// 体力
 	int PlayerID;			// プレイヤー判別用ID
 	bool PlayerFlag;		// 操作キャラクターかどうか
-  CBallistic* Ballistic; // 弾道
+  CBallistic* Ballistic; // 弾道	int PlayerID;		// プレイヤー判別用ID
 };
 
 #endif
