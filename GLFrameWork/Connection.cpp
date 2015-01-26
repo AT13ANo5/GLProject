@@ -1,33 +1,46 @@
+//=============================================================================
+//	Connectionファイル [ Connection.h ]
+//	Auther : KOTARO NAGASAKI
+//=============================================================================
+
+//*****************************************************************************
+//	インクルード
+//*****************************************************************************
 #include "Connection.h"
 #include "Polygon2D.h"
 #include "CPushStart.h"
 #include "ManagerGL.h"
 #include "Keyboard.h"
+#include "netData.h"
+#include "ManagerGL.h"
 
-static const int connectionPlayerMax = 6;
+//*****************************************************************************
+//	定数定義
+//*****************************************************************************
+static const int connectionPlayerMax = 6;	//	プレイヤー最大数
+static const float windowWidth = 206.0f;	//	画像オブジェクトの横幅
+static const float windowHeight = 103.0f;	//	画像オブジェクトの縦幅
+static const float waitPlayerWidth = 80.0f;	//	画像オブジェクトの横幅
+static const float waitPlayerHeight = 80.0f;//	画像オブジェクトの縦幅
+static const float waitStringWidth = 80.0f;	//	画像オブジェクトの横幅
+static const float waitStringHeight = 20.0f;//	画像オブジェクトの縦幅
 
+static const float windowHeightBase = SCREEN_HEIGHT / 2.0f - 150;	//	画像オブジェクト配置の基準位置（横）
+static const float windowMarginWidth = 50.0f;	//	画像オブジェクト配置の間
+static const float windowMarginHeight = 51.0f;		//	画像オブジェクト配置の間
 
-static const float windowWidth = 206.0f;
-static const float windowHeight = 103.0f;
-static const float waitPlayerWidth = 80.0f;
-static const float waitPlayerHeight = 80.0f;
-static const float waitStringWidth = 80.0f;
-static const float waitStringHeight = 20.0f;
-
-static const float windowHeightBase = SCREEN_HEIGHT / 2.0f - 150;
-static const float windowMarginWidth = 50.0f;
-static const float windowMarginHeight = 51.0f;
-
+//	画像オブジェクト配置の基準位置
 static const VECTOR3 windowPos[connectionPlayerMax] =
 {
-	VECTOR3(windowWidth + windowMarginWidth, windowHeightBase + 180.0f , 0),
+	VECTOR3(windowWidth + windowMarginWidth, windowHeightBase + 180.0f, 0),
 	VECTOR3(windowPos[0].x + windowWidth * 1.5f + windowMarginWidth, windowHeightBase + windowMarginHeight + windowHeight * 0.5f, 0),
-	VECTOR3(windowPos[1].x + windowWidth + windowMarginWidth, windowPos[ 1 ].y, 0),
-	VECTOR3(windowPos[2].x + windowWidth + windowMarginWidth, windowPos[ 1 ].y, 0),
-	VECTOR3(windowPos[0].x + windowWidth * 2.0f + windowMarginWidth * 1.5f, windowPos[ 1 ].y + windowMarginHeight + windowHeight, 0),
-	VECTOR3(windowPos[4].x + windowWidth + windowMarginWidth, windowPos[ 4 ].y, 0)
+	VECTOR3(windowPos[1].x + windowWidth + windowMarginWidth, windowPos[1].y, 0),
+	VECTOR3(windowPos[2].x + windowWidth + windowMarginWidth, windowPos[1].y, 0),
+	VECTOR3(windowPos[0].x + windowWidth * 2.0f + windowMarginWidth * 1.5f, windowPos[1].y + windowMarginHeight + windowHeight, 0),
+	VECTOR3(windowPos[4].x + windowWidth + windowMarginWidth, windowPos[4].y, 0)
 };
 
+//	画像オブジェクト配置の基準位置
 static const VECTOR3 waitPlayerPos[connectionPlayerMax] =
 {
 	VECTOR3(windowPos[0].x, windowPos[0].y - 30.0f, 0),
@@ -38,6 +51,13 @@ static const VECTOR3 waitPlayerPos[connectionPlayerMax] =
 	VECTOR3(windowPos[5].x, windowPos[5].y - 30.0f, 0)
 };
 
+//*****************************************************************************
+//	変数定義
+//*****************************************************************************
+
+//=============================================================================
+//	コンストラクタ
+//=============================================================================
 CConnection::CConnection()
 {
 	Logo = nullptr;
@@ -45,25 +65,41 @@ CConnection::CConnection()
 	backGround = nullptr;
 }
 
+//=============================================================================
+//	デストラクタ
+//=============================================================================
 CConnection::~CConnection()
 {
-
 }
 
+//=============================================================================
+//	初期化処理
+//=============================================================================
 void CConnection::Init(void)
 {
-
-
+	//	背景画像の配置
+	//-------------------------------------------------
 	backGround = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0), VECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
-	backGround->SetTex(CTexture::Texture(TEX_WALL));
-	//backGround->SetColor(COLOR(0.0f,0.0f,0.0f,1.0f));
+	backGround->SetTex(CTexture::Texture(TEX_FIELD));
+	//-------------------------------------------------
 
-	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/2.0f,100.0f,0),VECTOR2(512.0f,200.0f));
-	Logo->SetTex(CTexture::Texture(TEX_CONNECTION));
-	
+	//	文字オブジェクト「ロゴ」の配置
+	//-------------------------------------------------
+	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f, 100.0f, 0), VECTOR2(512.0f, 200.0f));
+	Logo->SetTex(CTexture::Texture(TEX_MIKU));
+	//-------------------------------------------------
+
+	//	文字オブジェクト「PUSHSTART」の配置
+	//-------------------------------------------------
 	pushStart = CPushStart::Create(VECTOR3(SCREEN_WIDTH / 2.0f, 650.0f, 0), VECTOR2(512.0f, 100.0f));
 	pushStart->SetTex(CTexture::Texture(TEX_CONNECTION));
+	//-------------------------------------------------
 
+	//	サーバーへエントリー情報を送信
+	CManager::SendEntry();
+
+	//	画像オブジェクト群の配置
+	//-------------------------------------------------
 	{
 		waitPlayer = new CPolygon2D*[connectionPlayerMax];
 
@@ -85,7 +121,10 @@ void CConnection::Init(void)
 		waitPlayer[5] = CPolygon2D::Create(waitPlayerPos[5], VECTOR2(waitPlayerWidth, waitPlayerHeight));
 		waitPlayer[5]->SetTex(CTexture::Texture(TEX_MIKU));
 	}
+	//-------------------------------------------------
 
+	//	画像オブジェクト群の配置
+	//-------------------------------------------------
 	{
 		waitBackGround = new CPolygon2D*[connectionPlayerMax];
 		waitBackGround[0] = CPolygon2D::Create(windowPos[0], VECTOR2(windowWidth * 2.0f, windowHeight * 2.0f));
@@ -106,10 +145,12 @@ void CConnection::Init(void)
 		waitBackGround[5] = CPolygon2D::Create(windowPos[5], VECTOR2(windowWidth, windowHeight));
 		waitBackGround[5]->SetTex(CTexture::Texture(TEX_TEST));
 	}
-
-
+	//-------------------------------------------------
 }
 
+//=============================================================================
+//	終了処理
+//=============================================================================
 void CConnection::Uninit(void)
 {
 	if (pushStart != nullptr)
@@ -126,10 +167,10 @@ void CConnection::Uninit(void)
 
 	for (int count = 0; count < connectionPlayerMax; count++)
 	{
-		if (waitBackGround[ count ] != nullptr)
+		if (waitBackGround[count] != nullptr)
 		{
 			waitBackGround[count]->Release();
-			waitBackGround[ count ] = nullptr;
+			waitBackGround[count] = nullptr;
 		}
 
 		if (waitPlayer[count] != nullptr)
@@ -157,11 +198,37 @@ void CConnection::Uninit(void)
 		backGround = nullptr;
 	}
 }
-
+//=============================================================================
+//	更新処理
+//=============================================================================
 void CConnection::Update(void)
+{
+	recvUpdate();
+	keyUpdate();
+}
+//=============================================================================
+//	サーバーからの受信状況による更新処理
+//=============================================================================
+void CConnection::recvUpdate()
+{
+	//	ネットワーク関連のデータを取得
+	NETWORK_DATA* netWorkData = CManager::getNetWorkData();
+
+	//	部屋がいっぱいなら
+	if (netWorkData->emptyFlag == true)
+	{
+		//	部屋が一杯
+	}
+}
+//=============================================================================
+//	キー押下のよる更新処理
+//=============================================================================
+void CConnection::keyUpdate()
 {
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CManager::ChangeScene(SCENE_GAME);
 	}
 }
+
+//	EOF
