@@ -33,6 +33,8 @@ unsigned int CurrentTime = 0;//DWORD dwCurrentTime;
 unsigned int PrevTime = 0;	 //DWORD dwExecLastTime;
 unsigned int FPSLastTime = 0;//DWORD dwFPSLastTime;
 unsigned int FrameCount = 0; //DWORD dwFrameCount;
+unsigned int CountFPS = 0;			// FPSカウンタ
+
 CManager* pManager = nullptr;
 //=============================================================================
 //メイン
@@ -112,13 +114,16 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 			CurrentTime = timeGetTime();
 			if((CurrentTime - FPSLastTime) >= 500)	// 0.5秒ごとに実行
 			{
-				FPSLastTime = CurrentTime;
-				FrameCount = 0;
+    CountFPS = FrameCount * 1000 / ( CurrentTime - FPSLastTime );
+    Console::SetCursorPos(0,0);
+    Console::Print("FPS:%d\n",CountFPS);
+    FPSLastTime = CurrentTime;
+    FrameCount = 0;
+
 			}
 			
 			if(CurrentTime - PrevTime >= 1000/60)
 			{
-				
 
 				//更新
 				pManager->Update();
@@ -127,6 +132,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 				
 				
 				PrevTime = CurrentTime;
+    FrameCount++;
+
 			}
 		
 		}
