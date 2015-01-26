@@ -1,41 +1,38 @@
 //------------------------------------------------------------------------------
 //
-// 弾 [CBullet.h]
-// Author : AT-13A-273 Shinnosuke Munakata
+// 弾 [Ballistic.h]
+// Author : AT-13A-273 Mai Tanabe
 //
 //------------------------------------------------------------------------------
-#ifndef _BULLET_H_
-#define _BULLET_H_
+
 //------------------------------------------------------------------------------
 // マクロ定義
 //------------------------------------------------------------------------------
-#define BULLET_SIZE (40.0f)
-#define BULLET_SPEED (10.0f)
+#define MARK_MAX  (20)
 
 //------------------------------------------------------------------------------
 // ヘッダインクルード
 //------------------------------------------------------------------------------
+#include "CBullet.h"
 #include "Billboard.h"
 
 //------------------------------------------------------------------------------
 // クラス宣言
 //------------------------------------------------------------------------------
-class CBullet:public CBillboard
+class CBallistic
 {
 public:
-	CBullet();
-	~CBullet();
+	CBallistic();
+	~CBallistic();
 
-	void Init(void);
-	void Update(void);
+	void Init(COLOR color);
+  void Update(VECTOR3 pos, VECTOR3 rot);
 
-	static CBullet* Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color);
+	static CBallistic* Create(COLOR color);
 
 private:
-	VECTOR3 Movement;	// 移動量
+  CBillboard* BallisticMark[MARK_MAX]; // 弾道のマーク
 };
-
-#endif
 
 //------------------------------------------------------------------------------
 // EOF

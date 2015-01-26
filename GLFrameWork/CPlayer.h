@@ -28,7 +28,9 @@ class CBullet;
 //------------------------------------------------------------------------------
 // クラス宣言
 //------------------------------------------------------------------------------
-class CPlayer:public CModel
+class CBallistic;
+
+class CPlayer :public CModel
 {
 public:
 	CPlayer(void);
@@ -54,6 +56,7 @@ private:
 	bool LaunchFlag;	// 弾発射フラグ（true / 使用：false / 不使用）
 	int _ReloadTimer;	// 現在の装填時間
 	int _PlayerLife;	// 体力
+  CBallistic* Ballistic; // 弾道
 };
 
 //------------------------------------------------------------------------------
