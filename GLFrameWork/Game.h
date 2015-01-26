@@ -1,6 +1,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 #include"Scene.h"
+#include"UI.h"
 
 class CMeshGround;
 class CMeshSphere;
@@ -10,6 +11,8 @@ class CLoadGauge;
 class CLoadString;
 class CReport;
 class CNumberManager;class CMiniMap;
+class UI;
+
 class CGame :public CScene
 {
 public:
@@ -24,13 +27,14 @@ private:
 
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
-	CPlayer*        Player;     // プレイヤー
+	CPlayer* Player;     // プレイヤー
 	CLoadGauge*     loadGauge;  // 装填ゲージ
 	CLoadString*    loadString; // 装填中の文字
 	CReport*        reportBg;
 	CReport*        report;
 	CNumberManager* numberManager;
 	CMiniMap*	MiniMap;
+	CUI*		UI;
 
 };
 #endif

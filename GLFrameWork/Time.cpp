@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "Time.h"
 
-CTime* Time[3] = {nullptr};
+CTime* Time[3] = { nullptr };
 //=============================================================================
 //コストラクタ
 //=============================================================================
@@ -23,8 +23,8 @@ CTime::CTime()
 	TimeCount = 0;
 	Timer = 0;
 
-	x = 
-	y = 0;
+	x =
+		y = 0;
 }
 //=============================================================================
 //初期化
@@ -49,7 +49,7 @@ CTime* CTime::Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot
 		Time[i]->_Pos = pos;
 		Time[i]->_Pos.x += (i * 20.0f);
 		Time[i]->_Rot = rot;
-		Time[i]->SetSize(0,0);
+		Time[i]->SetSize(0, 0);
 		Time[i]->_Color = color;
 		Time[i]->Init();
 	}
@@ -69,7 +69,7 @@ void CTime::Uninit(void)
 //=============================================================================
 void CTime::Update(void)
 {
-	CPolygon2D::AddSize(x,y);
+	CPolygon2D::AddSize(x, y);
 }
 //=============================================================================
 //描画
