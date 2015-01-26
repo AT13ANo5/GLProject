@@ -25,8 +25,8 @@
 //*****************************************************************************
 //	静的変数定義
 //*****************************************************************************
-short	CManager::NextScene = SCENE_SPLASH;
-bool	CManager::ChangeFlag = false;
+short CManager::NextScene = SCENE_SPLASH;
+bool CManager::ChangeFlag = false;
 CScene* CManager::Scene;
 NET_DATA CManager::netData;
 USER_INFO CManager::userInfo[CHARACTER_MAX];
@@ -302,7 +302,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 			case DATA_TYPE_POS:
 
 				//	データタイプに応じてプレイヤーへ情報をセット
-				//Scene->SetPlayerState(data, DATA_TYPE_POS);
+				Scene->SetPlayerState(data, DATA_TYPE_POS);
 
 				//	位置情報セット
 				userInfo[data.charNum].pos.x = data.data_pos.posX;
@@ -314,7 +314,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 			case DATA_TYPE_ROT:
 
 				//	データタイプに応じてプレイヤーへ情報をセット
-				//Scene->SetPlayerState(data, DATA_TYPE_ROT);
+				Scene->SetPlayerState(data, DATA_TYPE_ROT);
 
 				//	回転情報セット
 				userInfo[data.charNum].rot.x = data.data_rot.rotX;
@@ -326,7 +326,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 			case DATA_TYPE_CANNON:
 
 				//	データタイプに応じてプレイヤーへ情報をセット
-				//Scene->SetPlayerState(data, DATA_TYPE_CANNON);
+				Scene->SetPlayerState(data, DATA_TYPE_CANNON);
 
 				break;
 
