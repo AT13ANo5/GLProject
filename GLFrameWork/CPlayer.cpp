@@ -59,6 +59,10 @@ CPlayer::~CPlayer()
 //------------------------------------------------------------------------------
 void CPlayer::Init(void)
 {
+	// 使用フラグ
+	PlayerFlag = false;
+	_BulletUseFlag = false;
+
 	// 弾
 	_Bullet = nullptr;
 
@@ -81,114 +85,136 @@ void CPlayer::Init(void)
 //------------------------------------------------------------------------------
 void CPlayer::Update()
 {
-	VECTOR3 rot = VECTOR3(0.0f, 0.0f, 0.0f);
+	if(PlayerFlag == true)
+	{
+		// 操作キャラクター
 
-	// 移動
-	// 上
-	if(CKeyboard::GetPress(DIK_W))
-	{
-		Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
-		Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
-	}
+		// 弾の使用状態を確定
+		if(_Bullet == nullptr)
+		{
+			_BulletUseFlag = false;
+		}
 
-	// 下
-	else if (CKeyboard::GetPress(DIK_S))
-	{
-		Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
-		Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
-	}
+		// 初期化
+		VECTOR3 rot = VECTOR3(0.0f, 0.0f, 0.0f);
 
-	// 左
-	if(CKeyboard::GetPress(DIK_A))
-	{
-		rot.y += 3.0f;
-	}
+		// 移動
+		// 上
+		if(CKeyboard::GetPress(DIK_W))
+		{
+			Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
+			Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
+		}
 
-	// 右
-	else if(CKeyboard::GetPress(DIK_D))
-	{
-		rot.y -= 3.0f;
-	}
+		// 下
+		else if (CKeyboard::GetPress(DIK_S))
+		{
+			Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
+			Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
+		}
 
-	// 砲身の上下
-	if(CKeyboard::GetPress(DIK_UP))
-	{
-		BarrelRotX -= 3.0f;
-	}
-	else if(CKeyboard::GetPress(DIK_DOWN))
-	{
-		BarrelRotX += 3.0f;
-	}
+		// 左
+		if(CKeyboard::GetPress(DIK_A))
+		{
+			rot.y += 3.0f;
+		}
 
-	// キャラクターの回転
-	AddRot(rot);
+		// 右
+		else if(CKeyboard::GetPress(DIK_D))
+		{
+			rot.y -= 3.0f;
+		}
 
-	// 値の丸め込み
-	// プレイヤーの回転量
-	if(Rot().y > 360.0f)
-	{
-		SetRotY(Rot().y - 2 * 360.0f);
-	}
-	else if(Rot().y < -360.0f)
-	{
-		SetRotY(Rot().y + 2 * 360.0f);
-	}
+		// 砲身の上下
+		if(CKeyboard::GetPress(DIK_UP))
+		{
+			BarrelRotX -= 3.0f;
+		}
+		else if(CKeyboard::GetPress(DIK_DOWN))
+		{
+			BarrelRotX += 3.0f;
+		}
 
-	// 砲身
-	if( BarrelRotX > BARREL_ROT_MIN)
-	{
-		BarrelRotX = BARREL_ROT_MIN;
-	}
-	else if(BarrelRotX < BARREL_ROT_MAX)
-	{
-		BarrelRotX = BARREL_ROT_MAX;
-	}
+		// キャラクターの回転
+		AddRot(rot);
+
+		// 値の丸め込み
+		// プレイヤーの回転量
+		if(Rot().y > 360.0f)
+		{
+			SetRotY(Rot().y - 2 * 360.0f);
+		}
+		else if(Rot().y < -360.0f)
+		{
+			SetRotY(Rot().y + 2 * 360.0f);
+		}
+
+		// 砲身
+		if( BarrelRotX > BARREL_ROT_MIN)
+		{
+			BarrelRotX = BARREL_ROT_MIN;
+		}
+		else if(BarrelRotX < BARREL_ROT_MAX)
+		{
+			BarrelRotX = BARREL_ROT_MAX;
+		}
 	
-	// キャラクターの移動値を加算
-	AddPos(Movement);
+		// キャラクターの移動値を加算
+		AddPos(Movement);
 
-	// 減速
-	Movement *= 0.95f;
+		// 減速
+		Movement *= 0.95f;
 
-	// 砲身の位置、回転を更新
-	Barrel->SetPos(_Pos);			// 位置
-	Barrel->SetRot(_Rot);			// 回転
-	Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
+		// 砲身の位置、回転を更新
+		Barrel->SetPos(_Pos);			// 位置
+		Barrel->SetRot(_Rot);			// 回転
+		Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
 
-	// 弾の発射
-	if(LaunchFlag == false)
-	{
-		if(CKeyboard::GetTrigger(DIK_SPACE))
+		// 弾の発射
+		if(LaunchFlag == false)
 		{
-			_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
-			LaunchFlag = true;
-			_ReloadTimer = 0;
+			if(CKeyboard::GetTrigger(DIK_SPACE))
+			{
+				_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+				LaunchFlag = true;
+				_BulletUseFlag = true;
+				_ReloadTimer = 0;
+			}
 		}
-	}
-	else
-	{
-		_ReloadTimer++;
-
-		if(_ReloadTimer >= PLAYER_RELOAD_TIME)
+		else
 		{
-			LaunchFlag = false;
-			_ReloadTimer = PLAYER_RELOAD_TIME;
+			_ReloadTimer++;
+
+			if(_ReloadTimer >= PLAYER_RELOAD_TIME)
+			{
+				LaunchFlag = false;
+				_ReloadTimer = PLAYER_RELOAD_TIME;
+			}
 		}
-	}
 
-#ifdef _DEBUG
-	// デバッグ用
-	// 連射
-	if(CKeyboard::GetPress(DIK_V))
-	{
-		CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
-	}
+	#ifdef _DEBUG
+		// デバッグ用
+		// 連射
+		if(CKeyboard::GetPress(DIK_V))
+		{
+			CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+		}
 
-	if(CKeyboard::GetPress(DIK_L))
-	{
-		_PlayerLife--;
+		if(CKeyboard::GetPress(DIK_L))
+		{
+			_PlayerLife--;
+		}
+	#endif
 	}
-#endif
+	else 
+	{
+		// 操作キャラクターではない
+		
+		// 砲身の位置、回転を更新
+		Barrel->SetPos(_Pos);			// 位置
+		Barrel->SetRot(_Rot);			// 回転
+		Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -198,11 +224,11 @@ void CPlayer::Update()
 //  id	: 生成したいモデルのID
 //  pos	: 初期位置
 // 戻り値
-//  CPlayer* : 生成したプレイヤーのポインタ
+//  CPlayer : 生成したプレイヤーのポインタ
 //------------------------------------------------------------------------------
 CPlayer* CPlayer::Create(int modelID, const VECTOR3& pos, int playerID)
 {
-	CPlayer* model = new CPlayer;
+	CPlayer* model = new CPlayer();
 
 	if (model == nullptr)
 	{

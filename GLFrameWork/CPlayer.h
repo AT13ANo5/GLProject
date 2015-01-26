@@ -5,6 +5,9 @@
 //
 //------------------------------------------------------------------------------
 
+#ifndef _C_PLAYER_H_
+#define _C_PLAYER_H_
+
 //------------------------------------------------------------------------------
 // マクロ定義
 //------------------------------------------------------------------------------
@@ -56,22 +59,34 @@ public:
 	// 体力ゲッター
 	int PlayerLife(void){return _PlayerLife;}
 
+	// 生成（ポインタ版）
 	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
 
 	// 弾ポインタゲッター
 	CBullet* Bullet(void){return _Bullet;}
 
+	// 状態ゲッター
+	PLAYER_STATE State(void){return _State;}
+
+	void SetPLayerFlag(bool flag){PlayerFlag = flag;}
+	bool BulletUseFlag(void){return _BulletUseFlag;}
+
 private:
-	CModel* Barrel;		// 砲身
-	CBullet* _Bullet;	// 弾
-	VECTOR3 Movement;	// 移動量
-	float Speed;		// 移動速度
-	float BarrelRotX;	// 砲身のX軸回転量
-	bool LaunchFlag;	// 弾発射フラグ（true : 使用 / false : 不使用）
-	int _ReloadTimer;	// 現在の装填時間
-	int _PlayerLife;	// 体力
-	int PlayerID;		// プレイヤー判別用ID
+	PLAYER_STATE _State;	// プレイヤーの状態
+	CModel* Barrel;			// 砲身
+	CBullet* _Bullet;		// 弾
+	VECTOR3 Movement;		// 移動量
+	float Speed;			// 移動速度
+	float BarrelRotX;		// 砲身のX軸回転量
+	bool LaunchFlag;		// 弾発射フラグ（true : 使用 / false : 不使用）
+	bool _BulletUseFlag;		// 弾存在フラグ
+	int _ReloadTimer;		// 現在の装填時間
+	int _PlayerLife;		// 体力
+	int PlayerID;			// プレイヤー判別用ID
+	bool PlayerFlag;		// 操作キャラクターかどうか
 };
+
+#endif
 
 //------------------------------------------------------------------------------
 // EOF
