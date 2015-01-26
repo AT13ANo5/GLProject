@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+//  []
+// Author : AT-13A-273_Shinnosuke Munakata
+//
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
 #include <math.h>
 
 #include "main.h"
@@ -41,7 +51,14 @@ namespace{
   const VECTOR3   LIFE_POS = VECTOR3(60.0f,60.0f,0.0f);
 }
 
-
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
+// 引数
+//  なし
+// 戻り値
+//  なし
+//------------------------------------------------------------------------------
 CGame::CGame()
 {
 	loadGauge = nullptr;
@@ -51,11 +68,28 @@ CGame::CGame()
 	MiniMap = nullptr;
 	numberManager = nullptr;
 }
+
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
+// 引数
+//  なし
+// 戻り値
+//  なし
+//------------------------------------------------------------------------------
 CGame::~CGame()
 {
 
 }
 
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
+// 引数
+//  なし
+// 戻り値
+//  なし
+//------------------------------------------------------------------------------
 void CGame::Init(void)
 {
 	//CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
@@ -76,7 +110,8 @@ void CGame::Init(void)
 #endif
 
 	// プレイヤー生成
-	Player = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f, 30.0f, 0.0f));	Player->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+	Player = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f, 30.0f, 0.0f), 0);
+	Player->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
 	Player->SetRot(0.0f,180.0f,0.0f);
 
 	//プレイヤーカメラ生成
@@ -93,6 +128,7 @@ void CGame::Init(void)
 	loadGauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
 	loadGauge->SetDefaultColor(GAUGE_COLOR);
 //	loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
+
 	// 装填中文字
 	loadString = CLoadString::Create(GAUGE_STR_POS,GAUGE_STR_SIZE);
 	loadString->SetTex(CTexture::Texture(TEX_RELOAD));
@@ -117,16 +153,20 @@ void CGame::Init(void)
 	report = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH * scl,SCREEN_HEIGHT * scl));
 	report->SetTex(CTexture::Texture(TEX_REPORT));// 成績表の数値
 	numberManager = CNumberManager::Create();
-
 }
+
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
+// 引数
+//  なし
+// 戻り値
+//  なし
+//------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
 	// プレイヤー破棄
-	if (Player != nullptr)
-	{
-		Player->Release();
-		Player = nullptr;
-	}
+	SafeRelease(Player);
 
 	// 空破棄
 	if (Sky != nullptr)
@@ -141,10 +181,20 @@ void CGame::Uninit(void)
 		Ground->Release();
 		Ground = nullptr;
 	}
+
 	SafeDelete(MiniMap);
-	CCamera::ReleaseAll();	CObject::ReleaseAll();
+	CCamera::ReleaseAll();
+	CObject::ReleaseAll();
 }
 
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
+// 引数
+//  なし
+// 戻り値
+//  なし
+//------------------------------------------------------------------------------
 void CGame::Update(void)
 {
 	// 地形とのあたり判定
@@ -213,5 +263,7 @@ void CGame::Update(void)
 	MiniMap->SetPlayer(0,Player->Pos(),Player->Rot().y);
 
 	MiniMap->Update();
-
 }
+
+//------------------------------------------------------------------------------
+// EOF
