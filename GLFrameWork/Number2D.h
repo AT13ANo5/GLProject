@@ -31,6 +31,7 @@ public:
   void Update(void);
   void Draw(void);
 
+  void SetAlpha(float a){ _Color.a = a; }
   // 数値を設定（UV座標いじるお）
   // num : 設定したい値
   void SetNumber(int num);
