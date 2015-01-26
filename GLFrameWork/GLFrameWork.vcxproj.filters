@@ -146,6 +146,9 @@
     <Filter Include="00_システム\NumberManager\Number2D">
       <UniqueIdentifier>{2ae40a32-fc4b-4ed1-b860-2a3575f4f2de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム\プレイヤー\弾道">
+      <UniqueIdentifier>{38dd6d10-4bc9-48ed-ad99-f093138db667}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -276,6 +279,9 @@
     </ClCompile>
     <ClCompile Include="Number2D.cpp">
       <Filter>00_システム\NumberManager\Number2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Ballistic.cpp">
+      <Filter>02_ゲーム\プレイヤー\弾道</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -420,8 +426,11 @@
     <ClInclude Include="Number2D.h">
       <Filter>00_システム\NumberManager\Number2D</Filter>
     </ClInclude>
-    <ClInclude Include="netData.h">
+	<ClInclude Include="netData.h">
       <Filter>05_通信ロビー</Filter>
+    </ClInclude>
+	<ClInclude Include="Ballistic.h">
+      <Filter>02_ゲーム\プレイヤー\弾道</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

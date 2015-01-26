@@ -16,6 +16,7 @@
 #include "Camera.h"
 #include "CBullet.h"
 #include "CommonGL.h"
+#include "Ballistic.h"
 
 //------------------------------------------------------------------------------
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
@@ -61,6 +62,9 @@ void CPlayer::Init(void)
 {
 	// ’e
 	Bullet = nullptr;
+
+  // ’e“¹
+  Ballistic = CBallistic::Create(COLOR(1.0f, 0.0f, 0.0f, 0.4f));
 
 	// Œp³Œ³‚Ì‰Šú‰»
 	CModel::Init();
@@ -154,6 +158,9 @@ void CPlayer::Update()
 	Barrel->SetPos(_Pos);			// ˆÊ’u
 	Barrel->SetRot(_Rot);			// ‰ñ“]
 	Barrel->AddRotX(BarrelRotX);	// ã‚ÅÝ’è‚µ‚½‰ñ“]—Ê‚É–Cg‚ÌXŽ²‰ñ“]—Ê‚ð‰ÁŽZ
+
+  // ’e“¹‚ÌXV
+  Ballistic->Update(_Pos, VECTOR3(BarrelRotX, _Rot.y, _Rot.z));
 
 	// ’e‚Ì”­ŽË
 	if(LaunchFlag == false)
