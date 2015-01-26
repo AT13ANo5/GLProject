@@ -420,5 +420,8 @@
     <ClInclude Include="Number2D.h">
       <Filter>00_システム\NumberManager\Number2D</Filter>
     </ClInclude>
+    <ClInclude Include="netData.h">
+      <Filter>05_通信ロビー</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -152,6 +152,7 @@
     <ClInclude Include="LoadGauge.h" />
     <ClInclude Include="LoadString.h" />
     <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="netData.h" />
     <ClInclude Include="Number2D.h" />
     <ClInclude Include="NumberManager.h" />
     <ClInclude Include="Object.h" />
