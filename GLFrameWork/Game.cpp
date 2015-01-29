@@ -1,12 +1,12 @@
 //------------------------------------------------------------------------------
 //
 //  []
-// Author : AT-13A-273_Shinnosuke Munakata
+// Author : 
 //
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// 
+// インクルード
 //------------------------------------------------------------------------------
 #include <math.h>
 #include <float.h>
@@ -25,13 +25,8 @@
 #include "CPlayer.h"
 #include "CBullet.h"
 #include "PlayerCamera.h"
-#include "Report.h"
 
-#include "LoadGauge.h"
-#include "LoadString.h"
-#include "Life.h"
-#include "NumberManager.h"
-#include "MiniMap.h"
+
 #include "UI.h"
 
 // 静的メンバ変数
@@ -52,9 +47,7 @@ const int	CGame::MAX_ROCK = 100;						// 岩の数
 
 // 定数
 namespace{
-  const float     ICON_SIZE = 50.0f;
-  const VECTOR3   REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f, 0.0f);
-  const COLOR     REPORT_BG_COLOR = COLOR(0.0f, 0.05f, 0.0f, 0.6f);
+
 }
 
 //------------------------------------------------------------------------------
@@ -68,9 +61,6 @@ namespace{
 CGame::CGame()
 {
 
-	reportBg = nullptr;
-	report = nullptr;
-	numberManager = nullptr;
 	UI = nullptr;
 	ppRock_ = nullptr;
 }
@@ -89,7 +79,7 @@ CGame::~CGame()
 }
 
 //------------------------------------------------------------------------------
-// 
+// ゲームの初期化
 //------------------------------------------------------------------------------
 // 引数
 //  なし
@@ -124,20 +114,10 @@ void CGame::Init(void)
 	//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player,300.0f);
 
-	//UI初期化
-	//UI->SetGround(Ground);
+	// UI初期化
 	UI = new CUI;
 	UI->Init();
-
-	// 成績表の背景
-	reportBg = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
-	reportBg->SetColor(REPORT_BG_COLOR);
-
-	// 成績表
-	const float scl = 0.8f;
-	report = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH * scl,SCREEN_HEIGHT * scl));
-	report->SetTex(CTexture::Texture(TEX_REPORT));// 成績表の数値
-	numberManager = CNumberManager::Create();
+  UI->SetPlayer(Player);
 
 	// 岩の生成
 	ppRock_ = new CModel*[MAX_ROCK];
@@ -147,7 +127,9 @@ void CGame::Init(void)
 		ppRock_[cntRock] = CModel::Create(CModel::ROCK, positionRock);
 		PushBackObjectByField(ppRock_[cntRock]);
 	}
+
 }
+
 //------------------------------------------------------------------------------
 // 
 //------------------------------------------------------------------------------
@@ -181,10 +163,8 @@ void CGame::Uninit(void)
 		Ground = nullptr;
 	}
 
-	//UI破棄
-	UI->Uninit();
-	delete UI;
-	UI = nullptr;
+	// UI破棄
+  SafeDelete(UI);
 
 	CCamera::ReleaseAll();
 	CObject::ReleaseAll();
@@ -236,25 +216,9 @@ void CGame::Update(void)
 	Player->SetRotX(AnglePlayerX * 180.0f / PI);
 	Player->SetRotZ(AnglePlayerZ * 180.0f / PI);
 
-	// 装填ゲージ
-	const float currentTimer = (float)Player->ReloadTimer();
-	const float maxTimer = (float)PLAYER_RELOAD_TIME;
-	const float rate = currentTimer / maxTimer;
-
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CManager::ChangeScene(SCENE_RESULT);
-	}
-
-	if (CKeyboard::GetPress(DIK_P)){
-		reportBg->SetDrawFlag(true);
-		report->SetDrawFlag(true);
-		numberManager->SetDrawFlag(true);
-	}
-	else {
-		reportBg->SetDrawFlag(false);
-		report->SetDrawFlag(false);
-		numberManager->SetDrawFlag(false);
 	}
 
 
@@ -269,6 +233,9 @@ void CGame::Update(void)
 
 	// 地形との押し戻し
 	PushBackField();
+
+  // UIのアップデート
+  UI->Update();
 }
 
 //==============================================================================

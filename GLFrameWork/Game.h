@@ -49,12 +49,10 @@ private:
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
 	CPlayer*        Player;     // プレイヤー
-	CPlayer*        Player2;     // プレイヤー
-//	CLoadGauge*     loadGauge;  // 装填ゲージ
-//	CLoadString*    loadString; // 装填中の文字
-	CReport*        reportBg;
-	CReport*        report;
-	CNumberManager* numberManager;
+	CPlayer*        Player2;    // プレイヤー
+	//CReport*        reportBg;
+	//CReport*        report;
+	//CNumberManager* numberManager;
 	CUI*		UI;
 
 	CModel**		ppRock_;	//	岩
