@@ -48,6 +48,8 @@ const float	CGame::HEIGHT_DEFENSE_ROCK = 10.0f;			// 岩の防御中心高さ
 const float	CGame::RADIUS_PUSH_ROCK = 10.0f;			// 岩の押し戻し半径
 const float	CGame::HEIGHT_PUSH_ROCK = 10.0f;			// 岩の押し戻し中心高さ
 
+const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
+
 const int	CGame::MAX_ROCK = 100;						// 岩の数
 
 // 定数
@@ -289,6 +291,8 @@ void CGame::CheckHit(void)
 			if (distanceOffenseAndDefense < (RADIUS_DEFENSE_CHARACTER + RADIUS_OFFENSE_BULLET) * (RADIUS_DEFENSE_CHARACTER + RADIUS_OFFENSE_BULLET))
 			{
 				// 当たったときの処理
+
+				// エフェクト：爆発　弾がプレイヤーに当たったとき
 			}
 		}
 	}
@@ -353,6 +357,8 @@ void CGame::PushBackCharacter(void)
 					pPlayerOffense->AddPosX(RADIUS_PUSH_CHARACTER);
 					pPlayerDefense->AddPosX(-RADIUS_PUSH_CHARACTER);
 				}
+
+				// エフェクト：火花　プレイヤー同士のぶつかり
 			}
 		}
 	}
@@ -405,6 +411,8 @@ void CGame::PushBackRock(void)
 				{
 					pPlayer->AddPosX(RADIUS_PUSH_CHARACTER + HEIGHT_PUSH_ROCK);
 				}
+
+				// エフェクト：火花　プレイヤー同士のぶつかり
 			}
 		}
 	}
@@ -463,6 +471,8 @@ void CGame::IsLandField(void)
 		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
 		{
 			// 弾の消滅処理
+
+			// エフェクト：爆発　弾と地形の判定
 		}
 	}
 }

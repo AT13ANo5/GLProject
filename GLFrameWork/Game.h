@@ -36,6 +36,8 @@ private:
 	static const float	RADIUS_PUSH_ROCK;			// Šâ‚Ì‰Ÿ‚µ–ß‚µ”¼Œa
 	static const float	HEIGHT_PUSH_ROCK;			// Šâ‚Ì‰Ÿ‚µ–ß‚µ’†S‚‚³
 
+	static const float	RADIUS_AREA_BATTLE;			// í“¬ƒGƒŠƒA”¼Œa
+
 	static const int	MAX_ROCK;					// Šâ‚Ì”
 
 	void CheckHit(void);							// UŒ‚”»’è‚Ì“–‚½‚è”»’è
