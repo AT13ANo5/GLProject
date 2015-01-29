@@ -1,6 +1,7 @@
 #include "MeshGround.h"
 #include "Texture.h"
 #define SUM_INDEX(X,Z) ((X+1)*(Z-1)+((X+1)*(Z+1))+(Z-1)*2)
+#define HEIGHT_MAP ("./data/TEXTURE/heightmap.bmp")
 
 CMeshGround::CMeshGround(int priority) :CObject(priority)
 {
@@ -55,7 +56,6 @@ CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum)
 	Ground->_Pos = pos;
 	Ground->PanelSize = PanelSize;
 	Ground->PanelNum = PanelNum;
-
 	Ground->Init();
 
 	return Ground;
@@ -67,15 +67,10 @@ void CMeshGround::Init(void)
 	VertexNum = (int)((PanelNum.x+1)*(PanelNum.y+1));
 	PolygonNum = (int)(((PanelNum.x*2)*PanelNum.y)+((PanelNum.y-1)*4));
 	MapNum = (int)(PanelNum.x*PanelNum.y*2);
-
+ LoadImg(HEIGHT_MAP);
 	NormalMap = new VECTOR3[MapNum];
-	HeightMap = new float[VertexNum];
-	for (int cnt = 0;cnt<VertexNum;cnt++)
-	{
-		HeightMap[cnt] = 2.0f * (rand() % 60) + 0.0f; //20.0f * cnt;// rand() % 60 + 0.0f;
-	}
 
-	Vtx = new VECTOR3[VertexNum];
+ Vtx = new VECTOR3[VertexNum];
 	Tex = new VECTOR2[VertexNum];
 	Nor = new VECTOR3[VertexNum];
 
@@ -405,5 +400,108 @@ float CMeshGround::GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VE
 	Console::Print("Normal : (%9.3f, %9.3f, %9.3f)\n", normal.x, normal.y, normal.z);
 
 	return Height;
+
+}
+
+//画像データ読み込み
+void CMeshGround::LoadImg(const char * imgFile)
+{
+ FILE *file;
+ BITMAPFILEHEADER bmfh;
+ BITMAPINFOHEADER bmih;//ヘッダー情報
+ float FieldScl = 2;
+ file = fopen(imgFile,"rb");
+ if(file != NULL)
+ {
+  fread(&bmfh,sizeof(BITMAPFILEHEADER),1,file);
+  fread(&bmih,sizeof(BITMAPINFOHEADER),1,file);
+  if(PanelNum.x <= 0 || PanelNum.y <= 0)
+  {
+   PanelNum.x = bmih.biWidth - 1;
+   PanelNum.y = bmih.biHeight - 1;
+  }else
+   if(PanelNum.x > bmih.biWidth)
+   {
+     PanelNum.x = bmih.biWidth;
+   }
+  if(PanelNum.y > bmih.biHeight)
+  {
+   PanelNum.y = bmih.biHeight;
+  }
+  IndexNum = (int)( SUM_INDEX(PanelNum.x,PanelNum.y) );
+  VertexNum = (int)( ( PanelNum.x + 1 )*( PanelNum.y + 1 ) );
+  PolygonNum = (int)( ( ( PanelNum.x * 2 )*PanelNum.y ) + ( ( PanelNum.y - 1 ) * 4 ) );
+  MapNum = (int)( PanelNum.x*PanelNum.y * 2 );
+
+  HeightMap = new float[VertexNum];
+  bmih.biWidth = PanelNum.x;
+  bmih.biHeight = PanelNum.y;
+  BYTE Height;
+  if(bmih.biBitCount == 24)
+  {
+
+   for(int y = bmih.biHeight - 1; y >= 0; y--)
+   {
+    for(int x = 0; x < bmih.biWidth; x++)
+    {
+     fread(&Height,1,1,file);
+     fread(&Height,1,1,file);
+     fread(&Height,1,1,file);
+     if(Height == '\0')
+     {
+
+      fread(&Height,1,1,file);
+      fread(&Height,1,1,file);
+      fread(&Height,1,1,file);
+     }
+     HeightMap[bmih.biWidth * y + x] = (float)Height - 255;
+     HeightMap[bmih.biWidth * y + x] += 255;
+     HeightMap[bmih.biWidth * y + x] *= FieldScl;
+    }
+   }
+   ImgSize.x = bmih.biWidth;
+   ImgSize.y = bmih.biHeight;
+  }
+  else
+   if(bmih.biBitCount == 8)
+   {
+    RGBQUAD sRGB[256];
+
+    fread(&sRGB,sizeof(RGBQUAD),256,file);
+
+    for(int y = bmih.biHeight - 1; y >= 0; y--)
+    {
+     for(int x = 0; x < bmih.biWidth; x++)
+     {
+      fread(&Height,1,1,file);
+      if(Height == '\0')
+      {
+
+       fread(&Height,1,1,file);
+      }
+
+      HeightMap[bmih.biWidth * y + x] = (float)sRGB[Height].rgbBlue - 255;
+      HeightMap[bmih.biWidth * y + x] += 255;
+      HeightMap[bmih.biWidth * y + x] *= FieldScl;
+     }
+    }
+    ImgSize.x = bmih.biWidth;
+    ImgSize.y = bmih.biHeight;
+
+
+   }
+  fclose(file);
+
+ }
+ else{
+
+  //失敗したら10x10の平面
+  HeightMap = new float[11 * 11];
+  memset(HeightMap,0,sizeof(float));
+  ImgSize.x = 10;
+  ImgSize.y = 10;
+  PanelNum.x = ImgSize.x - 1;
+  PanelNum.y = ImgSize.y - 1;
+ }
 
 }
