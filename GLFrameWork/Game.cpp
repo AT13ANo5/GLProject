@@ -104,7 +104,7 @@ void CGame::Init(void)
 	CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));	// ’nŒ`¶¬
 
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(100.0f,100.0f),VECTOR2(20.0f,20.0f));
+	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(100.0f,100.0f),VECTOR2(0,0));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
 	// ‹ó¶¬
