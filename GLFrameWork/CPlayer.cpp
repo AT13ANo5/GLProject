@@ -219,6 +219,7 @@ void CPlayer::UpdatePlayer(void)
 		{
 			// Ä”­Ë‰Â”\‚É
 			LaunchFlag = false;
+			_BulletUseFlag = false;
 			_ReloadTimer = PLAYER_RELOAD_TIME;
 		}
 	}

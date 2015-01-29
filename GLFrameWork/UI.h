@@ -33,29 +33,30 @@ class CUI
 {
 public:
 
-  // constructor / destructor
+	// constructor / destructor
 	CUI();
 	~CUI();
 
-  void Init(void);
-  void Release(void);
-  void Update(void);
+	void Init(void);
+	void Uninit(void);
+	void Update(void);
 
-  // player
-  void SetPlayer(CPlayer* p){ player = p; }
+	// player
+	void SetPlayer(CPlayer** p){ player = p; }
 
+	CMiniMap* MiniMap(void){return miniMap;}
 
 private:
 
-  CLife*			    life;
+	CLife*			    life;
 	CMiniMap*		    miniMap;
 	CLoadGauge*		  loadGauge;
 	CLoadString*    loadString; // ‘•“U’†‚Ì•¶Žš
-  CReport*        reportBg;
-  CReport*        report;
-  CNumberManager* numberManager;
+	CReport*        reportBg;
+	CReport*        report;
+	CNumberManager* numberManager;
 
-  CPlayer*	    	player;
+	CPlayer**	    	player;
 
 };
 

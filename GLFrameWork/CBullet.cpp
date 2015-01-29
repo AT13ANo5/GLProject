@@ -15,7 +15,7 @@
 // ヘッダインクルード
 //------------------------------------------------------------------------------
 #include <math.h>
-
+#include <float.h>
 #include "CBullet.h"
 #include "CPlayer.h"
 
@@ -34,7 +34,16 @@ CBullet::CBullet():CBillboard()
 	Texture = CTexture::Texture(TEX_BULLET);
 	SetUV(0,0,1.0f,1.0f);
 }
+CBullet::CBullet(const CBullet& other)
+{
+	_Pos =		other._Pos;
+	_Rot =		other._Rot;
+	_Size =		other._Size;
+	_Color =	other._Color;
+	Movement =  other.Movement;
 
+	CBillboard::Init();
+}
 //------------------------------------------------------------------------------
 // デストラクタ
 //------------------------------------------------------------------------------
@@ -67,6 +76,9 @@ void CBullet::Init(void)
 	Movement.y = -sinf(rot.x) * BULLET_SPEED;
 	Movement.z = cosf(rot.y) * (cosf(rot.x) * BULLET_SPEED);
 
+	max(Movement.x,FLT_MIN);
+	max(Movement.z,FLT_MIN);
+
 	CBillboard::Init();
 }
 
@@ -81,13 +93,12 @@ void CBullet::Init(void)
 void CBullet::Update(void)
 {
 	// 移動
-	AddPos(Movement);
+	_Pos += Movement;
 
 	// 当たり判定
 
 	// 速度の減退
 	Movement.y += BULLET_GRAVITY;
-
 	// 消滅処理
 	if(_Pos.y <= -100.0f)
 	{

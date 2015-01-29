@@ -25,7 +25,7 @@
 #include "CPlayer.h"
 #include "CBullet.h"
 #include "PlayerCamera.h"
-
+#include "MiniMap.h"
 
 #include "UI.h"
 
@@ -42,6 +42,9 @@ const float	CGame::RADIUS_DEFENSE_ROCK = 10.0f;			// 岩の防御半径
 const float	CGame::HEIGHT_DEFENSE_ROCK = 10.0f;			// 岩の防御中心高さ
 const float	CGame::RADIUS_PUSH_ROCK = 10.0f;			// 岩の押し戻し半径
 const float	CGame::HEIGHT_PUSH_ROCK = 10.0f;			// 岩の押し戻し中心高さ
+const float CGame::FIELD_PANEL_SIZE = 30.0f;			//フィールドのパネル一枚のサイズ
+
+const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
 
 const int	CGame::MAX_ROCK = 100;						// 岩の数
 
@@ -94,7 +97,7 @@ void CGame::Init(void)
 	CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));	// 地形生成
 
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(100.0f,100.0f),VECTOR2(0,0));
+	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(FIELD_PANEL_SIZE,FIELD_PANEL_SIZE),VECTOR2(0,0));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
 	// 空生成
@@ -107,10 +110,8 @@ void CGame::Init(void)
 	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
 
+	Player = new CPlayer*[PLAYER_MAX];
 	// プレイヤー生成
-	//Player = new CPlayer[PLAYER_MAX]();
-
-	Player = new CPlayer * [PLAYER_MAX];
 	for(int i = 0; i < PLAYER_MAX; i++)
 	{
 		Player[i] = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), 0);
@@ -121,15 +122,14 @@ void CGame::Init(void)
 		{
 			Player[i]->SetPlayerFlag(true);
 		}
-	}
-
-	//プレイヤーカメラ生成
+	}	//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player[0], 300.0f);
 
 	// UI初期化
 	UI = new CUI;
 	UI->Init();
-  UI->SetPlayer(Player);
+	UI->SetPlayer(Player);
+	UI->MiniMap()->SetFieldSize(Ground->Size());
 
 	// 岩の生成
 	ppRock_ = new CModel*[MAX_ROCK];
@@ -156,6 +156,7 @@ void CGame::Uninit(void)
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
 		SafeRelease(ppRock_[cntRock]);
+		ppRock_[cntRock] = nullptr;
 	}
 	SafeDeletes(ppRock_);
 
@@ -183,7 +184,8 @@ void CGame::Uninit(void)
 	}
 
 	// UI破棄
-  SafeDelete(UI);
+	UI->Uninit();
+	SafeDelete(UI);
 
 	CCamera::ReleaseAll();
 	CObject::ReleaseAll();
@@ -199,48 +201,10 @@ void CGame::Uninit(void)
 //------------------------------------------------------------------------------
 void CGame::Update(void)
 {
-	// 地形とのあたり判定
-	VECTOR3	NormalGround;		// 地形の法線
-	float	HeightGround;		// 地形の高さ
-	//HeightGround = Ground->GetHeight(Player->Pos(),&NormalGround);
-
-	for(int i = 0; i < PLAYER_MAX; i++)
-	{
-		HeightGround = Ground->GetHeight(Player[i]->Pos(), &NormalGround);
-	}
-
-	// 回転を求める
-	VECTOR3	VectorUpPlayer;		// 上方向ベクトル
-	VECTOR3	VectorNormalYZ;		// YZ平面上の法線ベクトル
-	VECTOR3	VectorNormalXY;		// XY平面上の法線ベクトル
-	float	AnglePlayerX;		// プレイヤー回転X軸
-	float	AnglePlayerZ;		// プレイヤー回転Z軸
-	VectorUpPlayer.x = VectorUpPlayer.z = 0.0f;
-	VectorUpPlayer.y = 1.0f;
-	VectorNormalYZ.x = 0.0f;
-	VectorNormalYZ.y = NormalGround.y;
-	VectorNormalYZ.z = NormalGround.z;
-	VectorNormalYZ.Normalize();
-	AnglePlayerX = -acosf(VECTOR3::Dot(VectorNormalYZ,VectorUpPlayer));
-	VectorNormalXY.x = NormalGround.x;
-	VectorNormalXY.y = NormalGround.y;
-	VectorNormalXY.z = 0.0f;
-	VectorNormalXY.Normalize();
-	AnglePlayerZ = -acosf(VECTOR3::Dot(VectorNormalXY,VectorUpPlayer));
-
-	// プレイヤー情報のデバッグ表示
-	VECTOR3	positionPlayer = Player[0]->Pos();
-	VECTOR3	rotaionPlayer = Player[0]->Rot();
-	Console::SetCursorPos(1,1);
-	Console::Print("Pos : (%9.3f, %9.3f, %9.3f)",positionPlayer.x,HeightGround,positionPlayer.z);
-	Console::Print("Rot : (%9.3f, %9.3f, %9.3f)",180.0f / PI * AnglePlayerX,rotaionPlayer.y,180.0f / PI * AnglePlayerZ);
-
-	// プレイヤーに設定する
-	Player[0]->SetPosY(HeightGround);
-	Player[0]->SetRotX(AnglePlayerX * 180.0f / PI);
-	Player[0]->SetRotZ(AnglePlayerZ * 180.0f / PI);
-
-	if (CKeyboard::GetTrigger(DIK_RETURN))
+	// 装填ゲージ
+	const float currentTimer = (float)Player[0]->ReloadTimer();
+	const float maxTimer = (float)PLAYER_RELOAD_TIME;
+	const float rate = currentTimer / maxTimer;	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CManager::ChangeScene(SCENE_RESULT);
 	}
@@ -257,9 +221,12 @@ void CGame::Update(void)
 
 	// 地形との押し戻し
 	PushBackField();
+	// 地形との判定
+	IsLandField();
+	
+	// UIのアップデート
+	UI->Update();
 
-  // UIのアップデート
-  UI->Update();
 }
 
 //==============================================================================
@@ -269,12 +236,10 @@ void CGame::CheckHit(void)
 {
 	// 攻撃側の決定
 	CPlayer*	pPlayerOffense = nullptr;		// 攻撃側プレイヤー
-	int			numPlayer = 1;					// プレイヤー数
-	for (int cntBullet = 0; cntBullet < numPlayer; ++cntBullet)
+	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
 	{
 		// プレイヤーを取得
-		pPlayerOffense = Player[0];
-
+		pPlayerOffense = Player[cntBullet];
 		// 弾が存在しなければ判定しない
 		if (NeedsSkipBullet(pPlayerOffense))
 		{
@@ -282,7 +247,7 @@ void CGame::CheckHit(void)
 		}
 
 		// 防御側の決定
-		for (int cntPlayer = 0; cntPlayer < numPlayer; ++cntPlayer)
+		for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 		{
 			// プレイヤーを取得
 			CPlayer*	pPlayerDefense = nullptr;		// 防御側プレイヤー
@@ -302,13 +267,17 @@ void CGame::CheckHit(void)
 			VECTOR3	positionDefense = pPlayerDefense->Pos();				// 防御判定中心座標
 			VECTOR3	vectorOffenseToDefense;									// 攻撃判定から防御判定へのベクトル
 			float	distanceOffenseAndDefense;								// 判定の中心同士の距離
+
 			positionOffense.y += HEIGHT_OFFENSE_BULLET;
 			positionDefense.y += HEIGHT_DEFENSE_CHARACTER;
 			vectorOffenseToDefense = positionDefense - positionOffense;
 			distanceOffenseAndDefense = vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z;
+
 			if (distanceOffenseAndDefense < (RADIUS_DEFENSE_CHARACTER + RADIUS_OFFENSE_BULLET) * (RADIUS_DEFENSE_CHARACTER + RADIUS_OFFENSE_BULLET))
 			{
 				// 当たったときの処理
+
+				// エフェクト：爆発　弾がプレイヤーに当たったとき
 			}
 		}
 	}
@@ -321,12 +290,10 @@ void CGame::PushBackCharacter(void)
 {
 	// 攻撃側の決定
 	CPlayer*	pPlayerOffense = nullptr;		// 攻撃側プレイヤー
-	int			numPlayer = 1;					// プレイヤー数
-	for (int cntBullet = 0; cntBullet < numPlayer; ++cntBullet)
+	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
 	{
 		// プレイヤーを取得
-		pPlayerOffense = Player[0];
-
+		pPlayerOffense = Player[cntBullet];
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayerOffense))
 		{
@@ -334,10 +301,10 @@ void CGame::PushBackCharacter(void)
 		}
 
 		// 防御側の決定
-		for (int cntPlayer = 0; cntPlayer < numPlayer; ++cntPlayer)
+		for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 		{
 			// プレイヤーを取得
-			CPlayer*	pPlayerDefense = nullptr;		// 防御側プレイヤー
+			CPlayer*	pPlayerDefense = Player[ cntPlayer];		// 防御側プレイヤー
 
 			// プレイヤーが判定可能か確認
 			if (NeedsSkipPlayer(pPlayerDefense))
@@ -364,15 +331,17 @@ void CGame::PushBackCharacter(void)
 				if (distanceOffenseAndDefense < -FLT_EPSILON || distanceOffenseAndDefense > FLT_EPSILON)
 				{
 					VECTOR3	vectorPushBack = vectorOffenseToDefense * 0.51f * (2.0f * RADIUS_PUSH_CHARACTER - distanceOffenseAndDefense) / distanceOffenseAndDefense;
-					pPlayerOffense->AddPos(vectorPushBack);
-					vectorPushBack *= -1.0f;
 					pPlayerDefense->AddPos(vectorPushBack);
+					vectorPushBack *= -1.0f;
+					pPlayerOffense->AddPos(vectorPushBack);
 				}
 				else
 				{
 					pPlayerOffense->AddPosX(RADIUS_PUSH_CHARACTER);
 					pPlayerDefense->AddPosX(-RADIUS_PUSH_CHARACTER);
 				}
+
+				// エフェクト：火花　プレイヤー同士のぶつかり
 			}
 		}
 	}
@@ -385,12 +354,10 @@ void CGame::PushBackRock(void)
 {
 	// 攻撃側の決定
 	CPlayer*	pPlayer = nullptr;		// 攻撃側プレイヤー
-	int			numPlayer = 1;			// プレイヤー数
-	for (int cntPlayer = 0; cntPlayer < numPlayer; ++cntPlayer)
+	for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 	{
 		// プレイヤーを取得
-		pPlayer = Player[0];
-
+		pPlayer = Player[cntPlayer];
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayer))
 		{
@@ -425,6 +392,8 @@ void CGame::PushBackRock(void)
 				{
 					pPlayer->AddPosX(RADIUS_PUSH_CHARACTER + HEIGHT_PUSH_ROCK);
 				}
+
+				// エフェクト：火花　プレイヤー同士のぶつかり
 			}
 		}
 	}
@@ -437,12 +406,10 @@ void CGame::PushBackField(void)
 {
 	// 判定
 	CPlayer*	pPlayerCurrent = nullptr;		// 対象オブジェクト
-	int			numObject = 1;					// 対象オブジェクト数
-	for (int cntPlayer = 0; cntPlayer < numObject; ++cntPlayer)
+	for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 	{
 		// 対象オブジェクトを取得
-		pPlayerCurrent = Player[0];
-
+		pPlayerCurrent = Player[cntPlayer];
 		// 対象のステートを確認
 		if (NeedsSkipPlayer(pPlayerCurrent))
 		{
@@ -451,6 +418,41 @@ void CGame::PushBackField(void)
 
 		// 押し戻し
 		PushBackObjectByField(pPlayerCurrent);
+	}
+}
+
+//==============================================================================
+// 地形との判定
+//==============================================================================
+void CGame::IsLandField(void)
+{
+	// 判定
+	CPlayer*	pPlayerCurrent = nullptr;		// 対象プレイヤー
+	CBullet*	pBulletCurrent = nullptr;		// 対象オブジェクト
+	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
+	{
+		// 対象プレイヤーの取得
+		pPlayerCurrent = Player[cntBullet];
+
+		// 弾が存在しなければ判定しない
+		if (NeedsSkipBullet(pPlayerCurrent))
+		{
+			continue;
+		}
+
+		// 対象オブジェクトを取得
+		pBulletCurrent = pPlayerCurrent->Bullet();
+
+		// 判定
+		CBullet	bulletHit = *pBulletCurrent;
+		PushBackObjectByField(&bulletHit);
+		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
+		{
+			// 弾の消滅処理
+
+			// エフェクト：爆発　弾と地形の判定
+		}
+		
 	}
 }
 
@@ -485,8 +487,8 @@ void CGame::PushBackObjectByField(CObject* pObject)
 
 	// キャラクターに設定する
 	pObject->SetPosY(HeightGround);
-	//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
-	//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
+//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
+//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
 }
 
 //==============================================================================
@@ -494,8 +496,14 @@ void CGame::PushBackObjectByField(CObject* pObject)
 //==============================================================================
 bool CGame::NeedsSkipPlayer(CPlayer* pPlayer)
 {
+	// エラーチェック
+	if (pPlayer == nullptr)
+	{
+		return true;
+	}
+
 	// ステートを確認
-	int		statePlayer = 0;// pPlayerCurrent->State();
+	int		statePlayer = pPlayer->State();
 	if (statePlayer == PLAYER_STATE_DEATH || statePlayer == PLAYER_STATE_RESPAWN)
 	{
 		return true;
@@ -511,10 +519,10 @@ bool CGame::NeedsSkipPlayer(CPlayer* pPlayer)
 bool CGame::NeedsSkipBullet(CPlayer* pPlayer)
 {
 	// 弾が存在しないとき
-//	if (!pPlayer->ExistsBullet())
-//	{
-//		return true;
-//	}
+	if (!pPlayer->BulletUseFlag())
+	{
+		return true;
+	}
 
 	// スキップしない
 	return false;

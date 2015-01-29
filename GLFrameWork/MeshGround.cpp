@@ -6,7 +6,7 @@
 CMeshGround::CMeshGround(int priority) :CObject(priority)
 {
 	_Pos = VECTOR3(0,0,0);
-	_Rot = VECTOR3(0, 0, 0);
+	_Rot = VECTOR3(0,0,0);
 	Vtx = nullptr;
 	Tex = nullptr;
 	Nor = nullptr;
@@ -15,22 +15,22 @@ CMeshGround::CMeshGround(int priority) :CObject(priority)
 }
 CMeshGround::~CMeshGround()
 {
-	if (Vtx!=nullptr)
+	if (Vtx != nullptr)
 	{
 		delete[] Vtx;
 		Vtx = nullptr;
 	}
-	if (Tex!=nullptr)
+	if (Tex != nullptr)
 	{
 		delete[] Tex;
 		Tex = nullptr;
 	}
-	if (Nor!=nullptr)
+	if (Nor != nullptr)
 	{
 		delete[] Nor;
 		Nor = nullptr;
 	}
-	if (NormalMap!=nullptr)
+	if (NormalMap != nullptr)
 	{
 		delete[] NormalMap;
 		NormalMap = nullptr;
@@ -40,7 +40,7 @@ CMeshGround::~CMeshGround()
 		delete[] Index;
 		Index = nullptr;
 	}
-	if (HeightMap!=nullptr)
+	if (HeightMap != nullptr)
 	{
 		delete[] HeightMap;
 		HeightMap = nullptr;
@@ -49,7 +49,7 @@ CMeshGround::~CMeshGround()
 CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum)
 {
 	CMeshGround* Ground = new CMeshGround;
-	if (Ground==nullptr)
+	if (Ground == nullptr)
 	{
 		return nullptr;
 	}
@@ -61,16 +61,17 @@ CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum)
 	return Ground;
 
 }
+
 void CMeshGround::Init(void)
 {
 	IndexNum = (int)(SUM_INDEX(PanelNum.x,PanelNum.y));
-	VertexNum = (int)((PanelNum.x+1)*(PanelNum.y+1));
-	PolygonNum = (int)(((PanelNum.x*2)*PanelNum.y)+((PanelNum.y-1)*4));
-	MapNum = (int)(PanelNum.x*PanelNum.y*2);
- LoadImg(HEIGHT_MAP);
+	VertexNum = (int)((PanelNum.x + 1)*(PanelNum.y + 1));
+	PolygonNum = (int)(((PanelNum.x * 2)*PanelNum.y) + ((PanelNum.y - 1) * 4));
+	MapNum = (int)(PanelNum.x*PanelNum.y * 2);
+	LoadImg(HEIGHT_MAP);
 	NormalMap = new VECTOR3[MapNum];
 
- Vtx = new VECTOR3[VertexNum];
+	Vtx = new VECTOR3[VertexNum];
 	Tex = new VECTOR2[VertexNum];
 	Nor = new VECTOR3[VertexNum];
 
@@ -78,12 +79,12 @@ void CMeshGround::Init(void)
 	_Size.y = 0;
 	_Size.z = PanelNum.y*PanelSize.y;
 
-	float OffsetX = (PanelNum.x*PanelSize.x)/2;
-	float OffsetZ = (PanelNum.y*PanelSize.y)/2;
+	float OffsetX = (PanelNum.x*PanelSize.x) / 2;
+	float OffsetZ = (PanelNum.y*PanelSize.y) / 2;
 
-	for (int LoopZ = 0,num = 0;LoopZ<PanelNum.y+1;LoopZ++)
+	for (int LoopZ = 0,num = 0;LoopZ < PanelNum.y + 1;LoopZ++)
 	{
-		for (int LoopX = 0;LoopX<PanelNum.x+1;LoopX++)
+		for (int LoopX = 0;LoopX < PanelNum.x + 1;LoopX++)
 		{
 			if (num < VertexNum)
 			{
@@ -99,9 +100,9 @@ void CMeshGround::Init(void)
 	//法線マップを作成
 	VECTOR3 Vec1,Vec2,Cross;
 	int cnt = 0;
-	for (int Z = 0,num = 0;Z<PanelNum.y;Z++)
+	for (int Z = 0,num = 0;Z < PanelNum.y;Z++)
 	{
-		for (int X = 0;X<PanelNum.x;X++)
+		for (int X = 0;X < PanelNum.x;X++)
 		{
 			//四角形が／で分割された上側の法線の計算
 			if (num + PanelNum.x + 1 < VertexNum)
@@ -135,61 +136,61 @@ void CMeshGround::Init(void)
 	cnt = 0;
 
 	//法線を計算しつつ頂点に設定
-	for (int Y = 0,num = 0;Y<=PanelNum.y;Y++)
+	for (int Y = 0,num = 0;Y <= PanelNum.y;Y++)
 	{//numは面の番号
-		for (int X = 0;X<=PanelNum.x;X++)
+		for (int X = 0;X <= PanelNum.x;X++)
 		{
 			VECTOR3 AddCross = VECTOR3(0,0,0);//一時変数を初期化 計算結果格納用
-			if (X==0)
+			if (X == 0)
 			{//X軸の左端の時
-				if (Y==0)
+				if (Y == 0)
 				{//一番最初の段なら
-					AddCross = NormalMap[num]+NormalMap[num+1];
+					AddCross = NormalMap[num] + NormalMap[num + 1];
 				}
-				else if (Y==PanelNum.y)
+				else if (Y == PanelNum.y)
 				{//一番最後の段
-					num = num-(int)PanelNum.x*2;//一列前の番号に戻す
+					num = num - (int)PanelNum.x * 2;//一列前の番号に戻す
 					AddCross = NormalMap[num];
 					num--;//次も同じ番号なので一つ戻しておく
 				}
-				else if ( (num - ((int)PanelNum.x*2)) >= 0 && num+1<MapNum)
+				else if ((num - ((int)PanelNum.x * 2)) >= 0 && num + 1 < MapNum)
 				{//中間
-					AddCross = NormalMap[num-((int)PanelNum.x*2)]+NormalMap[num+1]+NormalMap[num];
+					AddCross = NormalMap[num - ((int)PanelNum.x * 2)] + NormalMap[num + 1] + NormalMap[num];
 				}
 			}
 			else
 			{
-				if (Y==0)
+				if (Y == 0)
 				{//一番最初の段
-					if (X==PanelNum.x && num+1 < MapNum)
+					if (X == PanelNum.x && num + 1 < MapNum)
 					{//右端の時
-						AddCross = NormalMap[num]+NormalMap[num+1];
+						AddCross = NormalMap[num] + NormalMap[num + 1];
 					}
-					else if (num+2<MapNum)
+					else if (num + 2 < MapNum)
 					{
-						AddCross = NormalMap[num]+NormalMap[num+1]+NormalMap[num+2];
+						AddCross = NormalMap[num] + NormalMap[num + 1] + NormalMap[num + 2];
 					}
 				}
-				else if (Y==PanelNum.y)
+				else if (Y == PanelNum.y)
 				{//一番最後の段
-					if (X==PanelNum.x)
+					if (X == PanelNum.x)
 					{//右端の時
-						AddCross = NormalMap[num]+NormalMap[num+1];
+						AddCross = NormalMap[num] + NormalMap[num + 1];
 					}
 					else
 					{
-						AddCross = NormalMap[num]+NormalMap[num+1]+NormalMap[num+2];
+						AddCross = NormalMap[num] + NormalMap[num + 1] + NormalMap[num + 2];
 					}
 				}
-				else if (X==PanelNum.x)
+				else if (X == PanelNum.x)
 				{//Yが端ではなく、同時に右端だったとき
-					AddCross = NormalMap[num]+NormalMap[num-((int)PanelNum.x*2)]+NormalMap[num-((int)PanelNum.x*2)-1];
+					AddCross = NormalMap[num] + NormalMap[num - ((int)PanelNum.x * 2)] + NormalMap[num - ((int)PanelNum.x * 2) - 1];
 				}
 				else
 				{
-					AddCross = NormalMap[num]+NormalMap[num+1]+NormalMap[num+2]+NormalMap[num-((int)PanelNum.x*2)-1]+NormalMap[num-((int)PanelNum.x*2)]+NormalMap[num-((int)PanelNum.x*2)+1];
+					AddCross = NormalMap[num] + NormalMap[num + 1] + NormalMap[num + 2] + NormalMap[num - ((int)PanelNum.x * 2) - 1] + NormalMap[num - ((int)PanelNum.x * 2)] + NormalMap[num - ((int)PanelNum.x * 2) + 1];
 				}
-				if (X<PanelNum.x)
+				if (X < PanelNum.x)
 				{//右端以外なら面の番号を一つ進める
 					num++;
 				}
@@ -214,9 +215,9 @@ void CMeshGround::Init(void)
 	{
 		Index[cnt] = 0;
 	}
-	for (int LoopZ = 0;LoopZ<PanelNum.y;LoopZ++)
+	for (int LoopZ = 0;LoopZ < PanelNum.y;LoopZ++)
 	{
-		if (LoopZ!=0)
+		if (LoopZ != 0)
 		{
 			LoopX = 0;
 			if (VtxNo < IndexNum)
@@ -225,7 +226,7 @@ void CMeshGround::Init(void)
 			}
 			VtxNo++;
 		}
-		for (LoopX = 0;LoopX<(PanelNum.x+1)*2;LoopX++)
+		for (LoopX = 0;LoopX < (PanelNum.x + 1) * 2;LoopX++)
 		{
 			if (VtxNo < IndexNum)
 			{
@@ -233,7 +234,7 @@ void CMeshGround::Init(void)
 			}
 			VtxNo++;
 		}
-		if (LoopZ==PanelNum.y-1)
+		if (LoopZ == PanelNum.y - 1)
 		{
 			break;
 		}
@@ -284,7 +285,7 @@ void CMeshGround::Draw(void)
 	//ポリゴン描画
 	glBegin(GL_TRIANGLE_STRIP);
 
-	for (int cnt = 0;cnt<IndexNum;cnt++)
+	for (int cnt = 0;cnt < IndexNum;cnt++)
 	{
 		glColor4f(_Color.r,_Color.g,_Color.b,_Color.a);
 		glNormal3f(Nor[Index[cnt]].x,Nor[Index[cnt]].y,Nor[Index[cnt]].z);
@@ -307,8 +308,8 @@ void CMeshGround::GetPanelIndex(VECTOR3 pos,int* OutIndexX,int* OutIndexY)
 	*OutIndexX = (int)(PanelNum.x - pos.x / PanelSize.x);
 	*OutIndexY = (int)(pos.z / PanelSize.y);
 
-	Console::SetCursorPos(1, 3);
-	Console::Print("GroundIndex : (%03d, %03d)\n", *OutIndexX, *OutIndexY);
+	Console::SetCursorPos(1,3);
+	Console::Print("GroundIndex : (%03d, %03d)\n",*OutIndexX,*OutIndexY);
 }
 
 float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
@@ -316,23 +317,23 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 	int IndexX = 0;
 	int IndexY = 0;
 	GetPanelIndex(pos,&IndexX,&IndexY);
-	int Index = (int)(IndexX+(IndexY*(PanelNum.x+1)));
+	int Index = (int)(IndexX + (IndexY*(PanelNum.x + 1)));
 	VECTOR3 VertexPos[4];
-	VertexPos[0] = VECTOR3((0.5f * PanelNum.x - IndexX) * PanelSize.x,		HeightMap[Index],							(-0.5f * PanelNum.y + IndexY) * PanelSize.y);
-	VertexPos[1] = VECTOR3((0.5f * PanelNum.x - IndexX - 1) * PanelSize.x,	HeightMap[Index + 1],						(-0.5f * PanelNum.y + IndexY) * PanelSize.y);
-	VertexPos[2] = VECTOR3((0.5f * PanelNum.x - IndexX - 1) * PanelSize.x,	HeightMap[Index + ((int)PanelNum.x + 2)],	(-0.5f * PanelNum.y + IndexY + 1) * PanelSize.y);
-	VertexPos[3] = VECTOR3((0.5f * PanelNum.x - IndexX) * PanelSize.x,		HeightMap[Index + ((int)PanelNum.x + 1)],	(-0.5f * PanelNum.y + IndexY + 1) * PanelSize.y);
+	VertexPos[0] = VECTOR3((0.5f * PanelNum.x - IndexX) * PanelSize.x,HeightMap[Index],(-0.5f * PanelNum.y + IndexY) * PanelSize.y);
+	VertexPos[1] = VECTOR3((0.5f * PanelNum.x - IndexX - 1) * PanelSize.x,HeightMap[Index + 1],(-0.5f * PanelNum.y + IndexY) * PanelSize.y);
+	VertexPos[2] = VECTOR3((0.5f * PanelNum.x - IndexX - 1) * PanelSize.x,HeightMap[Index + ((int)PanelNum.x + 2)],(-0.5f * PanelNum.y + IndexY + 1) * PanelSize.y);
+	VertexPos[3] = VECTOR3((0.5f * PanelNum.x - IndexX) * PanelSize.x,HeightMap[Index + ((int)PanelNum.x + 1)],(-0.5f * PanelNum.y + IndexY + 1) * PanelSize.y);
 
 	for (int cntVertex = 0; cntVertex < 4; ++cntVertex)
 	{
-		Console::SetCursorPos(1, 4 + cntVertex);
-		Console::Print("Vertex[%d] : (%9.3f, %9.3f) : Height(%9.3f)\n", cntVertex, VertexPos[cntVertex].x, VertexPos[cntVertex].z, VertexPos[cntVertex].y);
+		Console::SetCursorPos(1,4 + cntVertex);
+		Console::Print("Vertex[%d] : (%9.3f, %9.3f) : Height(%9.3f)\n",cntVertex,VertexPos[cntVertex].x,VertexPos[cntVertex].z,VertexPos[cntVertex].y);
 	}
-	Console::SetCursorPos(1, 8);
-	Console::Print("VertexIndex[0] : %2d : %9.3f\n", Index,							VertexPos[0].y);
-	Console::Print("VertexIndex[1] : %2d : %9.3f\n", Index + 1,						VertexPos[1].y);
-	Console::Print("VertexIndex[2] : %2d : %9.3f\n", Index + ((int)PanelNum.x + 2),	VertexPos[2].y);
-	Console::Print("VertexIndex[3] : %2d : %9.3f\n", Index + ((int)PanelNum.x + 1),	VertexPos[3].y);
+	Console::SetCursorPos(1,8);
+	Console::Print("VertexIndex[0] : %2d : %9.3f\n",Index,VertexPos[0].y);
+	Console::Print("VertexIndex[1] : %2d : %9.3f\n",Index + 1,VertexPos[1].y);
+	Console::Print("VertexIndex[2] : %2d : %9.3f\n",Index + ((int)PanelNum.x + 2),VertexPos[2].y);
+	Console::Print("VertexIndex[3] : %2d : %9.3f\n",Index + ((int)PanelNum.x + 1),VertexPos[3].y);
 #if 0
 	for (int cnt = 0;cnt<4;cnt++)
 	{
@@ -341,15 +342,15 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 		VertexPos[cnt].z *= -1;
 	}
 #endif
-	VECTOR3 Vec0 = VertexPos[1]-VertexPos[0];
+	VECTOR3 Vec0 = VertexPos[1] - VertexPos[0];
 	VECTOR3 Vec1 = VECTOR3(0,0,0);
 
 	bool flag = false;
-	for (int cnt = 0;cnt<3;cnt++)
+	for (int cnt = 0;cnt < 3;cnt++)
 	{
-		Vec0 = VertexPos[((cnt+1)%3)]-VertexPos[(cnt%3)];
-		Vec1 = pos-VertexPos[(cnt%3)];
-		if ((Vec0.z*Vec1.x-Vec0.x*Vec1.z)>=0)
+		Vec0 = VertexPos[((cnt + 1) % 3)] - VertexPos[(cnt % 3)];
+		Vec1 = pos - VertexPos[(cnt % 3)];
+		if ((Vec0.z*Vec1.x - Vec0.x*Vec1.z) >= 0)
 		{
 			flag = true;
 		}
@@ -361,15 +362,15 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 	}
 	if (flag)
 	{
-		Console::SetCursorPos(1, 12);
+		Console::SetCursorPos(1,12);
 		Console::Print("上\n");
-		return GetHeightPolygon(VertexPos[1],VertexPos[2],VertexPos[0],pos, normal);
+		return GetHeightPolygon(VertexPos[1],VertexPos[2],VertexPos[0],pos,normal);
 	}
 	else
 	{
-		Console::SetCursorPos(1, 12);
+		Console::SetCursorPos(1,12);
 		Console::Print("下\n");
-		return GetHeightPolygon(VertexPos[3],VertexPos[0],VertexPos[2],pos, normal);
+		return GetHeightPolygon(VertexPos[3],VertexPos[0],VertexPos[2],pos,normal);
 	}
 
 	return 0;
@@ -377,27 +378,27 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 
 float CMeshGround::GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VECTOR3& p2,VECTOR3& pos,VECTOR3* Normal)
 {
-	Console::SetCursorPos(1, 13);
-	Console::Print("Pos[0] : (%9.3f, %9.3f) : Height(%9.3f)\n", p0.x, p0.z, p0.y);
-	Console::Print("Pos[1] : (%9.3f, %9.3f) : Height(%9.3f)\n", p1.x, p1.z, p1.y);
-	Console::Print("Pos[2] : (%9.3f, %9.3f) : Height(%9.3f)\n", p2.x, p2.z, p2.y);
+	Console::SetCursorPos(1,13);
+	Console::Print("Pos[0] : (%9.3f, %9.3f) : Height(%9.3f)\n",p0.x,p0.z,p0.y);
+	Console::Print("Pos[1] : (%9.3f, %9.3f) : Height(%9.3f)\n",p1.x,p1.z,p1.y);
+	Console::Print("Pos[2] : (%9.3f, %9.3f) : Height(%9.3f)\n",p2.x,p2.z,p2.y);
 	VECTOR3 Vec1,Vec0;
 	VECTOR3 normal = VECTOR3(0,0,0);
 	Vec0 = p1 - p0;
 	Vec1 = p2 - p0;
-	Console::Print("Vec[0] : (%9.3f, %9.3f, %9.3f)\n", Vec0.x, Vec0.y, Vec0.z);
-	Console::Print("Vec[1] : (%9.3f, %9.3f, %9.3f)\n", Vec1.x, Vec1.y, Vec1.z);
+	Console::Print("Vec[0] : (%9.3f, %9.3f, %9.3f)\n",Vec0.x,Vec0.y,Vec0.z);
+	Console::Print("Vec[1] : (%9.3f, %9.3f, %9.3f)\n",Vec1.x,Vec1.y,Vec1.z);
 	VECTOR3::Cross(&normal,Vec0,Vec1);
 	normal.Normalize();
-	if (normal.y==0.0f)
+	if (normal.y == 0.0f)
 	{
 		return 0;
 	}
 	*Normal = normal;
 
 	float Height = p0.y - (-normal.x*(pos.x - p0.x) + normal.z*(pos.z - p0.z)) / normal.y;
-	Console::Print("Height : %9.3f\n", Height);
-	Console::Print("Normal : (%9.3f, %9.3f, %9.3f)\n", normal.x, normal.y, normal.z);
+	Console::Print("Height : %9.3f\n",Height);
+	Console::Print("Normal : (%9.3f, %9.3f, %9.3f)\n",normal.x,normal.y,normal.z);
 
 	return Height;
 
@@ -406,102 +407,103 @@ float CMeshGround::GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VE
 //画像データ読み込み
 void CMeshGround::LoadImg(const char * imgFile)
 {
- FILE *file;
- BITMAPFILEHEADER bmfh;
- BITMAPINFOHEADER bmih;//ヘッダー情報
- float FieldScl = 2;
- file = fopen(imgFile,"rb");
- if(file != NULL)
- {
-  fread(&bmfh,sizeof(BITMAPFILEHEADER),1,file);
-  fread(&bmih,sizeof(BITMAPINFOHEADER),1,file);
-  if(PanelNum.x <= 0 || PanelNum.y <= 0)
-  {
-   PanelNum.x = bmih.biWidth - 1;
-   PanelNum.y = bmih.biHeight - 1;
-  }else
-   if(PanelNum.x > bmih.biWidth)
-   {
-     PanelNum.x = bmih.biWidth;
-   }
-  if(PanelNum.y > bmih.biHeight)
-  {
-   PanelNum.y = bmih.biHeight;
-  }
-  IndexNum = (int)( SUM_INDEX(PanelNum.x,PanelNum.y) );
-  VertexNum = (int)( ( PanelNum.x + 1 )*( PanelNum.y + 1 ) );
-  PolygonNum = (int)( ( ( PanelNum.x * 2 )*PanelNum.y ) + ( ( PanelNum.y - 1 ) * 4 ) );
-  MapNum = (int)( PanelNum.x*PanelNum.y * 2 );
+	FILE *file;
+	BITMAPFILEHEADER bmfh;
+	BITMAPINFOHEADER bmih;//ヘッダー情報
+	float FieldScl = 2;
+	file = fopen(imgFile,"rb");
+	if (file != NULL)
+	{
+		fread(&bmfh,sizeof(BITMAPFILEHEADER),1,file);
+		fread(&bmih,sizeof(BITMAPINFOHEADER),1,file);
+		if (PanelNum.x <= 0 || PanelNum.y <= 0)
+		{
+			PanelNum.x = bmih.biWidth - 1;
+			PanelNum.y = bmih.biHeight - 1;
+		}
+		else
+			if (PanelNum.x > bmih.biWidth)
+			{
+				PanelNum.x = bmih.biWidth;
+			}
+		if (PanelNum.y > bmih.biHeight)
+		{
+			PanelNum.y = bmih.biHeight;
+		}
+		IndexNum = (int)(SUM_INDEX(PanelNum.x,PanelNum.y));
+		VertexNum = (int)((PanelNum.x + 1)*(PanelNum.y + 1));
+		PolygonNum = (int)(((PanelNum.x * 2)*PanelNum.y) + ((PanelNum.y - 1) * 4));
+		MapNum = (int)(PanelNum.x*PanelNum.y * 2);
 
-  HeightMap = new float[VertexNum];
-  bmih.biWidth = PanelNum.x;
-  bmih.biHeight = PanelNum.y;
-  BYTE Height;
-  if(bmih.biBitCount == 24)
-  {
+		HeightMap = new float[VertexNum];
+		bmih.biWidth = PanelNum.x;
+		bmih.biHeight = PanelNum.y;
+		BYTE Height;
+		if (bmih.biBitCount == 24)
+		{
 
-   for(int y = bmih.biHeight - 1; y >= 0; y--)
-   {
-    for(int x = 0; x < bmih.biWidth; x++)
-    {
-     fread(&Height,1,1,file);
-     fread(&Height,1,1,file);
-     fread(&Height,1,1,file);
-     if(Height == '\0')
-     {
+			for (int y = bmih.biHeight - 1; y >= 0; y--)
+			{
+				for (int x = 0; x < bmih.biWidth; x++)
+				{
+					fread(&Height,1,1,file);
+					fread(&Height,1,1,file);
+					fread(&Height,1,1,file);
+					if (Height == '\0')
+					{
 
-      fread(&Height,1,1,file);
-      fread(&Height,1,1,file);
-      fread(&Height,1,1,file);
-     }
-     HeightMap[bmih.biWidth * y + x] = (float)Height - 255;
-     HeightMap[bmih.biWidth * y + x] += 255;
-     HeightMap[bmih.biWidth * y + x] *= FieldScl;
-    }
-   }
-   ImgSize.x = bmih.biWidth;
-   ImgSize.y = bmih.biHeight;
-  }
-  else
-   if(bmih.biBitCount == 8)
-   {
-    RGBQUAD sRGB[256];
+						fread(&Height,1,1,file);
+						fread(&Height,1,1,file);
+						fread(&Height,1,1,file);
+					}
+					HeightMap[bmih.biWidth * y + x] = (float)Height - 255;
+					HeightMap[bmih.biWidth * y + x] += 255;
+					HeightMap[bmih.biWidth * y + x] *= FieldScl;
+				}
+			}
+			ImgSize.x = bmih.biWidth;
+			ImgSize.y = bmih.biHeight;
+		}
+		else
+			if (bmih.biBitCount == 8)
+			{
+				RGBQUAD sRGB[256];
 
-    fread(&sRGB,sizeof(RGBQUAD),256,file);
+				fread(&sRGB,sizeof(RGBQUAD),256,file);
 
-    for(int y = bmih.biHeight - 1; y >= 0; y--)
-    {
-     for(int x = 0; x < bmih.biWidth; x++)
-     {
-      fread(&Height,1,1,file);
-      if(Height == '\0')
-      {
+				for (int y = bmih.biHeight - 1; y >= 0; y--)
+				{
+					for (int x = 0; x < bmih.biWidth; x++)
+					{
+						fread(&Height,1,1,file);
+						if (Height == '\0')
+						{
 
-       fread(&Height,1,1,file);
-      }
+							fread(&Height,1,1,file);
+						}
 
-      HeightMap[bmih.biWidth * y + x] = (float)sRGB[Height].rgbBlue - 255;
-      HeightMap[bmih.biWidth * y + x] += 255;
-      HeightMap[bmih.biWidth * y + x] *= FieldScl;
-     }
-    }
-    ImgSize.x = bmih.biWidth;
-    ImgSize.y = bmih.biHeight;
+						HeightMap[bmih.biWidth * y + x] = (float)sRGB[Height].rgbBlue - 255;
+						HeightMap[bmih.biWidth * y + x] += 255;
+						HeightMap[bmih.biWidth * y + x] *= FieldScl;
+					}
+				}
+				ImgSize.x = bmih.biWidth;
+				ImgSize.y = bmih.biHeight;
 
 
-   }
-  fclose(file);
+			}
+		fclose(file);
 
- }
- else{
+	}
+	else{
 
-  //失敗したら10x10の平面
-  HeightMap = new float[11 * 11];
-  memset(HeightMap,0,sizeof(float));
-  ImgSize.x = 10;
-  ImgSize.y = 10;
-  PanelNum.x = ImgSize.x - 1;
-  PanelNum.y = ImgSize.y - 1;
- }
+		//失敗したら10x10の平面
+		HeightMap = new float[11 * 11];
+		memset(HeightMap,0,sizeof(float));
+		ImgSize.x = 10;
+		ImgSize.y = 10;
+		PanelNum.x = ImgSize.x - 1;
+		PanelNum.y = ImgSize.y - 1;
+	}
 
 }

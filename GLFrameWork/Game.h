@@ -35,6 +35,9 @@ private:
 	static const float	HEIGHT_DEFENSE_ROCK;		// 岩の防御中心高さ
 	static const float	RADIUS_PUSH_ROCK;			// 岩の押し戻し半径
 	static const float	HEIGHT_PUSH_ROCK;			// 岩の押し戻し中心高さ
+	static const float FIELD_PANEL_SIZE;			//フィールドのパネル一枚のサイズ
+
+	static const float	RADIUS_AREA_BATTLE;			// 戦闘エリア半径
 
 	static const int	MAX_ROCK;					// 岩の数
 
@@ -42,14 +45,14 @@ private:
 	void PushBackCharacter(void);					// キャラクター同士の押し戻し
 	void PushBackRock(void);						// キャラクターと岩の押し戻し
 	void PushBackField(void);						// 地形の押し戻し
+	void IsLandField(void);							// 地形との判定
 	void PushBackObjectByField(CObject* pObject);	// オブジェクトの地形による押し戻し
 	bool NeedsSkipPlayer(CPlayer* pPlayer);			// プレイヤー判定スキップ
 	bool NeedsSkipBullet(CPlayer* pPlayer);			// 砲弾判定スキップ
 
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
-	CPlayer**       Player;     // プレイヤー
-	CNumberManager* numberManager;
+	CPlayer**       Player;     // プレイヤー	CNumberManager* numberManager;
 	//CReport*        reportBg;
 	//CReport*        report;
 	//CNumberManager* numberManager;

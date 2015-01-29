@@ -26,7 +26,10 @@ class CBullet:public CBillboard
 {
 public:
 	CBullet();
+	CBullet(const CBullet& other);
 	~CBullet();
+
+	CBullet &operator=(const CBullet& other){ return *this; }
 
 	void Init(void);
 	void Update(void);
