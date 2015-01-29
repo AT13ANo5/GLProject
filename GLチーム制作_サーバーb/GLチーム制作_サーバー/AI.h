@@ -52,6 +52,7 @@ private:
 
 	void SurchTarget(void);
 	void Shot(void);
+	void MazzleRevision(void);
 
 	USER_INFO UserInfo;
 	int TargetId;

@@ -195,6 +195,7 @@ void AI::Update(void)
 		distance.y = TargetPos.z - UserInfo.pos.z;
 		DestRotY = atan2(distance.x,distance.y);
 	}
+	MazzleRevision();
 
 	_ReloadTimer++;
 
@@ -203,6 +204,8 @@ void AI::Update(void)
 		LaunchFlag = false;
 		_ReloadTimer = PLAYER_RELOAD_TIME;
 	}
+	
+	Shot();
 
 	float SubRotY = DestRotY-UserInfo.rot.y;
 	REVISE_PI(SubRotY);
@@ -263,18 +266,7 @@ void AI::Shot(void)
 		return;
 	}
 
-	VECTOR3 DestPos = TargetPos + TargetSpeed;
-	VECTOR3 Sub = TargetPos - UserInfo.pos;
-	VECTOR3 Dis = VECTOR3(0,0,0);
-	float time = Sub.x / 20.0f;
-
-	Dis.x = 20.0f;
-	float distance = sqrt(Sub.x*Sub.x + Sub.z*Sub.z);
-	BarrelRotX = -asin((distance*0.25f) / (20.0f*20.0f))*0.5f;
-
-	DestRotY = atan2(Sub.x,Sub.z);
-	REVISE_PI(BarrelRotX);
-	REVISE_PI(DestRotY);
+	
 }
 //------------------------------------------------------------------------------
 //ユーザー情報をセット
@@ -289,4 +281,32 @@ void AI::SetUserInfo(USER_INFO* info)
 		ai = ai->Next;
 		cnt++;
 	}
+
+	//弾発射フラグを送る
+}
+
+void AI::MazzleRevision(void)
+{
+	if (TargetId >= 0)
+	{
+		VECTOR3 DestPos = TargetPos;
+		VECTOR3 Sub = TargetPos - UserInfo.pos;
+		VECTOR3 Dis = VECTOR3(0,0,0);
+		float time = Sub.x / 20.0f;
+		float distance = sqrt(Sub.x*Sub.x + Sub.z*Sub.z);
+
+		DestPos += TargetSpeed * (distance / 20.0f);
+
+		Sub = DestPos - UserInfo.pos;
+		distance = sqrt(Sub.x*Sub.x + Sub.z*Sub.z);
+
+		Dis.x = 20.0f;
+		BarrelRotX = -asin((distance*0.25f) / (20.0f*20.0f))*0.5f;
+
+		DestRotY = atan2(Sub.x,Sub.z);
+	}
+	REVISE_PI(BarrelRotX);
+	REVISE_PI(DestRotY);
+
+	//BallelRotXを送る
 }
