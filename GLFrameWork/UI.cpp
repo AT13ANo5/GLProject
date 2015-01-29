@@ -58,7 +58,6 @@ void CUI::Init(void)
 	loadGauge = CLoadGauge::Create(GAUGE_POS, GAUGE_SIZE);
 	loadGauge->SetDefaultColor(GAUGE_COLOR);
 	
-	loadGauge->SetTex(CTexture::Texture(TEX_MIKU));
 	// ‘•“U’†•¶Žš
 	loadString = CLoadString::Create(GAUGE_STR_POS, GAUGE_STR_SIZE);
 	loadString->SetTex(CTexture::Texture(TEX_RELOAD));
