@@ -75,21 +75,21 @@ void CConnection::Init(void)
 	//-------------------------------------------------
 	backGround = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0),
 		VECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
-	backGround->SetTex(CTexture::Texture(TEX_YOUJO_BG));
+	backGround->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_BG));
 	//-------------------------------------------------
 
 	//	文字オブジェクト「ロゴ」の配置
 	//-------------------------------------------------
 	Logo = CPolygon2D::Create(VECTOR3(670.0f, 90.0f, 0),
 		VECTOR2(750.0f, 125.0f));
-	Logo->SetTex(CTexture::Texture(TEX_YOUJO_LOGO));
+	Logo->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_LOGO));
 	//-------------------------------------------------
 
 	//	文字オブジェクト「PUSHSTART」の配置
 	//-------------------------------------------------
 	pushStart = CPushStart::Create(VECTOR3(655.0f, 690.0f, 0),
 		VECTOR2(325.0f, 50.0f));
-	pushStart->SetTex(CTexture::Texture(TEX_YOUJO_ENTER));
+	pushStart->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_ENTER));
 	//-------------------------------------------------
 
 	//	サーバーへエントリー情報を送信
@@ -101,22 +101,22 @@ void CConnection::Init(void)
 		waitPlayer = new CPolygon2D*[connectionPlayerMax];
 
 		waitPlayer[0] = CPolygon2D::Create(waitPlayerPos[0], VECTOR2(waitPlayerWidth * 2.0f, waitPlayerHeight * 2.0f));
-		waitPlayer[0]->SetTex(CTexture::Texture(TEX_YOUJO_RINCHAN));
+		waitPlayer[0]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_RINCHAN));
 
 		waitPlayer[1] = CPolygon2D::Create(waitPlayerPos[1], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[1]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+		waitPlayer[1]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_BLUE));
 
 		waitPlayer[2] = CPolygon2D::Create(waitPlayerPos[2], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[2]->SetTex(CTexture::Texture(TEX_YOUJO_ORANGE));
+		waitPlayer[2]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_ORANGE));
 
 		waitPlayer[3] = CPolygon2D::Create(waitPlayerPos[3], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[3]->SetTex(CTexture::Texture(TEX_YOUJO_RED));
+		waitPlayer[3]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_RED));
 
 		waitPlayer[4] = CPolygon2D::Create(waitPlayerPos[4], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[4]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+		waitPlayer[4]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_WATER));
 
 		waitPlayer[5] = CPolygon2D::Create(waitPlayerPos[5], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[5]->SetTex(CTexture::Texture(TEX_YOUJO_WHITE));
+		waitPlayer[5]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_WHITE));
 	}
 	//-------------------------------------------------
 
@@ -125,22 +125,22 @@ void CConnection::Init(void)
 	{
 		waitBackGround = new CPolygon2D*[connectionPlayerMax];
 		waitBackGround[0] = CPolygon2D::Create(windowPos[0],VECTOR2(windowWidth * 2.0f, windowHeight * 2.0f));
-		waitBackGround[0]->SetTex(CTexture::Texture(TEX_YOUJO_CPU));
+		waitBackGround[0]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 
 		waitBackGround[1] = CPolygon2D::Create(windowPos[1], VECTOR2(windowWidth, windowHeight));
-		waitBackGround[1]->SetTex(CTexture::Texture(TEX_YOUJO_CPU));
+		waitBackGround[1]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 
 		waitBackGround[2] = CPolygon2D::Create(windowPos[2], VECTOR2(windowWidth, windowHeight));
-		waitBackGround[2]->SetTex(CTexture::Texture(TEX_YOUJO_CPU));
+		waitBackGround[2]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 
 		waitBackGround[3] = CPolygon2D::Create(windowPos[3], VECTOR2(windowWidth, windowHeight));
-		waitBackGround[3]->SetTex(CTexture::Texture(TEX_YOUJO_CPU));
+		waitBackGround[3]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 
 		waitBackGround[4] = CPolygon2D::Create(windowPos[4], VECTOR2(windowWidth, windowHeight));
-		waitBackGround[4]->SetTex(CTexture::Texture(TEX_YOUJO_CPU));
+		waitBackGround[4]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 
 		waitBackGround[5] = CPolygon2D::Create(windowPos[5], VECTOR2(windowWidth, windowHeight));
-		waitBackGround[5]->SetTex(CTexture::Texture(TEX_YOUJO_CPU));
+		waitBackGround[5]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 	}
 	//-------------------------------------------------
 }
