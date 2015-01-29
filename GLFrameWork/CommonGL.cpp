@@ -289,7 +289,16 @@ COLOR::COLOR(float fr,float fg,float fb,float fa)
 	b = fb;
 	a = fa;
 }
-
+//=============================================================================
+//RGBA
+//=============================================================================
+void COLOR::COLORINTGER(unsigned short sr,unsigned short sg,unsigned short sb,unsigned short sa)
+{
+ r = sr / 255.0f;
+ g = sg / 255.0f;
+ b = sb / 255.0f;
+ a = sa / 255.0f;
+}
 COLOR COLOR::operator + (const COLOR& f) const
 {
 	return COLOR(r+f.r,g+f.g,b+f.b,a+f.a);

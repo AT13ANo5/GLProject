@@ -139,7 +139,8 @@ typedef struct COLOR
 {
 public:
 	COLOR(){};
-	COLOR(float fr,float fg,float fb,float fa);
+ COLOR(float fr,float fg,float fb,float fa);
+ void COLORINTGER(unsigned short sr,unsigned short sg,unsigned short sb,unsigned short sa);
 	COLOR operator + (const COLOR&) const;
 	COLOR operator - (const COLOR&) const;
 	COLOR operator * (const COLOR&) const;
@@ -165,6 +166,13 @@ public:
 #define CYAN(Alpha)		(COLOR(0.0f,1.0f,1.0f,Alpha))
 #define BLACK(Alpha)	(COLOR(0.0f,0.0f,0.0f,Alpha))
 #define GRAY(Alpha)		(COLOR(0.5f,0.5f,0.5f,Alpha))
+
+#define YOUJO_RIN_COLOR(Alpha) ((255,200,90,Alpha))
+#define YOUJO_RED_COLOR(Alpha) ((255,90,140,Alpha))
+#define YOUJO_BLUE_COLOR(Alpha) ((90,160,250,Alpha))
+#define YOUJO_WATER_COLOR(Alpha) ((95,235,255,Alpha))
+#define YOUJO_ORANGE_COLOR(Alpha) ((255,165,90,Alpha))
+#define YOUJO_WHITE_COLOR(Alpha) ((175,175,175,Alpha))
 
 //===================================================================
 //マトリックス

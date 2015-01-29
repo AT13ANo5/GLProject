@@ -1,6 +1,7 @@
 #include "MeshGround.h"
 #include "Texture.h"
 #define SUM_INDEX(X,Z) ((X+1)*(Z-1)+((X+1)*(Z+1))+(Z-1)*2)
+#define HEIGHT_MAP ("./data/TEXTURE/heightmap.bmp")
 
 CMeshGround::CMeshGround(int priority) :CObject(priority)
 {
