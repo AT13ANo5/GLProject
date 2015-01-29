@@ -9,6 +9,7 @@
 // マクロ定義
 //------------------------------------------------------------------------------
 #define BULLET_COLLISION_RADIUS (100.0f)	// 当たり判定用球の半径
+#define BULLET_GRAVITY (-0.08f)				// 弾にかかる重力
 
 //------------------------------------------------------------------------------
 // ヘッダインクルード
@@ -62,9 +63,9 @@ void CBullet::Init(void)
 
 	REVISE_PI(rot.x);
 	REVISE_PI(rot.y);
-	Movement.x = sinf(rot.y) * (cosf(rot.x)*BULLET_SPEED);
+	Movement.x = sinf(rot.y) * (cosf(rot.x) * BULLET_SPEED);
 	Movement.y = -sinf(rot.x) * BULLET_SPEED;
-	Movement.z = cosf(rot.y) * (cosf(rot.x)*BULLET_SPEED);
+	Movement.z = cosf(rot.y) * (cosf(rot.x) * BULLET_SPEED);
 
 	CBillboard::Init();
 }
@@ -85,7 +86,7 @@ void CBullet::Update(void)
 	// 当たり判定
 
 	// 速度の減退
-	Movement.y -= 0.25f;
+	Movement.y += BULLET_GRAVITY;
 
 	// 消滅処理
 	if(_Pos.y <= -100.0f)
@@ -107,7 +108,8 @@ void CBullet::Update(void)
 //------------------------------------------------------------------------------
 CBullet* CBullet::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
-	CBullet* Scene = new CBullet;
+	CBullet* Scene = new CBullet();
+
 	Scene->_Pos = pos;
 	Scene->_Rot = rot;
 	Scene->_Size = size;

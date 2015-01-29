@@ -290,7 +290,7 @@ void CSoundAL::ReleaseAll(void)
 
 void CSoundAL::CrossFade(CSoundAL* FadeOut,CSoundAL* FadeIn,int frame,bool autoStop)
 {
-	if (FadeOut != nullptr,FadeIn != nullptr)
+	if (FadeOut != nullptr && FadeIn != nullptr)
 	{
 		FadeOut->SetFade(0,(int)(frame*0.8f),autoStop);
 		FadeIn->SetFade(1.0f,frame);

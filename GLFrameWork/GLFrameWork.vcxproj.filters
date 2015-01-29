@@ -146,6 +146,21 @@
     <Filter Include="00_システム\NumberManager\Number2D">
       <UniqueIdentifier>{2ae40a32-fc4b-4ed1-b860-2a3575f4f2de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\Time">
+      <UniqueIdentifier>{a2c8807e-2a9f-4c79-9cd3-efa2583575d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\UI">
+      <UniqueIdentifier>{7dd5f2ea-4cec-4eca-ae0d-1cc0b2d4efad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_ゲーム\プレイヤー\弾道">
+      <UniqueIdentifier>{38dd6d10-4bc9-48ed-ad99-f093138db667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_リザルト\UIManager">
+      <UniqueIdentifier>{4c964f2b-a678-4a44-aebb-034b10d375ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_リザルト\NumberManager">
+      <UniqueIdentifier>{9c27d603-b2cc-468f-8faa-d8fecb278fc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -276,6 +291,21 @@
     </ClCompile>
     <ClCompile Include="Number2D.cpp">
       <Filter>00_システム\NumberManager\Number2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>00_システム\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>00_システム\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Ballistic.cpp">
+      <Filter>02_ゲーム\プレイヤー\弾道</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultUIManager.cpp">
+      <Filter>03_リザルト\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultNumberManager.cpp">
+      <Filter>03_リザルト\NumberManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,6 +449,24 @@
     </ClInclude>
     <ClInclude Include="Number2D.h">
       <Filter>00_システム\NumberManager\Number2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>00_システム\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>00_システム\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="netData.h">
+      <Filter>05_通信ロビー</Filter>
+    </ClInclude>
+    <ClInclude Include="Ballistic.h">
+      <Filter>02_ゲーム\プレイヤー\弾道</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultUIManager.h">
+      <Filter>03_リザルト\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultNumberManager.h">
+      <Filter>03_リザルト\NumberManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,9 @@
 #ifndef _COMMONGL_H_
 #define _COMMONGL_H_
 
+#include <stdio.h>
+#include <process.h>
+
 //デリートを簡略化したマクロ
 #define SafeDelete(x) if(x!=nullptr){	\
 						delete x;		\

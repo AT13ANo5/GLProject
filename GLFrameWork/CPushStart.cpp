@@ -68,9 +68,9 @@ void CPushStart::Update(void)
 {
 	SetAlpha(Color().a + moveAlpha);
 
-	if (Color().a < 0.0f)
+	if (Color().a < 0.2f)
 	{
-		SetAlpha(0.0f);
+		SetAlpha(0.2f);
 		moveAlpha *= -1;
 	}
 

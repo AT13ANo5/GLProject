@@ -91,10 +91,13 @@ void CMeshGround::Init(void)
 	{
 		for (int LoopX = 0;LoopX<PanelNum.x+1;LoopX++)
 		{
-			Vtx[num] = VECTOR3(OffsetX+(-PanelSize.x*LoopX),HeightMap[num],-OffsetZ+(PanelSize.y*LoopZ));
-			Tex[num] = VECTOR2((float)LoopX,(float)LoopZ);
-			Nor[num] = VECTOR3(0,1.0f,0);
-			_Color = COLOR(1.0f,1.0f,1.0f,1.0f);
+			if (num < VertexNum)
+			{
+				Vtx[num] = VECTOR3(OffsetX + (-PanelSize.x*LoopX),HeightMap[num],-OffsetZ + (PanelSize.y*LoopZ));
+				Tex[num] = VECTOR2((float)LoopX,(float)LoopZ);
+				Nor[num] = VECTOR3(0,1.0f,0);
+				_Color = COLOR(1.0f,1.0f,1.0f,1.0f);
+			}
 			num++;
 		}
 	}
@@ -107,19 +110,28 @@ void CMeshGround::Init(void)
 		for (int X = 0;X<PanelNum.x;X++)
 		{
 			//四角形が／で分割された上側の法線の計算
-			Vec1 = Vtx[(int)(PanelNum.x+1)+num]-Vtx[num];
-			Vec2 = Vtx[1+num]-Vtx[num];
+			if (num + PanelNum.x + 1 < VertexNum)
+			{
+				Vec1 = Vtx[(int)(PanelNum.x + 1) + num] - Vtx[num];
+				Vec2 = Vtx[1 + num] - Vtx[num];
+			}
 			VECTOR3::Cross(&Cross,Vec2,Vec1);
 			Cross.Normalize();
-			NormalMap[cnt] = Cross;
+			if (cnt < MapNum)
+			{
+				NormalMap[cnt] = Cross;
+			}
 			cnt++;
 
-			//四角形が／で分割された下側の法線の計算
-			Vec1 = Vtx[num+1]-Vtx[(int)(PanelNum.x+1)+(num+1)];
-			Vec2 = Vtx[(int)(PanelNum.x+1)+num]-Vtx[(int)(PanelNum.x+1)+(num+1)];
-			VECTOR3::Cross(&Cross,Vec2,Vec1);
-			Cross.Normalize();
-			NormalMap[cnt] = Cross;
+			if (num + PanelNum.x + 1 < VertexNum)
+			{
+				//四角形が／で分割された下側の法線の計算
+				Vec1 = Vtx[num + 1] - Vtx[(int)(PanelNum.x + 1) + (num + 1)];
+				Vec2 = Vtx[(int)(PanelNum.x + 1) + num] - Vtx[(int)(PanelNum.x + 1) + (num + 1)];
+				VECTOR3::Cross(&Cross,Vec2,Vec1);
+				Cross.Normalize();
+				NormalMap[cnt] = Cross;
+			}
 			cnt++;
 			num++;
 		}
@@ -146,7 +158,7 @@ void CMeshGround::Init(void)
 					AddCross = NormalMap[num];
 					num--;//次も同じ番号なので一つ戻しておく
 				}
-				else
+				else if ( (num - ((int)PanelNum.x*2)) >= 0 && num+1<MapNum)
 				{//中間
 					AddCross = NormalMap[num-((int)PanelNum.x*2)]+NormalMap[num+1]+NormalMap[num];
 				}
@@ -155,11 +167,11 @@ void CMeshGround::Init(void)
 			{
 				if (Y==0)
 				{//一番最初の段
-					if (X==PanelNum.x)
+					if (X==PanelNum.x && num+1 < MapNum)
 					{//右端の時
 						AddCross = NormalMap[num]+NormalMap[num+1];
 					}
-					else
+					else if (num+2<MapNum)
 					{
 						AddCross = NormalMap[num]+NormalMap[num+1]+NormalMap[num+2];
 					}
@@ -191,7 +203,10 @@ void CMeshGround::Init(void)
 
 			//正規化した法線データを頂点に設定
 			AddCross.Normalize();
-			Nor[cnt] = AddCross;
+			if (cnt < VertexNum)
+			{
+				Nor[cnt] = AddCross;
+			}
 			cnt++;//頂点番号を進める
 			num++;//面の番号を進める
 		}
@@ -201,24 +216,37 @@ void CMeshGround::Init(void)
 	int LoopX = 0;
 	int VtxNo = 0;
 	Index = new int[IndexNum];
+	for (int cnt = 0;cnt < IndexNum;cnt++)
+	{
+		Index[cnt] = 0;
+	}
 	for (int LoopZ = 0;LoopZ<PanelNum.y;LoopZ++)
 	{
 		if (LoopZ!=0)
 		{
 			LoopX = 0;
-			Index[VtxNo] = (int)((LoopZ*(PanelNum.x+1))+(((LoopX+1)%2)*(PanelNum.x+1)+(LoopX/2)));
+			if (VtxNo < IndexNum)
+			{
+				Index[VtxNo] = (int)((LoopZ*(PanelNum.x + 1)) + (((LoopX + 1) % 2)*(PanelNum.x + 1) + (LoopX / 2)));
+			}
 			VtxNo++;
 		}
 		for (LoopX = 0;LoopX<(PanelNum.x+1)*2;LoopX++)
 		{
-			Index[VtxNo] = (int)((LoopZ*(PanelNum.x+1))+(((LoopX+1)%2)*(PanelNum.x+1)+(LoopX/2)));
+			if (VtxNo < IndexNum)
+			{
+				Index[VtxNo] = (int)((LoopZ*(PanelNum.x + 1)) + (((LoopX + 1) % 2)*(PanelNum.x + 1) + (LoopX / 2)));
+			}
 			VtxNo++;
 		}
 		if (LoopZ==PanelNum.y-1)
 		{
 			break;
 		}
-		Index[VtxNo] = Index[VtxNo-1];
+		if (VtxNo > 0 && VtxNo < IndexNum)
+		{
+			Index[VtxNo] = Index[VtxNo - 1];
+		}
 		VtxNo++;
 	}
 }
