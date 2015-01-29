@@ -1,16 +1,23 @@
 //=============================================================================
-//2Dライフクラス
-//Kikushima
+//
+// 2Dライフクラス [Life.h]
+//
+// Auther : Kikushima
+//          Masato Masuda
+//
 //=============================================================================
 #ifndef _LIFE_H_
 #define _LIFE_H_
+
 //=============================================================================
-//インクルード
+// include
 //=============================================================================
 #include "main.h"
 #include "Polygon2D.h"
 
-//クラス定義
+//=============================================================================
+// class
+//=============================================================================
 class CLife :public CPolygon2D
 {
 public:
@@ -20,7 +27,6 @@ public:
 	CLife();
 	~CLife(){}
 	void Init(void);
-//	void Uninit(void);
 	void Update(void);
   void Draw(void){}
 
@@ -40,10 +46,10 @@ public:
   void LifeDamage(void){ LifePoint--; if (LifePoint < 0){ LifePoint = 0; } }	//ダメージ
   void LifeReset(void){ LifePoint = LIFE_MAX; }	//復活
 	//=============================================================================
-	//ゲッター
+	// ライフ取得 設定
 	//=============================================================================
 	int GetLife(void){ return LifePoint; }//現在のライフ取得
-  int SetLife(int life){ LifePoint = life; }
+  void SetLife(int life){ LifePoint = life; }
 
 private:
 
@@ -53,3 +59,5 @@ private:
 };
 
 #endif
+
+// end of file

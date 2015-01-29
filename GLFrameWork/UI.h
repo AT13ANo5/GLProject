@@ -3,16 +3,18 @@
 // UIマネージャ [UI.h]
 //
 // Auther : Takahiro Kikushima
+//          Masato Masuda
 //
 //=============================================================================
 
 #ifndef _UI_H_
 #define _UI_H_
+
+//=============================================================================
+// include
+//=============================================================================
 #include "main.h"
 #include "Renderer.h"
-//#include "Number2D.h"
-//#include "MeshGround.h"
-
 
 class CLife;
 class CMiniMap;
@@ -20,28 +22,43 @@ class CLoadGauge;
 class CLoadString;
 class CPlayer;
 class CNumber2D;
+class CReport;
+class CNumberManager;
 
+
+//=============================================================================
+// class
+//=============================================================================
 class CUI
 {
 public:
-	CUI();
-	virtual ~CUI();
-	void Init(void);
-	void Uninit(void);
-	void Update(void);
 
-	void SetPlayer(CPlayer* player){ Player = player; }
-	//void SetGround(CMeshGround* Ground){ this->Ground = Ground; }
+  // constructor / destructor
+	CUI();
+	~CUI();
+
+  void Init(void);
+  void Release(void);
+  void Update(void);
+
+  // player
+  void SetPlayer(CPlayer* p){ player = p; }
+
 
 private:
-	CLife*			Life;
-	CMiniMap*		MiniMap;
-	CLoadGauge*		loadGauge;
+
+  CLife*			    life;
+	CMiniMap*		    miniMap;
+	CLoadGauge*		  loadGauge;
 	CLoadString*    loadString; // 装填中の文字
-	//CNumber2D*		Time; //未実装
-	CPlayer*		Player;
-	//CMeshGround*	Ground;
+  CReport*        reportBg;
+  CReport*        report;
+  CNumberManager* numberManager;
+
+  CPlayer*	    	player;
 
 };
 
 #endif
+
+// end of file
