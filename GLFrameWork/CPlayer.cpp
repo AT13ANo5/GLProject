@@ -61,7 +61,7 @@ CPlayer::~CPlayer()
 void CPlayer::Init(void)
 {
 	// 使用フラグ
-	PlayerFlag = false;
+	PlayerFlag = true;
 	_BulletUseFlag = false;
 
 	// 弾

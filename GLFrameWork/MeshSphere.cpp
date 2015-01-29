@@ -55,7 +55,7 @@ void CMeshSphere::Init(void)
 			if (num < VertexNum)
 			{
 				Vtx[num] = VECTOR3(cosf(angle*LoopX)*(Radius*cosf(angleY*LoopZ)),sinf(angleY*LoopZ)*Radius,sinf(angle*LoopX)*(Radius*cosf(angleY*LoopZ)));
-				Tex[num] = VECTOR2((TexDiv.x / PanelNum.x)*LoopX,(TexDiv.x / PanelNum.x)*LoopZ);
+				Tex[num] = VECTOR2((TexDiv.x / PanelNum.x)*LoopX,-(TexDiv.x / PanelNum.x)*LoopZ);
 
 				Nor[num] = VECTOR3(sinf(angle*LoopX),sinf(angleY*LoopZ),cosf(angle*LoopX));
 				Nor[num].Normalize();
