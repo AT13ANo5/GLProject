@@ -51,7 +51,7 @@ private:
 
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
-	CPlayer*        Player;     // プレイヤー
+	CPlayer**       Player;     // プレイヤー
 	CPlayer*        Player2;     // プレイヤー
 //	CLoadGauge*     loadGauge;  // 装填ゲージ
 //	CLoadString*    loadString; // 装填中の文字

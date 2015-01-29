@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 //  []
-// Author : AT-13A-273_Shinnosuke Munakata
+// Author : 
 //
 //------------------------------------------------------------------------------
 
@@ -113,19 +113,28 @@ void CGame::Init(void)
 	Sky = nullptr;
 	Sky = CMeshSphere::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(16.0f,8.0f),RADIUS_SKY);
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
+
 #ifdef _DEBUG
 	// デバッグワイヤーフレーム
 	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
 
 	// プレイヤー生成
-	Player = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f, 30.0f, 0.0f), 0);
-	Player->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
-	Player->SetRot(0.0f,180.0f,0.0f);
-	Player->SetPLayerFlag(true);
+	Player = new CPlayer * [PLAYER_MAX];
+	for(int i = 0; i < PLAYER_MAX; i++)
+	{
+		Player[i] = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), 0);
+		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+		Player[i]->SetRot(0.0f,180.0f,0.0f);
+
+		if(i == 0)
+		{
+			Player[i]->SetPlayerFlag(true);
+		}
+	}
 
 	//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player,300.0f);
+	CPlayerCamera::Create(Player[0], 300.0f);
 
 	//UI初期化
 	//UI->SetGround(Ground);
@@ -171,7 +180,13 @@ void CGame::Uninit(void)
 	ppRock_ = nullptr;
 
 	// プレイヤー破棄
-	SafeRelease(Player);
+	//SafeRelease(Player);
+	for(int i = 0; i < PLAYER_MAX; i++)
+	{
+		SafeRelease(Player[i]);
+	}
+
+	SafeDeletes(Player);
 
 	// 空破棄
 	if (Sky != nullptr)
@@ -207,7 +222,7 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 	// 装填ゲージ
-	const float currentTimer = (float)Player->ReloadTimer();
+	const float currentTimer = (float)Player[0]->ReloadTimer();
 	const float maxTimer = (float)PLAYER_RELOAD_TIME;
 	const float rate = currentTimer / maxTimer;
 
@@ -251,11 +266,10 @@ void CGame::CheckHit(void)
 {
 	// 攻撃側の決定
 	CPlayer*	pPlayerOffense = nullptr;		// 攻撃側プレイヤー
-	int			numPlayer = 1;					// プレイヤー数
-	for (int cntBullet = 0; cntBullet < numPlayer; ++cntBullet)
+	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
 	{
 		// プレイヤーを取得
-		pPlayerOffense = Player;
+		pPlayerOffense = Player[cntBullet];
 
 		// 弾が存在しなければ判定しない
 		if (NeedsSkipBullet(pPlayerOffense))
@@ -264,7 +278,7 @@ void CGame::CheckHit(void)
 		}
 
 		// 防御側の決定
-		for (int cntPlayer = 0; cntPlayer < numPlayer; ++cntPlayer)
+		for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 		{
 			// プレイヤーを取得
 			CPlayer*	pPlayerDefense = nullptr;		// 防御側プレイヤー
@@ -305,11 +319,10 @@ void CGame::PushBackCharacter(void)
 {
 	// 攻撃側の決定
 	CPlayer*	pPlayerOffense = nullptr;		// 攻撃側プレイヤー
-	int			numPlayer = 1;					// プレイヤー数
-	for (int cntBullet = 0; cntBullet < numPlayer; ++cntBullet)
+	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
 	{
 		// プレイヤーを取得
-		pPlayerOffense = Player;
+		pPlayerOffense = Player[cntBullet];
 
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayerOffense))
@@ -318,10 +331,10 @@ void CGame::PushBackCharacter(void)
 		}
 
 		// 防御側の決定
-		for (int cntPlayer = 0; cntPlayer < numPlayer; ++cntPlayer)
+		for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 		{
 			// プレイヤーを取得
-			CPlayer*	pPlayerDefense = nullptr;		// 防御側プレイヤー
+			CPlayer*	pPlayerDefense = Player[ cntPlayer];		// 防御側プレイヤー
 
 			// プレイヤーが判定可能か確認
 			if (NeedsSkipPlayer(pPlayerDefense))
@@ -348,9 +361,9 @@ void CGame::PushBackCharacter(void)
 				if (distanceOffenseAndDefense < -FLT_EPSILON || distanceOffenseAndDefense > FLT_EPSILON)
 				{
 					VECTOR3	vectorPushBack = vectorOffenseToDefense * 0.51f * (2.0f * RADIUS_PUSH_CHARACTER - distanceOffenseAndDefense) / distanceOffenseAndDefense;
-					pPlayerOffense->AddPos(vectorPushBack);
-					vectorPushBack *= -1.0f;
 					pPlayerDefense->AddPos(vectorPushBack);
+					vectorPushBack *= -1.0f;
+					pPlayerOffense->AddPos(vectorPushBack);
 				}
 				else
 				{
@@ -371,11 +384,10 @@ void CGame::PushBackRock(void)
 {
 	// 攻撃側の決定
 	CPlayer*	pPlayer = nullptr;		// 攻撃側プレイヤー
-	int			numPlayer = 1;			// プレイヤー数
-	for (int cntPlayer = 0; cntPlayer < numPlayer; ++cntPlayer)
+	for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 	{
 		// プレイヤーを取得
-		pPlayer = Player;
+		pPlayer = Player[cntPlayer];
 
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayer))
@@ -425,11 +437,10 @@ void CGame::PushBackField(void)
 {
 	// 判定
 	CPlayer*	pPlayerCurrent = nullptr;		// 対象オブジェクト
-	int			numObject = 1;					// 対象オブジェクト数
-	for (int cntPlayer = 0; cntPlayer < numObject; ++cntPlayer)
+	for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 	{
 		// 対象オブジェクトを取得
-		pPlayerCurrent = Player;
+		pPlayerCurrent = Player[cntPlayer];
 
 		// 対象のステートを確認
 		if (NeedsSkipPlayer(pPlayerCurrent))
@@ -450,11 +461,10 @@ void CGame::IsLandField(void)
 	// 判定
 	CPlayer*	pPlayerCurrent = nullptr;		// 対象プレイヤー
 	CBullet*	pBulletCurrent = nullptr;		// 対象オブジェクト
-	int			numBullet = 1;					// 対象オブジェクト数
-	for (int cntBullet = 0; cntBullet < numBullet; ++cntBullet)
+	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
 	{
 		// 対象プレイヤーの取得
-		pPlayerCurrent = Player;
+		pPlayerCurrent = Player[cntBullet];
 
 		// 弾が存在しなければ判定しない
 		if (NeedsSkipBullet(pPlayerCurrent))
