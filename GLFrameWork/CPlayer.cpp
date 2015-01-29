@@ -76,7 +76,7 @@ void CPlayer::Init(void)
 	// –Cg
 	Barrel = CModel::Create(TANK_BARREL,_Pos);
 	Barrel->Init();
-	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_RED));
+	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
 }
 
 //------------------------------------------------------------------------------
