@@ -163,6 +163,7 @@ void CGame::Uninit(void)
 	{
 		SafeRelease(ppRock_[cntRock]);
 	}
+	SafeDeletes(ppRock_);
 	// プレイヤー破棄
 	SafeRelease(Player);
 
@@ -182,9 +183,9 @@ void CGame::Uninit(void)
 
 	//UI破棄
 	UI->Uninit();
+	delete UI;
+	UI = nullptr;
 
-	CCamera::ReleaseAll();	CObject::ReleaseAll();
-	SafeDelete(MiniMap);
 	CCamera::ReleaseAll();
 	CObject::ReleaseAll();
 }
@@ -255,25 +256,20 @@ void CGame::Update(void)
 		report->SetDrawFlag(false);
 		numberManager->SetDrawFlag(false);
 	}
-}
+
 
 	// 攻撃判定
-//	CheckHit();
+	CheckHit();
 
 	// キャラクター同士の押し戻し
-//	PushBackCharacter();
+	PushBackCharacter();
 
 	// キャラクターと岩の押し戻し
-//	PushBackRock();
+	PushBackRock();
 
 	// 地形との押し戻し
-//	PushBackField();
-
-
-//	MiniMap->SetPlayer(0,Player->Pos(),Player->Rot().y);
-
-//	MiniMap->Update();
-//}
+	PushBackField();
+}
 
 //==============================================================================
 // 攻撃判定の当たり判定

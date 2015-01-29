@@ -11,7 +11,7 @@ class CPlayer;
 class CLoadGauge;
 class CLoadString;
 class CReport;
-class CNumberManager;class CMiniMap;
+class CNumberManager;
 class UI;
 
 class CGame :public CScene
@@ -55,7 +55,6 @@ private:
 	CReport*        reportBg;
 	CReport*        report;
 	CNumberManager* numberManager;
-	CMiniMap*	MiniMap;
 	CUI*		UI;
 
 	CModel**		ppRock_;	//	Šâ
