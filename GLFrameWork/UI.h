@@ -12,8 +12,7 @@
 #include "Renderer.h"
 //#include "Number2D.h"
 //#include "MeshGround.h"
-#include "LoadGauge.h"
-#include "LoadString.h"
+
 
 class CLife;
 class CMiniMap;

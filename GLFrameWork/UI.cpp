@@ -97,7 +97,6 @@ void CUI::Uninit(void)
 //	Ground->Release();
 //	Ground = nullptr;
 
-	Player->Release();
 	Player = nullptr;
 
 	SafeDelete(MiniMap);

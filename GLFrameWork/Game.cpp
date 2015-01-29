@@ -126,6 +126,7 @@ void CGame::Init(void)
 
 	//UI‰Šú‰»
 	//UI->SetGround(Ground);
+	UI = new CUI;
 	UI->Init();
 
 	// ¬Ñ•\‚Ì”wŒi

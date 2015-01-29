@@ -146,13 +146,12 @@
     <Filter Include="00_システム\NumberManager\Number2D">
       <UniqueIdentifier>{2ae40a32-fc4b-4ed1-b860-2a3575f4f2de}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
     <Filter Include="00_システム\Time">
       <UniqueIdentifier>{a2c8807e-2a9f-4c79-9cd3-efa2583575d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="00_システム\UI">
       <UniqueIdentifier>{7dd5f2ea-4cec-4eca-ae0d-1cc0b2d4efad}</UniqueIdentifier>
-=======
+    </Filter>
     <Filter Include="02_ゲーム\プレイヤー\弾道">
       <UniqueIdentifier>{38dd6d10-4bc9-48ed-ad99-f093138db667}</UniqueIdentifier>
     </Filter>
@@ -161,7 +160,6 @@
     </Filter>
     <Filter Include="03_リザルト\NumberManager">
       <UniqueIdentifier>{9c27d603-b2cc-468f-8faa-d8fecb278fc5}</UniqueIdentifier>
->>>>>>> 22b06a64f3c5509543b75dd20b167ac45fe5cc8a
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -294,13 +292,12 @@
     <ClCompile Include="Number2D.cpp">
       <Filter>00_システム\NumberManager\Number2D</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Time.cpp">
       <Filter>00_システム\Time</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>00_システム\UI</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="Ballistic.cpp">
       <Filter>02_ゲーム\プレイヤー\弾道</Filter>
     </ClCompile>
@@ -309,7 +306,6 @@
     </ClCompile>
     <ClCompile Include="ResultNumberManager.cpp">
       <Filter>03_リザルト\NumberManager</Filter>
->>>>>>> 22b06a64f3c5509543b75dd20b167ac45fe5cc8a
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -454,13 +450,12 @@
     <ClInclude Include="Number2D.h">
       <Filter>00_システム\NumberManager\Number2D</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Time.h">
       <Filter>00_システム\Time</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>00_システム\UI</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="netData.h">
       <Filter>05_通信ロビー</Filter>
     </ClInclude>
@@ -472,7 +467,6 @@
     </ClInclude>
     <ClInclude Include="ResultNumberManager.h">
       <Filter>03_リザルト\NumberManager</Filter>
->>>>>>> 22b06a64f3c5509543b75dd20b167ac45fe5cc8a
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,8 +16,8 @@
 // macro
 //=============================================================================
 namespace{
-  const COLOR DEFAULT_COLOR = COLOR(1.0f, 1.0f, 1.0f, 1.0f );
-  const COLOR LOAD_COLOR = COLOR(1.0f, 0.0f, 0.0f, 1.0f);
+	const COLOR DEFAULT_COLOR = COLOR(1.0f,1.0f,1.0f,1.0f);
+	const COLOR LOAD_COLOR = COLOR(1.0f,0.0f,0.0f,1.0f);
 }
 
 
@@ -26,8 +26,8 @@ namespace{
 //=============================================================================
 CLoadGauge::CLoadGauge() :CPolygon2D()
 {
-  rateCurrent = 1.0f;
-  color = DEFAULT_COLOR;
+	rateCurrent = 1.0f;
+	color = DEFAULT_COLOR;
 }
 
 //=============================================================================
@@ -36,6 +36,10 @@ CLoadGauge::CLoadGauge() :CPolygon2D()
 CLoadGauge* CLoadGauge::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
 	CLoadGauge* Scene = new CLoadGauge;
+	if (Scene == nullptr)
+	{
+		return nullptr;
+	}
 	Scene->_Pos = pos;
 	Scene->_Rot = rot;
 	Scene->_Size = size;
@@ -50,10 +54,10 @@ CLoadGauge* CLoadGauge::Create(const VECTOR3& pos,const VECTOR2& size,const VECT
 //=============================================================================
 void CLoadGauge::Init(void)
 {
-  Vtx[0] = VECTOR3(_Size.x * rateCurrent, 0, 0);
-  Vtx[1] = VECTOR3(0, 0, 0);
-  Vtx[2] = VECTOR3(_Size.x * rateCurrent, _Size.y, 0);
-  Vtx[3] = VECTOR3(0, _Size.y, 0);
+	Vtx[0] = VECTOR3(_Size.x * rateCurrent,0,0);
+	Vtx[1] = VECTOR3(0,0,0);
+	Vtx[2] = VECTOR3(_Size.x * rateCurrent,_Size.y,0);
+	Vtx[3] = VECTOR3(0,_Size.y,0);
 }
 
 //=============================================================================
@@ -61,22 +65,23 @@ void CLoadGauge::Init(void)
 //=============================================================================
 void CLoadGauge::Update(void)
 {
-  if (rateCurrent < 1.0f){
-    SetColor(LOAD_COLOR);
-  } else {
-    SetColor(color);
-  }
+	if (rateCurrent < 1.0f){
+		SetColor(LOAD_COLOR);
+	}
+	else {
+		SetColor(color);
+	}
 
-  Vtx[0] = VECTOR3(_Size.x * rateCurrent, 0, 0);
-  Vtx[1] = VECTOR3(0, 0, 0);
-  Vtx[2] = VECTOR3(_Size.x * rateCurrent, _Size.y, 0);
-  Vtx[3] = VECTOR3(0, _Size.y, 0);
+	Vtx[0] = VECTOR3(_Size.x * rateCurrent,0,0);
+	Vtx[1] = VECTOR3(0,0,0);
+	Vtx[2] = VECTOR3(_Size.x * rateCurrent,_Size.y,0);
+	Vtx[3] = VECTOR3(0,_Size.y,0);
 }
 
 void CLoadGauge::SetDefaultColor(COLOR col)
 {
-  color = col;
-  SetColor(color);
+	color = col;
+	SetColor(color);
 }
 
 // end of file
