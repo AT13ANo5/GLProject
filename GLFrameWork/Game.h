@@ -42,6 +42,7 @@ private:
 	void PushBackCharacter(void);					// キャラクター同士の押し戻し
 	void PushBackRock(void);						// キャラクターと岩の押し戻し
 	void PushBackField(void);						// 地形の押し戻し
+	void IsLandField(void);							// 地形との判定
 	void PushBackObjectByField(CObject* pObject);	// オブジェクトの地形による押し戻し
 	bool NeedsSkipPlayer(CPlayer* pPlayer);			// プレイヤー判定スキップ
 	bool NeedsSkipBullet(CPlayer* pPlayer);			// 砲弾判定スキップ

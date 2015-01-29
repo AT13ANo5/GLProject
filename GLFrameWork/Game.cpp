@@ -120,6 +120,7 @@ void CGame::Init(void)
 	Player = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f, 30.0f, 0.0f), 0);
 	Player->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
 	Player->SetRot(0.0f,180.0f,0.0f);
+	Player->SetPLayerFlag(true);
 
 	//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player,300.0f);
@@ -162,8 +163,11 @@ void CGame::Uninit(void)
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
 		SafeRelease(ppRock_[cntRock]);
+		ppRock_[cntRock] = nullptr;
 	}
 	SafeDeletes(ppRock_);
+	ppRock_ = nullptr;
+
 	// プレイヤー破棄
 	SafeRelease(Player);
 
@@ -200,42 +204,6 @@ void CGame::Uninit(void)
 //------------------------------------------------------------------------------
 void CGame::Update(void)
 {
-	// 地形とのあたり判定
-	VECTOR3	NormalGround;		// 地形の法線
-	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(Player->Pos(),&NormalGround);
-
-	// 回転を求める
-	VECTOR3	VectorUpPlayer;		// 上方向ベクトル
-	VECTOR3	VectorNormalYZ;		// YZ平面上の法線ベクトル
-	VECTOR3	VectorNormalXY;		// XY平面上の法線ベクトル
-	float	AnglePlayerX;		// プレイヤー回転X軸
-	float	AnglePlayerZ;		// プレイヤー回転Z軸
-	VectorUpPlayer.x = VectorUpPlayer.z = 0.0f;
-	VectorUpPlayer.y = 1.0f;
-	VectorNormalYZ.x = 0.0f;
-	VectorNormalYZ.y = NormalGround.y;
-	VectorNormalYZ.z = NormalGround.z;
-	VectorNormalYZ.Normalize();
-	AnglePlayerX = -acosf(VECTOR3::Dot(VectorNormalYZ,VectorUpPlayer));
-	VectorNormalXY.x = NormalGround.x;
-	VectorNormalXY.y = NormalGround.y;
-	VectorNormalXY.z = 0.0f;
-	VectorNormalXY.Normalize();
-	AnglePlayerZ = -acosf(VECTOR3::Dot(VectorNormalXY,VectorUpPlayer));
-
-	// プレイヤー情報のデバッグ表示
-	VECTOR3	positionPlayer = Player->Pos();
-	VECTOR3	rotaionPlayer = Player->Rot();
-	Console::SetCursorPos(1,1);
-	Console::Print("Pos : (%9.3f, %9.3f, %9.3f)",positionPlayer.x,HeightGround,positionPlayer.z);
-	Console::Print("Rot : (%9.3f, %9.3f, %9.3f)",180.0f / PI * AnglePlayerX,rotaionPlayer.y,180.0f / PI * AnglePlayerZ);
-
-	// プレイヤーに設定する
-	Player->SetPosY(HeightGround);
-	Player->SetRotX(AnglePlayerX * 180.0f / PI);
-	Player->SetRotZ(AnglePlayerZ * 180.0f / PI);
-
 	// 装填ゲージ
 	const float currentTimer = (float)Player->ReloadTimer();
 	const float maxTimer = (float)PLAYER_RELOAD_TIME;
@@ -269,6 +237,9 @@ void CGame::Update(void)
 
 	// 地形との押し戻し
 	PushBackField();
+
+	// 地形との判定
+	IsLandField();
 }
 
 //==============================================================================
@@ -464,6 +435,39 @@ void CGame::PushBackField(void)
 }
 
 //==============================================================================
+// 地形との判定
+//==============================================================================
+void CGame::IsLandField(void)
+{
+	// 判定
+	CPlayer*	pPlayerCurrent = nullptr;		// 対象プレイヤー
+	CBullet*	pBulletCurrent = nullptr;		// 対象オブジェクト
+	int			numBullet = 1;					// 対象オブジェクト数
+	for (int cntBullet = 0; cntBullet < numBullet; ++cntBullet)
+	{
+		// 対象プレイヤーの取得
+		pPlayerCurrent = Player;
+
+		// 弾が存在しなければ判定しない
+		if (NeedsSkipBullet(pPlayerCurrent))
+		{
+			continue;
+		}
+
+		// 対象オブジェクトを取得
+		pBulletCurrent = pPlayerCurrent->Bullet();
+
+		// 判定
+		CBullet	bulletHit = *pBulletCurrent;
+		PushBackObjectByField(&bulletHit);
+		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
+		{
+			// 弾の消滅処理
+		}
+	}
+}
+
+//==============================================================================
 // オブジェクトの地形による押し戻し
 //==============================================================================
 void CGame::PushBackObjectByField(CObject* pObject)
@@ -494,8 +498,8 @@ void CGame::PushBackObjectByField(CObject* pObject)
 
 	// キャラクターに設定する
 	pObject->SetPosY(HeightGround);
-	//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
-	//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
+//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
+//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
 }
 
 //==============================================================================
@@ -503,8 +507,14 @@ void CGame::PushBackObjectByField(CObject* pObject)
 //==============================================================================
 bool CGame::NeedsSkipPlayer(CPlayer* pPlayer)
 {
+	// エラーチェック
+	if (pPlayer == nullptr)
+	{
+		return true;
+	}
+
 	// ステートを確認
-	int		statePlayer = 0;// pPlayerCurrent->State();
+	int		statePlayer = pPlayer->State();
 	if (statePlayer == PLAYER_STATE_DEATH || statePlayer == PLAYER_STATE_RESPAWN)
 	{
 		return true;
@@ -520,10 +530,10 @@ bool CGame::NeedsSkipPlayer(CPlayer* pPlayer)
 bool CGame::NeedsSkipBullet(CPlayer* pPlayer)
 {
 	// 弾が存在しないとき
-//	if (!pPlayer->ExistsBullet())
-//	{
-//		return true;
-//	}
+	if (!pPlayer->BulletUseFlag())
+	{
+		return true;
+	}
 
 	// スキップしない
 	return false;
