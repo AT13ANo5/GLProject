@@ -52,11 +52,14 @@ void CMeshCylinder::Init(void)
 	{
 		for(int LoopX=0;LoopX<PanelNum.x+1;LoopX++)
 		{
-			Vtx[num] = VECTOR3(cosf(angle*LoopX)*Radius,PanelHeight*LoopZ,sinf(angle*LoopX)*Radius);
-			Tex[num] = VECTOR2((TexDiv.x/PanelNum.x)*LoopX,(TexDiv.x/PanelNum.x)*LoopZ);
-			
-			Nor[num] = VECTOR3(sinf(angle*LoopX),0.0f,cosf(angle*LoopX));
-			Nor[num].Normalize();
+			if (num < VertexNum)
+			{
+				Vtx[num] = VECTOR3(cosf(angle*LoopX)*Radius,PanelHeight*LoopZ,sinf(angle*LoopX)*Radius);
+				Tex[num] = VECTOR2((TexDiv.x / PanelNum.x)*LoopX,(TexDiv.x / PanelNum.x)*LoopZ);
+
+				Nor[num] = VECTOR3(sinf(angle*LoopX),0.0f,cosf(angle*LoopX));
+				Nor[num].Normalize();
+			}
 			_Color = COLOR(1.0f,1.0f,1.0f,1.0f);
 			num++;
 		}
@@ -65,10 +68,14 @@ void CMeshCylinder::Init(void)
 	int LoopX=0;
 	int VtxNo = 0;
 	Index = new int[IndexNum];
+	for (int cnt = 0;cnt < IndexNum;cnt++)
+	{
+		Index[cnt] = 0;
+	}
 	
 	for(int LoopZ=0;LoopZ<PanelNum.y;LoopZ++)
 	{
-		if(LoopZ != 0)
+		if(LoopZ != 0 && VtxNo < IndexNum)
 		{
 			LoopX = 0;
 			Index[VtxNo] = (int)((LoopZ*(PanelNum.x+1))+(((LoopX+1)%2)*(PanelNum.x+1)+(LoopX/2)));
@@ -76,14 +83,20 @@ void CMeshCylinder::Init(void)
 		}
 		for(LoopX=0;LoopX<(PanelNum.x+1)*2;LoopX++)
 		{
-			Index[VtxNo] = (int)((LoopZ*(PanelNum.x+1))+(((LoopX+1)%2)*(PanelNum.x+1)+(LoopX/2)));
+			if (VtxNo < IndexNum)
+			{
+				Index[VtxNo] = (int)((LoopZ*(PanelNum.x + 1)) + (((LoopX + 1) % 2)*(PanelNum.x + 1) + (LoopX / 2)));
+			}
 			VtxNo++;
 		}
 		if(LoopZ==PanelNum.y-1)
 		{
 			break;
 		}
-		Index[VtxNo] = Index[VtxNo-1];
+		if (VtxNo<IndexNum && VtxNo > 0)
+		{
+			Index[VtxNo] = Index[VtxNo - 1];
+		}
 		VtxNo++;
 	}
 }
