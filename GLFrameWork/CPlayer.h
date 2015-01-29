@@ -70,9 +70,15 @@ public:
 	// 状態ゲッター
 	PLAYER_STATE State(void){return _State;}
 
-	void SetPLayerFlag(bool flag){PlayerFlag = flag;}
+	void SetPlayerFlag(bool flag){PlayerFlag = flag;}
 	bool BulletUseFlag(void){return _BulletUseFlag;}
+
+	void ReleaseBullet(void);
+
 private:
+	void UpdatePlayer(void);	// プレイヤー時の更新
+	void UpdateCPU(void);		// CPU時の更新
+
 	PLAYER_STATE _State;	// プレイヤーの状態
 	CModel* Barrel;			// 砲身
 	CBullet* _Bullet;		// 弾
@@ -80,12 +86,12 @@ private:
 	float Speed;			// 移動速度
 	float BarrelRotX;		// 砲身のX軸回転量
 	bool LaunchFlag;		// 弾発射フラグ（true : 使用 / false : 不使用）
-	bool _BulletUseFlag;		// 弾存在フラグ
+	bool _BulletUseFlag;	// 弾存在フラグ
 	int _ReloadTimer;		// 現在の装填時間
 	int _PlayerLife;		// 体力
 	int PlayerID;			// プレイヤー判別用ID
 	bool PlayerFlag;		// 操作キャラクターかどうか
-  CBallistic* Ballistic; // 弾道	int PlayerID;		// プレイヤー判別用ID
+	CBallistic* Ballistic;	// 弾道
 };
 
 #endif

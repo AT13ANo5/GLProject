@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 //  []
-// Author : AT-13A-273_Shinnosuke Munakata
+// Author : 
 //
 //------------------------------------------------------------------------------
 
@@ -111,18 +111,30 @@ void CGame::Init(void)
 	Sky = nullptr;
 	Sky = CMeshSphere::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(16.0f,8.0f),RADIUS_SKY);
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
+
 #ifdef _DEBUG
 	// デバッグワイヤーフレーム
 	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
 
 	// プレイヤー生成
-	Player = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f, 30.0f, 0.0f), 0);
-	Player->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
-	Player->SetRot(0.0f,180.0f,0.0f);
+	//Player = new CPlayer[PLAYER_MAX]();
+
+	Player = new CPlayer * [PLAYER_MAX];
+	for(int i = 0; i < PLAYER_MAX; i++)
+	{
+		Player[i] = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), 0);
+		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+		Player[i]->SetRot(0.0f,180.0f,0.0f);
+
+		if(i == 0)
+		{
+			Player[i]->SetPlayerFlag(true);
+		}
+	}
 
 	//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player,300.0f);
+	CPlayerCamera::Create(Player[0], 300.0f);
 
 	//UI初期化
 	//UI->SetGround(Ground);
@@ -164,8 +176,15 @@ void CGame::Uninit(void)
 		SafeRelease(ppRock_[cntRock]);
 	}
 	SafeDeletes(ppRock_);
+
 	// プレイヤー破棄
-	SafeRelease(Player);
+	//SafeRelease(Player);
+	for(int i = 0; i < PLAYER_MAX; i++)
+	{
+		SafeRelease(Player[i]);
+	}
+
+	SafeDeletes(Player);
 
 	// 空破棄
 	if (Sky != nullptr)
@@ -203,7 +222,12 @@ void CGame::Update(void)
 	// 地形とのあたり判定
 	VECTOR3	NormalGround;		// 地形の法線
 	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(Player->Pos(),&NormalGround);
+	//HeightGround = Ground->GetHeight(Player->Pos(),&NormalGround);
+
+	for(int i = 0; i < PLAYER_MAX; i++)
+	{
+		HeightGround = Ground->GetHeight(Player[i]->Pos(), &NormalGround);
+	}
 
 	// 回転を求める
 	VECTOR3	VectorUpPlayer;		// 上方向ベクトル
@@ -225,19 +249,19 @@ void CGame::Update(void)
 	AnglePlayerZ = -acosf(VECTOR3::Dot(VectorNormalXY,VectorUpPlayer));
 
 	// プレイヤー情報のデバッグ表示
-	VECTOR3	positionPlayer = Player->Pos();
-	VECTOR3	rotaionPlayer = Player->Rot();
+	VECTOR3	positionPlayer = Player[0]->Pos();
+	VECTOR3	rotaionPlayer = Player[0]->Rot();
 	Console::SetCursorPos(1,1);
 	Console::Print("Pos : (%9.3f, %9.3f, %9.3f)",positionPlayer.x,HeightGround,positionPlayer.z);
 	Console::Print("Rot : (%9.3f, %9.3f, %9.3f)",180.0f / PI * AnglePlayerX,rotaionPlayer.y,180.0f / PI * AnglePlayerZ);
 
 	// プレイヤーに設定する
-	Player->SetPosY(HeightGround);
-	Player->SetRotX(AnglePlayerX * 180.0f / PI);
-	Player->SetRotZ(AnglePlayerZ * 180.0f / PI);
+	Player[0]->SetPosY(HeightGround);
+	Player[0]->SetRotX(AnglePlayerX * 180.0f / PI);
+	Player[0]->SetRotZ(AnglePlayerZ * 180.0f / PI);
 
 	// 装填ゲージ
-	const float currentTimer = (float)Player->ReloadTimer();
+	const float currentTimer = (float)Player[0]->ReloadTimer();
 	const float maxTimer = (float)PLAYER_RELOAD_TIME;
 	const float rate = currentTimer / maxTimer;
 
@@ -282,7 +306,7 @@ void CGame::CheckHit(void)
 	for (int cntBullet = 0; cntBullet < numPlayer; ++cntBullet)
 	{
 		// プレイヤーを取得
-		pPlayerOffense = Player;
+		pPlayerOffense = Player[0];
 
 		// 弾が存在しなければ判定しない
 		if (NeedsSkipBullet(pPlayerOffense))
@@ -334,7 +358,7 @@ void CGame::PushBackCharacter(void)
 	for (int cntBullet = 0; cntBullet < numPlayer; ++cntBullet)
 	{
 		// プレイヤーを取得
-		pPlayerOffense = Player;
+		pPlayerOffense = Player[0];
 
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayerOffense))
@@ -398,7 +422,7 @@ void CGame::PushBackRock(void)
 	for (int cntPlayer = 0; cntPlayer < numPlayer; ++cntPlayer)
 	{
 		// プレイヤーを取得
-		pPlayer = Player;
+		pPlayer = Player[0];
 
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayer))
@@ -450,7 +474,7 @@ void CGame::PushBackField(void)
 	for (int cntPlayer = 0; cntPlayer < numObject; ++cntPlayer)
 	{
 		// 対象オブジェクトを取得
-		pPlayerCurrent = Player;
+		pPlayerCurrent = Player[0];
 
 		// 対象のステートを確認
 		if (NeedsSkipPlayer(pPlayerCurrent))
