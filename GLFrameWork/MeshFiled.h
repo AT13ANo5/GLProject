@@ -39,6 +39,7 @@ private:
 	int IndexNum;
 	int PolygonNum;
 	int VertexNum;
+	GLuint DrawList;
 
 	VECTOR3* Vtx;
 	VECTOR2* Tex;

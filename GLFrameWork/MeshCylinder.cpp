@@ -99,10 +99,27 @@ void CMeshCylinder::Init(void)
 		}
 		VtxNo++;
 	}
+
+	DrawList = glGenLists(1);
+	glNewList(DrawList,GL_COMPILE);
+
+	glBegin(GL_TRIANGLE_STRIP);
+
+	for (int cnt = 0;cnt<IndexNum;cnt++)
+	{
+		glColor4f(_Color.r,_Color.g,_Color.b,_Color.a);
+		glNormal3f(Nor[Index[cnt]].x,Nor[Index[cnt]].y,Nor[Index[cnt]].z);
+		glTexCoord2f(Tex[Index[cnt]].x,Tex[Index[cnt]].y);
+		glVertex3f(Vtx[Index[cnt]].x,Vtx[Index[cnt]].y,Vtx[Index[cnt]].z);
+	}
+
+	glEnd();
+	glEndList();
 }
 
 void CMeshCylinder::Uninit(void)
 {
+	glDeleteLists(DrawList,1);
 	delete this;
 }
 void CMeshCylinder::Update(void)
@@ -132,17 +149,7 @@ void CMeshCylinder::Draw(void)
 	//glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
 	//ポリゴン描画
-	glBegin(GL_TRIANGLE_STRIP);
-	
-	for(int cnt=0;cnt<IndexNum;cnt++)
-	{
-		glColor4f(_Color.r,_Color.g,_Color.b,_Color.a);
-		glNormal3f(Nor[Index[cnt]].x,Nor[Index[cnt]].y,Nor[Index[cnt]].z);
-		glTexCoord2f(Tex[Index[cnt]].x,Tex[Index[cnt]].y);
-		glVertex3f(Vtx[Index[cnt]].x,Vtx[Index[cnt]].y,Vtx[Index[cnt]].z);
-	}
-
-	glEnd();
+	glCallList(DrawList);
 
 	glPopMatrix();//ビューマトリックスを戻す
 	glBindTexture(GL_TEXTURE_2D,0);

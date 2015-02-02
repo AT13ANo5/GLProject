@@ -9,6 +9,15 @@
 #include "main.h"
 #include "Object.h"
 
+typedef struct
+{
+	VECTOR2 uv;
+	COLOR diffuse;
+	VECTOR3 nor;
+	VECTOR3 pos;
+
+}VERTEX;
+
 //クラス定義
 class CMeshGround :public CObject
 {
@@ -36,18 +45,18 @@ public:
 
 	//ゲッター
 	VECTOR3 Size(void)const{ return _Size; }
-
+	
 private:
 
 	VECTOR3 _Size;
 	
 	VECTOR2 PanelSize;
- VECTOR2 PanelNum;
- VECTOR2 ImgSize;
-
+	VECTOR2 PanelNum;
+	VECTOR2 ImgSize;
 	int IndexNum;
 	int PolygonNum;
 	int VertexNum;
+	GLuint DrawList;
 
 	VECTOR3* Vtx;
 	VECTOR2* Tex;
@@ -59,7 +68,7 @@ private:
 
 	void GetPanelIndex(VECTOR3 pos,int* OutIndexX,int* OutIndexY);
 	float GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VECTOR3& p2,VECTOR3& pos,VECTOR3* Normal = nullptr);
- void LoadImg(const char * imgFile);//画像データ読み込み
+	void LoadImg(const char * imgFile);//画像データ読み込み
 
 };
 

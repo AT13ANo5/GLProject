@@ -38,6 +38,7 @@ private:
 	int PolygonNum;
 	int VertexNum;
 	float Radius;
+	GLuint DrawList;
 
 	VECTOR3* Vtx;
 	VECTOR2* Tex;
