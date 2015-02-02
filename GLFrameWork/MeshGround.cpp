@@ -46,7 +46,7 @@ CMeshGround::~CMeshGround()
 		HeightMap = nullptr;
 	}
 }
-CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum)
+CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum,float heightMag)
 {
 	CMeshGround* Ground = new CMeshGround;
 	if (Ground == nullptr)
@@ -56,6 +56,7 @@ CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum)
 	Ground->_Pos = pos;
 	Ground->PanelSize = PanelSize;
 	Ground->PanelNum = PanelNum;
+	Ground->HeightMag = heightMag;
 	Ground->Init();
 
 	return Ground;
@@ -420,7 +421,7 @@ void CMeshGround::LoadImg(const char * imgFile)
 	FILE *file;
 	BITMAPFILEHEADER bmfh;
 	BITMAPINFOHEADER bmih;//ÉwÉbÉ_Å[èÓïÒ
-	float FieldScl = 2;
+	float FieldScl = HeightMag;
 	file = fopen(imgFile,"rb");
 	if (file != NULL)
 	{

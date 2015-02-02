@@ -123,6 +123,7 @@ protected:
 	float rot;
 
 	static MODEL_DATA ModelData[];
+	static GLuint* DrawList[];
 	static bool LoadModel(const char* filename,int id);
 	static int ModelNum;
 	int ModelID;

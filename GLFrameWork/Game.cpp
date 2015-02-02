@@ -42,7 +42,7 @@ const float	CGame::RADIUS_DEFENSE_ROCK = 10.0f;			// 岩の防御半径
 const float	CGame::HEIGHT_DEFENSE_ROCK = 10.0f;			// 岩の防御中心高さ
 const float	CGame::RADIUS_PUSH_ROCK = 10.0f;			// 岩の押し戻し半径
 const float	CGame::HEIGHT_PUSH_ROCK = 10.0f;			// 岩の押し戻し中心高さ
-const float CGame::FIELD_PANEL_SIZE = 30.0f;			//フィールドのパネル一枚のサイズ
+const float CGame::FIELD_PANEL_SIZE = 60.0f;			//フィールドのパネル一枚のサイズ
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
 
@@ -97,7 +97,7 @@ void CGame::Init(void)
 	CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));	// 地形生成
 
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(FIELD_PANEL_SIZE,FIELD_PANEL_SIZE),VECTOR2(0,0));
+	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(FIELD_PANEL_SIZE,FIELD_PANEL_SIZE),VECTOR2(0,0),1.5f);
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
 	// 空生成

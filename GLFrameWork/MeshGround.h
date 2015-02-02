@@ -31,7 +31,7 @@ public:
 	//	VECTOR2：ポリゴン一枚のサイズ
 	//	VECTOR2:分割数
 	//=============================================================================
-	static CMeshGround* Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum);
+	static CMeshGround* Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum,float heightMag = 2.0f);
 
 	void Init(void);
 	void Uninit(void);
@@ -56,6 +56,7 @@ private:
 	int IndexNum;
 	int PolygonNum;
 	int VertexNum;
+	float HeightMag;//高さの倍率
 	GLuint DrawList;
 
 	VECTOR3* Vtx;

@@ -10,6 +10,7 @@ CModel* CModel::Top = nullptr;
 CModel* CModel::Cur = nullptr;
 int CModel::ModelNum = 0;
 MODEL_DATA CModel::ModelData[CModel::MODEL_MAX];
+GLuint* CModel::DrawList[CModel::MODEL_MAX] = {nullptr};
 
 const char* ModelFile[CModel::MODEL_MAX] = 
 {
@@ -142,6 +143,45 @@ void CModel::Initialize(void)
 	for (int cnt = 0;cnt < MODEL_MAX;cnt++)
 	{
 		LoadModel(ModelFile[cnt],cnt);
+
+		DrawList[cnt] = new GLuint[ModelData[cnt].PartsNum];
+
+		int TriCount = 0;
+		int QuadCount = 0;
+		for (int num = 0;num < ModelData[cnt].PartsNum;num++)
+		{
+			DrawList[cnt][num] = glGenLists(1);
+			glNewList(DrawList[cnt][num],GL_COMPILE);
+
+			//ŽOŠpŒ`ƒ|ƒŠƒSƒ“•`‰æ
+			glBegin(GL_TRIANGLES);
+			for (int cnt2 = 0;cnt2 < ModelData[cnt].TriIndexNum[num] * 3;cnt2++)
+			{
+				glColor4f(1.0f,1.0f,1.0f,1.0f);
+
+				glNormal3f(ModelData[cnt].Nor[ModelData[cnt].TriIndexNor[TriCount] - 1].x,ModelData[cnt].Nor[ModelData[cnt].TriIndexNor[TriCount] - 1].y,ModelData[cnt].Nor[ModelData[cnt].TriIndexNor[TriCount] - 1].z);
+				glTexCoord2f(ModelData[cnt].Tex[ModelData[cnt].TriIndexTex[TriCount] - 1].x,ModelData[cnt].Tex[ModelData[cnt].TriIndexTex[TriCount] - 1].y);
+				glVertex3f(ModelData[cnt].Vtx[ModelData[cnt].TriIndexPos[TriCount] - 1].x,ModelData[cnt].Vtx[ModelData[cnt].TriIndexPos[TriCount] - 1].y,ModelData[cnt].Vtx[ModelData[cnt].TriIndexPos[TriCount] - 1].z);
+				TriCount++;
+			}
+
+			glEnd();
+
+			//ŽlŠpŒ`ƒ|ƒŠƒSƒ“•`‰æ
+			glBegin(GL_QUADS);
+
+			for (int cnt2 = 0; cnt2 < ModelData[cnt].QuadIndexNum[num] * 4; cnt2++)
+			{
+				glColor4f(1.0f,1.0f,1.0f,1.0f);
+
+				glNormal3f(ModelData[cnt].Nor[ModelData[cnt].QuadIndexNor[QuadCount] - 1].x,ModelData[cnt].Nor[ModelData[cnt].QuadIndexNor[QuadCount] - 1].y,ModelData[cnt].Nor[ModelData[cnt].QuadIndexNor[QuadCount] - 1].z);
+				glTexCoord2f(ModelData[cnt].Tex[ModelData[cnt].QuadIndexTex[QuadCount] - 1].x,ModelData[cnt].Tex[ModelData[cnt].QuadIndexTex[QuadCount] - 1].y);
+				glVertex3f(ModelData[cnt].Vtx[ModelData[cnt].QuadIndexPos[QuadCount] - 1].x,ModelData[cnt].Vtx[ModelData[cnt].QuadIndexPos[QuadCount] - 1].y,ModelData[cnt].Vtx[ModelData[cnt].QuadIndexPos[QuadCount] - 1].z);
+			}
+			glEnd();
+
+			glEndList();
+		}
 	}
 }
 
@@ -181,6 +221,10 @@ void CModel::Finalize(void)
 {
 	for (int cnt = 0;cnt < MODEL_MAX;cnt++)
 	{
+		for (int num = 0;num < ModelData[cnt].PartsNum;num++)
+		{
+			glDeleteLists(DrawList[cnt][num],1);
+		}
 		SafeDeletes(ModelData[cnt].Vtx);
 		SafeDeletes(ModelData[cnt].Nor);
 		SafeDeletes(ModelData[cnt].Tex);
@@ -192,7 +236,9 @@ void CModel::Finalize(void)
 		SafeDeletes(ModelData[cnt].QuadIndexNor);
 		SafeDeletes(ModelData[cnt].QuadIndexTex);
 		SafeDeletes(ModelData[cnt].QuadIndexNum);
+		SafeDeletes(DrawList[cnt]);
 	}
+	
 }
 //=============================================================================
 //XV
@@ -251,7 +297,7 @@ void CModel::Draw(void)
 		glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
 
-
+		/*
 		//ŽOŠpŒ`ƒ|ƒŠƒSƒ“•`‰æ
 		glBegin(GL_TRIANGLES);
 		for (int cnt = 0;cnt < ModelData[ModelID].TriIndexNum[num] * 3;cnt++)
@@ -278,6 +324,8 @@ void CModel::Draw(void)
 			glVertex3f(ModelData[ModelID].Vtx[ModelData[ModelID].QuadIndexPos[QuadCount] - 1].x*_Scl.x,ModelData[ModelID].Vtx[ModelData[ModelID].QuadIndexPos[QuadCount] - 1].y*_Scl.y,ModelData[ModelID].Vtx[ModelData[ModelID].QuadIndexPos[QuadCount] - 1].z*_Scl.z);
 		}
 		glEnd();
+		*/
+		glCallList(DrawList[ModelID][num]);
 		glPopMatrix();//ƒrƒ…[ƒ}ƒgƒŠƒbƒNƒX‚ð–ß‚·
 	}
 	
