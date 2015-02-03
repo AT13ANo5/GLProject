@@ -25,7 +25,7 @@ void CPlayerCamera::Init(void)
 	_Eye += pos;
 
 	_Lookat.x = sinf(DEG2RAD(rot.y))*Length;
-	_Lookat.y = _Eye.y;
+	_Lookat.y = Parent->Pos().y;
 	_Lookat.z = cosf(DEG2RAD(rot.y))*Length;
 	_Lookat += pos;
 
@@ -46,7 +46,7 @@ void CPlayerCamera::Update(void)
 	_Eye.y += (DestEye.y - _Eye.y)*0.05f;
 
 	_Lookat.x = sinf(DEG2RAD(rot.y))*Length;
-	_Lookat.y = _Eye.y;
+	_Lookat.y = 0;
 	_Lookat.z = cosf(DEG2RAD(rot.y))*Length;
 	_Lookat += pos;
 }
