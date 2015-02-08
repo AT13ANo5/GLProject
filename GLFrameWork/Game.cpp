@@ -42,7 +42,7 @@ const float	CGame::RADIUS_DEFENSE_ROCK = 10.0f;			// 岩の防御半径
 const float	CGame::HEIGHT_DEFENSE_ROCK = 10.0f;			// 岩の防御中心高さ
 const float	CGame::RADIUS_PUSH_ROCK = 10.0f;			// 岩の押し戻し半径
 const float	CGame::HEIGHT_PUSH_ROCK = 10.0f;			// 岩の押し戻し中心高さ
-const float CGame::FIELD_PANEL_SIZE = 5.0f;			//フィールドのパネル一枚のサイズ
+const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
 
