@@ -167,19 +167,6 @@ void CModel::Initialize(void)
 
 			glEnd();
 
-			//四角形ポリゴン描画
-			glBegin(GL_QUADS);
-
-			for (int cnt2 = 0; cnt2 < ModelData[cnt].QuadIndexNum[num] * 4; cnt2++)
-			{
-				glColor4f(1.0f,1.0f,1.0f,1.0f);
-
-				glNormal3f(ModelData[cnt].Nor[ModelData[cnt].QuadIndexNor[QuadCount] - 1].x,ModelData[cnt].Nor[ModelData[cnt].QuadIndexNor[QuadCount] - 1].y,ModelData[cnt].Nor[ModelData[cnt].QuadIndexNor[QuadCount] - 1].z);
-				glTexCoord2f(ModelData[cnt].Tex[ModelData[cnt].QuadIndexTex[QuadCount] - 1].x,ModelData[cnt].Tex[ModelData[cnt].QuadIndexTex[QuadCount] - 1].y);
-				glVertex3f(ModelData[cnt].Vtx[ModelData[cnt].QuadIndexPos[QuadCount] - 1].x,ModelData[cnt].Vtx[ModelData[cnt].QuadIndexPos[QuadCount] - 1].y,ModelData[cnt].Vtx[ModelData[cnt].QuadIndexPos[QuadCount] - 1].z);
-			}
-			glEnd();
-
 			glEndList();
 		}
 	}
@@ -296,35 +283,6 @@ void CModel::Draw(void)
 		glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,(float*)&Material.emission);
 		glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material.shininess);
 
-
-		/*
-		//三角形ポリゴン描画
-		glBegin(GL_TRIANGLES);
-		for (int cnt = 0;cnt < ModelData[ModelID].TriIndexNum[num] * 3;cnt++)
-		{
-			glColor4f(1.0f,1.0f,1.0f,1.0f);
-
-			glNormal3f(ModelData[ModelID].Nor[ModelData[ModelID].TriIndexNor[TriCount] - 1].x,ModelData[ModelID].Nor[ModelData[ModelID].TriIndexNor[TriCount] - 1].y,ModelData[ModelID].Nor[ModelData[ModelID].TriIndexNor[TriCount] - 1].z);
-			glTexCoord2f(ModelData[ModelID].Tex[ModelData[ModelID].TriIndexTex[TriCount] - 1].x,ModelData[ModelID].Tex[ModelData[ModelID].TriIndexTex[TriCount] - 1].y);
-			glVertex3f(ModelData[ModelID].Vtx[ModelData[ModelID].TriIndexPos[TriCount] - 1].x*_Scl.x,ModelData[ModelID].Vtx[ModelData[ModelID].TriIndexPos[TriCount] - 1].y*_Scl.y,ModelData[ModelID].Vtx[ModelData[ModelID].TriIndexPos[TriCount] - 1].z*_Scl.z);
-			TriCount++;
-		}
-
-		glEnd();
-
-		//四角形ポリゴン描画
-		glBegin(GL_QUADS);
-
-		for (int cnt = 0; cnt < ModelData[ModelID].QuadIndexNum[num] * 4; cnt++)
-		{
-			glColor4f(1.0f,1.0f,1.0f,1.0f);
-
-			glNormal3f(ModelData[ModelID].Nor[ModelData[ModelID].QuadIndexNor[QuadCount] - 1].x,ModelData[ModelID].Nor[ModelData[ModelID].QuadIndexNor[QuadCount] - 1].y,ModelData[ModelID].Nor[ModelData[ModelID].QuadIndexNor[QuadCount] - 1].z);
-			glTexCoord2f(ModelData[ModelID].Tex[ModelData[ModelID].QuadIndexTex[QuadCount] - 1].x,ModelData[ModelID].Tex[ModelData[ModelID].QuadIndexTex[QuadCount] - 1].y);
-			glVertex3f(ModelData[ModelID].Vtx[ModelData[ModelID].QuadIndexPos[QuadCount] - 1].x*_Scl.x,ModelData[ModelID].Vtx[ModelData[ModelID].QuadIndexPos[QuadCount] - 1].y*_Scl.y,ModelData[ModelID].Vtx[ModelData[ModelID].QuadIndexPos[QuadCount] - 1].z*_Scl.z);
-		}
-		glEnd();
-		*/
 		glCallList(DrawList[ModelID][num]);
 		glPopMatrix();//ビューマトリックスを戻す
 	}

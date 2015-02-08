@@ -19,6 +19,9 @@ public:
 
 	static void Initialize();//‰Šú‰»
 	static void Finalize();//I—¹
+
+	static void SetActive(bool flag){ _Active = flag; system("cls");}
+	static bool Active(void){ return _Active; }
 private:
 	Console();
 	~Console();
@@ -27,6 +30,7 @@ private:
 	static Console* Self;
 	static COORD Cursor;
 	static HANDLE ConsoleHandle;
+	static bool _Active;
 
 };
 
