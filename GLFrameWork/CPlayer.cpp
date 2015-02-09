@@ -281,9 +281,11 @@ void CPlayer::UpdateCPU(void)
 //------------------------------------------------------------------------------
 void CPlayer::ReleaseBullet(void)
 {
+	// ’e‚ğg—p‚µ‚Ä‚¢‚½‚çíœ
 	if(_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
+		_BulletUseFlag = false;
 	}
 }
 

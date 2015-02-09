@@ -191,7 +191,7 @@ void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
 //------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
-	CManager::gameStartFlag == false;
+	CManager::gameStartFlag = false;
 
 	// Šâ‚Ì”jŠü
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
