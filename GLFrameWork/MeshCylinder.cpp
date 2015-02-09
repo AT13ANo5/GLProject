@@ -55,7 +55,7 @@ void CMeshCylinder::Init(void)
 			if (num < VertexNum)
 			{
 				Vtx[num] = VECTOR3(cosf(angle*LoopX)*Radius,PanelHeight*LoopZ,sinf(angle*LoopX)*Radius);
-				Tex[num] = VECTOR2((TexDiv.x / PanelNum.x)*LoopX,(TexDiv.x / PanelNum.x)*LoopZ);
+				Tex[num] = VECTOR2((TexDiv.x / PanelNum.x)*LoopX,(TexDiv.y / PanelNum.y)*LoopZ);
 
 				Nor[num] = VECTOR3(sinf(angle*LoopX),0.0f,cosf(angle*LoopX));
 				Nor[num].Normalize();
@@ -129,7 +129,7 @@ void CMeshCylinder::Update(void)
 }
 void CMeshCylinder::Draw(void)
 {
-	glEnable(GL_LIGHTING);
+	glDisable(GL_LIGHTING);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();//ビューマトリックスを退避
