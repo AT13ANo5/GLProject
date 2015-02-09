@@ -1,12 +1,19 @@
 //=============================================================================
+//	タイムクラス
+//	Tkahiro Kikushima
+//=============================================================================
+
+//=============================================================================
 //インクルード
 //=============================================================================
 #include "Polygon2D.h"
 #include <math.h>
 #include "Texture.h"
 #include "Time.h"
+#include "Number2D.h"
+#include "Texture.h"
 
-CTime* Time[3] = { nullptr };
+CNumber2D* Nomber[3] = { nullptr };
 //=============================================================================
 //コストラクタ
 //=============================================================================
@@ -20,9 +27,6 @@ CTime::CTime()
 		_Rot.y =
 		_Rot.z = 0;
 
-	TimeCount = 0;
-	Timer = 0;
-
 	x =
 		y = 0;
 }
@@ -33,8 +37,14 @@ void CTime::Init(void)
 {
 	CPolygon2D::Init();
 
-	Texture = CTexture::Texture(TEX_NUMBER);
-	SetUV(0, 0, 1.0f, 1.0f);
+	TimeCount = 0;
+	Timer = 300;
+
+	for (int i = 0; i < 3; i++)
+	{
+		Nomber[i] = CNumber2D::Create(VECTOR3(Pos.x+(i * 70.0f), Pos.y, Pos.z),Size);
+		Nomber[i]->SetTex((CTexture::Texture(TEX_NUMBER)));
+	}
 
 }
 //=============================================================================
@@ -42,19 +52,12 @@ void CTime::Init(void)
 //=============================================================================
 CTime* CTime::Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot, const COLOR& color)
 {
+	CTime* Time = new CTime();
+	Time->Pos = pos;
+	Time->Size = size;
+	Time->Init();
 
-	for (int i = 0; i < 3; i++)
-	{
-		Time[i] = new CTime;
-		Time[i]->_Pos = pos;
-		Time[i]->_Pos.x += (i * 20.0f);
-		Time[i]->_Rot = rot;
-		Time[i]->SetSize(0, 0);
-		Time[i]->_Color = color;
-		Time[i]->Init();
-	}
-
-	return *Time;
+	return Time;
 }
 
 //=============================================================================
@@ -69,7 +72,20 @@ void CTime::Uninit(void)
 //=============================================================================
 void CTime::Update(void)
 {
-	CPolygon2D::AddSize(x, y);
+	//CPolygon2D::AddSize(x, y);
+
+	TimeCount++;
+	if (TimeCount == 60)
+	{
+		Timer--;
+		TimeCount = 0;
+	}
+	Nomber[0]->SetNumber(Timer/100);
+
+	Nomber[1]->SetNumber(Timer/10);
+
+	Nomber[2]->SetNumber(Timer);
+
 }
 //=============================================================================
 //描画
