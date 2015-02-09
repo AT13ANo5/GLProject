@@ -73,7 +73,21 @@ void Console::Print(char* fmt,...)
 		{
 			Cls();
 		}
-		int cnt=0,num=0;
+		int cnt = 0,num = 0;
+		while (1)
+		{
+			if (Buff[cnt] == '\n')
+			{
+				Cursor.Y++;
+				num++;
+			}
+			if (Buff[cnt] == '\0' || cnt >= LENGTH_STRING_BUFF)
+			{
+				break;
+			}
+			cnt++;
+		}
+		if (num == 0){ Cursor.Y++; }
 		printf(Buff);
 		SetConsoleCursorPosition(ConsoleHandle,Cursor);
 	}

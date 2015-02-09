@@ -405,7 +405,7 @@ void CManager::Uninit(HWND hWnd)
 void CManager::Update(void)
 {
 #ifdef _DEBUG
-	if(CKeyboard::GetTrigger(DIK_F12))
+	if(CKeyboard::GetTrigger(DIK_0))
 	{
 		(Console::Active()) ? Console::SetActive(false) : Console::SetActive(true);
 	}
