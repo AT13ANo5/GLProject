@@ -17,6 +17,7 @@
 #include "CBullet.h"
 #include "CommonGL.h"
 #include "Ballistic.h"
+#include "ManagerGL.h"
 
 //------------------------------------------------------------------------------
 // コンストラクタ
@@ -223,6 +224,10 @@ void CPlayer::UpdatePlayer(void)
 			_ReloadTimer = PLAYER_RELOAD_TIME;
 		}
 	}
+
+	CManager::SendPos(_Pos);
+	CManager::SendRot(_Rot);
+	CManager::SendCannon(LaunchFlag);
 
 #ifdef _DEBUG
 	// デバッグ用

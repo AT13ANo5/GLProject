@@ -36,6 +36,7 @@ SOCKET CManager::sendSock;
 SOCKADDR_IN CManager::sendAddress;
 WSADATA CManager::wsaData;
 NETWORK_DATA CManager::netWorkData;
+bool CManager::gameStartFlag;
 
 //=============================================================================
 //	コンストラクタ
@@ -47,6 +48,7 @@ CManager::CManager()
 	Keyboard = nullptr;
 	Scene = nullptr;
 	ChangeFlag = false;
+	gameStartFlag = false;
 
 	netData.ID = rand();
 
@@ -120,7 +122,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	//	送信時用変数群生成
 	//-------------------------------------------------
 	//	ソケットの生成
-	sendSock = socket(AF_INET, SOCK_DGRAM, 0);
+	sendSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	//	送信先アドレス
 	sendAddress.sin_port = htons(3000);
@@ -129,13 +131,14 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 
 	int param = 1;
 	int ret = setsockopt(sendSock, SOL_SOCKET, SO_BROADCAST, (char*)&param, sizeof(param));
-	ret = WSAGetLastError();
+	if (ret != 0)
+		ret = WSAGetLastError();
 	//-------------------------------------------------
 
 	//	受信時用変数群生成
 	//-------------------------------------------------
 	//	ソケットの生成
-	recvSock = socket(AF_INET, SOCK_DGRAM, 0);
+	recvSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	//	受信先のアドレス
 	recvAddress.sin_port = htons(2000);
@@ -150,7 +153,8 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	mreq.imr_multiaddr.S_un.S_addr = inet_addr("239.0.0.23");
 	mreq.imr_interface.S_un.S_addr = INADDR_ANY;
 	ret = setsockopt(recvSock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (const char *)&mreq, sizeof(mreq));
-	ret = WSAGetLastError();
+	if (ret != 0)
+		ret = WSAGetLastError();
 	//-------------------------------------------------
 
 	// 受信スレッド開始
@@ -210,7 +214,6 @@ bool CManager::myBind(SOCKET* _socket, SOCKADDR_IN* _sockAdd)
 		else
 			break;
 	}
-
 	return true;
 }
 //=============================================================================
@@ -240,12 +243,12 @@ void CManager::sendGameStart()
 //=============================================================================
 //	弾発射フラグ送信処理
 //=============================================================================
-void CManager::SendCannon()
+void CManager::SendCannon(bool _flag)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_CANNON;
 	data.charNum = netData.charNum;
-	data.data_cannon.flag = true;
+	data.data_cannon.flag = _flag;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -301,55 +304,73 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 			{
 			case DATA_TYPE_POS:
 
-				//	データタイプに応じてプレイヤーへ情報をセット
-				Scene->SetPlayerState(data, DATA_TYPE_POS);
+				if (gameStartFlag == true)
+				{
+					//	データタイプに応じてプレイヤーへ情報をセット
+					CGame::SetPlayerState(data, DATA_TYPE_POS);
 
-				//	位置情報セット
-				userInfo[data.charNum].pos.x = data.data_pos.posX;
-				userInfo[data.charNum].pos.y = data.data_pos.posY;
-				userInfo[data.charNum].pos.z = data.data_pos.posZ;
+					//	位置情報セット
+					userInfo[data.charNum].pos.x = data.data_pos.posX;
+					userInfo[data.charNum].pos.y = data.data_pos.posY;
+					userInfo[data.charNum].pos.z = data.data_pos.posZ;
+				}
 
 				break;
 
 			case DATA_TYPE_ROT:
 
-				//	データタイプに応じてプレイヤーへ情報をセット
-				Scene->SetPlayerState(data, DATA_TYPE_ROT);
+				if (gameStartFlag == true)
+				{
+					//	データタイプに応じてプレイヤーへ情報をセット
+					CGame::SetPlayerState(data, DATA_TYPE_ROT);
 
-				//	回転情報セット
-				userInfo[data.charNum].rot.x = data.data_rot.rotX;
-				userInfo[data.charNum].rot.y = data.data_rot.rotY;
-				userInfo[data.charNum].rot.z = data.data_rot.rotZ;
+					//	回転情報セット
+					userInfo[data.charNum].rot.x = data.data_rot.rotX;
+					userInfo[data.charNum].rot.y = data.data_rot.rotY;
+					userInfo[data.charNum].rot.z = data.data_rot.rotZ;
+				}
 
 				break;
 
 			case DATA_TYPE_CANNON:
 
-				//	データタイプに応じてプレイヤーへ情報をセット
-				Scene->SetPlayerState(data, DATA_TYPE_CANNON);
+				if (gameStartFlag == true)
+				{
+					//	データタイプに応じてプレイヤーへ情報をセット
+					CGame::SetPlayerState(data, DATA_TYPE_CANNON);
+				}
 
 				break;
 
 			case DATA_TYPE_PAUSE:
 
-				//	ポーズ時に情報を取得
-				userInfo[data.charNum].kill = data.data_pause.kill;
-				userInfo[data.charNum].death = data.data_pause.death;
+				if (gameStartFlag == true)
+				{
+					//	ポーズ時に情報を取得
+					userInfo[data.charNum].kill = data.data_pause.kill;
+					userInfo[data.charNum].death = data.data_pause.death;
+				}
 
 				break;
 
 			case DATA_TYPE_ENTRY:
 
-				//	エントリー処理完了
-				//	識別番号を取得
-				netData.charNum = data.charNum;
+				if (gameStartFlag == false)
+				{
+					//	エントリー処理完了
+					//	識別番号を取得
+					netData.charNum = data.charNum;
+				}
 
 				break;
 
 			case DATA_TYPE_EMPTY:
 
-				//	部屋が埋まっている
-				netWorkData.emptyFlag = true;
+				if (gameStartFlag == false)
+				{
+					//	部屋が埋まっている
+					netWorkData.emptyFlag = true;
+				}
 
 				break;
 			}

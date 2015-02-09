@@ -23,7 +23,7 @@
 //----------------------------------------------------------------
 typedef enum
 {
-	DATA_TYPE_POS = 0,	//	位置
+	DATA_TYPE_POS = 100,	//	位置
 	DATA_TYPE_ROT,	//	回転
 	DATA_TYPE_CANNON,	//	発射
 	DATA_TYPE_ENTRY,	//	エントリー

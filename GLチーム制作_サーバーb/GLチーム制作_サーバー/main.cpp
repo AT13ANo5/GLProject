@@ -118,7 +118,7 @@ int main(void)
 	//-------------------------------------------------
 	//	ソケットの生成
 	SOCKET sendSock;
-	sendSock = socket(AF_INET, SOCK_DGRAM, 0);
+	sendSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	//	送信先アドレス
 	sockaddr_in sendAdd;
@@ -135,7 +135,7 @@ int main(void)
 	//-------------------------------------------------
 	//	ソケットの生成
 	SOCKET recvSock;
-	recvSock = socket(AF_INET, SOCK_DGRAM, 0);
+	recvSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	//	受信先のアドレス
 	sockaddr_in recvAdd;
@@ -163,8 +163,8 @@ int main(void)
 	{
 		//	受信
 		int ret = recvfrom(recvSock, (char*)&data, sizeof(data), 0, (sockaddr*)&recvAdd, &recvAddLength);
-		ret = WSAGetLastError();
-		printf("%d", ret);
+		//ret = WSAGetLastError();
+		//printf("%d", ret);
 
 		//	データタイプによって分岐
 		switch (data.type)
@@ -343,7 +343,6 @@ unsigned __stdcall aiUpdate(void *p)
 	unsigned int FrameCount = 0; //DWORD dwFrameCount;
 
 	timeBeginPeriod(1);				// 分解能を設定
-
 
 	FPSLastTime =
 		CurrentTime = timeGetTime();
