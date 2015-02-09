@@ -46,7 +46,7 @@ const float CGame::FIELD_PANEL_SIZE = 60.0f;			//フィールドのパネル一枚のサイズ
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
 
-const int	CGame::MAX_ROCK = 100;						// 岩の数
+const int	CGame::MAX_ROCK = 20;						// 岩の数
 
 // 定数
 namespace{
@@ -137,6 +137,7 @@ void CGame::Init(void)
 	{
 		VECTOR3	positionRock(0.1f * ((rand() % 10000) - 5000), 0.0f, 0.1f * ((rand() % 10000) - 5000));
 		ppRock_[cntRock] = CModel::Create(CModel::ROCK, positionRock);
+		ppRock_[cntRock]->SetScl(rand() % 5 + 1,rand() % 5 + 1,rand() % 5 + 1);
 		PushBackObjectByField(ppRock_[cntRock]);
 	}
 
