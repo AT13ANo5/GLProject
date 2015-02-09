@@ -64,7 +64,7 @@ public:
 	static void SendEntry();
 	static void SendPos(VECTOR3 _pos);
 	static void SendRot(VECTOR3 _rot);
-	static void SendCannon();
+	static void SendCannon(bool _flag);
 	static void sendGameStart();
 	static NETWORK_DATA* getNetWorkData()
 	{
@@ -76,6 +76,16 @@ public:
 	}
 
 	CRenderer* GetRenderer(void){ return Render; }
+
+	static NET_DATA netData;
+	static USER_INFO userInfo[CHARACTER_MAX];
+	static SOCKET recvSock;
+	static SOCKADDR_IN recvAddress;
+	static SOCKET sendSock;
+	static SOCKADDR_IN sendAddress;
+	static WSADATA wsaData;
+	static NETWORK_DATA netWorkData;
+	static bool gameStartFlag;
 
 private:
 
@@ -94,15 +104,7 @@ private:
 	static short NextScene;
 	static bool ChangeFlag;
 
-	static NET_DATA netData;
-	static USER_INFO userInfo[CHARACTER_MAX];
-	static SOCKET recvSock;
-	static SOCKADDR_IN recvAddress;
-	static SOCKET sendSock;
-	static SOCKADDR_IN sendAddress;
-	static WSADATA wsaData;
-	static NETWORK_DATA netWorkData;
-
+	
 };
 
 #endif

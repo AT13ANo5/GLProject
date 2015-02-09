@@ -11,7 +11,6 @@ public:
 	virtual void Init(void)=0;
 	virtual void Uninit(void)=0;
 	virtual void Update(void)=0;
-	virtual void SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType){};
 
 protected:
 	int Frame;

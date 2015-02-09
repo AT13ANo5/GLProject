@@ -31,6 +31,7 @@
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 1500.0f;   // 空の半径
+CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
 const float	CGame::RADIUS_DEFENSE_CHARACTER = 10.0f;	// キャラクターの防御半径
 const float	CGame::HEIGHT_DEFENSE_CHARACTER = 10.0f;	// キャラクターの防御中心高さ
@@ -118,12 +119,12 @@ void CGame::Init(void)
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
 		Player[i]->SetRot(0.0f,180.0f,0.0f);
 
-		if(i == 0)
+		if(i == CManager::netData.charNum)
 		{
 			Player[i]->SetPlayerFlag(true);
 		}
 	}	//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player[0], 300.0f);
+	CPlayerCamera::Create(Player[CManager::netData.charNum], 300.0f);
 
 	// UI初期化
 	UI = new CUI;
@@ -141,6 +142,35 @@ void CGame::Init(void)
 		PushBackObjectByField(ppRock_[cntRock]);
 	}
 
+	CManager::gameStartFlag = true;
+}
+void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
+{
+	if (_netData.charNum != CManager::netData.charNum)
+	{
+		switch (_dataType)
+		{
+		case DATA_TYPE_POS:
+
+			Player[_netData.charNum]->SetPosX(_netData.data_pos.posX);
+			Player[_netData.charNum]->SetPosY(_netData.data_pos.posY);
+			Player[_netData.charNum]->SetPosZ(_netData.data_pos.posZ);
+
+			break;
+
+		case DATA_TYPE_ROT:
+
+			Player[_netData.charNum]->SetRotX(_netData.data_rot.rotX);
+			Player[_netData.charNum]->SetRotY(_netData.data_rot.rotY);
+			Player[_netData.charNum]->SetRotZ(_netData.data_rot.rotZ);
+
+			break;
+
+		case DATA_TYPE_CANNON:
+
+			break;
+		}
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -153,6 +183,8 @@ void CGame::Init(void)
 //------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
+	CManager::gameStartFlag == false;
+
 	// 岩の破棄
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
@@ -453,7 +485,6 @@ void CGame::IsLandField(void)
 
 			// エフェクト：爆発　弾と地形の判定
 		}
-		
 	}
 }
 
