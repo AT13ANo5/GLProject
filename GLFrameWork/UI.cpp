@@ -18,6 +18,7 @@
 #include "Report.h"
 #include "NumberManager.h"
 #include "Keyboard.h"
+#include "Time.h"
 
 #include "CPlayer.h"
 
@@ -31,7 +32,7 @@ namespace{
 	// 装填中文字
 	const VECTOR3		GAUGE_STR_POS = VECTOR3(GAUGE_POS.x + GAUGE_STR_OFFSET, GAUGE_POS.y, 0.0f);
 	const VECTOR2		GAUGE_STR_SIZE = VECTOR2(130.0f, GAUGE_SIZE.y);
-	// 装填ゲージ
+	// 装填ゲージのベース
 	const float			GAUGE_BASE_ADD = 4.0f;
 	const VECTOR3		GAUGE_BASE_POS = VECTOR3(GAUGE_POS.x - (GAUGE_BASE_ADD * 0.5f), GAUGE_POS.y - (GAUGE_BASE_ADD * 0.5f), 0.0f);
 	const VECTOR2		GAUGE_BASE_SIZE = VECTOR2(GAUGE_SIZE.x + GAUGE_BASE_ADD, GAUGE_SIZE.y + GAUGE_BASE_ADD);
@@ -52,14 +53,15 @@ namespace{
 //=============================================================================
 CUI::CUI()
 {
-	life					 = nullptr;
-	miniMap				 = nullptr;
-	loadGauge			 = nullptr;
-	loadGaugeBase	 = nullptr;
-	loadString		 = nullptr;
-	reportBg			 = nullptr;
-	report				 = nullptr;
-	numberManager	 = nullptr;
+	life = nullptr;
+	miniMap = nullptr;
+	loadGauge = nullptr;
+	loadGaugeBase = nullptr;
+	loadString = nullptr;
+	reportBg = nullptr;
+	report = nullptr;
+	numberManager = nullptr;
+	Time = nullptr;
 }
 
 //=============================================================================
@@ -74,6 +76,9 @@ CUI::~CUI()
 //=============================================================================
 void CUI::Init(void)
 {
+	//タイマー生成
+	Time = CTime::Create(VECTOR3(570,50,0),VECTOR2(100,100));
+
 	//ライフ生成
 	life = CLife::Create(LIFE_POS, LIFE_SIZE);
 
@@ -136,6 +141,8 @@ void CUI::Uninit(void)
 	SafeRelease(loadGauge);
 
 	SafeRelease(loadString);
+
+	SafeRelease(Time);
 
 	player = nullptr;
 }

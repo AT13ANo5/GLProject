@@ -24,6 +24,7 @@ class CPlayer;
 class CNumber2D;
 class CReport;
 class CNumberManager;
+class CTime;
 
 
 //=============================================================================
@@ -48,14 +49,15 @@ public:
 
 private:
 
-	CLife*					life;
-	CMiniMap*				miniMap;
-	CLoadGauge*			loadGauge;
-	CLoadGauge*			loadGaugeBase;
-	CLoadString*		loadString; // ‘•“U’†‚Ì•¶Žš
-	CReport*				reportBg;
-	CReport*				report;
-	CNumberManager*	numberManager;
+	CLife*			    life;
+	CMiniMap*		    miniMap;
+	CLoadGauge*		  loadGauge;
+	CLoadGauge*		  loadGaugeBase;
+	CLoadString*    loadString; // ‘•“U’†‚Ì•¶Žš
+	CReport*        reportBg;
+	CReport*        report;
+	CNumberManager* numberManager;
+	CTime*					Time;
 
 	CPlayer**				player;
 
