@@ -24,6 +24,7 @@ class CPlayer;
 class CNumber2D;
 class CReport;
 class CNumberManager;
+class CTime;
 
 
 //=============================================================================
@@ -55,6 +56,7 @@ private:
 	CReport*        reportBg;
 	CReport*        report;
 	CNumberManager* numberManager;
+	CTime*			Time;
 
 	CPlayer**	    	player;
 

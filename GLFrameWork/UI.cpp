@@ -18,6 +18,7 @@
 #include "Report.h"
 #include "NumberManager.h"
 #include "Keyboard.h"
+#include "Time.h"
 
 #include "CPlayer.h"
 
@@ -54,6 +55,7 @@ CUI::CUI()
 	reportBg = nullptr;
 	report = nullptr;
 	numberManager = nullptr;
+	Time = nullptr;
 }
 
 //=============================================================================
@@ -68,6 +70,9 @@ CUI::~CUI()
 //=============================================================================
 void CUI::Init(void)
 {
+	//タイマー生成
+	Time = CTime::Create(VECTOR3(570,50,0),VECTOR2(100,100));
+
 	//ライフ生成
 	life = CLife::Create(life_POS,VECTOR2(100.0f,100.0f));
 
@@ -129,6 +134,8 @@ void CUI::Uninit(void)
 	SafeRelease(loadGauge);
 
 	SafeRelease(loadString);
+
+	SafeRelease(Time);
 
 	player = nullptr;
 }
