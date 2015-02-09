@@ -19,6 +19,7 @@
 #include "Effect3D.h"
 #include "Polygon3D.h"
 #include "Texture.h"
+#include "MeshCylinder.h"
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Model.h"
@@ -105,6 +106,12 @@ void CGame::Init(void)
 	Sky = nullptr;
 	Sky = CMeshSphere::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(16.0f,8.0f),RADIUS_SKY);
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
+
+	// 境界線生成
+	CylinderArea = nullptr;
+	CylinderArea = CMeshCylinder::Create(VECTOR3(0.0f, 0.0f, 0.0f), 1000.0f, VECTOR2(64.0f, 1.0f), RADIUS_AREA_BATTLE, VECTOR2(1, -1));
+	CylinderArea->SetTex(CTexture::Texture(TEX_WALL));
+	CylinderArea->SetAlpha(0.5f);
 
 #ifdef _DEBUG
 	// デバッグワイヤーフレーム
@@ -202,6 +209,9 @@ void CGame::Uninit(void)
 
 	SafeDeletes(Player);
 
+	// 境界線の破棄
+	SafeRelease(CylinderArea);
+
 	// 空破棄
 	if (Sky != nullptr)
 	{
@@ -244,7 +254,10 @@ void CGame::Update(void)
 
 
 	// 攻撃判定
-	CheckHit();
+	CheckHitPlayer();
+
+	// 攻撃判定
+	CheckHitRock();
 
 	// キャラクター同士の押し戻し
 	PushBackCharacter();
@@ -254,18 +267,22 @@ void CGame::Update(void)
 
 	// 地形との押し戻し
 	PushBackField();
+
 	// 地形との判定
 	IsLandField();
-	
+
+	// 行動可能範囲判定
+	PushBackBattleArea();
+
 	// UIのアップデート
 	UI->Update();
 
 }
 
 //==============================================================================
-// 攻撃判定の当たり判定
+// 攻撃判定の当たり判定 プレイヤー
 //==============================================================================
-void CGame::CheckHit(void)
+void CGame::CheckHitPlayer(void)
 {
 	// 攻撃側の決定
 	CPlayer*	pPlayerOffense = nullptr;		// 攻撃側プレイヤー
@@ -273,6 +290,7 @@ void CGame::CheckHit(void)
 	{
 		// プレイヤーを取得
 		pPlayerOffense = Player[cntBullet];
+
 		// 弾が存在しなければ判定しない
 		if (NeedsSkipBullet(pPlayerOffense))
 		{
@@ -282,15 +300,17 @@ void CGame::CheckHit(void)
 		// 防御側の決定
 		for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 		{
-			// プレイヤーを取得
-			CPlayer*	pPlayerDefense = nullptr;		// 防御側プレイヤー
-
-			// プレイヤーが判定可能か確認
-			if (NeedsSkipPlayer(pPlayerDefense))
+			// 自身とは判定しない
+			if (cntBullet == cntPlayer)
 			{
 				continue;
 			}
-			if (cntBullet == cntPlayer)
+
+			// プレイヤーを取得
+			CPlayer*	pPlayerDefense = Player[cntPlayer];		// 防御側プレイヤー
+
+			// プレイヤーが判定可能か確認
+			if (NeedsSkipPlayer(pPlayerDefense))
 			{
 				continue;
 			}
@@ -308,9 +328,67 @@ void CGame::CheckHit(void)
 
 			if (distanceOffenseAndDefense < (RADIUS_DEFENSE_CHARACTER + RADIUS_OFFENSE_BULLET) * (RADIUS_DEFENSE_CHARACTER + RADIUS_OFFENSE_BULLET))
 			{
+				// 弾の消滅
+				pPlayerOffense->ReleaseBullet();
+
 				// 当たったときの処理
+				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
+				pPlayerDefense->AddPlayerLife(-1);
 
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
+
+				// 処理終了
+				break;
+			}
+		}
+	}
+}
+
+//==============================================================================
+// 攻撃判定の当たり判定 岩
+//==============================================================================
+void CGame::CheckHitRock(void)
+{
+	// 攻撃側の決定
+	CPlayer*	pPlayerOffense = nullptr;		// 攻撃側プレイヤー
+	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
+	{
+		// プレイヤーを取得
+		pPlayerOffense = Player[cntBullet];
+
+		// 弾が存在しなければ判定しない
+		if (NeedsSkipBullet(pPlayerOffense))
+		{
+			continue;
+		}
+
+		// 防御側の決定
+		for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
+		{
+			// プレイヤーを取得
+			CObject*	pRock = ppRock_[cntRock];		// 防御側岩
+
+			// 当たり判定
+			VECTOR3	positionOffense = pPlayerOffense->Bullet()->Pos();		// 攻撃判定中心座標
+			VECTOR3	positionDefense = pRock->Pos();							// 防御判定中心座標
+			VECTOR3	vectorOffenseToDefense;									// 攻撃判定から防御判定へのベクトル
+			float	distanceOffenseAndDefense;								// 判定の中心同士の距離
+			float	scalingRock;											// 岩の大きさ
+			scalingRock = (pRock->Scl().x < pRock->Scl().z ? pRock->Scl().x : pRock->Scl().z);
+			positionOffense.y += HEIGHT_OFFENSE_BULLET;
+			positionDefense.y += HEIGHT_DEFENSE_CHARACTER;
+			vectorOffenseToDefense = positionDefense - positionOffense;
+			distanceOffenseAndDefense = vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z;
+
+			if (distanceOffenseAndDefense < (RADIUS_DEFENSE_ROCK * scalingRock + RADIUS_OFFENSE_BULLET) * (RADIUS_DEFENSE_ROCK * scalingRock + RADIUS_OFFENSE_BULLET))
+			{
+				// 弾の消滅
+				pPlayerOffense->ReleaseBullet();
+
+				// エフェクト：爆発　弾がプレイヤーに当たったとき
+
+				// 処理終了
+				break;
 			}
 		}
 	}
@@ -327,6 +405,7 @@ void CGame::PushBackCharacter(void)
 	{
 		// プレイヤーを取得
 		pPlayerOffense = Player[cntBullet];
+
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayerOffense))
 		{
@@ -391,6 +470,7 @@ void CGame::PushBackRock(void)
 	{
 		// プレイヤーを取得
 		pPlayer = Player[cntPlayer];
+
 		// プレイヤーが判定可能か確認
 		if (NeedsSkipPlayer(pPlayer))
 		{
@@ -408,22 +488,24 @@ void CGame::PushBackRock(void)
 			VECTOR3	positionRock = pRock->Pos();		// 防御判定中心座標
 			VECTOR3	vectorOffenseToDefense;				// 攻撃判定から防御判定へのベクトル
 			float	distanceOffenseAndDefense;			// 判定の中心同士の距離
+			float	scalingRock;						// 岩の大きさ
+			scalingRock = (pRock->Scl().x < pRock->Scl().z ? pRock->Scl().x : pRock->Scl().z);
 			positionPlayer.y += HEIGHT_PUSH_CHARACTER;
 			positionRock.y += HEIGHT_PUSH_ROCK;
 			vectorOffenseToDefense = positionRock - positionPlayer;
 			distanceOffenseAndDefense = sqrtf( vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z );
-			if (distanceOffenseAndDefense < RADIUS_PUSH_CHARACTER + HEIGHT_PUSH_ROCK)
+			if (distanceOffenseAndDefense < RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock)
 			{
 				// 押し戻し
 				if (distanceOffenseAndDefense < -FLT_EPSILON || distanceOffenseAndDefense > FLT_EPSILON)
 				{
-					VECTOR3	vectorPushBack = vectorOffenseToDefense * -(RADIUS_PUSH_CHARACTER + HEIGHT_PUSH_ROCK - distanceOffenseAndDefense) / distanceOffenseAndDefense;
+					VECTOR3	vectorPushBack = vectorOffenseToDefense * -(RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock - distanceOffenseAndDefense) / distanceOffenseAndDefense;
 					vectorPushBack.y = 0.0f;
 					pPlayer->AddPos(vectorPushBack);
 				}
 				else
 				{
-					pPlayer->AddPosX(RADIUS_PUSH_CHARACTER + HEIGHT_PUSH_ROCK);
+					pPlayer->AddPosX(RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock);
 				}
 
 				// エフェクト：火花　プレイヤー同士のぶつかり
@@ -443,6 +525,7 @@ void CGame::PushBackField(void)
 	{
 		// 対象オブジェクトを取得
 		pPlayerCurrent = Player[cntPlayer];
+
 		// 対象のステートを確認
 		if (NeedsSkipPlayer(pPlayerCurrent))
 		{
@@ -482,6 +565,7 @@ void CGame::IsLandField(void)
 		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
 		{
 			// 弾の消滅処理
+			pPlayerCurrent->ReleaseBullet();
 
 			// エフェクト：爆発　弾と地形の判定
 		}
@@ -521,6 +605,37 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	pObject->SetPosY(HeightGround);
 //	pObject->SetRotX(AngleObjectX * 180.0f / PI);
 //	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
+}
+
+//==============================================================================
+// プレイヤー判定スキップ
+//==============================================================================
+void CGame::PushBackBattleArea(void)
+{
+	// 判定
+	CPlayer*	pPlayerCurrent = nullptr;		// 対象オブジェクト
+	for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
+	{
+		// 対象オブジェクトを取得
+		pPlayerCurrent = Player[cntPlayer];
+
+		// 対象のステートを確認
+		if (NeedsSkipPlayer(pPlayerCurrent))
+		{
+			continue;
+		}
+
+		// 押し戻し
+		VECTOR3	vectorPlayerToCenter = Ground->Pos() - pPlayerCurrent->Pos();
+		vectorPlayerToCenter.y = 0.0f;
+		float	distanceFromCenter = vectorPlayerToCenter.x * vectorPlayerToCenter.x + vectorPlayerToCenter.y * vectorPlayerToCenter.y + vectorPlayerToCenter.z * vectorPlayerToCenter.z;
+		if (distanceFromCenter > RADIUS_AREA_BATTLE * RADIUS_AREA_BATTLE)
+		{
+			float	distancePushBack = sqrtf(distanceFromCenter) - RADIUS_AREA_BATTLE;
+			vectorPlayerToCenter.Normalize();
+			pPlayerCurrent->AddPos(vectorPlayerToCenter * distancePushBack);
+		}
+	}
 }
 
 //==============================================================================
