@@ -48,15 +48,16 @@ public:
 
 private:
 
-	CLife*			    life;
-	CMiniMap*		    miniMap;
-	CLoadGauge*		  loadGauge;
-	CLoadString*    loadString; // ‘•“U’†‚Ì•¶Žš
-	CReport*        reportBg;
-	CReport*        report;
-	CNumberManager* numberManager;
+	CLife*					life;
+	CMiniMap*				miniMap;
+	CLoadGauge*			loadGauge;
+	CLoadGauge*			loadGaugeBase;
+	CLoadString*		loadString; // ‘•“U’†‚Ì•¶Žš
+	CReport*				reportBg;
+	CReport*				report;
+	CNumberManager*	numberManager;
 
-	CPlayer**	    	player;
+	CPlayer**				player;
 
 };
 

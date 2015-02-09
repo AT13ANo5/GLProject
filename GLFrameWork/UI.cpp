@@ -24,22 +24,27 @@
 namespace{
 
 	// 装填ゲージ
-	const float     GAUGE_POS_Y = 600.0f;
-	const float     GAUGE_POS_X = 70.0f;
-	const VECTOR3   GAUGE_POS = VECTOR3(GAUGE_POS_X,GAUGE_POS_Y,0.0f);
-	const VECTOR2   GAUGE_SIZE = VECTOR2(300.0f,50.0f);
-	const float     GAUGE_STR_OFFSET = 50.0f;
-	const VECTOR3   GAUGE_STR_POS = VECTOR3(GAUGE_POS_X + GAUGE_STR_OFFSET,GAUGE_POS_Y,0.0f);
-	const VECTOR2   GAUGE_STR_SIZE = VECTOR2(180.0f,50.0f);
-	const COLOR     GAUGE_COLOR = COLOR(0.0f,1.0f,0.0f,1.0f);
+	const VECTOR3		GAUGE_POS = VECTOR3(90.0f, 100.0f, 0.0f);
+	const VECTOR2		GAUGE_SIZE = VECTOR2(230.0f,40.0f);
+	const float			GAUGE_STR_OFFSET = 50.0f;
+	const COLOR			GAUGE_COLOR = COLOR(0.0f, 0.7f, 1.0f, 1.0f);
+	// 装填中文字
+	const VECTOR3		GAUGE_STR_POS = VECTOR3(GAUGE_POS.x + GAUGE_STR_OFFSET, GAUGE_POS.y, 0.0f);
+	const VECTOR2		GAUGE_STR_SIZE = VECTOR2(130.0f, GAUGE_SIZE.y);
+	// 装填ゲージ
+	const float			GAUGE_BASE_ADD = 4.0f;
+	const VECTOR3		GAUGE_BASE_POS = VECTOR3(GAUGE_POS.x - (GAUGE_BASE_ADD * 0.5f), GAUGE_POS.y - (GAUGE_BASE_ADD * 0.5f), 0.0f);
+	const VECTOR2		GAUGE_BASE_SIZE = VECTOR2(GAUGE_SIZE.x + GAUGE_BASE_ADD, GAUGE_SIZE.y + GAUGE_BASE_ADD);
+	const COLOR			GAUGE_BASE_COLOR = COLOR(0.0f, 0.0f, 0.0f, 0.8f);
 	// 装填ゲージアイコン
-	const float     ICON_SIZE = 50.0f;
-	const VECTOR3   ICON_POS = VECTOR3(20.0f + ICON_SIZE / 2,GAUGE_POS_Y + ICON_SIZE / 2,0.0f);
+	const float			ICON_SIZE = 70.0f;
+	const VECTOR3		ICON_POS = VECTOR3(10.0f + ICON_SIZE / 2, GAUGE_POS.y + (ICON_SIZE / 2) - 15.0f, 0.0f);
 	// 成績表
-	const VECTOR3   REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f,SCREEN_HEIGHT*0.5f,0.0f);
-	const COLOR     REPORT_BG_COLOR = COLOR(0.0f,0.05f,0.0f,0.6f);
+	const VECTOR3		REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f,SCREEN_HEIGHT*0.5f,0.0f);
+	const COLOR			REPORT_BG_COLOR = COLOR(0.0f,0.05f,0.0f,0.6f);
 	// ライフ
-	const VECTOR3   life_POS = VECTOR3(60.0f,60.0f,0.0f);
+	const VECTOR3		LIFE_POS = VECTOR3(10.0f,0.0f,0.0f);
+	const VECTOR2		LIFE_SIZE = VECTOR2(100.0f, 100.0f);
 }
 
 //=============================================================================
@@ -47,13 +52,14 @@ namespace{
 //=============================================================================
 CUI::CUI()
 {
-	life = nullptr;
-	miniMap = nullptr;
-	loadGauge = nullptr;
-	loadString = nullptr;
-	reportBg = nullptr;
-	report = nullptr;
-	numberManager = nullptr;
+	life					 = nullptr;
+	miniMap				 = nullptr;
+	loadGauge			 = nullptr;
+	loadGaugeBase	 = nullptr;
+	loadString		 = nullptr;
+	reportBg			 = nullptr;
+	report				 = nullptr;
+	numberManager	 = nullptr;
 }
 
 //=============================================================================
@@ -69,16 +75,17 @@ CUI::~CUI()
 void CUI::Init(void)
 {
 	//ライフ生成
-	life = CLife::Create(life_POS,VECTOR2(100.0f,100.0f));
+	life = CLife::Create(LIFE_POS, LIFE_SIZE);
+
+	// 装填ゲージの下地
+	loadGaugeBase = CLoadGauge::Create(GAUGE_BASE_POS, GAUGE_BASE_SIZE);
+	loadGaugeBase->SetDefaultColor(GAUGE_BASE_COLOR);
 
 	// 装填ゲージ
-	CLoadGauge* load_gauge = nullptr;
-	load_gauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
-	load_gauge->SetDefaultColor(COLOR(0,0,0,1));
-
 	loadGauge = CLoadGauge::Create(GAUGE_POS,GAUGE_SIZE);
 	loadGauge->SetDefaultColor(GAUGE_COLOR);
 
+	// 「装填中」の文字
 	loadString = CLoadString::Create(GAUGE_STR_POS,GAUGE_STR_SIZE);
 	loadString->SetTex(CTexture::Texture(TEX_RELOAD));
 	loadString->DrawEnable();
@@ -138,7 +145,7 @@ void CUI::Uninit(void)
 //=============================================================================
 void CUI::Update(void)
 {
-	// playerあれば処理
+	// プレイヤーがいれば処理
 	if (player != nullptr){
 
 		// 装填ゲージ
@@ -146,6 +153,7 @@ void CUI::Update(void)
 		const float maxTimer = (float)PLAYER_RELOAD_TIME;
 		const float rate = currentTimer / maxTimer;
 
+		// 長さを%でいじる
 		loadGauge->SetRate(rate);
 		if (rate >= 1.0f){
 			loadString->DrawDisable();
@@ -153,20 +161,20 @@ void CUI::Update(void)
 		if (rate <= 0.0f){
 			loadString->DrawEnable();
 		}
+		// ミニマップに表示
 		for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
 		{
 			miniMap->SetPlayer(cnt,player[cnt]->Pos(),player[cnt]->Rot().y);
-
 		}
 
 		miniMap->Update();
 
-		// ライフ
+		// ライフをプレイヤーから取得して表示
 		int lifeP = player[0]->PlayerLife();
 		life->SetLife(lifeP);
 	}
 
-	// 成績表
+	// 成績表のON/OFF
 	if (CKeyboard::GetPress(DIK_P)){
 		reportBg->SetDrawFlag(true);
 		report->SetDrawFlag(true);

@@ -27,18 +27,19 @@ CLife::CLife()
 //=============================================================================
 // init
 //=============================================================================
-void CLife::Init(void)
+void CLife::Init(const VECTOR3& pos, const VECTOR2& size)
 {
-  CPolygon2D::Init();
+	CPolygon2D::Init();
 
-  const VECTOR2 SIZE = VECTOR2(100.0f, 100.0f);
+	const VECTOR2 SIZE = VECTOR2(100.0f, 100.0f);
 
-  for (int i = 0; i < LIFE_MAX; i++)
-  {
-    const VECTOR3 pos = VECTOR3((SIZE.x / 2) + SIZE.x*i, SIZE.y/2, 0.0f);
-    Life[i] = CPolygon2D::Create(pos, SIZE);
-    Life[i]->SetTex(CTexture::Texture(TEX_LIFE));
-  }
+	for (int i = 0; i < LIFE_MAX; i++)
+	{
+		const float posAddX = 10.0f;
+		const VECTOR3 lifePos = VECTOR3(pos.x + ((size.x / 2) + ((size.x + posAddX) * i)), pos.y + (size.y / 2), 0.0f);
+		Life[i] = CPolygon2D::Create(lifePos, size);
+		Life[i]->SetTex(CTexture::Texture(TEX_LIFE));
+	}
 }
 
 //=============================================================================
@@ -48,7 +49,7 @@ CLife* CLife::Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot
 {
   CLife* life = new CLife();
 
-  life->Init();
+  life->Init(pos, size);
 
   return life;
 }

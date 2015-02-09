@@ -26,7 +26,7 @@ public:
 
 	CLife();
 	~CLife(){}
-	void Init(void);
+	void Init(const VECTOR3& pos, const VECTOR2& size);
 	void Update(void);
   void Draw(void){}
 
