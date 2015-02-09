@@ -40,10 +40,10 @@ const float	CGame::RADIUS_OFFENSE_BULLET = 10.0f;		// 砲弾の攻撃半径
 const float	CGame::HEIGHT_OFFENSE_BULLET = 10.0f;		// 砲弾の攻撃中心高さ
 const float	CGame::RADIUS_PUSH_CHARACTER = 10.0f;		// キャラクターの押し戻し半径
 const float	CGame::HEIGHT_PUSH_CHARACTER = 10.0f;		// キャラクターの押し戻し中心高さ
-const float	CGame::RADIUS_DEFENSE_ROCK = 10.0f;			// 岩の防御半径
-const float	CGame::HEIGHT_DEFENSE_ROCK = 10.0f;			// 岩の防御中心高さ
-const float	CGame::RADIUS_PUSH_ROCK = 10.0f;			// 岩の押し戻し半径
-const float	CGame::HEIGHT_PUSH_ROCK = 10.0f;			// 岩の押し戻し中心高さ
+const float	CGame::RADIUS_DEFENSE_ROCK = 45.0f;			// 岩の防御半径
+const float	CGame::HEIGHT_DEFENSE_ROCK = 45.0f;			// 岩の防御中心高さ
+const float	CGame::RADIUS_PUSH_ROCK = 45.0f;			// 岩の押し戻し半径
+const float	CGame::HEIGHT_PUSH_ROCK = 45.0f;			// 岩の押し戻し中心高さ
 const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
@@ -143,9 +143,10 @@ void CGame::Init(void)
 	ppRock_ = new CModel*[MAX_ROCK];
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
-		VECTOR3	positionRock(0.1f * ((rand() % 10000) - 5000), 0.0f, 0.1f * ((rand() % 10000) - 5000));
+		VECTOR3	positionRock(0.1f * ((rand() % 10000) - 5000), 100.0f, 0.1f * ((rand() % 10000) - 5000));
 		ppRock_[cntRock] = CModel::Create(CModel::ROCK, positionRock);
-		ppRock_[cntRock]->SetScl(rand() % 5 + 1,rand() % 5 + 1,rand() % 5 + 1);
+		ppRock_[cntRock]->SetScl(1,1,1);
+  ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
 		PushBackObjectByField(ppRock_[cntRock]);
 	}
 
