@@ -131,7 +131,7 @@ void CGame::Init(void)
 			Player[i]->SetPlayerFlag(true);
 		}
 	}	//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player[CManager::netData.charNum], 300.0f);
+	CPlayerCamera::Create(Player[CManager::netData.charNum], 35.0f);
 
 	// UI初期化
 	UI = new CUI;
