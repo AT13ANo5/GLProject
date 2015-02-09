@@ -99,6 +99,7 @@ void CBullet::Update(void)
 
 	// ‘¬“x‚ÌŒ¸‘Ş
 	Movement.y += BULLET_GRAVITY;
+
 	// Á–Åˆ—
 	if(_Pos.y <= -100.0f)
 	{

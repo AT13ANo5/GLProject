@@ -59,21 +59,25 @@ public:
 	// 現在の装填時間ゲッター
 	int ReloadTimer(void){return _ReloadTimer;}
 
-	// 体力ゲッター
-	int PlayerLife(void){return _PlayerLife;}
+	// 体力
+	int PlayerLife(void){return _PlayerLife;}				// ゲッター
+	void SetPlayerLife(int life){_PlayerLife = life;}		// セッター
+	void AddPlayerLife(int addVal){_PlayerLife += addVal;}	// 加算
 
-	// 生成（ポインタ版）
+	// 生成
 	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
+
 	// 弾ポインタゲッター
 	CBullet* Bullet(void){return _Bullet;}
 
-	// 状態ゲッター
-	PLAYER_STATE State(void){return _State;}
+	// 状態
+	PLAYER_STATE State(void){return _State;}			// ゲッター
+	void SetState(PLAYER_STATE state){_State = state;}	// セッター
 
 	void SetPlayerFlag(bool flag){PlayerFlag = flag;}
 	bool BulletUseFlag(void){return _BulletUseFlag;}
 
-	void ReleaseBullet(void);
+	void ReleaseBullet(void);	// 弾を削除
 
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
