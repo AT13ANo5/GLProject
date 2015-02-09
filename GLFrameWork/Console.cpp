@@ -7,6 +7,7 @@ COORD Console::Cursor = { 0,0 };
 HANDLE Console::ConsoleHandle = nullptr;
 
 Console* Console::Self = nullptr;
+bool Console::_Active = true;
 
 Console::Console()
 {
@@ -20,7 +21,7 @@ Console::Console()
 	SetConsoleTitle("Debug");
 	SMALL_RECT rect = {0,0,60,20};
 	SetConsoleWindowInfo(ConsoleHandle,TRUE,&rect);
-
+	_Active = true;
 }
 
 Console::~Console()
@@ -60,7 +61,7 @@ void Console::Sys(char* command)
 void Console::Print(char* fmt,...)
 {
 #ifdef _DEBUG
-	if (Self)
+	if (Self && _Active)
 	{
 		char Buff[LENGTH_STRING_BUFF] = { 0 };
 		va_list argp;
@@ -73,20 +74,6 @@ void Console::Print(char* fmt,...)
 			Cls();
 		}
 		int cnt=0,num=0;
-		while (1)
-		{
-			if (Buff[cnt] == '\n')
-			{
-				Cursor.Y++;
-				num++;
-			}
-			if (Buff[cnt] == '\0'||cnt>=LENGTH_STRING_BUFF)
-			{
-				break;
-			}
-			cnt++;
-		}
-		if (num == 0){ Cursor.Y++; }
 		printf(Buff);
 		SetConsoleCursorPosition(ConsoleHandle,Cursor);
 	}
@@ -96,7 +83,7 @@ void Console::Print(char* fmt,...)
 void Console::Cls(void)
 {
 #ifdef _DEBUG
-	if (Self)
+	if (Self && _Active)
 	{
 		Cursor.X = 1;
 		Cursor.Y = 1;
@@ -108,7 +95,7 @@ void Console::Cls(void)
 void Console::SetCursorPos(SHORT x,SHORT y)
 {
 #ifdef _DEBUG
-	if (Self)
+	if (Self && _Active)
 	{
 		Cursor.X = x;
 		Cursor.Y = y;
