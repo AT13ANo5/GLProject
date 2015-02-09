@@ -432,23 +432,22 @@ void CMeshGround::LoadImg(const char * imgFile)
 			PanelNum.x = bmih.biWidth - 1;
 			PanelNum.y = bmih.biHeight - 1;
 		}
-		else
-			if (PanelNum.x > bmih.biWidth)
-			{
-				PanelNum.x = bmih.biWidth;
-			}
-		if (PanelNum.y > bmih.biHeight)
-		{
-			PanelNum.y = bmih.biHeight;
-		}
+   if(PanelNum.x > bmih.biWidth)
+   {
+    PanelNum.x = bmih.biWidth;
+   }
+   if(PanelNum.y > bmih.biHeight)
+   {
+    PanelNum.y = bmih.biHeight;
+   }
 		IndexNum = (int)(SUM_INDEX(PanelNum.x,PanelNum.y));
 		VertexNum = (int)((PanelNum.x + 1)*(PanelNum.y + 1));
 		PolygonNum = (int)(((PanelNum.x * 2)*PanelNum.y) + ((PanelNum.y - 1) * 4));
 		MapNum = (int)(PanelNum.x*PanelNum.y * 2);
 
 		HeightMap = new float[VertexNum];
-		bmih.biWidth = PanelNum.x;
-		bmih.biHeight = PanelNum.y;
+		bmih.biWidth = PanelNum.x + 1;
+		bmih.biHeight = PanelNum.y + 1;
 		BYTE Height;
 		if (bmih.biBitCount == 24)
 		{

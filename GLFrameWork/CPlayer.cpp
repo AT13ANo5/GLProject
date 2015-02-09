@@ -63,6 +63,7 @@ void CPlayer::Init(void)
 	// 使用フラグ
 	PlayerFlag = false;
 
+	// 弾使用フラグ
 	_BulletUseFlag = false;
 
 	// 弾
@@ -78,6 +79,9 @@ void CPlayer::Init(void)
 	Barrel = CModel::Create(TANK_BARREL,_Pos);
 	Barrel->Init();
 	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+
+	// 体力
+	_PlayerLife = PLAYER_LIFE;
 }
 
 //------------------------------------------------------------------------------
@@ -235,13 +239,13 @@ void CPlayer::UpdatePlayer(void)
 	// ライフの減算
 	if (CKeyboard::GetPress(DIK_L))
 	{
-		_PlayerLife--;
+		this->AddPlayerLife(-1);
 	}
 
-	// 弾の削除を確認
+	// 弾の削除確認
 	if(CKeyboard::GetPress(DIK_M))
 	{
-		ReleaseBullet();
+		this->ReleaseBullet();
 	}
 #endif
 }
@@ -282,8 +286,9 @@ void CPlayer::ReleaseBullet(void)
 // 生成
 //------------------------------------------------------------------------------
 // 引数
-//  id	: 生成したいモデルのID
-//  pos	: 初期位置
+//  modelID		: 生成したいモデルのID
+//  pos			: 初期位置
+//  playerID	: プレイヤーのID（通し番号）
 // 戻り値
 //  CPlayer	: 生成したプレイヤーのポインタ
 //------------------------------------------------------------------------------
