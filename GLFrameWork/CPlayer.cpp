@@ -237,13 +237,13 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	// ライフの減算
-	if (CKeyboard::GetPress(DIK_L))
+	if (CKeyboard::GetTrigger(DIK_L))
 	{
 		this->AddPlayerLife(-1);
 	}
 
 	// 弾の削除確認
-	if(CKeyboard::GetPress(DIK_M))
+	if(CKeyboard::GetTrigger(DIK_M))
 	{
 		this->ReleaseBullet();
 	}
@@ -276,9 +276,11 @@ void CPlayer::UpdateCPU(void)
 //------------------------------------------------------------------------------
 void CPlayer::ReleaseBullet(void)
 {
+	// 弾を使用していたら削除
 	if(_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
+		_BulletUseFlag = false;
 	}
 }
 
