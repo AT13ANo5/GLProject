@@ -491,6 +491,7 @@ void CGame::PushBackRock(void)
 			positionRock.y += HEIGHT_PUSH_ROCK;
 			vectorOffenseToDefense = positionRock - positionPlayer;
 			distanceOffenseAndDefense = sqrtf( vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z );
+
 			if (distanceOffenseAndDefense < RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock)
 			{
 				// ‰Ÿ‚µ–ß‚µ

@@ -35,8 +35,8 @@ static std::string TexFile[TEX_MAX] =
  	"data/texture/Life.dds",
 	"data/texture/resultText.tga",
 	"data/texture/rock.dds",
-  "data/texture/bullet100.tga",
-  "data/texture/ballistic.tga",
+	"data/texture/bullet100.tga",
+	"data/texture/ballistic.tga",
 	"data/texture/gaugeIcon.tga",
 	"data/texture/number011.tga",
 	"data/texture/pause.tga",
@@ -51,7 +51,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/pushEnter.tga",
 	"data/texture/wall100.dds",
 	"data/texture/MiniMap.dds",
-	"data/texture/MiniMapArrow.dds"
+	"data/texture/MiniMapArrow.dds",
+	"data/texture/explosion.tga"
 	};
 
 void CTexture::Initialize(void)
