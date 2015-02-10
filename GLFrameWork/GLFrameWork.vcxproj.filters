@@ -29,14 +29,8 @@
     <Filter Include="00_システム\Input">
       <UniqueIdentifier>{30a9dc15-08c7-4b0d-bc9b-28dacefafc43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00_システム\Input\GamePad">
-      <UniqueIdentifier>{64e1dedf-c907-4fe3-883c-d32fb9daab23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00_システム\Input\Keyboard">
       <UniqueIdentifier>{88315306-9f0d-440c-ad55-4fd75381a712}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00_システム\Input\Mouse">
-      <UniqueIdentifier>{0c783b59-a561-4d7a-9aae-ee9667a03efb}</UniqueIdentifier>
     </Filter>
     <Filter Include="00_システム\Light">
       <UniqueIdentifier>{bbcc5d08-858a-45dd-a210-6c472c29ed5f}</UniqueIdentifier>
@@ -178,17 +172,11 @@
     <ClCompile Include="CommonGL.cpp">
       <Filter>00_システム\Common</Filter>
     </ClCompile>
-    <ClCompile Include="GamePad.cpp">
-      <Filter>00_システム\Input\GamePad</Filter>
-    </ClCompile>
     <ClCompile Include="Keyboard.cpp">
       <Filter>00_システム\Input\Keyboard</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>00_システム\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>00_システム\Input\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>00_システム\Renderer</Filter>
@@ -324,17 +312,11 @@
     <ClInclude Include="CommonGL.h">
       <Filter>00_システム\Common</Filter>
     </ClInclude>
-    <ClInclude Include="GamePad.h">
-      <Filter>00_システム\Input\GamePad</Filter>
-    </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>00_システム\Input\Keyboard</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>00_システム\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>00_システム\Input\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>00_システム\Renderer</Filter>
