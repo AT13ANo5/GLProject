@@ -283,8 +283,8 @@ void CPlayer::UpdateCPU(void)
 {
 	// 砲身の位置、回転を更新
 	Barrel->SetPos(_Pos);			// 位置
-	Barrel->SetRot(_Rot);			// 回転
-	Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
+	//Barrel->SetRot(_Rot);			// 回転
+	//Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
 }
 
 void CPlayer::setBarrelRot(VECTOR3 _rot)
