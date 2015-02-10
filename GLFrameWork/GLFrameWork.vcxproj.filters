@@ -161,6 +161,9 @@
     <Filter Include="03_リザルト\NumberManager">
       <UniqueIdentifier>{9c27d603-b2cc-468f-8faa-d8fecb278fc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\Effect">
+      <UniqueIdentifier>{fd977f77-bf84-4c27-bb34-3bde693c3554}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -306,6 +309,9 @@
     </ClCompile>
     <ClCompile Include="ResultNumberManager.cpp">
       <Filter>03_リザルト\NumberManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>00_システム\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -467,6 +473,9 @@
     </ClInclude>
     <ClInclude Include="ResultNumberManager.h">
       <Filter>03_リザルト\NumberManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>00_システム\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

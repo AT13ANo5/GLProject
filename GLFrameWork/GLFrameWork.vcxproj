@@ -99,6 +99,7 @@
     <ClCompile Include="CPushStart.cpp" />
     <ClCompile Include="Effect2D.cpp" />
     <ClCompile Include="Effect3D.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Life.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="CPushStart.h" />
     <ClInclude Include="Effect2D.h" />
     <ClInclude Include="Effect3D.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Life.h" />

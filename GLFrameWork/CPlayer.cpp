@@ -17,6 +17,7 @@
 #include "CBullet.h"
 #include "CommonGL.h"
 #include "Ballistic.h"
+#include "Explosion.h"
 
 //------------------------------------------------------------------------------
 // コンストラクタ
@@ -243,6 +244,7 @@ void CPlayer::UpdatePlayer(void)
 	{
 		ReleaseBullet();
 	}
+
 #endif
 }
 
