@@ -19,7 +19,7 @@
 #include "Effect3D.h"
 #include "Polygon3D.h"
 #include "Texture.h"
-#include "MeshCylinder.h"
+#include "BattleAreaCylinder.h"
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Model.h"
@@ -47,6 +47,7 @@ const float	CGame::HEIGHT_PUSH_ROCK = 45.0f;			// 岩の押し戻し中心高さ
 const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
+const float	CGame::HEIGHT_WALL = 500.0f;				// 壁の高さ
 
 const int	CGame::MAX_ROCK = 20;						// 岩の数
 
@@ -93,11 +94,7 @@ CGame::~CGame()
 //------------------------------------------------------------------------------
 void CGame::Init(void)
 {
-	//CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
-	//polygon->SetTex(CTexture::Texture(TEX_LIGHT));
-	//polygon->SetColor(GREEN(1.0f));
-	//CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));	// 地形生成
-
+	//地形生成
 	Ground = nullptr;
 	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(FIELD_PANEL_SIZE,FIELD_PANEL_SIZE),VECTOR2(0,0),1.5f);
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
@@ -109,7 +106,7 @@ void CGame::Init(void)
 
 	// 境界線生成
 	CylinderArea = nullptr;
-	CylinderArea = CMeshCylinder::Create(VECTOR3(0.0f, 0.0f, 0.0f), 1000.0f, VECTOR2(64.0f, 1.0f), RADIUS_AREA_BATTLE, VECTOR2(1, -1));
+	CylinderArea = CBattleAreaCylinder::Create(VECTOR3(0.0f, 0.0f, 0.0f), HEIGHT_WALL, VECTOR2(64.0f, 1.0f), RADIUS_AREA_BATTLE, VECTOR2(1, -0.5f));
 	CylinderArea->SetTex(CTexture::Texture(TEX_WALL));
 	CylinderArea->SetAlpha(0.5f);
 
@@ -131,7 +128,7 @@ void CGame::Init(void)
 			Player[i]->SetPlayerFlag(true);
 		}
 	}	//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player[CManager::netData.charNum], 300.0f);
+	CPlayerCamera::Create(Player[CManager::netData.charNum], 35.0f);
 
 	// UI初期化
 	UI = new CUI;
@@ -253,6 +250,9 @@ void CGame::Update(void)
 		CManager::ChangeScene(SCENE_RESULT);
 	}
 
+ // 空の位置プレイヤーに合わせる
+ Sky->SetPosX(Player[0]->Pos().x);
+ Sky->SetPosZ(Player[0]->Pos().z);
 
 	// 攻撃判定
 	CheckHitPlayer();
@@ -495,6 +495,7 @@ void CGame::PushBackRock(void)
 			positionRock.y += HEIGHT_PUSH_ROCK;
 			vectorOffenseToDefense = positionRock - positionPlayer;
 			distanceOffenseAndDefense = sqrtf( vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z );
+
 			if (distanceOffenseAndDefense < RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock)
 			{
 				// 押し戻し

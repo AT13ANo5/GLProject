@@ -7,7 +7,7 @@
 //=============================================================================
 //コストラクタ
 //=============================================================================
-CBillboard::CBillboard() :CObject(3)
+CBillboard::CBillboard() :CObject(4)
 {
 	_Pos.x =
 	_Pos.y =
@@ -71,6 +71,7 @@ void CBillboard::Draw(void)
 {
 	//ライティング無効
 	glDisable(GL_LIGHTING);
+	glEnable(GL_ALPHA_TEST_REF);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();//ビューマトリックスを退避
@@ -96,6 +97,7 @@ void CBillboard::Draw(void)
 
 	//glDepthMask(GL_FALSE);
 	//ポリゴン描画
+	glEnable(GL_ALPHA_TEST);
 	glBegin(GL_TRIANGLE_STRIP);
 
 	uv.Set();
@@ -109,6 +111,7 @@ void CBillboard::Draw(void)
 
 	glEnd();
 
+	glDisable(GL_ALPHA_TEST);
 	glDepthMask(GL_TRUE);
 
 	glPopMatrix();//ビューマトリックスを戻す

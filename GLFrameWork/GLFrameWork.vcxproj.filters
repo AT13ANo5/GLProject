@@ -29,14 +29,8 @@
     <Filter Include="00_システム\Input">
       <UniqueIdentifier>{30a9dc15-08c7-4b0d-bc9b-28dacefafc43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00_システム\Input\GamePad">
-      <UniqueIdentifier>{64e1dedf-c907-4fe3-883c-d32fb9daab23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00_システム\Input\Keyboard">
       <UniqueIdentifier>{88315306-9f0d-440c-ad55-4fd75381a712}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00_システム\Input\Mouse">
-      <UniqueIdentifier>{0c783b59-a561-4d7a-9aae-ee9667a03efb}</UniqueIdentifier>
     </Filter>
     <Filter Include="00_システム\Light">
       <UniqueIdentifier>{bbcc5d08-858a-45dd-a210-6c472c29ed5f}</UniqueIdentifier>
@@ -161,6 +155,12 @@
     <Filter Include="03_リザルト\NumberManager">
       <UniqueIdentifier>{9c27d603-b2cc-468f-8faa-d8fecb278fc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\Effect">
+      <UniqueIdentifier>{fd977f77-bf84-4c27-bb34-3bde693c3554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_ゲーム\BattleAreaWall">
+      <UniqueIdentifier>{aea02ae7-c56d-4f2b-9148-66501186ff6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -178,17 +178,11 @@
     <ClCompile Include="CommonGL.cpp">
       <Filter>00_システム\Common</Filter>
     </ClCompile>
-    <ClCompile Include="GamePad.cpp">
-      <Filter>00_システム\Input\GamePad</Filter>
-    </ClCompile>
     <ClCompile Include="Keyboard.cpp">
       <Filter>00_システム\Input\Keyboard</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>00_システム\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>00_システム\Input\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>00_システム\Renderer</Filter>
@@ -307,6 +301,12 @@
     <ClCompile Include="ResultNumberManager.cpp">
       <Filter>03_リザルト\NumberManager</Filter>
     </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>00_システム\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleAreaCylinder.cpp">
+      <Filter>02_ゲーム\BattleAreaWall</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -324,17 +324,11 @@
     <ClInclude Include="CommonGL.h">
       <Filter>00_システム\Common</Filter>
     </ClInclude>
-    <ClInclude Include="GamePad.h">
-      <Filter>00_システム\Input\GamePad</Filter>
-    </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>00_システム\Input\Keyboard</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>00_システム\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>00_システム\Input\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>00_システム\Renderer</Filter>
@@ -467,6 +461,12 @@
     </ClInclude>
     <ClInclude Include="ResultNumberManager.h">
       <Filter>03_リザルト\NumberManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>00_システム\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleAreaCylinder.h">
+      <Filter>02_ゲーム\BattleAreaWall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

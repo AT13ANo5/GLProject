@@ -15,7 +15,6 @@ class CRenderer;
 class CScene;
 class CCamera;
 class CLight;
-class CMouse;
 class CKeyboard;
 
 //*****************************************************************************
@@ -98,7 +97,6 @@ private:
 	CRenderer* Render;
 	CCamera* pCamera;
 	CLight* Light;
-	CMouse* Mouse;
 	CKeyboard* Keyboard;
 
 	static short NextScene;

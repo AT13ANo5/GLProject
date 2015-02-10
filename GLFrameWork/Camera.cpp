@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include "Mouse.h"
 #include <math.h>
 
 float ClickPosX;
@@ -129,26 +128,7 @@ void CCamera::Init(const VECTOR3& eye,const VECTOR3& lookat)
 
 void CCamera::Update(void)
 {
-	if(CMouse::GetTrigger(CMouse::MOUSE_LEFT))
-	{
-		ClickPosX = CMouse::GetPosX();
-	}
-	if(CMouse::GetPress(CMouse::MOUSE_LEFT))
-	{
-		float x = CMouse::GetPosX();
-		float sub = ClickPosX-x;
-		Angle.y -= sub/10000.0f;
-	}
-	if(CMouse::GetWheel()==CMouse::WHEEL_DOWN)
-	{
-		Length -= 20.0f;
-	}
-	else if(CMouse::GetWheel()==CMouse::WHEEL_UP)
-	{
-		Length += 20.0f;
-	}
-	_Eye.x = sinf(Angle.y)*Length+_Lookat.x;
-	_Eye.z = cosf(Angle.y)*Length+_Lookat.z;
+
 }
 
 void CCamera::UpdateAll(void)
