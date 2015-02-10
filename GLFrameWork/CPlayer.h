@@ -80,6 +80,7 @@ public:
 	void ReleaseBullet(void);	// 弾を削除
 
 	void BlastBullet();
+	void setBarrelRot(VECTOR3 _rot);
 
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新

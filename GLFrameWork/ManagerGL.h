@@ -63,6 +63,7 @@ public:
 	static void SendEntry();
 	static void SendPos(VECTOR3 _pos);
 	static void SendRot(VECTOR3 _rot);
+	static void SendCannonRot(VECTOR3 _rot);
 	static void SendCannon(bool _flag);
 	static void sendGameStart();
 	static NETWORK_DATA* getNetWorkData()

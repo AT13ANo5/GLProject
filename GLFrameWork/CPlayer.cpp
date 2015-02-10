@@ -231,6 +231,7 @@ void CPlayer::UpdatePlayer(void)
 
 	CManager::SendPos(_Pos);
 	CManager::SendRot(_Rot);
+	CManager::SendCannonRot(Barrel->Rot());
 	CManager::SendCannon(LaunchFlag);
 
 #ifdef _DEBUG
@@ -284,6 +285,11 @@ void CPlayer::UpdateCPU(void)
 	Barrel->SetPos(_Pos);			// ˆÊ’u
 	Barrel->SetRot(_Rot);			// ‰ñ“]
 	Barrel->AddRotX(BarrelRotX);	// ã‚ÅÝ’è‚µ‚½‰ñ“]—Ê‚É–Cg‚ÌXŽ²‰ñ“]—Ê‚ð‰ÁŽZ
+}
+
+void CPlayer::setBarrelRot(VECTOR3 _rot)
+{
+	Barrel->SetRot(_rot);			// ‰ñ“]
 }
 
 //------------------------------------------------------------------------------

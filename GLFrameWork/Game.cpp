@@ -171,6 +171,16 @@ void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
 
 			break;
 
+		case DATA_TYPE_CANNONROT:
+
+			Player[_netData.charNum]->setBarrelRot(
+				VECTOR3(_netData.data_cannonRot.rotX,
+				_netData.data_cannonRot.rotY,
+				_netData.data_cannonRot.rotZ
+				));
+
+			break;
+
 		case DATA_TYPE_CANNON:
 
 			if (_netData.data_cannon.flag == true)
