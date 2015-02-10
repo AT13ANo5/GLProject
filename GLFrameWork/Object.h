@@ -70,6 +70,10 @@ public:
 	//テクスチャ
 	virtual void SetTex(TEX_INFO tex){Texture = tex;}
 
+	//クォータニオン
+	void SetAxisRotation(const VECTOR3& axis)		{ VectorAxisRotation = axis; }		// 回転軸
+	void SetRotationAxis(float rotation)			{ RotationAxis = rotation; }		// 回転量
+
 	//=================================================================================
 	//加算
 	//=================================================================================
@@ -118,6 +122,9 @@ protected:
 	VECTOR3 _Scl;
 	COLOR _Color;
 	TEX_INFO Texture;
+
+	VECTOR3	VectorAxisRotation;		// クォータニオン回転軸
+	float	RotationAxis;			// 回転角度
 
 private:
 	void LinkList();

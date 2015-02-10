@@ -271,6 +271,7 @@ void CModel::Draw(void)
 
 		glTranslatef(pos.x,pos.y,pos.z);
 		glScalef(_Scl.x,_Scl.y,_Scl.z);
+		glRotatef(RotationAxis, VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z);
 		glRotatef(rot.y,0,1.0f,0);
 		glRotatef(rot.x,1.0f,0,0);
 		glRotatef(rot.z,0,0,1.0f);

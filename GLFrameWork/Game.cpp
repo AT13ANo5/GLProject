@@ -31,7 +31,7 @@
 #include "UI.h"
 
 // 静的メンバ変数
-const float CGame::RADIUS_SKY = 1500.0f;   // 空の半径
+const float CGame::RADIUS_SKY = 2500.0f;   // 空の半径
 CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
 const float	CGame::RADIUS_DEFENSE_CHARACTER = 10.0f;	// キャラクターの防御半径
@@ -585,28 +585,25 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround);
 
 	// 回転を求める
-	VECTOR3	VectorUppObject;		// 上方向ベクトル
-	VECTOR3	VectorNormalYZ;			// YZ平面上の法線ベクトル
-	VECTOR3	VectorNormalXY;			// XY平面上の法線ベクトル
-	float	AnglepObjectX;			// プレイヤー回転X軸
-	float	AnglepObjectZ;			// プレイヤー回転Z軸
-	VectorUppObject.x = VectorUppObject.z = 0.0f;
-	VectorUppObject.y = 1.0f;
-	VectorNormalYZ.x = 0.0f;
-	VectorNormalYZ.y = NormalGround.y;
-	VectorNormalYZ.z = NormalGround.z;
-	VectorNormalYZ.Normalize();
-	AnglepObjectX = -acosf(VECTOR3::Dot(VectorNormalYZ, VectorUppObject));
-	VectorNormalXY.x = NormalGround.x;
-	VectorNormalXY.y = NormalGround.y;
-	VectorNormalXY.z = 0.0f;
-	VectorNormalXY.Normalize();
-	AnglepObjectZ = -acosf(VECTOR3::Dot(VectorNormalXY, VectorUppObject));
+	VECTOR3	vectorUp(0.0f, 1.0f, 0.0f);		// 上方向ベクトル
+	VECTOR3	vectorAxisRotation;				// 回転軸
+	float	rotation = 0.0f;				// 回転量
+	VECTOR3::Cross(&vectorAxisRotation, NormalGround, vectorUp);
+	vectorAxisRotation.Normalize();
+	rotation = VECTOR3::Dot(NormalGround, vectorUp);
+	if (rotation > 2.0f * FLT_EPSILON || rotation < -2.0f * FLT_EPSILON)
+	{
+		rotation = RAD_TO_DEG * acosf(rotation);
+	}
+	else
+	{
+		rotation = 0.0f;
+	}
 
 	// キャラクターに設定する
 	pObject->SetPosY(HeightGround);
-//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
-//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
+	pObject->SetAxisRotation(vectorAxisRotation);
+	pObject->SetRotationAxis(rotation);
 }
 
 //==============================================================================
