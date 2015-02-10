@@ -283,6 +283,21 @@ void CManager::SendRot(VECTOR3 _rot)
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
 //=============================================================================
+//	回転送信処理
+//=============================================================================
+void CManager::SendCannonRot(VECTOR3 _rot)
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_CANNONROT;
+	data.servID = SERV_ID;
+	data.charNum = netData.charNum;
+	data.data_cannonRot.rotX = _rot.x;
+	data.data_cannonRot.rotY = _rot.y;
+	data.data_cannonRot.rotZ = _rot.z;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+//=============================================================================
 //	スレッド用の更新処理
 //=============================================================================
 unsigned __stdcall CManager::recvUpdate(void *p)
@@ -332,6 +347,21 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 						userInfo[data.charNum].rot.x = data.data_rot.rotX;
 						userInfo[data.charNum].rot.y = data.data_rot.rotY;
 						userInfo[data.charNum].rot.z = data.data_rot.rotZ;
+					}
+
+					break;
+
+				case DATA_TYPE_CANNONROT:
+
+					if (gameStartFlag == true)
+					{
+						//	データタイプに応じてプレイヤーへ情報をセット
+						CGame::SetPlayerState(data, DATA_TYPE_CANNONROT);
+
+						//	回転情報セット
+						userInfo[data.charNum].cannonRot.x = data.data_cannonRot.rotX;
+						userInfo[data.charNum].cannonRot.y = data.data_cannonRot.rotY;
+						userInfo[data.charNum].cannonRot.z = data.data_cannonRot.rotZ;
 					}
 
 					break;

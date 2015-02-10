@@ -77,6 +77,7 @@ void initUserInfo()
 		userInfo[count].kill = 0;
 		userInfo[count].pos = VECTOR3(0.0f, 0.0f, 0.0f);
 		userInfo[count].rot = VECTOR3(0.0f, 0.0f, 0.0f);
+		userInfo[count].cannonRot = VECTOR3(0.0f, 0.0f, 0.0f);
 		userInfo[count].cannon = false;
 	}
 }
@@ -194,6 +195,18 @@ int main(void)
 					userInfo[data.charNum].rot.x = data.data_rot.rotX;
 					userInfo[data.charNum].rot.y = data.data_rot.rotY;
 					userInfo[data.charNum].rot.z = data.data_rot.rotZ;
+
+					//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
+					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
+
+					break;
+
+				case DATA_TYPE_CANNONROT:
+
+					//	回転情報のセット
+					userInfo[data.charNum].cannonRot.x = data.data_cannonRot.rotX;
+					userInfo[data.charNum].cannonRot.y = data.data_cannonRot.rotY;
+					userInfo[data.charNum].cannonRot.z = data.data_cannonRot.rotZ;
 
 					//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
 					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));

@@ -26,6 +26,7 @@ typedef enum
 
 	DATA_TYPE_POS = 100,	//	位置
 	DATA_TYPE_ROT,	//	回転
+	DATA_TYPE_CANNONROT,	//	回転
 	DATA_TYPE_CANNON,	//	発射
 	DATA_TYPE_ENTRY,	//	エントリー
 	DATA_TYPE_GAME_START,	//	ゲームスタート
@@ -95,6 +96,7 @@ typedef struct
 	{
 		DATA_POS data_pos;
 		DATA_ROT data_rot;
+		DATA_ROT data_cannonRot;
 		DATA_CANNON data_cannon;
 		DATA_PAUSE data_pause;
 	};
@@ -112,6 +114,7 @@ typedef struct {
 
 	VECTOR3 pos;
 	VECTOR3 rot;
+	VECTOR3 cannonRot;
 	bool cannon;
 
 } USER_INFO;
