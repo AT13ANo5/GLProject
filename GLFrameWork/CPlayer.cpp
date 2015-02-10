@@ -67,10 +67,13 @@ void CPlayer::Init(void)
 	// 弾使用フラグ
 	_BulletUseFlag = false;
 
+	LaunchFlag = true;
+
 	// 弾
 	_Bullet = nullptr;
 
 	// 弾道
+
 	Ballistic = CBallistic::Create(COLOR(1.0f, 0.0f, 0.0f, 0.3f));
 
 	// 継承元の初期化
@@ -156,11 +159,11 @@ void CPlayer::UpdatePlayer(void)
 	// 砲身の上下
 	if (CKeyboard::GetPress(DIK_UP))
 	{
-		BarrelRotX -= 1.0f;
+
 	}
 	else if (CKeyboard::GetPress(DIK_DOWN))
 	{
-		BarrelRotX += 1.0f;
+
 	}
 
 	// キャラクターの回転
@@ -281,10 +284,35 @@ void CPlayer::BlastBullet()
 //------------------------------------------------------------------------------
 void CPlayer::UpdateCPU(void)
 {
-	// 砲身の位置、回転を更新
 	Barrel->SetPos(_Pos);			// 位置
-	//Barrel->SetRot(_Rot);			// 回転
-	//Barrel->AddRotX(BarrelRotX);	// 上で設定した回転量に砲身のX軸回転量を加算
+
+	// 弾の発射
+	// 弾が発射されていなかった時
+	if (LaunchFlag == false)
+	{
+		if (CKeyboard::GetTrigger(DIK_SPACE))
+		{
+			_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+			LaunchFlag = true;
+			_BulletUseFlag = true;
+			_ReloadTimer = 0;
+		}
+	}
+	// 弾が発射されている時
+	else
+	{
+		// リロード可能までの時間を加算
+		_ReloadTimer++;
+
+		// リロード制限時間を超えたら
+		if (_ReloadTimer >= PLAYER_RELOAD_TIME)
+		{
+			// 再発射可能に
+			LaunchFlag = false;
+			_BulletUseFlag = false;
+			_ReloadTimer = PLAYER_RELOAD_TIME;
+		}
+	}
 }
 
 void CPlayer::setBarrelRot(VECTOR3 _rot)
