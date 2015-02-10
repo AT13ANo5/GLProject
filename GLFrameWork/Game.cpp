@@ -93,11 +93,7 @@ CGame::~CGame()
 //------------------------------------------------------------------------------
 void CGame::Init(void)
 {
-	//CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
-	//polygon->SetTex(CTexture::Texture(TEX_LIGHT));
-	//polygon->SetColor(GREEN(1.0f));
-	//CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));	// 地形生成
-
+	//地形生成
 	Ground = nullptr;
 	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(FIELD_PANEL_SIZE,FIELD_PANEL_SIZE),VECTOR2(0,0),1.5f);
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));

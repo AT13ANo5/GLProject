@@ -11,7 +11,6 @@
 #include "Model.h"
 #include "Camera.h"
 #include "Light.h"
-#include "Mouse.h"
 #include "Keyboard.h"
 #include "SoundAL.h"
 #include "Scene.h"
@@ -44,7 +43,6 @@ bool CManager::gameStartFlag;
 CManager::CManager()
 {
 	Render = nullptr;
-	Mouse = nullptr;
 	Keyboard = nullptr;
 	Scene = nullptr;
 	ChangeFlag = false;
@@ -77,8 +75,6 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	CTexture::Initialize();
 	Light = new CLight;
 	Light->Create(VECTOR4(1.0f, 100.0f, -200.0f, 0));
-	Mouse = new CMouse;
-	Mouse->Init(hInstance, hWnd);
 	Keyboard = new CKeyboard;
 	Keyboard->Init(hInstance, hWnd);
 
@@ -398,13 +394,6 @@ void CManager::Uninit(HWND hWnd)
 	CModel::Finalize();
 	CTexture::Finalize();
 
-
-	if (Mouse != nullptr)
-	{
-		Mouse->Uninit();
-		delete Mouse;
-		Mouse = nullptr;
-	}
 	if (Keyboard != nullptr)
 	{
 		Keyboard->Uninit();
@@ -432,7 +421,6 @@ void CManager::Update(void)
 	}
 
 #endif
-	Mouse->Update();
 	Keyboard->Update();
 	CSoundAL::UpdateAll();
 	CCamera::UpdateAll();
