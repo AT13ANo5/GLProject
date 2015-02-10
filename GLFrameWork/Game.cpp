@@ -19,7 +19,7 @@
 #include "Effect3D.h"
 #include "Polygon3D.h"
 #include "Texture.h"
-#include "MeshCylinder.h"
+#include "BattleAreaCylinder.h"
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Model.h"
@@ -47,6 +47,7 @@ const float	CGame::HEIGHT_PUSH_ROCK = 45.0f;			// 岩の押し戻し中心高さ
 const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
+const float	CGame::HEIGHT_WALL = 500.0f;				// 壁の高さ
 
 const int	CGame::MAX_ROCK = 20;						// 岩の数
 
@@ -105,7 +106,7 @@ void CGame::Init(void)
 
 	// 境界線生成
 	CylinderArea = nullptr;
-	CylinderArea = CMeshCylinder::Create(VECTOR3(0.0f, 0.0f, 0.0f), 1000.0f, VECTOR2(64.0f, 1.0f), RADIUS_AREA_BATTLE, VECTOR2(1, -1));
+	CylinderArea = CBattleAreaCylinder::Create(VECTOR3(0.0f, 0.0f, 0.0f), HEIGHT_WALL, VECTOR2(64.0f, 1.0f), RADIUS_AREA_BATTLE, VECTOR2(1, -0.5f));
 	CylinderArea->SetTex(CTexture::Texture(TEX_WALL));
 	CylinderArea->SetAlpha(0.5f);
 
