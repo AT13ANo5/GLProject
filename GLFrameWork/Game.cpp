@@ -27,6 +27,7 @@
 #include "CBullet.h"
 #include "PlayerCamera.h"
 #include "MiniMap.h"
+#include "SoundAL.h"
 
 #include "UI.h"
 
@@ -94,6 +95,7 @@ CGame::~CGame()
 //------------------------------------------------------------------------------
 void CGame::Init(void)
 {
+	CSoundAL::Play(CSoundAL::BGM_GAME);
 	//ínå`ê∂ê¨
 	Ground = nullptr;
 	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(FIELD_PANEL_SIZE,FIELD_PANEL_SIZE),VECTOR2(0,0),1.5f);

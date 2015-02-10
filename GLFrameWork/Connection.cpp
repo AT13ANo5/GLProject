@@ -13,6 +13,7 @@
 #include "Keyboard.h"
 #include "netData.h"
 #include "ManagerGL.h"
+#include "SoundAL.h"
 
 //*****************************************************************************
 //	’è”’è‹`
@@ -143,6 +144,7 @@ void CConnection::Init(void)
 		waitBackGround[5]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 	}
 	//-------------------------------------------------
+	CSoundAL::Play(CSoundAL::BGM_CONNECT);
 }
 
 //=============================================================================

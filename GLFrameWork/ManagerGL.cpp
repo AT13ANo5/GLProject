@@ -502,6 +502,7 @@ void CManager::ChangeScene(short next)
 	if (CFade::Instance().State() == CFade::FADE_NONE&&ChangeFlag == false)
 	{
 		CFade::Set(1.0f, 30);
+		CSoundAL::FadeAll(20);
 		NextScene = next;
 		ChangeFlag = true;
 	}
