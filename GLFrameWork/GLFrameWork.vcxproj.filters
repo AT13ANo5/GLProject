@@ -158,6 +158,9 @@
     <Filter Include="00_システム\Effect">
       <UniqueIdentifier>{fd977f77-bf84-4c27-bb34-3bde693c3554}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム\BattleAreaWall">
+      <UniqueIdentifier>{aea02ae7-c56d-4f2b-9148-66501186ff6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -300,6 +303,9 @@
     </ClCompile>
     <ClCompile Include="Explosion.cpp">
       <Filter>00_システム\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleAreaCylinder.cpp">
+      <Filter>02_ゲーム\BattleAreaWall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -458,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="Explosion.h">
       <Filter>00_システム\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleAreaCylinder.h">
+      <Filter>02_ゲーム\BattleAreaWall</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
