@@ -12,6 +12,8 @@
 //前方宣言
 //============================================================================
 class CPolygon2D;
+class CMap2D;
+
 //============================================================================
 //クラス定義
 //============================================================================
@@ -31,7 +33,7 @@ public:
 private:
 	VECTOR3 PlayerPos[PLAYER_MAX];
 	VECTOR3 PlayerRot[PLAYER_MAX];
-	CPolygon2D* Map;
+	CMap2D* Map;
 	CPolygon2D* Player[PLAYER_MAX];
 	VECTOR2 MiniMapSize;
 	static int _SelfId;
