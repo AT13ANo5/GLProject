@@ -51,7 +51,9 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/pushEnter.tga",
 	"data/texture/wall100.dds",
 	"data/texture/MiniMap.dds",
-	"data/texture/MiniMapArrow.dds"
+	"data/texture/MiniMapArrow.dds",
+	"data/texture/minimapBG.dds"
+
 	};
 
 void CTexture::Initialize(void)
