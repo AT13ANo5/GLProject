@@ -270,7 +270,17 @@ void CGame::Update(void)
  // 空の位置プレイヤーに合わせる
  Sky->SetPosX(Player[0]->Pos().x);
  Sky->SetPosZ(Player[0]->Pos().z);
+ for(int loop = 0;loop < PLAYER_MAX;loop++)
+ {
+  if(Player[loop]->PlayerLife() <= 0)
+  {
+   VECTOR3	NormalGround;		// 地形の法線
+   VECTOR3 Respawn = VECTOR3(rand() % 100,0,rand() % 100);
+   Respawn.y = Ground->GetHeight(Respawn,&NormalGround);
 
+   Player[loop]->SetDeath(Respawn);
+  }
+ }
 	// 攻撃判定
 	CheckHitPlayer();
 
@@ -352,7 +362,6 @@ void CGame::CheckHitPlayer(void)
 				// 当たったときの処理
 				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 				pPlayerDefense->AddPlayerLife(-1);
-
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
 
 				// 処理終了
