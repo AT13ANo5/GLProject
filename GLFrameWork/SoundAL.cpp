@@ -352,7 +352,6 @@ void CSoundAL::UpdateAll(void)
 	}
 
 #ifdef _DEBUG
-	CDebugProc::Print("SoundNum:%d\n",_Num);
 #endif
 }
 

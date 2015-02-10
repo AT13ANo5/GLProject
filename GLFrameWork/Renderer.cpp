@@ -58,7 +58,7 @@ HRESULT CRenderer::Init(HWND hWnd)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);
-	glAlphaFunc(GL_GREATER,0.1);
+	glAlphaFunc(GL_GREATER,GLclampf(0.1));
 	
 
 	CFade::Initialize();
