@@ -8,6 +8,7 @@
 #include "MeshSphere.h"
 #include "Camera.h"
 #include "CPushStart.h"
+#include "SoundAL.h"
 #include <math.h>
 
 // static member
@@ -66,6 +67,7 @@ void CTitle::Init(void)
 	Camera = CCamera::Camera(0);
 
 	Camera->SetEye(VECTOR3(0.0f,80.0f,0.0f));
+	CSoundAL::Play(CSoundAL::BGM_TITLE);
 }
 
 void CTitle::Uninit(void)

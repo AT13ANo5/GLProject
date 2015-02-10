@@ -9,7 +9,7 @@
 #include "ResultUIManager.h"
 #include "Fade.h"
 #include "Confetti.h"
-
+#include "SoundAL.h"
 
 // Ã“Iƒƒ“ƒo•Ï”
 const float CResult::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
@@ -39,6 +39,7 @@ void CResult::Init(void)
 
   // UIManager
   UIManager = CResultUIManager::Create();
+  CSoundAL::Play(CSoundAL::BGM_RESULT);
 }
 
 void CResult::Uninit(void)

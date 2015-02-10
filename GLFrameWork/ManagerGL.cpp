@@ -220,6 +220,7 @@ void CManager::SendEntry()
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_ENTRY;
+	data.servID = SERV_ID;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -233,6 +234,7 @@ void CManager::sendGameStart()
 	{
 		NET_DATA data;
 		data.type = DATA_TYPE_GAME_START;
+		data.servID = SERV_ID;
 
 		sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 	}
@@ -245,6 +247,7 @@ void CManager::SendCannon(bool _flag)
 	NET_DATA data;
 	data.type = DATA_TYPE_CANNON;
 	data.charNum = netData.charNum;
+	data.servID = SERV_ID;
 	data.data_cannon.flag = _flag;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
@@ -256,6 +259,7 @@ void CManager::SendPos(VECTOR3 _pos)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_POS;
+	data.servID = SERV_ID;
 	data.charNum = netData.charNum;
 	data.data_pos.posX = _pos.x;
 	data.data_pos.posY = _pos.y;
@@ -270,10 +274,26 @@ void CManager::SendRot(VECTOR3 _rot)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_ROT;
+	data.servID = SERV_ID;
 	data.charNum = netData.charNum;
 	data.data_rot.rotX = _rot.x;
 	data.data_rot.rotY = _rot.y;
 	data.data_rot.rotZ = _rot.z;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+//=============================================================================
+//	回転送信処理
+//=============================================================================
+void CManager::SendCannonRot(VECTOR3 _rot)
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_CANNONROT;
+	data.servID = SERV_ID;
+	data.charNum = netData.charNum;
+	data.data_cannonRot.rotX = _rot.x;
+	data.data_cannonRot.rotY = _rot.y;
+	data.data_cannonRot.rotZ = _rot.z;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -296,80 +316,102 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 		}
 		else
 		{
-			// データタイプ解析
-			switch (data.type)
+			if (data.servID == SERV_ID)
 			{
-			case DATA_TYPE_POS:
-
-				if (gameStartFlag == true)
+				// データタイプ解析
+				switch (data.type)
 				{
-					//	データタイプに応じてプレイヤーへ情報をセット
-					CGame::SetPlayerState(data, DATA_TYPE_POS);
+				case DATA_TYPE_POS:
 
-					//	位置情報セット
-					userInfo[data.charNum].pos.x = data.data_pos.posX;
-					userInfo[data.charNum].pos.y = data.data_pos.posY;
-					userInfo[data.charNum].pos.z = data.data_pos.posZ;
+					if (gameStartFlag == true)
+					{
+						//	データタイプに応じてプレイヤーへ情報をセット
+						CGame::SetPlayerState(data, DATA_TYPE_POS);
+
+						//	位置情報セット
+						userInfo[data.charNum].pos.x = data.data_pos.posX;
+						userInfo[data.charNum].pos.y = data.data_pos.posY;
+						userInfo[data.charNum].pos.z = data.data_pos.posZ;
+					}
+
+					break;
+
+				case DATA_TYPE_ROT:
+
+					if (gameStartFlag == true)
+					{
+						//	データタイプに応じてプレイヤーへ情報をセット
+						CGame::SetPlayerState(data, DATA_TYPE_ROT);
+
+						//	回転情報セット
+						userInfo[data.charNum].rot.x = data.data_rot.rotX;
+						userInfo[data.charNum].rot.y = data.data_rot.rotY;
+						userInfo[data.charNum].rot.z = data.data_rot.rotZ;
+					}
+
+					break;
+
+				case DATA_TYPE_CANNONROT:
+
+					if (gameStartFlag == true)
+					{
+						//	データタイプに応じてプレイヤーへ情報をセット
+						CGame::SetPlayerState(data, DATA_TYPE_CANNONROT);
+
+						//	回転情報セット
+						userInfo[data.charNum].cannonRot.x = data.data_cannonRot.rotX;
+						userInfo[data.charNum].cannonRot.y = data.data_cannonRot.rotY;
+						userInfo[data.charNum].cannonRot.z = data.data_cannonRot.rotZ;
+					}
+
+					break;
+
+				case DATA_TYPE_CANNON:
+
+					if (gameStartFlag == true)
+					{
+						//	データタイプに応じてプレイヤーへ情報をセット
+						CGame::SetPlayerState(data, DATA_TYPE_CANNON);
+					}
+
+					break;
+
+				case DATA_TYPE_PAUSE:
+
+					if (gameStartFlag == true)
+					{
+						//	ポーズ時に情報を取得
+						userInfo[data.charNum].kill = data.data_pause.kill;
+						userInfo[data.charNum].death = data.data_pause.death;
+					}
+
+					break;
+
+				case DATA_TYPE_ENTRY:
+
+					if (gameStartFlag == false)
+					{
+						//	エントリー処理完了
+						//	識別番号を取得
+						netData.charNum = data.charNum;
+					}
+
+					break;
+
+				case DATA_TYPE_EMPTY:
+
+					if (gameStartFlag == false)
+					{
+						//	部屋が埋まっている
+						netWorkData.emptyFlag = true;
+					}
+
+					break;
 				}
-
-				break;
-
-			case DATA_TYPE_ROT:
-
-				if (gameStartFlag == true)
-				{
-					//	データタイプに応じてプレイヤーへ情報をセット
-					CGame::SetPlayerState(data, DATA_TYPE_ROT);
-
-					//	回転情報セット
-					userInfo[data.charNum].rot.x = data.data_rot.rotX;
-					userInfo[data.charNum].rot.y = data.data_rot.rotY;
-					userInfo[data.charNum].rot.z = data.data_rot.rotZ;
-				}
-
-				break;
-
-			case DATA_TYPE_CANNON:
-
-				if (gameStartFlag == true)
-				{
-					//	データタイプに応じてプレイヤーへ情報をセット
-					CGame::SetPlayerState(data, DATA_TYPE_CANNON);
-				}
-
-				break;
-
-			case DATA_TYPE_PAUSE:
-
-				if (gameStartFlag == true)
-				{
-					//	ポーズ時に情報を取得
-					userInfo[data.charNum].kill = data.data_pause.kill;
-					userInfo[data.charNum].death = data.data_pause.death;
-				}
-
-				break;
-
-			case DATA_TYPE_ENTRY:
-
-				if (gameStartFlag == false)
-				{
-					//	エントリー処理完了
-					//	識別番号を取得
-					netData.charNum = data.charNum;
-				}
-
-				break;
-
-			case DATA_TYPE_EMPTY:
-
-				if (gameStartFlag == false)
-				{
-					//	部屋が埋まっている
-					netWorkData.emptyFlag = true;
-				}
-
-				break;
+			}
+			else
+			{
+				Console::Print("networkID Not Equal!!\n");
 			}
 		}
 	}
@@ -490,6 +532,7 @@ void CManager::ChangeScene(short next)
 	if (CFade::Instance().State() == CFade::FADE_NONE&&ChangeFlag == false)
 	{
 		CFade::Set(1.0f, 30);
+		CSoundAL::FadeAll(20);
 		NextScene = next;
 		ChangeFlag = true;
 	}
