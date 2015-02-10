@@ -1,19 +1,19 @@
 //=============================================================================
 //シリンダークラス
 //=============================================================================
-#ifndef _MESH_CYLINDER_
-#define _MESH_CYLINDER_
+#ifndef _BATTLE_AREA_CYLINDER_
+#define _BATTLE_AREA_CYLINDER_
 //=============================================================================
 //インクルード
 //=============================================================================
-#include "Object.h"
+#include "MeshCylinder.h"
 
 //クラス定義
-class CMeshCylinder:public CObject
+class CBattleAreaCylinder :public CMeshCylinder
 {
 public:
-	CMeshCylinder(int priority=0);
-	virtual ~CMeshCylinder();
+	CBattleAreaCylinder(int priority = 0);
+	~CBattleAreaCylinder();
 
 	//=============================================================================
 	//作成
@@ -24,28 +24,14 @@ public:
 	//	float:	半径
 	//	VECTOR2:テクスチャのリピート数
 	//=============================================================================
-	static CMeshCylinder* Create(VECTOR3 pos,float PanelHeight,VECTOR2 PanelNum,float radius,VECTOR2 TexDivide=VECTOR2(3,1));
+	static CBattleAreaCylinder* Create(VECTOR3 pos, float PanelHeight, VECTOR2 PanelNum, float radius, VECTOR2 TexDivide = VECTOR2(3, 1));
 
-	virtual void Init(void);
-	void Uninit(void);
-	void Update(void);
-	virtual void Draw(void);
+	void Init(void);
+	void Draw(void);
 
 
-protected:
-
-	float PanelHeight;
-	VECTOR2 PanelNum;
-	VECTOR2 TexDiv;
-	int IndexNum;
-	int PolygonNum;
-	int VertexNum;
-	float Radius;
-	GLuint DrawList;
-	VECTOR3* Vtx;
-	VECTOR2* Tex;
-	VECTOR3* Nor;
-	int* Index;
+private:
+	COLOR*	Color;		// 頂点色
 
 };
 #endif

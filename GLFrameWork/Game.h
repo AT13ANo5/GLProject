@@ -3,7 +3,7 @@
 #include"Scene.h"
 #include"UI.h"
 
-class CMeshCylinder;
+class CBattleAreaCylinder;
 class CMeshGround;
 class CMeshSphere;
 class CModel;
@@ -42,6 +42,7 @@ private:
 	static const float FIELD_PANEL_SIZE;			//フィールドのパネル一枚のサイズ
 
 	static const float	RADIUS_AREA_BATTLE;			// 戦闘エリア半径
+	static const float	HEIGHT_WALL;				// 壁の高さ
 
 	static const int	MAX_ROCK;					// 岩の数
 
@@ -59,7 +60,7 @@ private:
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
 	static CPlayer**       Player;     // プレイヤー	CNumberManager* numberManager;
-	CMeshCylinder*	CylinderArea;	// 戦闘可能エリア
+	CBattleAreaCylinder*	CylinderArea;			// 戦闘可能エリア
 	//CReport*        reportBg;
 	//CReport*        report;
 	//CNumberManager* numberManager;
