@@ -71,7 +71,7 @@ void CPlayer::Init(void)
 	_Bullet = nullptr;
 
 	// 弾道
-	Ballistic = CBallistic::Create(COLOR(1.0f, 0.0f, 0.0f, 0.4f));
+	Ballistic = CBallistic::Create(COLOR(1.0f, 0.0f, 0.0f, 0.3f));
 
 	// 継承元の初期化
 	CModel::Init();
@@ -156,11 +156,11 @@ void CPlayer::UpdatePlayer(void)
 	// 砲身の上下
 	if (CKeyboard::GetPress(DIK_UP))
 	{
-		BarrelRotX -= 3.0f;
+		BarrelRotX -= 1.0f;
 	}
 	else if (CKeyboard::GetPress(DIK_DOWN))
 	{
-		BarrelRotX += 3.0f;
+		BarrelRotX += 1.0f;
 	}
 
 	// キャラクターの回転

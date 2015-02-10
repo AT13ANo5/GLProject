@@ -14,8 +14,8 @@
 #define PLAYER_MOVE_SPEED (0.5f)			// 移動にかかる係数
 #define PLAYER_RELOAD_TIME (300)			// リロードまでのフレーム
 #define PLAYER_LIFE (3)						// プレイヤー体力の最大値
-#define BARREL_ROT_MAX (-60.0f)				// 砲身の最大角度
-#define BARREL_ROT_MIN (0.0f)				// 砲身の最小角度
+#define BARREL_ROT_MAX (-45.0f)				// 砲身の最大角度
+#define BARREL_ROT_MIN (-10.0f)				// 砲身の最小角度
 #define PLAYER_COLLISION_RADIUS (100.0f)	// 当たり判定用球の半径
 
 //------------------------------------------------------------------------------
