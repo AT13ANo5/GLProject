@@ -22,7 +22,7 @@
 // ヘッダインクルード
 //------------------------------------------------------------------------------
 #include "Model.h"
-
+#include "Polygon2D.h"
 //------------------------------------------------------------------------------
 // 列挙体宣言
 //------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ public:
 	// 体力
 	int PlayerLife(void){return _PlayerLife;}				// ゲッター
 	void SetPlayerLife(int life){_PlayerLife = life;}		// セッター
-	void AddPlayerLife(int addVal){_PlayerLife += addVal;}	// 加算
+ void AddPlayerLife(int addVal);	// 加算
 
 	// 生成
 	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
@@ -78,6 +78,9 @@ public:
 	bool BulletUseFlag(void){return _BulletUseFlag;}
 
 	void ReleaseBullet(void);	// 弾を削除
+
+ void SetDeath(VECTOR3 pos);//死亡処理
+ void SetRespawn(void);//復活処理
 
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
@@ -96,6 +99,10 @@ private:
 	int PlayerID;			// プレイヤー判別用ID
 	bool PlayerFlag;		// 操作キャラクターかどうか
 	CBallistic* Ballistic;	// 弾道
+ CPolygon2D* _Feed;
+ int _Timer;//無敵時間タイマー
+ float _Hegiht;//高さでカウント
+ VECTOR3 _PlayerRespown;//次の復活地点作成
 };
 
 #endif

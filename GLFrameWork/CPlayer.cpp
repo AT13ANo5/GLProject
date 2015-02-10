@@ -18,7 +18,9 @@
 #include "CommonGL.h"
 #include "Ballistic.h"
 #include "ManagerGL.h"
-
+const int kHeightMax = 400;
+const int kUpSpeed = 3;
+const int kDamageCntMax = 60;
 //------------------------------------------------------------------------------
 // コンストラクタ
 //------------------------------------------------------------------------------
@@ -49,6 +51,7 @@ CPlayer::CPlayer():CModel()
 CPlayer::~CPlayer()
 {
 	SafeDelete(Ballistic);
+ SafeDelete(_Feed);
 }
 
 //------------------------------------------------------------------------------
@@ -81,8 +84,13 @@ void CPlayer::Init(void)
 	Barrel->Init();
 	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
 
+ //高さ初期化
+ _Hegiht = 0; 
 	// 体力
 	_PlayerLife = PLAYER_LIFE;
+ _Feed = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/ 2.0f,SCREEN_HEIGHT / 2.0f,0),VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
+ _Feed->SetColor(COLOR(0,0,0,0));
+ _Timer = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -95,6 +103,67 @@ void CPlayer::Init(void)
 //------------------------------------------------------------------------------
 void CPlayer::Update()
 {
+ //モード選択
+ switch(_State)
+ {
+  case PLAYER_STATE_DEATH:
+  {
+   AddPosY(kUpSpeed);
+   _Hegiht += kUpSpeed;
+   float Alpha = ( 1.0f / kHeightMax ) * kUpSpeed;
+   _Feed->AddAlpha(Alpha);
+   if(_Hegiht > kHeightMax)
+   {
+    SetRespawn();
+   }
+   return;
+  }
+  case PLAYER_STATE_RESPAWN:
+  {
+   float Alpha = ( 1.0f / kHeightMax ) * kUpSpeed;
+
+   AddPosY(-kUpSpeed);
+   _Hegiht += kUpSpeed;
+   _Feed->AddAlpha(-Alpha);
+
+   if(_Hegiht > kHeightMax)
+   {
+    _State = PLAYER_STATE_WAIT;
+    _Feed->SetAlpha(0);
+   }
+   return;
+  }
+  case PLAYER_STATE_DAMAGE:
+  {
+   _Timer++;
+   _State = PLAYER_STATE_WAIT;
+   break;
+  }
+  default:
+  break;
+ }
+
+ if(_Timer != 0)
+ {
+  _Timer++;
+  if(_Timer % 2 == 0)
+  {
+   Barrel->SetDrawFlag(true);
+   SetDrawFlag(true);
+  }
+  else{
+   Barrel->SetDrawFlag(false);
+   SetDrawFlag(false);
+  }
+  if(_Timer > kDamageCntMax)
+  {
+   Barrel->SetDrawFlag(true);
+   SetDrawFlag(true);
+   _Timer = 0;
+  }
+
+ }
+
 	if (PlayerFlag == true)
 	{
 		// 操作キャラクターの更新
@@ -242,9 +311,10 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	// ライフの減算
-	if (CKeyboard::GetPress(DIK_L))
+	if (CKeyboard::GetTrigger(DIK_L))
 	{
 		this->AddPlayerLife(-1);
+  _State = PLAYER_STATE_DAMAGE;
 	}
 
 	// 弾の削除確認
@@ -314,6 +384,67 @@ CPlayer* CPlayer::Create(int modelID, const VECTOR3& pos, int playerID)
 	model->Init();
 
 	return model;
+}
+//------------------------------------------------------------------------------
+// 死亡処理
+//------------------------------------------------------------------------------
+// 引数
+// なし
+// 戻り値
+// なし
+//------------------------------------------------------------------------------
+void CPlayer::SetDeath(VECTOR3 pos)
+{
+ if(_State != PLAYER_STATE_DEATH)
+ {
+  _Hegiht = 0;
+  _State = PLAYER_STATE_DEATH;
+  _PlayerRespown = pos;
+  _Feed->SetAlpha(0);
+ }
+}
+//------------------------------------------------------------------------------
+// 復活処理
+//------------------------------------------------------------------------------
+// 引数
+// pos			: 初期位置
+// 戻り値
+// なし
+//------------------------------------------------------------------------------
+void CPlayer::SetRespawn(void)
+{
+ _Hegiht = 0;
+ _State = PLAYER_STATE_RESPAWN;
+ _PlayerRespown.y += kHeightMax;
+ SetPos(_PlayerRespown);
+ _PlayerLife = PLAYER_LIFE;
+ _Feed->SetAlpha(1);
+ Movement = VECTOR3(0,0,0);
+
+}
+//------------------------------------------------------------------------------
+// 加算処理
+//------------------------------------------------------------------------------
+// 引数
+// addVal			: ライフ
+// 戻り値
+// なし
+//------------------------------------------------------------------------------
+
+void CPlayer::AddPlayerLife(int addVal)
+{
+ if(_Timer != 0 || _State != PLAYER_STATE_DAMAGE)
+ {
+  _PlayerLife += addVal;
+  if(_PlayerLife < 0)
+  {
+   _PlayerLife = 0;
+  }else
+  if(_PlayerLife > PLAYER_LIFE)
+  {
+   _PlayerLife = PLAYER_LIFE;
+  }
+ }
 }
 
 //------------------------------------------------------------------------------
