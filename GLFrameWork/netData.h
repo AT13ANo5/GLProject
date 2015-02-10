@@ -89,6 +89,7 @@ typedef struct
 	int ID;
 	int type;
 	int charNum;
+	int servID;
 
 	union
 	{
@@ -115,6 +116,8 @@ typedef struct {
 
 } USER_INFO;
 //----------------------------------------------------------------
+
+static const int SERV_ID = 256;
 
 #endif
 
