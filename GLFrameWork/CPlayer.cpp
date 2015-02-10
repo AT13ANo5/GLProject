@@ -256,6 +256,20 @@ void CPlayer::UpdatePlayer(void)
 #endif
 }
 
+void CPlayer::BlastBullet()
+{
+	if (LaunchFlag == false)
+	{
+		if (CKeyboard::GetTrigger(DIK_SPACE))
+		{
+			_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+			LaunchFlag = true;
+			_BulletUseFlag = true;
+			_ReloadTimer = 0;
+		}
+	}
+}
+
 //------------------------------------------------------------------------------
 // çXêV
 //------------------------------------------------------------------------------

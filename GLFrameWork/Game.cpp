@@ -173,6 +173,11 @@ void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
 
 		case DATA_TYPE_CANNON:
 
+			if (_netData.data_cannon.flag == true)
+			{
+				Player[_netData.charNum]->BlastBullet();
+			}
+
 			break;
 		}
 	}

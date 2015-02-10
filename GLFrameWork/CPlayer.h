@@ -79,6 +79,8 @@ public:
 
 	void ReleaseBullet(void);	// 弾を削除
 
+	void BlastBullet();
+
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
