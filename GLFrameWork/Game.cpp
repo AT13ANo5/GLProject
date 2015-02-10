@@ -249,6 +249,9 @@ void CGame::Update(void)
 		CManager::ChangeScene(SCENE_RESULT);
 	}
 
+ // 空の位置プレイヤーに合わせる
+ Sky->SetPosX(Player[0]->Pos().x);
+ Sky->SetPosZ(Player[0]->Pos().z);
 
 	// 攻撃判定
 	CheckHitPlayer();
