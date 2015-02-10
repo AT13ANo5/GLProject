@@ -106,6 +106,7 @@
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="LoadGauge.cpp" />
     <ClCompile Include="LoadString.cpp" />
+    <ClCompile Include="Map2D.cpp" />
     <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Number2D.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Life.h" />
     <ClInclude Include="LoadGauge.h" />
     <ClInclude Include="LoadString.h" />
+    <ClInclude Include="Map2D.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="netData.h" />
     <ClInclude Include="Number2D.h" />
