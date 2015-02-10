@@ -77,6 +77,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	CTexture::Initialize();
 	Light = new CLight;
 	Light->Create(VECTOR4(1.0f, 100.0f, -200.0f, 0));
+ Light->SetAmbient(COLOR(1.0f,1.0f,1.0f,1.0f));
 	Mouse = new CMouse;
 	Mouse->Init(hInstance, hWnd);
 	Keyboard = new CKeyboard;
