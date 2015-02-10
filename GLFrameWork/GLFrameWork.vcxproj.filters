@@ -307,6 +307,9 @@
     <ClCompile Include="ResultNumberManager.cpp">
       <Filter>03_リザルト\NumberManager</Filter>
     </ClCompile>
+    <ClCompile Include="TitleDirection.cpp">
+      <Filter>01_タイトル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -467,6 +470,9 @@
     </ClInclude>
     <ClInclude Include="ResultNumberManager.h">
       <Filter>03_リザルト\NumberManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleDirection.h">
+      <Filter>01_タイトル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

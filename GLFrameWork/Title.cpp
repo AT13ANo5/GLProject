@@ -8,6 +8,8 @@
 #include "MeshSphere.h"
 #include "Camera.h"
 #include "CPushStart.h"
+#include "TitleDirection.h"
+
 #include <math.h>
 
 // static member
@@ -21,6 +23,7 @@ CTitle::CTitle()
 	Ground = nullptr;
 	Sky = nullptr;
 	Camera = nullptr;
+	TitleD = nullptr;
 	CameraRotation = 0.0f;
 }
 
@@ -30,12 +33,15 @@ CTitle::~CTitle()
 
 void CTitle::Init(void)
 {
-	// Logo
-	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 3.0f,0),VECTOR2(750.0f,375.0f));
-	Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
+	//デフォタイトル
+	//Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 5.0f,0),VECTOR2(750.0f,375.0f));
+	//Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
+
+	//アニメーション付きタイトル
+	TitleD = CTitleDirection::Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4.5f, 0), VECTOR2(750.0f, 375.0f));
 
 	// pushenter
-	PushEnter = CPushStart::Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 1.25f, 0), VECTOR2(400.0f, 64.0f));
+	PushEnter = CPushStart::Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 1.2f, 0), VECTOR2(400.0f, 64.0f));
 	PushEnter->SetTex(CTexture::Texture(TEX_PUSH_ENTER));
 	PushEnter->SetAlphaSpeed(0.015f);
 
@@ -81,7 +87,7 @@ void CTitle::Update(void)
 {
 	// TODO カメラ動かしてみるテスト（masuda）
 	const float cameraLength = 200.0f;
-	CameraRotation += 0.001f;
+	//CameraRotation += 0.001f;
 	Camera->SetEye(VECTOR3(0.0f - sinf(CameraRotation) * cameraLength,80.0f,0.0f - cosf(CameraRotation) * cameraLength));
 
 	if (CKeyboard::GetPress(DIK_W))
