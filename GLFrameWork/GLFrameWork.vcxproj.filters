@@ -161,6 +161,9 @@
     <Filter Include="02_ゲーム\BattleAreaWall">
       <UniqueIdentifier>{aea02ae7-c56d-4f2b-9148-66501186ff6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム\ミニマップ\Map2D">
+      <UniqueIdentifier>{62bf8f75-5e6c-4074-81dc-634ddc6432fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -306,6 +309,9 @@
     </ClCompile>
     <ClCompile Include="BattleAreaCylinder.cpp">
       <Filter>02_ゲーム\BattleAreaWall</Filter>
+    </ClCompile>
+    <ClCompile Include="Map2D.cpp">
+      <Filter>02_ゲーム\ミニマップ\Map2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -467,6 +473,9 @@
     </ClInclude>
     <ClInclude Include="BattleAreaCylinder.h">
       <Filter>02_ゲーム\BattleAreaWall</Filter>
+    </ClInclude>
+    <ClInclude Include="Map2D.h">
+      <Filter>02_ゲーム\ミニマップ\Map2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
