@@ -24,6 +24,9 @@ typedef struct
 const PARAM File[CSoundAL::SOUND_MAX] =
 {
 	{ "data/sound/BGM/Title.wav",true,2 },
+	{ "data/sound/BGM/Connect.wav",true,2 },
+	{ "data/sound/BGM/Game.wav",true,2 },
+	{ "data/sound/BGM/Result.wav",true,2 },
 
 };
 

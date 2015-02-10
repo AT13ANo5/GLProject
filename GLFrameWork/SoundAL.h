@@ -25,7 +25,10 @@ class CSoundAL
 public:
 	typedef enum
 	{
-		SOUND_TITLE = 0,
+		BGM_TITLE = 0,
+		BGM_CONNECT,
+		BGM_GAME,
+		BGM_RESULT,
 		SOUND_MAX
 
 	}SOUND;
