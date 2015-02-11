@@ -52,6 +52,30 @@ const float	CGame::HEIGHT_WALL = 500.0f;				// ï«ÇÃçÇÇ≥
 
 const int	CGame::MAX_ROCK = 20;						// ä‚ÇÃêî
 
+const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
+	VECTOR3(-214.0f	,100.0f, 421.0f),
+	VECTOR3(359.0f	,100.0f, 188.0f),
+	VECTOR3(94.0f	,100.0f, -458.0f),
+	VECTOR3(- 198.0f,100.0f, 222.0f),
+	VECTOR3(419.0f	,100.0f, 293.0f),
+	VECTOR3(- 335.0f,100.0f, 164.0f),
+	VECTOR3(- 471.0f,100.0f, -115.0f),
+	VECTOR3(368.0f	,100.0f, -363.0f),
+	VECTOR3(- 476.0f,100.0f, 231.0f),
+	VECTOR3(- 249.0f,100.0f, -319.0f),
+	VECTOR3(- 243.0f,100.0f, 481.0f),
+	VECTOR3(345.0f	,100.0f, -253.0f),
+	VECTOR3(444.0f	,100.0f, -118.0f),
+	VECTOR3(186.0f	,100.0f, 27.0f),
+	VECTOR3(387.0f	,100.0f, -438.0f),
+	VECTOR3(- 12.0f	,100.0f, -439.0f),
+	VECTOR3(496.0f	,100.0f, -332.0f),
+	VECTOR3(- 247.0f,100.0f, 143.0f),
+	VECTOR3(- 302.0f,100.0f, -296.0f),
+	VECTOR3(- 171.0f,100.0f, -274.0f),
+
+};
+
 // íËêî
 namespace{
 
@@ -140,12 +164,12 @@ void CGame::Init(void)
 
 	// ä‚ÇÃê∂ê¨
 	ppRock_ = new CModel*[MAX_ROCK];
+
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
-		VECTOR3	positionRock(0.1f * ((rand() % 10000) - 5000), 100.0f, 0.1f * ((rand() % 10000) - 5000));
-		ppRock_[cntRock] = CModel::Create(CModel::ROCK, positionRock);
+		ppRock_[cntRock] = CModel::Create(CModel::ROCK,ROCK_POSITION_LIST[cntRock]);
 		ppRock_[cntRock]->SetScl(1,1,1);
-  ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
+		ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
 		PushBackObjectByField(ppRock_[cntRock]);
 	}
 
@@ -275,7 +299,7 @@ void CGame::Update(void)
   if(Player[loop]->PlayerLife() <= 0)
   {
    VECTOR3	NormalGround;		// ínå`ÇÃñ@ê¸
-   VECTOR3 Respawn = VECTOR3(rand() % 100,0,rand() % 100);
+   VECTOR3 Respawn = VECTOR3(rand() % 100 + 0.0f,0,rand() % 100 + 0.0f);
    Respawn.y = Ground->GetHeight(Respawn,&NormalGround);
 
    Player[loop]->SetDeath(Respawn);
