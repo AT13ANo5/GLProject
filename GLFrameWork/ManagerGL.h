@@ -86,6 +86,7 @@ public:
 	static WSADATA wsaData;
 	static NETWORK_DATA netWorkData;
 	static bool gameStartFlag;
+	static bool entryFlag;
 
 private:
 
