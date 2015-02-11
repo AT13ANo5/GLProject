@@ -53,26 +53,26 @@ const float	CGame::HEIGHT_WALL = 500.0f;				// 壁の高さ
 const int	CGame::MAX_ROCK = 20;						// 岩の数
 
 const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
-	VECTOR3(-214.0f	,100.0f, 421.0f),
-	VECTOR3(359.0f	,100.0f, 188.0f),
-	VECTOR3(94.0f	,100.0f, -458.0f),
-	VECTOR3(- 198.0f,100.0f, 222.0f),
-	VECTOR3(419.0f	,100.0f, 293.0f),
-	VECTOR3(- 335.0f,100.0f, 164.0f),
-	VECTOR3(- 471.0f,100.0f, -115.0f),
-	VECTOR3(368.0f	,100.0f, -363.0f),
-	VECTOR3(- 476.0f,100.0f, 231.0f),
-	VECTOR3(- 249.0f,100.0f, -319.0f),
-	VECTOR3(- 243.0f,100.0f, 481.0f),
-	VECTOR3(345.0f	,100.0f, -253.0f),
-	VECTOR3(444.0f	,100.0f, -118.0f),
-	VECTOR3(186.0f	,100.0f, 27.0f),
-	VECTOR3(387.0f	,100.0f, -438.0f),
-	VECTOR3(- 12.0f	,100.0f, -439.0f),
-	VECTOR3(496.0f	,100.0f, -332.0f),
-	VECTOR3(- 247.0f,100.0f, 143.0f),
-	VECTOR3(- 302.0f,100.0f, -296.0f),
-	VECTOR3(- 171.0f,100.0f, -274.0f),
+	VECTOR3(-214.0f,100.0f,421.0f),
+	VECTOR3(359.0f,100.0f,188.0f),
+	VECTOR3(94.0f,100.0f,-458.0f),
+	VECTOR3(-198.0f,100.0f,222.0f),
+	VECTOR3(419.0f,100.0f,293.0f),
+	VECTOR3(-335.0f,100.0f,164.0f),
+	VECTOR3(-471.0f,100.0f,-115.0f),
+	VECTOR3(368.0f,100.0f,-363.0f),
+	VECTOR3(-476.0f,100.0f,231.0f),
+	VECTOR3(-249.0f,100.0f,-319.0f),
+	VECTOR3(-243.0f,100.0f,481.0f),
+	VECTOR3(345.0f,100.0f,-253.0f),
+	VECTOR3(444.0f,100.0f,-118.0f),
+	VECTOR3(186.0f,100.0f,27.0f),
+	VECTOR3(387.0f,100.0f,-438.0f),
+	VECTOR3(-12.0f,100.0f,-439.0f),
+	VECTOR3(496.0f,100.0f,-332.0f),
+	VECTOR3(-247.0f,100.0f,143.0f),
+	VECTOR3(-302.0f,100.0f,-296.0f),
+	VECTOR3(-171.0f,100.0f,-274.0f),
 
 };
 
@@ -132,7 +132,7 @@ void CGame::Init(void)
 
 	// 境界線生成
 	CylinderArea = nullptr;
-	CylinderArea = CBattleAreaCylinder::Create(VECTOR3(0.0f, 0.0f, 0.0f), HEIGHT_WALL, VECTOR2(64.0f, 1.0f), RADIUS_AREA_BATTLE, VECTOR2(1, -0.5f));
+	CylinderArea = CBattleAreaCylinder::Create(VECTOR3(0.0f,0.0f,0.0f),HEIGHT_WALL,VECTOR2(64.0f,1.0f),RADIUS_AREA_BATTLE,VECTOR2(1,-0.5f));
 	CylinderArea->SetTex(CTexture::Texture(TEX_WALL));
 	CylinderArea->SetAlpha(0.5f);
 
@@ -143,18 +143,18 @@ void CGame::Init(void)
 
 	Player = new CPlayer*[PLAYER_MAX];
 	// プレイヤー生成
-	for(int i = 0; i < PLAYER_MAX; i++)
+	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		Player[i] = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), 0);
+		Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),0);
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
 		Player[i]->SetRot(0.0f,180.0f,0.0f);
 
-		if(i == CManager::netData.charNum)
+		if (i == CManager::netData.charNum)
 		{
 			Player[i]->SetPlayerFlag(true);
 		}
 	}	//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player[CManager::netData.charNum], 35.0f);
+	CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
 
 	// UI初期化
 	UI = new CUI;
@@ -176,7 +176,7 @@ void CGame::Init(void)
 	CManager::gameStartFlag = true;
 	CManager::sendGameStart();
 }
-void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
+void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 {
 	if (_netData.charNum != CManager::netData.charNum)
 	{
@@ -242,7 +242,7 @@ void CGame::Uninit(void)
 
 	// プレイヤー破棄
 	//SafeRelease(Player);
-	for(int i = 0; i < PLAYER_MAX; i++)
+	for (int i = 0; i < PLAYER_MAX; i++)
 	{
 		SafeRelease(Player[i]);
 	}
@@ -292,20 +292,20 @@ void CGame::Update(void)
 		CManager::ChangeScene(SCENE_RESULT);
 	}
 
- // 空の位置プレイヤーに合わせる
- Sky->SetPosX(Player[0]->Pos().x);
- Sky->SetPosZ(Player[0]->Pos().z);
- for(int loop = 0;loop < PLAYER_MAX;loop++)
- {
-  if(Player[loop]->PlayerLife() <= 0)
-  {
-   VECTOR3	NormalGround;		// 地形の法線
-   VECTOR3 Respawn = VECTOR3(rand() % 100 + 0.0f,0,rand() % 100 + 0.0f);
-   Respawn.y = Ground->GetHeight(Respawn,&NormalGround);
+	// 空の位置プレイヤーに合わせる
+	Sky->SetPosX(Player[0]->Pos().x);
+	Sky->SetPosZ(Player[0]->Pos().z);
+	for (int loop = 0;loop < PLAYER_MAX;loop++)
+	{
+		if (Player[loop]->PlayerLife() <= 0)
+		{
+			VECTOR3	NormalGround;		// 地形の法線
+			VECTOR3 Respawn = VECTOR3(rand() % 100 + 0.0f,0,rand() % 100 + 0.0f);
+			Respawn.y = Ground->GetHeight(Respawn,&NormalGround);
 
-   Player[loop]->SetDeath(Respawn);
-  }
- }
+			Player[loop]->SetDeath(Respawn);
+		}
+	}
 	// 攻撃判定
 	CheckHitPlayer();
 
@@ -468,7 +468,7 @@ void CGame::PushBackCharacter(void)
 		for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 		{
 			// プレイヤーを取得
-			CPlayer*	pPlayerDefense = Player[ cntPlayer];		// 防御側プレイヤー
+			CPlayer*	pPlayerDefense = Player[cntPlayer];		// 防御側プレイヤー
 
 			// プレイヤーが判定可能か確認
 			if (NeedsSkipPlayer(pPlayerDefense))
@@ -488,7 +488,7 @@ void CGame::PushBackCharacter(void)
 			positionOffense.y += HEIGHT_PUSH_CHARACTER;
 			positionDefense.y += HEIGHT_PUSH_CHARACTER;
 			vectorOffenseToDefense = positionDefense - positionOffense;
-			distanceOffenseAndDefense = sqrtf(vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z );
+			distanceOffenseAndDefense = sqrtf(vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z);
 			if (distanceOffenseAndDefense < 2.0f * RADIUS_PUSH_CHARACTER)
 			{
 				// 押し戻し
@@ -533,7 +533,7 @@ void CGame::PushBackRock(void)
 		for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 		{
 			// 岩を取得
-			CObject*	pRock = ppRock_[cntRock ];		// 岩オブジェクト
+			CObject*	pRock = ppRock_[cntRock];		// 岩オブジェクト
 
 			// 当たり判定
 			VECTOR3	positionPlayer = pPlayer->Pos();	// 攻撃判定中心座標
@@ -545,7 +545,7 @@ void CGame::PushBackRock(void)
 			positionPlayer.y += HEIGHT_PUSH_CHARACTER;
 			positionRock.y += HEIGHT_PUSH_ROCK;
 			vectorOffenseToDefense = positionRock - positionPlayer;
-			distanceOffenseAndDefense = sqrtf( vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z );
+			distanceOffenseAndDefense = sqrtf(vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z);
 
 			if (distanceOffenseAndDefense < RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock)
 			{
@@ -633,7 +633,7 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	// 地形とのあたり判定
 	VECTOR3	NormalGround;		// 地形の法線
 	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround);
+	HeightGround = Ground->GetHeight(pObject->Pos(),&NormalGround);
 
 	// 回転を求める
 	VECTOR3	VectorUppObject;		// 上方向ベクトル
@@ -647,17 +647,17 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	VectorNormalYZ.y = NormalGround.y;
 	VectorNormalYZ.z = NormalGround.z;
 	VectorNormalYZ.Normalize();
-	AnglepObjectX = -acosf(VECTOR3::Dot(VectorNormalYZ, VectorUppObject));
+	AnglepObjectX = -acosf(VECTOR3::Dot(VectorNormalYZ,VectorUppObject));
 	VectorNormalXY.x = NormalGround.x;
 	VectorNormalXY.y = NormalGround.y;
 	VectorNormalXY.z = 0.0f;
 	VectorNormalXY.Normalize();
-	AnglepObjectZ = -acosf(VECTOR3::Dot(VectorNormalXY, VectorUppObject));
+	AnglepObjectZ = -acosf(VECTOR3::Dot(VectorNormalXY,VectorUppObject));
 
 	// キャラクターに設定する
 	pObject->SetPosY(HeightGround);
-//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
-//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
+	//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
+	//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
 }
 
 //==============================================================================
