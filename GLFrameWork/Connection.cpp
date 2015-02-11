@@ -46,6 +46,12 @@ static const VECTOR3 waitPlayerPos[connectionPlayerMax] =
 	windowPos[5],
 };
 
+CPolygon2D* CConnection::Logo;
+CPolygon2D* CConnection::backGround;
+CPolygon2D** CConnection::waitBackGround;
+CPolygon2D** CConnection::waitPlayer;
+CPushStart* CConnection::pushStart;
+
 //*****************************************************************************
 //	変数定義
 //*****************************************************************************
@@ -224,10 +230,22 @@ void CConnection::recvUpdate()
 //=============================================================================
 void CConnection::keyUpdate()
 {
-	if (CKeyboard::GetTrigger(DIK_RETURN))
+	//	自分が親なら
+	if (CManager::netData.charNum == 0)
 	{
-		CManager::ChangeScene(SCENE_GAME);
+		//	シーン切り替え
+		if (CKeyboard::GetTrigger(DIK_RETURN))
+		{
+			CManager::ChangeScene(SCENE_GAME);
+		}
 	}
+}
+//=============================================================================
+//	「CPU」からエントリーへの変更処理
+//=============================================================================
+void CConnection::setEntry(int _charNum)
+{
+	waitBackGround[_charNum]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_READY));
 }
 
 //	EOF

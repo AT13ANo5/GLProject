@@ -402,7 +402,32 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 							//	識別番号を取得
 							netData.charNum = data.charNum;
 							entryFlag = true;
+
+							//	エントリーをセット
+							CConnection::setEntry(data.charNum);
+
+							//	他の参加者のエントリー情報をゲットする
+							data.type = DATA_TYPE_GET_ENTRY;
+							sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 						}
+						else
+						{
+							CConnection::setEntry(data.charNum);
+						}
+					}
+
+					break;
+
+				case DATA_TYPE_GET_ENTRY:
+
+					for (int count = 0; count < PLAYER_MAX; count++)
+					{
+						if (data.data_connection.entryFlag[count] == true)
+						{
+							CConnection::setEntry(count);
+						}
+						else
+							break;
 					}
 
 					break;
@@ -413,6 +438,19 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 					{
 						//	部屋が埋まっている
 						netWorkData.emptyFlag = true;
+					}
+
+					break;
+
+				case DATA_TYPE_CHANGE_GAME:
+
+					//	ゲームへ遷移
+					if (data.charNum == 0)
+					{
+						if (netData.charNum != 0)
+						{
+							CManager::ChangeScene(SCENE_GAME);
+						}
 					}
 
 					break;

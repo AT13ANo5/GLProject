@@ -145,8 +145,12 @@ void CGame::Init(void)
 	// ÉvÉåÉCÉÑÅ[ê∂ê¨
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),0);
-		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+		if (i == 0)
+			Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),0);
+		else
+			Player[i] = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), 0);
+
+		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW + i));
 		Player[i]->SetRot(0.0f,180.0f,0.0f);
 
 		if (i == CManager::netData.charNum)
@@ -174,6 +178,10 @@ void CGame::Init(void)
 	}
 
 	CManager::gameStartFlag = true;
+
+
+
+
 	CManager::sendGameStart();
 }
 void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
