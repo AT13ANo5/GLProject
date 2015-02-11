@@ -73,7 +73,7 @@ void CPlayer::Init(void)
 	// 弾使用フラグ
 	_BulletUseFlag = false;
 
-	LaunchFlag = true;
+	LaunchFlag = false;
 
 	// 弾
 	_Bullet = nullptr;
