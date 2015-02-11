@@ -324,6 +324,7 @@ void CPlayer::UpdatePlayer(void)
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
+			CManager::SendCannon(LaunchFlag);
 		}
 	}
 	// 弾が発射されている時
@@ -345,7 +346,6 @@ void CPlayer::UpdatePlayer(void)
 	CManager::SendPos(_Pos);
 	CManager::SendRot(_Rot);
 	CManager::SendCannonRot(Barrel->Rot());
-	CManager::SendCannon(LaunchFlag);
 
 #ifdef _DEBUG
 	// デバッグ用
