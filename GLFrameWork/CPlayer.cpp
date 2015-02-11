@@ -356,7 +356,7 @@ void CPlayer::BlastBullet()
 void CPlayer::UpdateCPU(void)
 {
 	Barrel->SetPos(_Pos);			// ˆÊ’u
-
+	BarrelRotX = Barrel->Rot().x;
 	// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚È‚©‚Á‚½Žž
 	if (LaunchFlag == true)
 	{

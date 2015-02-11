@@ -300,6 +300,7 @@ void CManager::SendCannonRot(VECTOR3 _rot)
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
+
 void CManager::SendChangeGame()
 {
 	NET_DATA data;
