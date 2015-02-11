@@ -300,6 +300,15 @@ void CManager::SendCannonRot(VECTOR3 _rot)
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
+void CManager::SendChangeGame()
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_CHANGE_GAME;
+	data.servID = SERV_ID;
+	data.charNum = netData.charNum;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
 //=============================================================================
 //	スレッド用の更新処理
 //=============================================================================

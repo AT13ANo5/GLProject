@@ -66,6 +66,7 @@ public:
 	static void SendCannonRot(VECTOR3 _rot);
 	static void SendCannon(bool _flag);
 	static void sendGameStart();
+	static void SendChangeGame();
 	static NETWORK_DATA* getNetWorkData()
 	{
 		return &netWorkData;
