@@ -237,6 +237,7 @@ void CManager::sendGameStart()
 		NET_DATA data;
 		data.type = DATA_TYPE_GAME_START;
 		data.servID = SERV_ID;
+		data.charNum = 0;
 
 		sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 	}

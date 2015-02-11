@@ -174,6 +174,7 @@ void CGame::Init(void)
 	}
 
 	CManager::gameStartFlag = true;
+	CManager::sendGameStart();
 }
 void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
 {
