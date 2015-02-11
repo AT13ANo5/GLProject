@@ -67,6 +67,15 @@ public:
 	static void SendCannon(bool _flag);
 	static void sendGameStart();
 	static void SendChangeGame();
+	static void SendChangeResult();
+	static void SendKillDeath(int _kill, int _death);
+
+
+	static void SendKill(int _kill, int _id);
+	static void SendDeath(int _death, int _id);
+
+
+	static int* getRanking();
 	static NETWORK_DATA* getNetWorkData()
 	{
 		return &netWorkData;
@@ -105,7 +114,7 @@ private:
 	static short NextScene;
 	static bool ChangeFlag;
 
-	
+	static int ranking[PLAYER_MAX];
 };
 
 #endif

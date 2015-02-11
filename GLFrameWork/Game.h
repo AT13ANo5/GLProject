@@ -26,7 +26,6 @@ public:
 	void Update(void);
 
 	static void SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType);
-
 private:
 	static const float  RADIUS_SKY;					// 空の半径
 	static const float	RADIUS_DEFENSE_CHARACTER;	// キャラクターの防御半径

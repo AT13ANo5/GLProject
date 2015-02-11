@@ -146,12 +146,13 @@ void CGame::Init(void)
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
 		if (i == 0)
-			Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),0);
+			Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),i);
 		else
-			Player[i] = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), 0);
+			Player[i] = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), i);
 
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW + i));
 		Player[i]->SetRot(0.0f,180.0f,0.0f);
+		Player[i]->setBarrelTex(TEX_YOUJO_YELLOW + i);
 
 		if (i == CManager::netData.charNum)
 		{
@@ -163,6 +164,7 @@ void CGame::Init(void)
 	// UI初期化
 	UI = new CUI;
 	UI->Init();
+	UI->setMyID(CManager::netData.charNum);
 	UI->SetPlayer(Player);
 	UI->MiniMap()->SetFieldSize(Ground->Size());
 
@@ -184,8 +186,13 @@ void CGame::Init(void)
 
 	CManager::sendGameStart();
 }
+
+//=============================================================================
+//	プレイヤー情報のセット関数
+//=============================================================================
 void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 {
+	//	自分以外のデータなら
 	if (_netData.charNum != CManager::netData.charNum)
 	{
 		switch (_dataType)
@@ -224,6 +231,14 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 			}
 
 			break;
+
+		case DATA_TYPE_DEATH:
+
+			break;
+
+		case DATA_TYPE_KILL:
+
+			break;
 		}
 	}
 }
@@ -238,6 +253,9 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 //------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
+	CManager::SendKillDeath(Player[CManager::netData.charNum]->getKillCount(),
+							Player[CManager::netData.charNum]->getDeathCount());
+
 	CManager::gameStartFlag = false;
 
 	// 岩の破棄
@@ -295,9 +313,16 @@ void CGame::Update(void)
 	// 装填ゲージ
 	const float currentTimer = (float)Player[0]->ReloadTimer();
 	const float maxTimer = (float)PLAYER_RELOAD_TIME;
-	const float rate = currentTimer / maxTimer;	if (CKeyboard::GetTrigger(DIK_RETURN))
+	const float rate = currentTimer / maxTimer;
+
+
+	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
-		CManager::ChangeScene(SCENE_RESULT);
+		if (CManager::netData.charNum == 0)
+		{
+			CManager::SendChangeResult();
+			CManager::ChangeScene(SCENE_RESULT);
+		}
 	}
 
 	// 空の位置プレイヤーに合わせる
@@ -311,7 +336,7 @@ void CGame::Update(void)
 			VECTOR3 Respawn = VECTOR3(rand() % 100 + 0.0f,0,rand() % 100 + 0.0f);
 			Respawn.y = Ground->GetHeight(Respawn,&NormalGround);
 
-			Player[loop]->SetDeath(Respawn);
+			Player[loop]->SetDeath(Respawn, loop);
 		}
 	}
 	// 攻撃判定
@@ -393,9 +418,23 @@ void CGame::CheckHitPlayer(void)
 				pPlayerOffense->ReleaseBullet();
 
 				// 当たったときの処理
-				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 				pPlayerDefense->AddPlayerLife(-1);
+				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
+
+
+
+				//	長崎
+				if (pPlayerDefense->PlayerLife() == 0)
+				{
+					//	殺された数加算
+					pPlayerDefense->addDeathCount();
+					CManager::SendDeath(pPlayerDefense->getDeathCount(), pPlayerDefense->getPlayerID());
+
+					//	殺した数加算
+					pPlayerOffense->addKillCount();
+					CManager::SendKill(pPlayerOffense->getKillCount(), pPlayerOffense->getPlayerID());
+				}
 
 				// 処理終了
 				break;

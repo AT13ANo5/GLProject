@@ -43,6 +43,10 @@ CPlayer::CPlayer() :CModel()
 
 	// –Cg‚ÌXŽ²‰ñ“]—Ê
 	BarrelRotX = 0.0f;
+
+
+	killCount = 0;
+	deathCount = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -88,7 +92,7 @@ void CPlayer::Init(void)
 	// –Cg
 	Barrel = CModel::Create(TANK_BARREL,_Pos);
 	Barrel->Init();
-	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
+	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW));
 
 
 	//‚‚³‰Šú‰»
@@ -118,7 +122,22 @@ void CPlayer::Update()
 		AddPosY(kUpSpeed+0.0f);
 		_Hegiht += kUpSpeed;
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
-		_Feed->AddAlpha(Alpha);
+
+		if (PlayerID == CManager::netData.charNum)
+			_Feed->AddAlpha(Alpha);
+
+
+
+		Barrel->SetPos(_Pos);			// ˆÊ’u
+		CManager::SendPos(_Pos);
+		CManager::SendRot(_Rot);
+		CManager::SendCannonRot(Barrel->Rot());
+		CManager::SendCannon(LaunchFlag);
+
+
+
+
+
 		if (_Hegiht > kHeightMax)
 		{
 			SetRespawn();
@@ -131,7 +150,25 @@ void CPlayer::Update()
 
 		AddPosY(-kUpSpeed);
 		_Hegiht += kUpSpeed;
-		_Feed->AddAlpha(-Alpha);
+
+
+		if (PlayerID == CManager::netData.charNum)
+			_Feed->AddAlpha(-Alpha);
+
+
+
+
+
+		Barrel->SetPos(_Pos);			// ˆÊ’u
+		CManager::SendPos(_Pos);
+		CManager::SendRot(_Rot);
+		CManager::SendCannonRot(Barrel->Rot());
+		CManager::SendCannon(LaunchFlag);
+
+
+
+
+
 
 		if (_Hegiht > kHeightMax)
 		{
@@ -334,6 +371,9 @@ void CPlayer::UpdatePlayer(void)
 #endif
 }
 
+//=============================================================================
+//	’e”­ŽËˆ—
+//=============================================================================
 void CPlayer::BlastBullet()
 {
 	if (LaunchFlag == false)
@@ -431,14 +471,17 @@ CPlayer* CPlayer::Create(int modelID,const VECTOR3& pos,int playerID)
 // –ß‚è’l
 // ‚È‚µ
 //------------------------------------------------------------------------------
-void CPlayer::SetDeath(VECTOR3 pos)
+void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 {
 	if (_State != PLAYER_STATE_DEATH)
 	{
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
-		_Feed->SetAlpha(0);
+
+
+		if (_charNum == CManager::netData.charNum)
+			_Feed->SetAlpha(0);
 	}
 }
 //------------------------------------------------------------------------------
@@ -456,8 +499,19 @@ void CPlayer::SetRespawn(void)
 	_PlayerRespown.y += kHeightMax;
 	SetPos(_PlayerRespown);
 	_PlayerLife = PLAYER_LIFE;
-	_Feed->SetAlpha(1);
+
+	if (PlayerID == CManager::netData.charNum)
+		_Feed->SetAlpha(1);
+	
 	Movement = VECTOR3(0,0,0);
+
+
+
+	Barrel->SetPos(_Pos);			// ˆÊ’u
+	CManager::SendPos(_Pos);
+	CManager::SendRot(_Rot);
+	CManager::SendCannonRot(Barrel->Rot());
+	CManager::SendCannon(LaunchFlag);
 
 }
 //------------------------------------------------------------------------------

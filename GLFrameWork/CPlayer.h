@@ -82,8 +82,39 @@ public:
 	void BlastBullet();
 	void setBarrelRot(VECTOR3 _rot);
 
-	void SetDeath(VECTOR3 pos);//死亡処理
+	void SetDeath(VECTOR3 posint , int _charNum);//死亡処理
 	void SetRespawn(void);//復活処理
+
+
+	//	長崎
+	//	砲塔のテクスチャセット関数
+	void setBarrelTex(int _texNum)
+	{
+		Barrel->SetTex(CTexture::Texture(_texNum));
+	}
+	//	殺した数加算
+	void addKillCount()
+	{
+		killCount++;
+	}
+	int getKillCount()
+	{
+		return killCount;
+	}
+	//	殺された数加算
+	void addDeathCount()
+	{
+		deathCount++;
+	}
+	int getDeathCount()
+	{
+		return deathCount;
+	}
+	//	プレイヤーＩＤゲッター
+	int getPlayerID()
+	{
+		return PlayerID;
+	}
 
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
@@ -106,6 +137,12 @@ private:
  int _Timer;//無敵時間タイマー
  float _Hegiht;//高さでカウント
  VECTOR3 _PlayerRespown;//次の復活地点作成
+
+
+
+ int killCount;
+ int deathCount;
+
 };
 
 #endif

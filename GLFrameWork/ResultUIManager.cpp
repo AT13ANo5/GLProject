@@ -13,6 +13,7 @@
 #include "Texture.h"
 #include "ResultSheet.h"
 #include "ResultNumberManager.h"
+#include "ManagerGL.h"
 
 namespace{
   // sheet
@@ -65,12 +66,19 @@ void CResultUIManager::Init(void)
   // 成績表の番号
   ResultNumber = CResultNumberManager::Create();
 
+  int* ranking = CManager::getRanking();
+
   // プレイヤー名
   for (int player = 0; player < PLAYER_MAX; ++player){
     VECTOR3 pos = ResultNumber->GetNumPosition((CResultNumberManager::TYPE)player);
     pos.x -= NAME_POS_X_SUB;
     PlayerName[player] = CResultSheet::Create(pos, NAME_SIZE);
-    PlayerName[player]->SetTex(CTexture::Texture(NAME_TEX[player]));
+    PlayerName[player]->SetTex(CTexture::Texture(NAME_TEX[ranking[player]]));
+
+
+	ResultNumber->SetNumber((CResultNumberManager::TYPE)player,
+		CManager::userInfo[ranking[player]].kill,
+		CManager::userInfo[ranking[player]].death);
   }
 }
 
