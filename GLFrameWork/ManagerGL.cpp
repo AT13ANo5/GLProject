@@ -36,6 +36,7 @@ SOCKADDR_IN CManager::sendAddress;
 WSADATA CManager::wsaData;
 NETWORK_DATA CManager::netWorkData;
 bool CManager::gameStartFlag;
+bool CManager::entryFlag;
 
 //=============================================================================
 //	コンストラクタ
@@ -47,6 +48,7 @@ CManager::CManager()
 	Scene = nullptr;
 	ChangeFlag = false;
 	gameStartFlag = false;
+	entryFlag = false;
 
 	netData.ID = rand();
 
@@ -372,6 +374,8 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 					{
 						//	データタイプに応じてプレイヤーへ情報をセット
 						CGame::SetPlayerState(data, DATA_TYPE_CANNON);
+
+						userInfo[data.charNum].cannon = data.data_cannon.flag;
 					}
 
 					break;
@@ -391,9 +395,13 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 
 					if (gameStartFlag == false)
 					{
-						//	エントリー処理完了
-						//	識別番号を取得
-						netData.charNum = data.charNum;
+						if (entryFlag == false)
+						{
+							//	エントリー処理完了
+							//	識別番号を取得
+							netData.charNum = data.charNum;
+							entryFlag = true;
+						}
 					}
 
 					break;
