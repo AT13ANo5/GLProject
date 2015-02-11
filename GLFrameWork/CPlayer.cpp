@@ -356,23 +356,9 @@ void CPlayer::BlastBullet()
 void CPlayer::UpdateCPU(void)
 {
 	Barrel->SetPos(_Pos);			// ˆÊ’u
-	//Barrel->SetRot(_Rot);			// ‰ñ“]
-	//Barrel->AddRotX(BarrelRotX);	// ã‚Åİ’è‚µ‚½‰ñ“]—Ê‚É–Cg‚ÌX²‰ñ“]—Ê‚ğ‰ÁZ
 
-	// ’e‚Ì”­Ë
 	// ’e‚ª”­Ë‚³‚ê‚Ä‚¢‚È‚©‚Á‚½
-	if (LaunchFlag == false)
-	{
-		if (CKeyboard::GetTrigger(DIK_SPACE))
-		{
-			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
-			LaunchFlag = true;
-			_BulletUseFlag = true;
-			_ReloadTimer = 0;
-		}
-	}
-	// ’e‚ª”­Ë‚³‚ê‚Ä‚¢‚é
-	else
+	if (LaunchFlag == true)
 	{
 		// ƒŠƒ[ƒh‰Â”\‚Ü‚Å‚ÌŠÔ‚ğ‰ÁZ
 		_ReloadTimer++;
