@@ -22,6 +22,8 @@
 const int kHeightMax = 400;
 const int kUpSpeed = 3;
 const int kDamageCntMax = 60;
+const float BARREL_ROTX_SPEED = 1.0f;
+const float PLAYER_ROTY_SPEED = 3.0f;
 //------------------------------------------------------------------------------
 // コンストラクタ
 //------------------------------------------------------------------------------
@@ -218,23 +220,23 @@ void CPlayer::UpdatePlayer(void)
 	// 左
 	if (CKeyboard::GetPress(DIK_A))
 	{
-		rot.y += 3.0f;
+		rot.y += PLAYER_ROTY_SPEED;
 	}
 
 	// 右
 	else if (CKeyboard::GetPress(DIK_D))
 	{
-		rot.y -= 3.0f;
+		rot.y -= PLAYER_ROTY_SPEED;
 	}
 
 	// 砲身の上下
 	if (CKeyboard::GetPress(DIK_UP))
 	{
-		BarrelRotX -= 3.0f;
+		BarrelRotX -= BARREL_ROTX_SPEED;
 	}
 	else if (CKeyboard::GetPress(DIK_DOWN))
 	{
-		BarrelRotX += 3.0f;
+		BarrelRotX += BARREL_ROTX_SPEED;
 	}
 
 	// キャラクターの回転
