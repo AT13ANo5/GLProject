@@ -28,7 +28,7 @@ const int kDamageCntMax = 60;
 // 引数
 //  なし
 //------------------------------------------------------------------------------
-CPlayer::CPlayer():CModel()
+CPlayer::CPlayer() :CModel()
 {
 	// 移動速度
 	Speed = PLAYER_MOVE_SPEED;
@@ -52,7 +52,7 @@ CPlayer::CPlayer():CModel()
 CPlayer::~CPlayer()
 {
 	SafeDelete(Ballistic);
- SafeDelete(_Feed);
+	SafeDelete(_Feed);
 }
 
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ void CPlayer::Init(void)
 
 	// 弾道
 
-	Ballistic = CBallistic::Create(COLOR(1.0f, 0.0f, 0.0f, 0.3f));
+	Ballistic = CBallistic::Create(COLOR(1.0f,0.0f,0.0f,0.3f));
 
 	// 継承元の初期化
 	CModel::Init();
@@ -88,11 +88,12 @@ void CPlayer::Init(void)
 	Barrel->Init();
 	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
 
+
 	//高さ初期化
-	_Hegiht = 0; 
+	_Hegiht = 0;
 	// 体力
 	_PlayerLife = PLAYER_LIFE;
-	_Feed = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/ 2.0f,SCREEN_HEIGHT / 2.0f,0),VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
+	_Feed = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f,0),VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
 	_Feed->SetColor(COLOR(0,0,0,0));
 	_Timer = 0;
 }
@@ -107,73 +108,73 @@ void CPlayer::Init(void)
 //------------------------------------------------------------------------------
 void CPlayer::Update()
 {
- //モード選択
- switch(_State)
- {
-  case PLAYER_STATE_DEATH:
-  {
-   AddPosY(kUpSpeed);
-   _Hegiht += kUpSpeed;
-   float Alpha = ( 1.0f / kHeightMax ) * kUpSpeed;
-   _Feed->AddAlpha(Alpha);
-   if(_Hegiht > kHeightMax)
-   {
-    SetRespawn();
-   }
-   return;
-  }
-  case PLAYER_STATE_RESPAWN:
-  {
-   float Alpha = ( 1.0f / kHeightMax ) * kUpSpeed;
+	//モード選択
+	switch (_State)
+	{
+	case PLAYER_STATE_DEATH:
+	{
+		AddPosY(kUpSpeed+0.0f);
+		_Hegiht += kUpSpeed;
+		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
+		_Feed->AddAlpha(Alpha);
+		if (_Hegiht > kHeightMax)
+		{
+			SetRespawn();
+		}
+		return;
+	}
+	case PLAYER_STATE_RESPAWN:
+	{
+		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 
-   AddPosY(-kUpSpeed);
-   _Hegiht += kUpSpeed;
-   _Feed->AddAlpha(-Alpha);
+		AddPosY(-kUpSpeed);
+		_Hegiht += kUpSpeed;
+		_Feed->AddAlpha(-Alpha);
 
-   if(_Hegiht > kHeightMax)
-   {
-    _State = PLAYER_STATE_WAIT;
-    _Feed->SetAlpha(0);
-   }
-   return;
-  }
-  case PLAYER_STATE_DAMAGE:
-  {
-   _Timer++;
-   _State = PLAYER_STATE_WAIT;
-   break;
-  }
-  default:
-  break;
- }
+		if (_Hegiht > kHeightMax)
+		{
+			_State = PLAYER_STATE_WAIT;
+			_Feed->SetAlpha(0);
+		}
+		return;
+	}
+	case PLAYER_STATE_DAMAGE:
+	{
+		_Timer++;
+		_State = PLAYER_STATE_WAIT;
+		break;
+	}
+	default:
+		break;
+	}
 
- if(_Timer != 0)
- {
-  _Timer++;
-  if(_Timer % 2 == 0)
-  {
-   Barrel->SetDrawFlag(true);
-   SetDrawFlag(true);
-  }
-  else{
-   Barrel->SetDrawFlag(false);
-   SetDrawFlag(false);
-  }
-  if(_Timer > kDamageCntMax)
-  {
-   Barrel->SetDrawFlag(true);
-   SetDrawFlag(true);
-   _Timer = 0;
-  }
+	if (_Timer != 0)
+	{
+		_Timer++;
+		if (_Timer % 2 == 0)
+		{
+			Barrel->SetDrawFlag(true);
+			SetDrawFlag(true);
+		}
+		else{
+			Barrel->SetDrawFlag(false);
+			SetDrawFlag(false);
+		}
+		if (_Timer > kDamageCntMax)
+		{
+			Barrel->SetDrawFlag(true);
+			SetDrawFlag(true);
+			_Timer = 0;
+		}
 
- }
+	}
 
 	if (PlayerFlag == true)
 	{
 		// 操作キャラクターの更新
 		UpdatePlayer();
 	}
-	else 
+	else
 	{
 		// 操作キャラクターではない＝CPU
 		UpdateCPU();
@@ -229,11 +230,11 @@ void CPlayer::UpdatePlayer(void)
 	// 砲身の上下
 	if (CKeyboard::GetPress(DIK_UP))
 	{
-
+		BarrelRotX -= 3.0f;
 	}
 	else if (CKeyboard::GetPress(DIK_DOWN))
 	{
-
+		BarrelRotX += 3.0f;
 	}
 
 	// キャラクターの回転
@@ -280,7 +281,7 @@ void CPlayer::UpdatePlayer(void)
 	{
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
@@ -319,11 +320,11 @@ void CPlayer::UpdatePlayer(void)
 	if (CKeyboard::GetPress(DIK_L))
 	{
 		this->AddPlayerLife(-1);
-  _State = PLAYER_STATE_DAMAGE;
+		_State = PLAYER_STATE_DAMAGE;
 	}
 
 	// 弾の削除確認
-	if(CKeyboard::GetPress(DIK_M))
+	if (CKeyboard::GetPress(DIK_M))
 	{
 		this->ReleaseBullet();
 	}
@@ -337,7 +338,7 @@ void CPlayer::BlastBullet()
 	{
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
@@ -365,7 +366,7 @@ void CPlayer::UpdateCPU(void)
 	{
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			_Bullet = CBullet::Create(_Pos, VECTOR2(BULLET_SIZE, BULLET_SIZE), VECTOR3(BarrelRotX, _Rot.y, _Rot.z), WHITE(0.5f));
+			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
@@ -404,7 +405,7 @@ void CPlayer::setBarrelRot(VECTOR3 _rot)
 void CPlayer::ReleaseBullet(void)
 {
 	// 弾を使用していたら削除
-	if(_Bullet != nullptr)
+	if (_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
 		_BulletUseFlag = false;
@@ -421,7 +422,7 @@ void CPlayer::ReleaseBullet(void)
 // 戻り値
 //  CPlayer	: 生成したプレイヤーのポインタ
 //------------------------------------------------------------------------------
-CPlayer* CPlayer::Create(int modelID, const VECTOR3& pos, int playerID)
+CPlayer* CPlayer::Create(int modelID,const VECTOR3& pos,int playerID)
 {
 	CPlayer* model = new CPlayer;
 
@@ -447,13 +448,13 @@ CPlayer* CPlayer::Create(int modelID, const VECTOR3& pos, int playerID)
 //------------------------------------------------------------------------------
 void CPlayer::SetDeath(VECTOR3 pos)
 {
- if(_State != PLAYER_STATE_DEATH)
- {
-  _Hegiht = 0;
-  _State = PLAYER_STATE_DEATH;
-  _PlayerRespown = pos;
-  _Feed->SetAlpha(0);
- }
+	if (_State != PLAYER_STATE_DEATH)
+	{
+		_Hegiht = 0;
+		_State = PLAYER_STATE_DEATH;
+		_PlayerRespown = pos;
+		_Feed->SetAlpha(0);
+	}
 }
 //------------------------------------------------------------------------------
 // 復活処理
@@ -465,13 +466,13 @@ void CPlayer::SetDeath(VECTOR3 pos)
 //------------------------------------------------------------------------------
 void CPlayer::SetRespawn(void)
 {
- _Hegiht = 0;
- _State = PLAYER_STATE_RESPAWN;
- _PlayerRespown.y += kHeightMax;
- SetPos(_PlayerRespown);
- _PlayerLife = PLAYER_LIFE;
- _Feed->SetAlpha(1);
- Movement = VECTOR3(0,0,0);
+	_Hegiht = 0;
+	_State = PLAYER_STATE_RESPAWN;
+	_PlayerRespown.y += kHeightMax;
+	SetPos(_PlayerRespown);
+	_PlayerLife = PLAYER_LIFE;
+	_Feed->SetAlpha(1);
+	Movement = VECTOR3(0,0,0);
 
 }
 //------------------------------------------------------------------------------
@@ -485,18 +486,19 @@ void CPlayer::SetRespawn(void)
 
 void CPlayer::AddPlayerLife(int addVal)
 {
- if(_Timer != 0 || _State != PLAYER_STATE_DAMAGE)
- {
-  _PlayerLife += addVal;
-  if(_PlayerLife < 0)
-  {
-   _PlayerLife = 0;
-  }else
-  if(_PlayerLife > PLAYER_LIFE)
-  {
-   _PlayerLife = PLAYER_LIFE;
-  }
- }
+	if (_Timer != 0 || _State != PLAYER_STATE_DAMAGE)
+	{
+		_PlayerLife += addVal;
+		if (_PlayerLife < 0)
+		{
+			_PlayerLife = 0;
+		}
+		else
+			if (_PlayerLife > PLAYER_LIFE)
+			{
+				_PlayerLife = PLAYER_LIFE;
+			}
+	}
 }
 
 //------------------------------------------------------------------------------
