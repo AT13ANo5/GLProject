@@ -168,7 +168,7 @@ void CGame::Init(void)
 	UI->Init();
 	UI->setMyID(CManager::netData.charNum);
 	UI->SetPlayer(Player);
-	UI->MiniMap()->SetFieldSize(Ground->Size());
+	UI->MiniMap()->SetFieldSize(VECTOR3(RADIUS_AREA_BATTLE*2.25f,0,RADIUS_AREA_BATTLE*2.25f));
 
 	// ä‚ÇÃê∂ê¨
 	ppRock_ = new CModel*[MAX_ROCK];
@@ -182,9 +182,6 @@ void CGame::Init(void)
 	}
 
 	CManager::gameStartFlag = true;
-
-
-
 
 	CManager::sendGameStart();
 }
