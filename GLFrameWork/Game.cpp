@@ -252,6 +252,7 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 //------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
+	
 	CManager::SendKillDeath(Player[CManager::netData.charNum]->getKillCount(),
 							Player[CManager::netData.charNum]->getDeathCount());
 

@@ -546,6 +546,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 						}
 						else
 						{
+							CSoundAL::Play(CSoundAL::SE_ENTRY);
 							CConnection::setEntry(data.charNum);
 						}
 					}
@@ -583,6 +584,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 					{
 						if (netData.charNum != 0)
 						{
+							CSoundAL::Play(CSoundAL::SE_GAME_START);
 							CManager::ChangeScene(SCENE_GAME);
 						}
 					}
@@ -725,8 +727,8 @@ void CManager::ChangeScene(short next)
 {
 	if (CFade::Instance().State() == CFade::FADE_NONE&&ChangeFlag == false)
 	{
-		CFade::Set(1.0f, 30);
-		CSoundAL::FadeAll(20);
+		CFade::Set(1.0f, 60);
+		CSoundAL::FadeBGM(50);
 		NextScene = next;
 		ChangeFlag = true;
 	}
