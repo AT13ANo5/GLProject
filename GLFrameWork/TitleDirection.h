@@ -29,6 +29,7 @@ public:
 	~CTitleDirection(){}
 
 	void Update(void);
+	void Init(void);
 	void Draw(void);
 
 	void SetAlpha(float a){ _Color.a = a; }

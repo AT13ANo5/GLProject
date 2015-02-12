@@ -35,9 +35,13 @@ CTitleDirection::CTitleDirection() :CPolygon2D()
 {
 	number = 0;
 	drawFlag = true;
-	Size = VECTOR2(750.0f,180.0f);
+	Size = VECTOR2(833.33f,166.66f);
 	Count = 0;
 	UDflag = false;
+}
+
+void CTitleDirection::Init(void)
+{
 }
 
 //=============================================================================
@@ -75,15 +79,15 @@ void CTitleDirection::Update(void)
 		if (UDflag == true)
 		{
 			Word->AddSize(-1.0f, -1.0f);
-
 		}
 		else
 		{
 			Word->AddSize(1.0f, 1.0f);
 		}
-		if (Count >= 240)
+
+		if (Count >= 180)
 		{
-			Count = 180;
+			Count = 120;
 			UDflag = !UDflag;
 		}
 	}
