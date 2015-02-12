@@ -15,7 +15,6 @@ class CRenderer;
 class CScene;
 class CCamera;
 class CLight;
-class CMouse;
 class CKeyboard;
 
 //*****************************************************************************
@@ -64,8 +63,19 @@ public:
 	static void SendEntry();
 	static void SendPos(VECTOR3 _pos);
 	static void SendRot(VECTOR3 _rot);
+	static void SendCannonRot(VECTOR3 _rot);
 	static void SendCannon(bool _flag);
 	static void sendGameStart();
+	static void SendChangeGame();
+	static void SendChangeResult();
+	static void SendKillDeath(int _kill, int _death);
+
+
+	static void SendKill(int _kill, int _id);
+	static void SendDeath(int _death, int _id);
+
+
+	static int* getRanking();
 	static NETWORK_DATA* getNetWorkData()
 	{
 		return &netWorkData;
@@ -86,6 +96,7 @@ public:
 	static WSADATA wsaData;
 	static NETWORK_DATA netWorkData;
 	static bool gameStartFlag;
+	static bool entryFlag;
 
 private:
 
@@ -98,13 +109,12 @@ private:
 	CRenderer* Render;
 	CCamera* pCamera;
 	CLight* Light;
-	CMouse* Mouse;
 	CKeyboard* Keyboard;
 
 	static short NextScene;
 	static bool ChangeFlag;
 
-	
+	static int ranking[PLAYER_MAX];
 };
 
 #endif

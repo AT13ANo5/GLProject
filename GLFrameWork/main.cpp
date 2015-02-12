@@ -13,7 +13,6 @@
 
 
 #include "ManagerGL.h"
-#include "Mouse.h"
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
@@ -92,7 +91,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 
 	ShowWindow(hWnd,nCmdShow);
 	UpdateWindow(hWnd);
-	CMouse::SetHWND(hWnd);
 	
 	while(1)
 	{

@@ -47,6 +47,15 @@ public:
 
 	CMiniMap* MiniMap(void){return miniMap;}
 
+
+
+	void setMyID(int _id)
+	{
+		myID = _id;
+	}
+
+
+
 private:
 
 	CLife*			    life;
@@ -60,6 +69,10 @@ private:
 	CTime*					Time;
 
 	CPlayer**				player;
+
+
+
+	int myID;
 
 };
 

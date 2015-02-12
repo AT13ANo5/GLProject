@@ -19,7 +19,7 @@
 #include "Effect3D.h"
 #include "Polygon3D.h"
 #include "Texture.h"
-#include "MeshCylinder.h"
+#include "BattleAreaCylinder.h"
 #include "MeshGround.h"
 #include "MeshSphere.h"
 #include "Model.h"
@@ -27,6 +27,7 @@
 #include "CBullet.h"
 #include "PlayerCamera.h"
 #include "MiniMap.h"
+#include "SoundAL.h"
 
 #include "UI.h"
 
@@ -47,8 +48,33 @@ const float	CGame::HEIGHT_PUSH_ROCK = 45.0f;			// 岩の押し戻し中心高さ
 const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
+const float	CGame::HEIGHT_WALL = 500.0f;				// 壁の高さ
 
 const int	CGame::MAX_ROCK = 20;						// 岩の数
+
+const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
+	VECTOR3(-214.0f,100.0f,421.0f),
+	VECTOR3(359.0f,100.0f,188.0f),
+	VECTOR3(94.0f,100.0f,-458.0f),
+	VECTOR3(-198.0f,100.0f,222.0f),
+	VECTOR3(419.0f,100.0f,293.0f),
+	VECTOR3(-335.0f,100.0f,164.0f),
+	VECTOR3(-471.0f,100.0f,-115.0f),
+	VECTOR3(368.0f,100.0f,-363.0f),
+	VECTOR3(-476.0f,100.0f,231.0f),
+	VECTOR3(-249.0f,100.0f,-319.0f),
+	VECTOR3(-243.0f,100.0f,481.0f),
+	VECTOR3(345.0f,100.0f,-253.0f),
+	VECTOR3(444.0f,100.0f,-118.0f),
+	VECTOR3(186.0f,100.0f,27.0f),
+	VECTOR3(387.0f,100.0f,-438.0f),
+	VECTOR3(-12.0f,100.0f,-439.0f),
+	VECTOR3(496.0f,100.0f,-332.0f),
+	VECTOR3(-247.0f,100.0f,143.0f),
+	VECTOR3(-302.0f,100.0f,-296.0f),
+	VECTOR3(-171.0f,100.0f,-274.0f),
+
+};
 
 // 定数
 namespace{
@@ -93,11 +119,8 @@ CGame::~CGame()
 //------------------------------------------------------------------------------
 void CGame::Init(void)
 {
-	//CPolygon3D* polygon = CPolygon3D::Create(VECTOR3(-200.0f,0,0),VECTOR2(250.0f,250.0f),VECTOR3(0,0,90.0f));
-	//polygon->SetTex(CTexture::Texture(TEX_LIGHT));
-	//polygon->SetColor(GREEN(1.0f));
-	//CPolygon3D::Create(VECTOR3(0,-100.0f,0),VECTOR2(500.0f,500.0f),VECTOR3(0.0f,0,0));	// 地形生成
-
+	CSoundAL::Play(CSoundAL::BGM_GAME);
+	//地形生成
 	Ground = nullptr;
 	Ground = CMeshGround::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(FIELD_PANEL_SIZE,FIELD_PANEL_SIZE),VECTOR2(0,0),1.5f);
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
@@ -109,7 +132,7 @@ void CGame::Init(void)
 
 	// 境界線生成
 	CylinderArea = nullptr;
-	CylinderArea = CMeshCylinder::Create(VECTOR3(0.0f, 0.0f, 0.0f), 1000.0f, VECTOR2(64.0f, 1.0f), RADIUS_AREA_BATTLE, VECTOR2(1, -1));
+	CylinderArea = CBattleAreaCylinder::Create(VECTOR3(0.0f,0.0f,0.0f),HEIGHT_WALL,VECTOR2(64.0f,1.0f),RADIUS_AREA_BATTLE,VECTOR2(1,-0.5f));
 	CylinderArea->SetTex(CTexture::Texture(TEX_WALL));
 	CylinderArea->SetAlpha(0.5f);
 
@@ -120,40 +143,56 @@ void CGame::Init(void)
 
 	Player = new CPlayer*[PLAYER_MAX];
 	// プレイヤー生成
-	for(int i = 0; i < PLAYER_MAX; i++)
+	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		Player[i] = CPlayer::Create(CModel::RINCHAN, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), 0);
-		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_BLUE));
-		Player[i]->SetRot(0.0f,180.0f,0.0f);
+		if (i == 0)
+			Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),i);
+		else
+			Player[i] = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), i);
 
-		if(i == CManager::netData.charNum)
+		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW + i));
+		Player[i]->SetRot(0.0f,180.0f,0.0f);
+		Player[i]->setBarrelTex(TEX_YOUJO_YELLOW + i);
+
+		if (i == CManager::netData.charNum)
 		{
 			Player[i]->SetPlayerFlag(true);
 		}
 	}	//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player[CManager::netData.charNum], 35.0f);
+	CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
 
 	// UI初期化
 	UI = new CUI;
 	UI->Init();
+	UI->setMyID(CManager::netData.charNum);
 	UI->SetPlayer(Player);
 	UI->MiniMap()->SetFieldSize(Ground->Size());
 
 	// 岩の生成
 	ppRock_ = new CModel*[MAX_ROCK];
+
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
-		VECTOR3	positionRock(0.1f * ((rand() % 10000) - 5000), 100.0f, 0.1f * ((rand() % 10000) - 5000));
-		ppRock_[cntRock] = CModel::Create(CModel::ROCK, positionRock);
+		ppRock_[cntRock] = CModel::Create(CModel::ROCK,ROCK_POSITION_LIST[cntRock]);
 		ppRock_[cntRock]->SetScl(1,1,1);
-  ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
+		ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
 		PushBackObjectByField(ppRock_[cntRock]);
 	}
 
 	CManager::gameStartFlag = true;
+
+
+
+
+	CManager::sendGameStart();
 }
-void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
+
+//=============================================================================
+//	プレイヤー情報のセット関数
+//=============================================================================
+void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 {
+	//	自分以外のデータなら
 	if (_netData.charNum != CManager::netData.charNum)
 	{
 		switch (_dataType)
@@ -174,7 +213,30 @@ void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
 
 			break;
 
+		case DATA_TYPE_CANNONROT:
+
+			Player[_netData.charNum]->setBarrelRot(
+				VECTOR3(_netData.data_cannonRot.rotX,
+				_netData.data_cannonRot.rotY,
+				_netData.data_cannonRot.rotZ
+				));
+
+			break;
+
 		case DATA_TYPE_CANNON:
+
+			if (_netData.data_cannon.flag == true)
+			{
+				Player[_netData.charNum]->BlastBullet();
+			}
+
+			break;
+
+		case DATA_TYPE_DEATH:
+
+			break;
+
+		case DATA_TYPE_KILL:
 
 			break;
 		}
@@ -191,6 +253,9 @@ void CGame::SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType)
 //------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
+	CManager::SendKillDeath(Player[CManager::netData.charNum]->getKillCount(),
+							Player[CManager::netData.charNum]->getDeathCount());
+
 	CManager::gameStartFlag = false;
 
 	// 岩の破棄
@@ -203,7 +268,7 @@ void CGame::Uninit(void)
 
 	// プレイヤー破棄
 	//SafeRelease(Player);
-	for(int i = 0; i < PLAYER_MAX; i++)
+	for (int i = 0; i < PLAYER_MAX; i++)
 	{
 		SafeRelease(Player[i]);
 	}
@@ -248,12 +313,32 @@ void CGame::Update(void)
 	// 装填ゲージ
 	const float currentTimer = (float)Player[0]->ReloadTimer();
 	const float maxTimer = (float)PLAYER_RELOAD_TIME;
-	const float rate = currentTimer / maxTimer;	if (CKeyboard::GetTrigger(DIK_RETURN))
+	const float rate = currentTimer / maxTimer;
+
+
+	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
-		CManager::ChangeScene(SCENE_RESULT);
+		if (CManager::netData.charNum == 0)
+		{
+			CManager::SendChangeResult();
+			CManager::ChangeScene(SCENE_RESULT);
+		}
 	}
 
+	// 空の位置プレイヤーに合わせる
+	Sky->SetPosX(Player[0]->Pos().x);
+	Sky->SetPosZ(Player[0]->Pos().z);
+	for (int loop = 0;loop < PLAYER_MAX;loop++)
+	{
+		if (Player[loop]->PlayerLife() <= 0)
+		{
+			VECTOR3	NormalGround;		// 地形の法線
+			VECTOR3 Respawn = VECTOR3(rand() % 100 + 0.0f,0,rand() % 100 + 0.0f);
+			Respawn.y = Ground->GetHeight(Respawn,&NormalGround);
 
+			Player[loop]->SetDeath(Respawn, loop);
+		}
+	}
 	// 攻撃判定
 	CheckHitPlayer();
 
@@ -333,10 +418,23 @@ void CGame::CheckHitPlayer(void)
 				pPlayerOffense->ReleaseBullet();
 
 				// 当たったときの処理
-				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 				pPlayerDefense->AddPlayerLife(-1);
-
+				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
+
+
+
+				//	長崎
+				if (pPlayerDefense->PlayerLife() == 0)
+				{
+					//	殺された数加算
+					pPlayerDefense->addDeathCount();
+					CManager::SendDeath(pPlayerDefense->getDeathCount(), pPlayerDefense->getPlayerID());
+
+					//	殺した数加算
+					pPlayerOffense->addKillCount();
+					CManager::SendKill(pPlayerOffense->getKillCount(), pPlayerOffense->getPlayerID());
+				}
 
 				// 処理終了
 				break;
@@ -417,7 +515,7 @@ void CGame::PushBackCharacter(void)
 		for (int cntPlayer = 0; cntPlayer < PLAYER_MAX; ++cntPlayer)
 		{
 			// プレイヤーを取得
-			CPlayer*	pPlayerDefense = Player[ cntPlayer];		// 防御側プレイヤー
+			CPlayer*	pPlayerDefense = Player[cntPlayer];		// 防御側プレイヤー
 
 			// プレイヤーが判定可能か確認
 			if (NeedsSkipPlayer(pPlayerDefense))
@@ -437,7 +535,7 @@ void CGame::PushBackCharacter(void)
 			positionOffense.y += HEIGHT_PUSH_CHARACTER;
 			positionDefense.y += HEIGHT_PUSH_CHARACTER;
 			vectorOffenseToDefense = positionDefense - positionOffense;
-			distanceOffenseAndDefense = sqrtf(vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z );
+			distanceOffenseAndDefense = sqrtf(vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z);
 			if (distanceOffenseAndDefense < 2.0f * RADIUS_PUSH_CHARACTER)
 			{
 				// 押し戻し
@@ -482,7 +580,7 @@ void CGame::PushBackRock(void)
 		for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 		{
 			// 岩を取得
-			CObject*	pRock = ppRock_[cntRock ];		// 岩オブジェクト
+			CObject*	pRock = ppRock_[cntRock];		// 岩オブジェクト
 
 			// 当たり判定
 			VECTOR3	positionPlayer = pPlayer->Pos();	// 攻撃判定中心座標
@@ -494,7 +592,8 @@ void CGame::PushBackRock(void)
 			positionPlayer.y += HEIGHT_PUSH_CHARACTER;
 			positionRock.y += HEIGHT_PUSH_ROCK;
 			vectorOffenseToDefense = positionRock - positionPlayer;
-			distanceOffenseAndDefense = sqrtf( vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z );
+			distanceOffenseAndDefense = sqrtf(vectorOffenseToDefense.x * vectorOffenseToDefense.x + vectorOffenseToDefense.y * vectorOffenseToDefense.y + vectorOffenseToDefense.z * vectorOffenseToDefense.z);
+
 			if (distanceOffenseAndDefense < RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock)
 			{
 				// 押し戻し
@@ -581,7 +680,7 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	// 地形とのあたり判定
 	VECTOR3	NormalGround;		// 地形の法線
 	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround);
+	HeightGround = Ground->GetHeight(pObject->Pos(),&NormalGround);
 
 	// 回転を求める
 	VECTOR3	VectorUppObject;		// 上方向ベクトル
@@ -595,17 +694,17 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	VectorNormalYZ.y = NormalGround.y;
 	VectorNormalYZ.z = NormalGround.z;
 	VectorNormalYZ.Normalize();
-	AnglepObjectX = -acosf(VECTOR3::Dot(VectorNormalYZ, VectorUppObject));
+	AnglepObjectX = -acosf(VECTOR3::Dot(VectorNormalYZ,VectorUppObject));
 	VectorNormalXY.x = NormalGround.x;
 	VectorNormalXY.y = NormalGround.y;
 	VectorNormalXY.z = 0.0f;
 	VectorNormalXY.Normalize();
-	AnglepObjectZ = -acosf(VECTOR3::Dot(VectorNormalXY, VectorUppObject));
+	AnglepObjectZ = -acosf(VECTOR3::Dot(VectorNormalXY,VectorUppObject));
 
 	// キャラクターに設定する
 	pObject->SetPosY(HeightGround);
-//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
-//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
+	//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
+	//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
 }
 
 //==============================================================================

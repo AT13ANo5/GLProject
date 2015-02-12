@@ -81,7 +81,7 @@ void CResultNumberManager::Init(void)
       number[num]._kill[figure]->SetNumber(0);
       number[num]._death[figure]->SetNumber(0);
     }
-    SetNumber((TYPE)num, num * 10, num * 10);
+    //SetNumber((TYPE)num, num * 10, num * 10);
   }
 }
 

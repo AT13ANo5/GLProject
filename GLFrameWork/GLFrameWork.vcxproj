@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ballistic.cpp" />
+    <ClCompile Include="BattleAreaCylinder.cpp" />
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CBullet.cpp" />
@@ -99,22 +100,22 @@
     <ClCompile Include="CPushStart.cpp" />
     <ClCompile Include="Effect2D.cpp" />
     <ClCompile Include="Effect3D.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="LoadGauge.cpp" />
     <ClCompile Include="LoadString.cpp" />
+    <ClCompile Include="Map2D.cpp" />
     <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Number2D.cpp" />
     <ClCompile Include="NumberManager.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerGL.cpp" />
-    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Polygon2D.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="AL\alc.h" />
     <ClInclude Include="AL\alut.h" />
     <ClInclude Include="Ballistic.h" />
+    <ClInclude Include="BattleAreaCylinder.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CBullet.h" />
@@ -153,22 +155,22 @@
     <ClInclude Include="CPushStart.h" />
     <ClInclude Include="Effect2D.h" />
     <ClInclude Include="Effect3D.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Life.h" />
     <ClInclude Include="LoadGauge.h" />
     <ClInclude Include="LoadString.h" />
+    <ClInclude Include="Map2D.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="netData.h" />
     <ClInclude Include="Number2D.h" />
     <ClInclude Include="NumberManager.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="GamePad.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="ManagerGL.h" />
-    <ClInclude Include="Mouse.h" />
     <ClInclude Include="PlayerCamera.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Polygon2D.h" />

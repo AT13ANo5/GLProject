@@ -26,8 +26,12 @@ typedef enum
 
 	DATA_TYPE_POS = 100,	//	位置
 	DATA_TYPE_ROT,	//	回転
+	DATA_TYPE_CANNONROT,	//	回転
 	DATA_TYPE_CANNON,	//	発射
 	DATA_TYPE_ENTRY,	//	エントリー
+	DATA_TYPE_GET_ENTRY,
+	DATA_TYPE_CHANGE_GAME,
+	DATA_TYPE_CHANGE_RESULT,
 	DATA_TYPE_GAME_START,	//	ゲームスタート
 	DATA_TYPE_DEATH,	//	死んだ
 	DATA_TYPE_KILL,	//	殺した
@@ -82,6 +86,22 @@ typedef struct
 }DATA_PAUSE;
 //----------------------------------------------------------------
 
+//	コネクション用データ
+//----------------------------------------------------------------
+typedef struct
+{
+	bool entryFlag[PLAYER_MAX];	//	エントリーしてるかどうか
+}DATA_CONNECTION;
+//----------------------------------------------------------------
+
+//	kill death用データ
+//----------------------------------------------------------------
+typedef struct
+{
+	int value;
+}DATA_KILLDEATH;
+//----------------------------------------------------------------
+
 //	送信時用データ
 //----------------------------------------------------------------
 typedef struct
@@ -89,13 +109,17 @@ typedef struct
 	int ID;
 	int type;
 	int charNum;
+	int servID;
 
 	union
 	{
 		DATA_POS data_pos;
 		DATA_ROT data_rot;
+		DATA_ROT data_cannonRot;
 		DATA_CANNON data_cannon;
 		DATA_PAUSE data_pause;
+		DATA_CONNECTION data_connection;
+		DATA_KILLDEATH data_killDeath;
 	};
 
 }NET_DATA;
@@ -111,10 +135,13 @@ typedef struct {
 
 	VECTOR3 pos;
 	VECTOR3 rot;
+	VECTOR3 cannonRot;
 	bool cannon;
 
 } USER_INFO;
 //----------------------------------------------------------------
+
+static const int SERV_ID = 256;
 
 #endif
 

@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 // マクロ定義
 //------------------------------------------------------------------------------
-#define BALLISTICT_SPACE (4)	// 弾道の間隔
+#define BALLISTICT_SPACE (2)	// 弾道の間隔
 
 //------------------------------------------------------------------------------
 // ヘッダインクルード
@@ -51,7 +51,7 @@ void CBallistic::Init( COLOR color)
   for (int cnt = 0; cnt < MARK_MAX; cnt++)
   {
     BallisticMark[cnt] = CBillboard::Create(VECTOR3(0.0f, 0.0f, 0.0f),
-                                            VECTOR2(7.0f, 7.0f),
+                                            VECTOR2(1.5f, 1.5f),
                                             VECTOR3(0.0f, 0.0f, 0.0f),
                                             color);
     BallisticMark[cnt]->SetTex(CTexture::Texture(TEX_BALLISTIC));
@@ -93,7 +93,7 @@ void CBallistic::Update(VECTOR3 pos, VECTOR3 rot)
     pos.x += MoveSpeed.x * BALLISTICT_SPACE;
     pos.z += MoveSpeed.z * BALLISTICT_SPACE;
     pos.y += MoveSpeed.y * BALLISTICT_SPACE;
-    MoveSpeed.y -= 0.25f * BALLISTICT_SPACE;
+	MoveSpeed.y += BULLET_GRAVITY * BALLISTICT_SPACE;
 
     BallisticMark[cnt]->SetPos(pos);
   }

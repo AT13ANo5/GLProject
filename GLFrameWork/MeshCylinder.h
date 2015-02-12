@@ -13,7 +13,7 @@ class CMeshCylinder:public CObject
 {
 public:
 	CMeshCylinder(int priority=0);
-	~CMeshCylinder();
+	virtual ~CMeshCylinder();
 
 	//=============================================================================
 	//çÏê¨
@@ -26,13 +26,13 @@ public:
 	//=============================================================================
 	static CMeshCylinder* Create(VECTOR3 pos,float PanelHeight,VECTOR2 PanelNum,float radius,VECTOR2 TexDivide=VECTOR2(3,1));
 
-	void Init(void);
+	virtual void Init(void);
 	void Uninit(void);
 	void Update(void);
-	void Draw(void);
+	virtual void Draw(void);
 
 
-private:
+protected:
 
 	float PanelHeight;
 	VECTOR2 PanelNum;

@@ -3,7 +3,7 @@
 #include"Scene.h"
 #include"UI.h"
 
-class CMeshCylinder;
+class CBattleAreaCylinder;
 class CMeshGround;
 class CMeshSphere;
 class CModel;
@@ -26,7 +26,6 @@ public:
 	void Update(void);
 
 	static void SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType);
-
 private:
 	static const float  RADIUS_SKY;					// 空の半径
 	static const float	RADIUS_DEFENSE_CHARACTER;	// キャラクターの防御半径
@@ -42,8 +41,10 @@ private:
 	static const float FIELD_PANEL_SIZE;			//フィールドのパネル一枚のサイズ
 
 	static const float	RADIUS_AREA_BATTLE;			// 戦闘エリア半径
+	static const float	HEIGHT_WALL;				// 壁の高さ
 
 	static const int	MAX_ROCK;					// 岩の数
+	static const VECTOR3 ROCK_POSITION_LIST[];		// 岩の座標リスト
 
 	void CheckHitPlayer(void);						// 攻撃判定の当たり判定 プレイヤー
 	void CheckHitRock(void);						// 攻撃判定の当たり判定 岩
@@ -59,7 +60,7 @@ private:
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
 	static CPlayer**       Player;     // プレイヤー	CNumberManager* numberManager;
-	CMeshCylinder*	CylinderArea;	// 戦闘可能エリア
+	CBattleAreaCylinder*	CylinderArea;			// 戦闘可能エリア
 	//CReport*        reportBg;
 	//CReport*        report;
 	//CNumberManager* numberManager;

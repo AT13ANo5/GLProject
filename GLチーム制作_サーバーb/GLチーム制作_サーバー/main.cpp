@@ -77,6 +77,7 @@ void initUserInfo()
 		userInfo[count].kill = 0;
 		userInfo[count].pos = VECTOR3(0.0f, 0.0f, 0.0f);
 		userInfo[count].rot = VECTOR3(0.0f, 0.0f, 0.0f);
+		userInfo[count].cannonRot = VECTOR3(0.0f, 0.0f, 0.0f);
 		userInfo[count].cannon = false;
 	}
 }
@@ -164,161 +165,174 @@ int main(void)
 		//	受信
 		int ret = recvfrom(recvSock, (char*)&data, sizeof(data), 0, (sockaddr*)&recvAdd, &recvAddLength);
 		//ret = WSAGetLastError();
-		//printf("%d", ret);
+		//printf("%d", ret);]
 
-		//	データタイプによって分岐
-		switch (data.type)
+		if (ret == SOCKET_ERROR)
 		{
-		case DATA_TYPE_POS:
-
-			//	位置情報のセット
-			userInfo[data.charNum].pos.x = data.data_pos.posX;
-			userInfo[data.charNum].pos.y = data.data_pos.posY;
-			userInfo[data.charNum].pos.z = data.data_pos.posZ;
-
-			//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
-			sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
-
-			break;
-
-		case DATA_TYPE_ROT:
-
-			//	回転情報のセット
-			userInfo[data.charNum].rot.x = data.data_rot.rotX;
-			userInfo[data.charNum].rot.y = data.data_rot.rotY;
-			userInfo[data.charNum].rot.z = data.data_rot.rotZ;
-
-			//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
-			sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
-
-			break;
-
-		case DATA_TYPE_CANNON:
-
-			//	発射フラグのセット
-			userInfo[data.charNum].cannon = data.data_cannon.flag;
-
-			//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
-			sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
-
-			break;
-
-		case DATA_TYPE_KILL:
-
-			//	殺した数インクリメント
-			userInfo[data.charNum].kill++;
-
-			break;
-
-		case DATA_TYPE_DEATH:
-
-			//	殺された数インクリメント
-			userInfo[data.charNum].death++;
-
-			break;
-
-		case DATA_TYPE_PAUSE:
-
-			//	ポーズ時にデータを渡す
-			//	指定のキャラクタのところにのみ送信
-			for (int count = 0; count < charcterMax; count++)
-			{
-				//	自分以外の場合
-				if (count != data.charNum)
-				{
-					data.charNum = count;
-
-
-					//	送信データ格納
-					data.type = DATA_TYPE_PAUSE;
-					data.data_pause.kill = userInfo[count].kill;
-					data.data_pause.death = userInfo[count].death;
-
-					//	データ送信
-					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&userInfo[data.charNum].fromaddr, sizeof(userInfo[data.charNum].fromaddr));
-				}
-			}
-
-			break;
-
-		case DATA_TYPE_GAME_START:
-
-			//	最上位クライアントから、ゲーム開始を受け取ったら
-			if (data.charNum == 0)
-			{
-				// AI処理用スレッド開始
-				ai = (HANDLE)_beginthreadex(NULL, 0, &aiUpdate, NULL, NULL, NULL);
-			}
-
-			break;
-
-		case DATA_TYPE_ENTRY:
-
-			//	エントリー処理
-			//	現在のプレイヤー数を返し、自分のプレイヤー番号をセットさせる。
+		}
+		else
 		{
-			//	ループ処理判定フラグ
-			bool errorFlag = true;
-
-			//	キャラクター番号をインクリメント（キャラクター番号は0～5）
-			charNum++;
-
-			//	キャラクター数が一定値を超えていたら処理をはじく
-			if (charNum < charcterMax)
+			if (data.servID == SERV_ID)
 			{
-				//	エラー処理（エントリー状態ならエラーとする）
-				if (userInfo[charNum].entryFlag == true)
+				//	データタイプによって分岐
+				switch (data.type)
 				{
-					//	キャラクタ番号をマイナスし、処理を弾く
-					charNum--;
-					errorFlag = false;
+				case DATA_TYPE_POS:
+
+					//	位置情報のセット
+					userInfo[data.charNum].pos.x = data.data_pos.posX;
+					userInfo[data.charNum].pos.y = data.data_pos.posY;
+					userInfo[data.charNum].pos.z = data.data_pos.posZ;
+
+					//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
+					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
+
+					break;
+
+				case DATA_TYPE_ROT:
+
+					//	回転情報のセット
+					userInfo[data.charNum].rot.x = data.data_rot.rotX;
+					userInfo[data.charNum].rot.y = data.data_rot.rotY;
+					userInfo[data.charNum].rot.z = data.data_rot.rotZ;
+
+					//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
+					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
+
+					break;
+
+				case DATA_TYPE_CANNONROT:
+
+					//	回転情報のセット
+					userInfo[data.charNum].cannonRot.x = data.data_cannonRot.rotX;
+					userInfo[data.charNum].cannonRot.y = data.data_cannonRot.rotY;
+					userInfo[data.charNum].cannonRot.z = data.data_cannonRot.rotZ;
+
+					//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
+					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
+
+					break;
+
+				case DATA_TYPE_CANNON:
+
+					//	発射フラグのセット
+					userInfo[data.charNum].cannon = data.data_cannon.flag;
+
+					//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
+					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
+
+					break;
+
+				case DATA_TYPE_KILL:
+
+					//	殺した数インクリメント
+					userInfo[data.charNum].kill++;
+
+					break;
+
+				case DATA_TYPE_DEATH:
+
+					//	殺された数インクリメント
+					userInfo[data.charNum].death++;
+
+					break;
+
+				case DATA_TYPE_PAUSE:
+
+					//	ポーズ時にデータを渡す
+					//	指定のキャラクタのところにのみ送信
+					for (int count = 0; count < charcterMax; count++)
+					{
+						//	自分以外の場合
+						if (count != data.charNum)
+						{
+							data.charNum = count;
+
+							//	送信データ格納
+							data.servID = SERV_ID;
+							data.type = DATA_TYPE_PAUSE;
+							data.data_pause.kill = userInfo[count].kill;
+							data.data_pause.death = userInfo[count].death;
+
+							//	データ送信
+							sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&userInfo[data.charNum].fromaddr, sizeof(userInfo[data.charNum].fromaddr));
+						}
+					}
+
+					break;
+
+				case DATA_TYPE_GAME_START:
+
+					//	最上位クライアントから、ゲーム開始を受け取ったら
+					if (data.charNum == 0)
+					{
+						// AI処理用スレッド開始
+						ai = (HANDLE)_beginthreadex(NULL, 0, &aiUpdate, NULL, NULL, NULL);
+					}
+
+					break;
+
+				case DATA_TYPE_ENTRY:
+
+					//	エントリー処理
+					//	現在のプレイヤー数を返し、自分のプレイヤー番号をセットさせる。
+				{
+					//	ループ処理判定フラグ
+					bool errorFlag = true;
+
+					//	キャラクター番号をインクリメント（キャラクター番号は0～5）
+					charNum++;
+
+					//	キャラクター数が一定値を超えていたら処理をはじく
+					if (charNum < charcterMax)
+					{
+						//	エラー処理（エントリー状態ならエラーとする）
+						if (userInfo[charNum].entryFlag == true)
+						{
+							//	キャラクタ番号をマイナスし、処理を弾く
+							charNum--;
+							errorFlag = false;
+
+							break;
+						}
+
+						//	エラー処理を抜けたら
+						if (errorFlag == true)
+						{
+							//	数値をセット
+							data.charNum = charNum;
+							data.servID = SERV_ID;
+							data.type = DATA_TYPE_ENTRY;
+
+							//	ユーザー情報をセット
+							userInfo[charNum].fromaddr = recvAdd;
+							userInfo[charNum].fromaddr.sin_port = htons(3000);
+							userInfo[charNum].entryFlag = true;
+
+							//	「エントリーした」という情報をマルチキャストで送信
+							sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
+						}
+					}
+					else
+					{
+						data.type = DATA_TYPE_EMPTY;
+						data.servID = SERV_ID;
+
+						//	ポートを再設定
+						recvAdd.sin_port = htons(3000);
+
+						//	部屋がいっぱいと送る
+						sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&recvAdd, sizeof(recvAdd));
+					}
 
 					break;
 				}
-
-				//for (int count = 0; count < charNum; count++)
-				//{
-					//	エラー処理（同じIPアドレスを持つプレイヤーが来た場合をチェック）
-					//if (strcmp(inet_ntoa(userInfo[count].fromaddr.sin_addr), inet_ntoa(recvAdd.sin_addr)) == 0)
-					//	エラー処理（エントリー状態ならエラーとする）
-					//if (userInfo[count].entryFlag == true)
-					//{
-					//	//	キャラクタ番号をマイナスし、処理を弾く
-					//	charNum--;
-					//	errorFlag = false;
-					//	break;
-					//}
-				//}
-
-				//	エラー処理を抜けたら
-				if (errorFlag == true)
-				{
-					//	数値をセット
-					data.charNum = charNum;
-					data.type = DATA_TYPE_ENTRY;
-
-					//	ユーザー情報をセット
-					userInfo[charNum].fromaddr = recvAdd;
-					userInfo[charNum].fromaddr.sin_port = htons(3000);
-					userInfo[charNum].entryFlag = true;
-
-					//	「エントリーした」という情報をマルチキャストで送信
-					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
 				}
 			}
 			else
 			{
-				data.type = DATA_TYPE_EMPTY;
-
-				//	ポートを再設定
-				recvAdd.sin_port = htons(3000);
-
-				//	部屋がいっぱいと送る
-				sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&recvAdd, sizeof(recvAdd));
+				printf("networkID Not Equal!!\n");
 			}
-
-			break;
-		}
 		}
 	}
 
