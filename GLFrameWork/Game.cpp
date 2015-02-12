@@ -33,7 +33,7 @@
 #include "UI.h"
 
 // 静的メンバ変数
-const float CGame::RADIUS_SKY = 1500.0f;   // 空の半径
+const float CGame::RADIUS_SKY = 2500.0f;   // 空の半径
 CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
 const float	CGame::RADIUS_DEFENSE_CHARACTER = 10.0f;	// キャラクターの防御半径
@@ -47,6 +47,7 @@ const float	CGame::HEIGHT_DEFENSE_ROCK = 45.0f;			// 岩の防御中心高さ
 const float	CGame::RADIUS_PUSH_ROCK = 45.0f;			// 岩の押し戻し半径
 const float	CGame::HEIGHT_PUSH_ROCK = 45.0f;			// 岩の押し戻し中心高さ
 const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
+const float	CGame::HEIGHT_PLAYER_TO_FIELD = 10.0f;		// プレイヤーと地面の差
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
 const float	CGame::HEIGHT_WALL = 500.0f;				// 壁の高さ
@@ -683,31 +684,44 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	// 地形とのあたり判定
 	VECTOR3	NormalGround;		// 地形の法線
 	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(pObject->Pos(),&NormalGround);
+	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround) + HEIGHT_PLAYER_TO_FIELD;
 
+	//********************************************************
+	// 2015_02_12 姿勢制御用の処理を追加 ここから
+	//********************************************************
 	// 回転を求める
-	VECTOR3	VectorUppObject;		// 上方向ベクトル
-	VECTOR3	VectorNormalYZ;			// YZ平面上の法線ベクトル
-	VECTOR3	VectorNormalXY;			// XY平面上の法線ベクトル
-	float	AnglepObjectX;			// プレイヤー回転X軸
-	float	AnglepObjectZ;			// プレイヤー回転Z軸
-	VectorUppObject.x = VectorUppObject.z = 0.0f;
-	VectorUppObject.y = 1.0f;
-	VectorNormalYZ.x = 0.0f;
-	VectorNormalYZ.y = NormalGround.y;
-	VectorNormalYZ.z = NormalGround.z;
-	VectorNormalYZ.Normalize();
-	AnglepObjectX = -acosf(VECTOR3::Dot(VectorNormalYZ,VectorUppObject));
-	VectorNormalXY.x = NormalGround.x;
-	VectorNormalXY.y = NormalGround.y;
-	VectorNormalXY.z = 0.0f;
-	VectorNormalXY.Normalize();
-	AnglepObjectZ = -acosf(VECTOR3::Dot(VectorNormalXY,VectorUppObject));
+	VECTOR3	vectorUp(0.0f, 1.0f, 0.0f);		// 上方向ベクトル
+	VECTOR3	vectorAxisRotation;				// 回転軸
+	float	rotation = 0.0f;				// 回転量
+	VECTOR3::Cross(&vectorAxisRotation, NormalGround, vectorUp);
+	if (vectorAxisRotation.x < FLT_EPSILON && vectorAxisRotation.x > -FLT_EPSILON)
+	{
+		if (vectorAxisRotation.z < FLT_EPSILON && vectorAxisRotation.z > -FLT_EPSILON)
+		{
+			if (vectorAxisRotation.y < FLT_EPSILON && vectorAxisRotation.y > -FLT_EPSILON)
+			{
+				vectorAxisRotation.y = 1.0f;
+			}
+		}
+	}
+	vectorAxisRotation.Normalize();
+	rotation = VECTOR3::Dot(NormalGround, vectorUp);
+	if (rotation > 2.0f * FLT_EPSILON || rotation < -2.0f * FLT_EPSILON)
+	{
+		rotation = RAD_TO_DEG * acosf(rotation);
+	}
+	else
+	{
+		rotation = 0.0f;
+	}
 
 	// キャラクターに設定する
 	pObject->SetPosY(HeightGround);
-	//	pObject->SetRotX(AngleObjectX * 180.0f / PI);
-	//	pObject->SetRotZ(AngleObjectZ * 180.0f / PI);
+	pObject->SetAxisRotation(vectorAxisRotation);
+	pObject->SetRotationAxis(rotation);
+	//********************************************************
+	// 2015_02_12 姿勢制御用の処理を追加 ここまで
+	//********************************************************
 }
 
 //==============================================================================

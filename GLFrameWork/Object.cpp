@@ -7,6 +7,10 @@ CObject::CObject(int priority)
 	Priority = priority;
 	DeathFlag = false;
 	LinkList();
+
+	// クォータニオンの初期化
+	VectorAxisRotation = VECTOR3(0.0f, 1.0f, 0.0f);
+	RotationAxis = 0.0f;
 }
 CObject::~CObject()
 {
