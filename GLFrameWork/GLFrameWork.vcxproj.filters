@@ -307,6 +307,9 @@
     <ClCompile Include="BattleAreaCylinder.cpp">
       <Filter>02_ゲーム\BattleAreaWall</Filter>
     </ClCompile>
+    <ClCompile Include="SandCloud.cpp">
+      <Filter>00_システム\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -467,6 +470,9 @@
     </ClInclude>
     <ClInclude Include="BattleAreaCylinder.h">
       <Filter>02_ゲーム\BattleAreaWall</Filter>
+    </ClInclude>
+    <ClInclude Include="SandCloud.h">
+      <Filter>00_システム\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
