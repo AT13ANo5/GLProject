@@ -17,6 +17,7 @@
 #include "Keyboard.h"
 #include "Billboard.h"
 #include "Effect3D.h"
+#include "Explosion.h"
 #include "Polygon3D.h"
 #include "Texture.h"
 #include "BattleAreaCylinder.h"
@@ -420,9 +421,9 @@ void CGame::CheckHitPlayer(void)
 				// 当たったときの処理
 				pPlayerDefense->AddPlayerLife(-1);
 				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
+
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
-
-
+				CExplosion::Create(pPlayerDefense->Pos());
 
 				//	長崎
 				if (pPlayerDefense->PlayerLife() == 0)
@@ -484,7 +485,8 @@ void CGame::CheckHitRock(void)
 				// 弾の消滅
 				pPlayerOffense->ReleaseBullet();
 
-				// エフェクト：爆発　弾がプレイヤーに当たったとき
+				// エフェクト：爆発　弾が岩に当たったとき
+				CExplosion::Create(positionOffense);
 
 				// 処理終了
 				break;
@@ -668,6 +670,7 @@ void CGame::IsLandField(void)
 			pPlayerCurrent->ReleaseBullet();
 
 			// エフェクト：爆発　弾と地形の判定
+			CExplosion::Create(pBulletCurrent->Pos());
 		}
 	}
 }
