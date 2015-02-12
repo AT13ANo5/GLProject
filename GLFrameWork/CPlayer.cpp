@@ -132,10 +132,6 @@ void CPlayer::Update()
 		CManager::SendPos(_Pos);
 		CManager::SendRot(_Rot);
 		CManager::SendCannonRot(Barrel->Rot());
-		CManager::SendCannon(LaunchFlag);
-
-
-
 
 
 		if (_Hegiht > kHeightMax)
@@ -156,18 +152,10 @@ void CPlayer::Update()
 			_Feed->AddAlpha(-Alpha);
 
 
-
-
-
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
 		CManager::SendRot(_Rot);
 		CManager::SendCannonRot(Barrel->Rot());
-		CManager::SendCannon(LaunchFlag);
-
-
-
-
 
 
 		if (_Hegiht > kHeightMax)

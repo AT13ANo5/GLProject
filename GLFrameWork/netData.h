@@ -141,7 +141,7 @@ typedef struct {
 } USER_INFO;
 //----------------------------------------------------------------
 
-static const int SERV_ID = 256;
+static const int SERV_ID = 128;
 
 #endif
 
