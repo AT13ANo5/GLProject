@@ -88,6 +88,7 @@ void CTitle::Update(void)
 
 	if (CKeyboard::GetPress(DIK_W))
 	{
+		CSoundAL::Play(CSoundAL::SE_ENTER);
 		Player->AddPosZ(1.0f);
 		Barrel->AddPosZ(1.0f);
 	}
@@ -118,6 +119,7 @@ void CTitle::Update(void)
 	}
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
+		
 		CManager::ChangeScene(SCENE_CONNECTION);
 	}
 }

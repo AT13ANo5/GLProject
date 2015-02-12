@@ -27,6 +27,9 @@ const PARAM File[CSoundAL::SOUND_MAX] =
 	{ "data/sound/BGM/Connect.wav",true,2 },
 	{ "data/sound/BGM/Game.wav",true,2 },
 	{ "data/sound/BGM/Result.wav",true,2 },
+	{ "data/sound/SE/Entry.wav",false,2 },
+	{ "data/sound/SE/PushEnter.wav",false,2 },
+	{ "data/sound/SE/ToGame.wav",false,2 },
 
 };
 
