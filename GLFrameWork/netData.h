@@ -29,6 +29,9 @@ typedef enum
 	DATA_TYPE_CANNONROT,	//	回転
 	DATA_TYPE_CANNON,	//	発射
 	DATA_TYPE_ENTRY,	//	エントリー
+	DATA_TYPE_GET_ENTRY,
+	DATA_TYPE_CHANGE_GAME,
+	DATA_TYPE_CHANGE_RESULT,
 	DATA_TYPE_GAME_START,	//	ゲームスタート
 	DATA_TYPE_DEATH,	//	死んだ
 	DATA_TYPE_KILL,	//	殺した
@@ -83,6 +86,22 @@ typedef struct
 }DATA_PAUSE;
 //----------------------------------------------------------------
 
+//	コネクション用データ
+//----------------------------------------------------------------
+typedef struct
+{
+	bool entryFlag[PLAYER_MAX];	//	エントリーしてるかどうか
+}DATA_CONNECTION;
+//----------------------------------------------------------------
+
+//	kill death用データ
+//----------------------------------------------------------------
+typedef struct
+{
+	int value;
+}DATA_KILLDEATH;
+//----------------------------------------------------------------
+
 //	送信時用データ
 //----------------------------------------------------------------
 typedef struct
@@ -99,6 +118,8 @@ typedef struct
 		DATA_ROT data_cannonRot;
 		DATA_CANNON data_cannon;
 		DATA_PAUSE data_pause;
+		DATA_CONNECTION data_connection;
+		DATA_KILLDEATH data_killDeath;
 	};
 
 }NET_DATA;

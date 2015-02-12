@@ -11,7 +11,7 @@
 //------------------------------------------------------------------------------
 // マクロ定義
 //------------------------------------------------------------------------------
-#define PLAYER_MOVE_SPEED (0.5f)			// 移動にかかる係数
+#define PLAYER_MOVE_SPEED (0.05f)			// 移動にかかる係数
 #define PLAYER_RELOAD_TIME (300)			// リロードまでのフレーム
 #define PLAYER_LIFE (3)						// プレイヤー体力の最大値
 #define BARREL_ROT_MAX (-45.0f)				// 砲身の最大角度
@@ -22,7 +22,7 @@
 // ヘッダインクルード
 //------------------------------------------------------------------------------
 #include "Model.h"
-
+#include "Polygon2D.h"
 //------------------------------------------------------------------------------
 // 列挙体宣言
 //------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ public:
 	// 体力
 	int PlayerLife(void){return _PlayerLife;}				// ゲッター
 	void SetPlayerLife(int life){_PlayerLife = life;}		// セッター
-	void AddPlayerLife(int addVal){_PlayerLife += addVal;}	// 加算
+	void AddPlayerLife(int addVal);	// 加算
 
 	// 生成
 	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
@@ -82,6 +82,40 @@ public:
 	void BlastBullet();
 	void setBarrelRot(VECTOR3 _rot);
 
+	void SetDeath(VECTOR3 posint , int _charNum);//死亡処理
+	void SetRespawn(void);//復活処理
+
+
+	//	長崎
+	//	砲塔のテクスチャセット関数
+	void setBarrelTex(int _texNum)
+	{
+		Barrel->SetTex(CTexture::Texture(_texNum));
+	}
+	//	殺した数加算
+	void addKillCount()
+	{
+		killCount++;
+	}
+	int getKillCount()
+	{
+		return killCount;
+	}
+	//	殺された数加算
+	void addDeathCount()
+	{
+		deathCount++;
+	}
+	int getDeathCount()
+	{
+		return deathCount;
+	}
+	//	プレイヤーＩＤゲッター
+	int getPlayerID()
+	{
+		return PlayerID;
+	}
+
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
@@ -99,6 +133,16 @@ private:
 	int PlayerID;			// プレイヤー判別用ID
 	bool PlayerFlag;		// 操作キャラクターかどうか
 	CBallistic* Ballistic;	// 弾道
+ CPolygon2D* _Feed;
+ int _Timer;//無敵時間タイマー
+ float _Hegiht;//高さでカウント
+ VECTOR3 _PlayerRespown;//次の復活地点作成
+
+
+
+ int killCount;
+ int deathCount;
+
 };
 
 #endif

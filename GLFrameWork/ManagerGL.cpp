@@ -36,6 +36,8 @@ SOCKADDR_IN CManager::sendAddress;
 WSADATA CManager::wsaData;
 NETWORK_DATA CManager::netWorkData;
 bool CManager::gameStartFlag;
+bool CManager::entryFlag;
+int CManager::ranking[PLAYER_MAX];
 
 //=============================================================================
 //	コンストラクタ
@@ -47,6 +49,7 @@ CManager::CManager()
 	Scene = nullptr;
 	ChangeFlag = false;
 	gameStartFlag = false;
+	entryFlag = false;
 
 	netData.ID = rand();
 
@@ -235,6 +238,7 @@ void CManager::sendGameStart()
 		NET_DATA data;
 		data.type = DATA_TYPE_GAME_START;
 		data.servID = SERV_ID;
+		data.charNum = 0;
 
 		sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 	}
@@ -296,6 +300,110 @@ void CManager::SendCannonRot(VECTOR3 _rot)
 	data.data_cannonRot.rotZ = _rot.z;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+
+void CManager::SendChangeGame()
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_CHANGE_GAME;
+	data.servID = SERV_ID;
+	data.charNum = netData.charNum;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+void CManager::SendChangeResult()
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_CHANGE_RESULT;
+	data.servID = SERV_ID;
+	data.charNum = netData.charNum;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+void CManager::SendKillDeath(int _kill, int _death)
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_KILL;
+	data.servID = SERV_ID;
+	data.charNum = netData.charNum;
+	data.data_killDeath.value = _kill;
+	userInfo[netData.charNum].kill = _kill;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+
+
+	data.type = DATA_TYPE_DEATH;
+	data.servID = SERV_ID;
+	data.charNum = netData.charNum;
+	data.data_killDeath.value = _death;
+	userInfo[netData.charNum].death = _death;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+void CManager::SendKill(int _kill, int _id)
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_KILL;
+	data.servID = SERV_ID;
+	data.charNum = _id;
+	data.data_killDeath.value = _kill;
+	userInfo[_id].kill = _kill;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+void CManager::SendDeath(int _death, int _id)
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_DEATH;
+	data.servID = SERV_ID;
+	data.charNum = _id;
+	data.data_killDeath.value = _death;
+	userInfo[_id].kill = _death;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+int* CManager::getRanking()
+{
+	for (int count = 0; count < PLAYER_MAX; count++)
+	{
+		ranking[count] = 0;
+	}
+
+	int score[PLAYER_MAX];
+	int scoreID[PLAYER_MAX];
+
+	for (int count = 0; count < PLAYER_MAX; count++)
+	{
+		score[count] = userInfo[count].kill - userInfo[count].death;
+		scoreID[count] = count;
+	}
+
+
+
+	for (int sortCount = 0; sortCount < PLAYER_MAX; sortCount++)
+	{
+		for (int compareCount = PLAYER_MAX; compareCount > sortCount; compareCount--)
+		{
+			if (score[compareCount] > score[compareCount - 1])
+			{
+				int work = score[compareCount];
+				score[compareCount] = score[compareCount - 1];
+				score[compareCount - 1] = work;
+
+
+				work = scoreID[compareCount];
+				scoreID[compareCount] = scoreID[compareCount - 1];
+				scoreID[compareCount - 1] = work;
+			}
+		}
+	}
+
+	for (int count = 0; count < PLAYER_MAX; count++)
+	{
+		ranking[count] = scoreID[count];
+	}
+
+	return ranking;
 }
 //=============================================================================
 //	スレッド用の更新処理
@@ -372,6 +480,8 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 					{
 						//	データタイプに応じてプレイヤーへ情報をセット
 						CGame::SetPlayerState(data, DATA_TYPE_CANNON);
+
+						userInfo[data.charNum].cannon = data.data_cannon.flag;
 					}
 
 					break;
@@ -387,13 +497,64 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 
 					break;
 
+				case DATA_TYPE_KILL:
+
+					if (gameStartFlag == true)
+					{
+						userInfo[data.charNum].kill = data.data_killDeath.value;
+
+						CGame::SetPlayerState(data, DATA_TYPE_KILL);
+					}
+
+					break;
+
+				case DATA_TYPE_DEATH:
+
+					if (gameStartFlag == true)
+					{
+						userInfo[data.charNum].death = data.data_killDeath.value;
+
+						CGame::SetPlayerState(data, DATA_TYPE_DEATH);
+					}
+
+					break;
+
 				case DATA_TYPE_ENTRY:
 
 					if (gameStartFlag == false)
 					{
-						//	エントリー処理完了
-						//	識別番号を取得
-						netData.charNum = data.charNum;
+						if (entryFlag == false)
+						{
+							//	エントリー処理完了
+							//	識別番号を取得
+							netData.charNum = data.charNum;
+							entryFlag = true;
+
+							//	エントリーをセット
+							CConnection::setEntry(data.charNum);
+
+							//	他の参加者のエントリー情報をゲットする
+							data.type = DATA_TYPE_GET_ENTRY;
+							sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+						}
+						else
+						{
+							CConnection::setEntry(data.charNum);
+						}
+					}
+
+					break;
+
+				case DATA_TYPE_GET_ENTRY:
+
+					for (int count = 0; count < PLAYER_MAX; count++)
+					{
+						if (data.data_connection.entryFlag[count] == true)
+						{
+							CConnection::setEntry(count);
+						}
+						else
+							break;
 					}
 
 					break;
@@ -404,6 +565,32 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 					{
 						//	部屋が埋まっている
 						netWorkData.emptyFlag = true;
+					}
+
+					break;
+
+				case DATA_TYPE_CHANGE_GAME:
+
+					//	ゲームへ遷移
+					if (data.charNum == 0)
+					{
+						if (netData.charNum != 0)
+						{
+							CManager::ChangeScene(SCENE_GAME);
+						}
+					}
+
+					break;
+
+				case DATA_TYPE_CHANGE_RESULT:
+
+					//	ゲームへ遷移
+					if (data.charNum == 0)
+					{
+						if (netData.charNum != 0)
+						{
+							CManager::ChangeScene(SCENE_RESULT);
+						}
 					}
 
 					break;

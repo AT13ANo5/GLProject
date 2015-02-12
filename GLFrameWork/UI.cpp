@@ -62,6 +62,10 @@ CUI::CUI()
 	report = nullptr;
 	numberManager = nullptr;
 	Time = nullptr;
+	
+
+
+	myID = 0;
 }
 
 //=============================================================================
@@ -156,7 +160,7 @@ void CUI::Update(void)
 	if (player != nullptr){
 
 		// 装填ゲージ
-		const float currentTimer = (float)player[0]->ReloadTimer();
+		const float currentTimer = (float)player[myID]->ReloadTimer();
 		const float maxTimer = (float)PLAYER_RELOAD_TIME;
 		const float rate = currentTimer / maxTimer;
 
@@ -177,7 +181,7 @@ void CUI::Update(void)
 		miniMap->Update();
 
 		// ライフをプレイヤーから取得して表示
-		int lifeP = player[0]->PlayerLife();
+		int lifeP = player[myID]->PlayerLife();
 		life->SetLife(lifeP);
 	}
 

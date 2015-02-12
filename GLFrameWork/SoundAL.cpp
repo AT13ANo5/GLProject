@@ -135,7 +135,7 @@ void CSoundAL::Initialize(void)
 			Buffer[cnt].Buffer = alutCreateBufferFromFile(File[cnt].file);
 			if (Buffer[cnt].Buffer == 0)
 			{
-				MessageBox(nullptr,"バッファの作成に失敗しました",File[cnt].file,MB_OK);
+				//MessageBox(nullptr,File[cnt].file,"バッファの作成に失敗しました",MB_OK);
 			}
 		}
 		Buffer[cnt].loop = File[cnt].loop;

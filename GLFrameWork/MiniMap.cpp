@@ -8,6 +8,7 @@
 #include "MiniMap.h"
 #include "Polygon2D.h"
 #include "MeshGround.h"
+#include "Map2D.h"
 
 //============================================================================
 //スタティック変数
@@ -46,7 +47,7 @@ CMiniMap::CMiniMap()
 void CMiniMap::Init(void)
 {
 	MiniMapSize = VECTOR2(256.0f,256.0f);
-	Map = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH - MiniMapSize.x / 2.0f-5.0f,MiniMapSize.y / 2.0f+5.0f,0),MiniMapSize);
+	Map = CMap2D::Create(VECTOR3(SCREEN_WIDTH - MiniMapSize.x / 2.0f - 5.0f, MiniMapSize.y / 2.0f + 5.0f, 0), MiniMapSize);
 	Map->SetTex(CTexture::Texture(TEX_MINIMAP));
 	for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
 	{
@@ -86,3 +87,5 @@ void CMiniMap::SetPlayer(int id,const VECTOR3& pos,float rotY)
 		PlayerRot[id].z = -rotY+180.0f;
 	}
 }
+
+

@@ -24,16 +24,18 @@ public:
 	void Uninit(void);
 	void Update(void);
 
+	static void setEntry(int _charNum);
+
 private:
 
 	void recvUpdate();
 	void keyUpdate();
 
-	CPolygon2D* Logo;
-	CPolygon2D* backGround;
-	CPolygon2D** waitBackGround;
-	CPolygon2D** waitPlayer;
-	CPushStart* pushStart;
+	static CPolygon2D* Logo;
+	static CPolygon2D* backGround;
+	static CPolygon2D** waitBackGround;
+	static CPolygon2D** waitPlayer;
+	static CPushStart* pushStart;
 };
 
 #endif

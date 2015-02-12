@@ -105,6 +105,8 @@ public:
 
 	static CModel* GetModel(int id);
 
+ void SetDrawFlag(bool drawFlag){ DrawFlag = drawFlag; }
+
 private:
 	void LinkList(void);
 	void UnlinkList(void);
@@ -130,6 +132,7 @@ protected:
 	int MotionFrameNum;
 	int MotionID;
 	LPSTR FileName;
+ bool DrawFlag;
 
 	VECTOR3** MotionPos;
 	VECTOR3** MotionRot;

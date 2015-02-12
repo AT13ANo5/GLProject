@@ -36,6 +36,7 @@ CModel::CModel(int priority):CObject(3)
 	FileName = nullptr;
 	MotionPos = nullptr;
 	MotionRot = nullptr;
+ DrawFlag = true;
 
 	MotionFrameNum = 0;
 	MotionID = 0;
@@ -239,6 +240,10 @@ void CModel::Update(void)
 //=============================================================================
 void CModel::Draw(void)
 {
+ if(!DrawFlag)
+ {
+  return;
+ }
 	//ライティング無効
 	glEnable(GL_LIGHTING);
 	glDisable(GL_CULL_FACE);//カリングする

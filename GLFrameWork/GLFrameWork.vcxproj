@@ -106,6 +106,7 @@
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="LoadGauge.cpp" />
     <ClCompile Include="LoadString.cpp" />
+    <ClCompile Include="Map2D.cpp" />
     <ClCompile Include="MeshGround.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Number2D.cpp" />
@@ -128,7 +129,6 @@
     <ClCompile Include="ResultNumberManager.cpp" />
     <ClCompile Include="ResultSheet.cpp" />
     <ClCompile Include="ResultUIManager.cpp" />
-    <ClCompile Include="SandCloud.cpp" />
     <ClCompile Include="SoundAL.cpp" />
     <ClCompile Include="Splash.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -160,6 +160,7 @@
     <ClInclude Include="Life.h" />
     <ClInclude Include="LoadGauge.h" />
     <ClInclude Include="LoadString.h" />
+    <ClInclude Include="Map2D.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="netData.h" />
     <ClInclude Include="Number2D.h" />
@@ -183,7 +184,6 @@
     <ClInclude Include="ResultNumberManager.h" />
     <ClInclude Include="ResultSheet.h" />
     <ClInclude Include="ResultUIManager.h" />
-    <ClInclude Include="SandCloud.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SoundAL.h" />
     <ClInclude Include="Splash.h" />

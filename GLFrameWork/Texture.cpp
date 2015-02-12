@@ -12,12 +12,12 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/TeamLogo.dds",
 	"data/texture/Connection.dds",
 	"data/texture/Maro.tga",
+	"data/texture/youjo_yellow.dds",
 	"data/texture/youjo_blue.dds",
 	"data/texture/youjo_orange.dds",
 	"data/texture/youjo_red.dds",
 	"data/texture/youjo_green.dds",
 	"data/texture/youjo_white.dds",
-	"data/texture/youjo_yellow.dds",
 	"data/texture/youjo_network_bg.dds",
 	"data/texture/youjo_network_blue.dds",
 	"data/texture/youjo_network_cpu.dds",
@@ -53,7 +53,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/MiniMap.dds",
 	"data/texture/MiniMapArrow.dds",
 	"data/texture/explosion.tga",
-	"data/texture/sandCloud.tga"
+	"data/texture/minimapBG.dds",
+
 	};
 
 void CTexture::Initialize(void)
