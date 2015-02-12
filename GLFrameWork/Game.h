@@ -40,6 +40,7 @@ private:
 	static const float	RADIUS_PUSH_ROCK;			// 岩の押し戻し半径
 	static const float	HEIGHT_PUSH_ROCK;			// 岩の押し戻し中心高さ
 	static const float FIELD_PANEL_SIZE;			//フィールドのパネル一枚のサイズ
+	static const float	HEIGHT_PLAYER_TO_FIELD;		// プレイヤーと地面の差
 
 	static const float	RADIUS_AREA_BATTLE;			// 戦闘エリア半径
 	static const float	HEIGHT_WALL;				// 壁の高さ

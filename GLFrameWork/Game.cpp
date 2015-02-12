@@ -45,6 +45,7 @@ const float	CGame::HEIGHT_DEFENSE_ROCK = 45.0f;			// 岩の防御中心高さ
 const float	CGame::RADIUS_PUSH_ROCK = 45.0f;			// 岩の押し戻し半径
 const float	CGame::HEIGHT_PUSH_ROCK = 45.0f;			// 岩の押し戻し中心高さ
 const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
+const float	CGame::HEIGHT_PLAYER_TO_FIELD = 10.0f;		// プレイヤーと地面の差
 
 const float	CGame::RADIUS_AREA_BATTLE = 1000.0f;		// 戦闘エリア半径
 const float	CGame::HEIGHT_WALL = 500.0f;				// 壁の高さ
@@ -582,13 +583,26 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	// 地形とのあたり判定
 	VECTOR3	NormalGround;		// 地形の法線
 	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround);
+	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround) + HEIGHT_PLAYER_TO_FIELD;
 
+	//********************************************************
+	// 2015_02_12 姿勢制御用の処理を追加 ここから
+	//********************************************************
 	// 回転を求める
 	VECTOR3	vectorUp(0.0f, 1.0f, 0.0f);		// 上方向ベクトル
 	VECTOR3	vectorAxisRotation;				// 回転軸
 	float	rotation = 0.0f;				// 回転量
 	VECTOR3::Cross(&vectorAxisRotation, NormalGround, vectorUp);
+	if (vectorAxisRotation.x < FLT_EPSILON && vectorAxisRotation.x > -FLT_EPSILON)
+	{
+		if (vectorAxisRotation.z < FLT_EPSILON && vectorAxisRotation.z > -FLT_EPSILON)
+		{
+			if (vectorAxisRotation.y < FLT_EPSILON && vectorAxisRotation.y > -FLT_EPSILON)
+			{
+				vectorAxisRotation.y = 1.0f;
+			}
+		}
+	}
 	vectorAxisRotation.Normalize();
 	rotation = VECTOR3::Dot(NormalGround, vectorUp);
 	if (rotation > 2.0f * FLT_EPSILON || rotation < -2.0f * FLT_EPSILON)
@@ -604,6 +618,9 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	pObject->SetPosY(HeightGround);
 	pObject->SetAxisRotation(vectorAxisRotation);
 	pObject->SetRotationAxis(rotation);
+	//********************************************************
+	// 2015_02_12 姿勢制御用の処理を追加 ここまで
+	//********************************************************
 }
 
 //==============================================================================
