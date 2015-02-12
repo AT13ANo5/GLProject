@@ -129,7 +129,9 @@
     <ClCompile Include="ResultNumberManager.cpp" />
     <ClCompile Include="ResultSheet.cpp" />
     <ClCompile Include="ResultUIManager.cpp" />
+    <ClCompile Include="SandCloud.cpp" />
     <ClCompile Include="SoundAL.cpp" />
+    <ClCompile Include="Spark.cpp" />
     <ClCompile Include="Splash.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -184,8 +186,10 @@
     <ClInclude Include="ResultNumberManager.h" />
     <ClInclude Include="ResultSheet.h" />
     <ClInclude Include="ResultUIManager.h" />
+    <ClInclude Include="SandCloud.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SoundAL.h" />
+    <ClInclude Include="Spark.h" />
     <ClInclude Include="Splash.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />

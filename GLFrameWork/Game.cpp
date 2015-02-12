@@ -18,6 +18,7 @@
 #include "Billboard.h"
 #include "Effect3D.h"
 #include "Explosion.h"
+#include "Spark.h"
 #include "Polygon3D.h"
 #include "Texture.h"
 #include "BattleAreaCylinder.h"
@@ -610,7 +611,7 @@ void CGame::PushBackRock(void)
 					pPlayer->AddPosX(RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock);
 				}
 
-				// エフェクト：火花　プレイヤー同士のぶつかり
+				// エフェクト：火花　プレイヤーと岩のぶつかり
 			}
 		}
 	}
