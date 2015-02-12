@@ -23,7 +23,7 @@ const int kHeightMax = 400;
 const int kUpSpeed = 3;
 const int kDamageCntMax = 60;
 const float BARREL_ROTX_SPEED = 1.0f;
-const float PLAYER_ROTY_SPEED = 3.0f;
+const float PLAYER_ROTY_SPEED = 1.0f;
 //------------------------------------------------------------------------------
 // コンストラクタ
 //------------------------------------------------------------------------------
