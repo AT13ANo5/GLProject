@@ -71,6 +71,7 @@ private:
 	float DestVolume;
 	float SubVolume;
 	static int _Num;
+	bool _Loop;
 
 	void LinkList(void);
 	void UnlinkList(void);
@@ -98,6 +99,7 @@ public:
 	static void UpdateAll(void);
 	static void ReleaseAll(void);
 	static void FadeAll(int frame);
+	static void FadeBGM(int frame);
 
 
 	//------------------------------------アクセサ------------------------------------
@@ -172,6 +174,7 @@ public:
 	float Volume(void)const{ return _Volume; }
 	float MaxDistance(void)const{ return _MaxDistance; }
 	ALuint Source(void){ return Buffer[Type].Source[id]; }
+	bool Loop(void){ return _Loop; }
 
 	static VECTOR3 ListenerPos(void){ return _ListenerPos; }
 	static VECTOR3 ListenerSpeed(void){ return _ListenerSpeed; }

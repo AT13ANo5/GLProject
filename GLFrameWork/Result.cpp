@@ -77,7 +77,7 @@ void CResult::Init(void)
   UIManager = CResultUIManager::Create();
 
 	// SOUND
-  CSoundAL::Play(CSoundAL::BGM_RESULT);
+	CSoundAL::Play(CSoundAL::BGM_RESULT);
 
 	// Camera
 	CCamera* camera = CCamera::Camera(0);
@@ -115,6 +115,7 @@ void CResult::Update(void)
 	case PHASE_RESULTSHEET:
 
     if (CKeyboard::GetTrigger(DIK_RETURN)){
+		CSoundAL::Play(CSoundAL::SE_ENTER);
       Phase = PHASE_END;
       UIManager->SetResultSheetDisable();
       UIManager->SetResultNumberDisable();
@@ -124,6 +125,7 @@ void CResult::Update(void)
 
 	case PHASE_END:
 		if (CKeyboard::GetTrigger(DIK_RETURN)){
+			CSoundAL::Play(CSoundAL::SE_ENTER);
 			CManager::ChangeScene(SCENE_TITLE);
 		}
 		break;

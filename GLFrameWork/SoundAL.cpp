@@ -248,6 +248,7 @@ void CSoundAL::Init(void)
 	{
 		_Volume *= 0.5f;
 	}
+	_Loop = Buffer[Type].loop;
 	alSourcef(Buffer[Type].Source[id],AL_GAIN,_Volume);
 	alSourcef(Buffer[Type].Source[id],AL_MIN_GAIN,0.0f);
 	alSourcef(Buffer[Type].Source[id],AL_MAX_GAIN,_Volume);
@@ -315,7 +316,7 @@ void CSoundAL::Update(void)
 		break;
 	}
 
-	//alSourcef(Buffer[Type].Source[id],AL_GAIN,_Volume*_MasterVolume);
+	alSourcef(Buffer[Type].Source[id],AL_GAIN,_Volume*_MasterVolume);
 
 	if (AutoRelease)
 	{
@@ -422,6 +423,22 @@ void CSoundAL::FadeAll(int frame)
 		sound = sound->Next;
 	}
 }
+
+void CSoundAL::FadeBGM(int frame)
+{
+	CSoundAL* sound = Top;
+
+	while (sound)
+	{
+		if (sound->Loop())
+		{
+			sound->SetFade(0,frame,true);
+		}
+
+		sound = sound->Next;
+	}
+}
+
 
 float CSoundAL::GetDuration(ALuint buffer)
 {
