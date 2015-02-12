@@ -29,7 +29,6 @@ public:
 private:
   static const float  RADIUS_SKY;   // ‹ó‚Ì”¼Œa
 
-  CPolygon2D*   Logo;
   CModel*       Player;
   CMeshGround*  Ground;       // ’nŒ`
   CMeshSphere*  Sky;          // ‹ó

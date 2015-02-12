@@ -27,7 +27,7 @@ namespace{
 CResultSheet::CResultSheet() :CPolygon2D()
 {
   drawFlag = true;
-//  Alpha = 1.0f;
+	alphaMax = 1.0f;
 }
 
 //=============================================================================
@@ -51,16 +51,30 @@ CResultSheet* CResultSheet::Create(const VECTOR3& pos,const VECTOR2& size,const 
 void CResultSheet::Update(void)
 {
   if (drawFlag == true){
-    if (Color().a < 1.0f){
-      float alpha = Color().a + ALPHA_MOVE_SPEED;
-      _Color.a = alpha;
-    }
-  }else {
-    if (Color().a > 0.0f){
-      float alpha = Color().a - ALPHA_MOVE_SPEED;
-      _Color.a = alpha;
-    }
-  }
+		if (Color().a < alphaMax){
+			float alpha = Color().a + ALPHA_MOVE_SPEED;
+			if (alpha >= alphaMax){
+				alpha = alphaMax;
+			}
+			_Color.a = alpha;
+		}
+	}else {
+		if (Color().a > 0.0f){
+			float alpha = Color().a - ALPHA_MOVE_SPEED;
+			_Color.a = alpha;
+		}
+	}
 }
+
+//=============================================================================
+// SetColor
+//-----------------------------------------------------------------------------
+// col	:	êF
+//=============================================================================
+void CResultSheet::SetColor(COLOR col)
+{
+	_Color = col;
+}
+
 
 // end of file

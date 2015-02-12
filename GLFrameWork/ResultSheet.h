@@ -42,10 +42,14 @@ public:
 	void DrawEnable(void){ drawFlag = true; }
 	void DrawDisable(void){ drawFlag = false; }
 
+	// color
+	void SetColor(COLOR col);
+	void SetAlphaMax(float al){ alphaMax = al; }
+
 private:
 
-  bool  drawFlag;
-
+	bool		drawFlag;
+	float		alphaMax;
 };
 
 #endif
