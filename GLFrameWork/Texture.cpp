@@ -54,7 +54,7 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/MiniMapArrow.dds",
 	"data/texture/explosion.tga",
 	"data/texture/minimapBG.dds",
-
+	"data/texture/naritada.dds",
 	};
 
 void CTexture::Initialize(void)

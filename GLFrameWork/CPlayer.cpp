@@ -19,6 +19,7 @@
 #include "Ballistic.h"
 #include "ManagerGL.h"
 #include "Explosion.h"
+#define NARI_SCL (15.0f)
 const int kHeightMax = 400;
 const int kUpSpeed = 3;
 const int kDamageCntMax = 60;
@@ -94,7 +95,9 @@ void CPlayer::Init(void)
 	Barrel->Init();
 	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW));
 
-
+ _nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
+ _nari->SetTex(CTexture::Texture(TEX_NARITADA));
+ _nari->SetAlpha(0.0f);
 	//‚‚³‰Šú‰»
 	_Hegiht = 0;
 	// ‘Ì—Í
@@ -162,6 +165,8 @@ void CPlayer::Update()
 		{
 			_State = PLAYER_STATE_WAIT;
 			_Feed->SetAlpha(0);
+   _nari->SetAlpha(0.0f);
+
 		}
 		return;
 	}
@@ -421,6 +426,7 @@ void CPlayer::ReleaseBullet(void)
 	if (_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
+  SafeRelease(_nari);
 		_BulletUseFlag = false;
 	}
 }
@@ -466,10 +472,13 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
-
+  _nari->SetAlpha(1.0f);
 
 		if (_charNum == CManager::netData.charNum)
 			_Feed->SetAlpha(0);
+  VECTOR3 pos = _Pos;
+  pos.y += kHeightMax - 100;
+  _nari->SetPos(pos);
 	}
 }
 //------------------------------------------------------------------------------
@@ -490,9 +499,9 @@ void CPlayer::SetRespawn(void)
 
 	if (PlayerID == CManager::netData.charNum)
 		_Feed->SetAlpha(1);
-	
-	Movement = VECTOR3(0,0,0);
+ _nari->SetPos(_PlayerRespown);
 
+	Movement = VECTOR3(0,0,0);
 
 
 	Barrel->SetPos(_Pos);			// ˆÊ’u
