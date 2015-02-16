@@ -51,9 +51,11 @@ typedef struct
 //----------------------------------------------------------------
 typedef struct
 {
-	float rotX;
-	float rotY;
-	float rotZ;
+	float X;
+	float Y;
+	float Z;
+	float rot;
+	float yRotation;
 
 }DATA_ROT;
 //----------------------------------------------------------------
@@ -114,7 +116,7 @@ typedef struct {
 } USER_INFO;
 //----------------------------------------------------------------
 
-static const int SERV_ID = 256;
+static const int SERV_ID = 128;
 
 #endif
 
