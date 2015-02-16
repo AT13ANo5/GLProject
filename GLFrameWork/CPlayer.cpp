@@ -135,7 +135,8 @@ void CPlayer::Update()
 
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
-		CManager::SendRot(_Rot);
+		//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
 		CManager::SendCannonRot(Barrel->Rot());
 
 
@@ -159,7 +160,8 @@ void CPlayer::Update()
 
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
-		CManager::SendRot(_Rot);
+		//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
 		CManager::SendCannonRot(Barrel->Rot());
 
 
@@ -340,7 +342,8 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	CManager::SendPos(_Pos);
-	CManager::SendRot(_Rot);
+	//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 	CManager::SendCannonRot(Barrel->Rot());
 
 #ifdef _DEBUG
@@ -510,7 +513,8 @@ void CPlayer::SetRespawn(void)
 
 	Barrel->SetPos(_Pos);			// ˆÊ’u
 	CManager::SendPos(_Pos);
-	CManager::SendRot(_Rot);
+	//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
 	CManager::SendCannonRot(Barrel->Rot());
 	CManager::SendCannon(LaunchFlag);
 
