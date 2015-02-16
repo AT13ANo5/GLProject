@@ -29,6 +29,14 @@ public:
   void Update(VECTOR3 pos, VECTOR3 rot);
 
 	static CBallistic* Create(COLOR color);
+	
+	void SetDrawFlag(bool drawFlag)
+	{
+		for(int i = 0; i < MARK_MAX; i++)
+		{
+			BallisticMark[i]->SetDrawFlag(drawFlag);
+		}
+	}
 
 private:
   CBillboard* BallisticMark[MARK_MAX]; // íeìπÇÃÉ}Å[ÉN
