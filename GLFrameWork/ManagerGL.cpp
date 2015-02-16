@@ -274,15 +274,20 @@ void CManager::SendPos(VECTOR3 _pos)
 //=============================================================================
 //	âÒì]ëóêMèàóù
 //=============================================================================
-void CManager::SendRot(VECTOR3 _rot)
+void CManager::SendRot(float _X, float _Y, float _Z, float _rot, float _yRotation)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_ROT;
 	data.servID = SERV_ID;
 	data.charNum = netData.charNum;
-	data.data_rot.rotX = _rot.x;
-	data.data_rot.rotY = _rot.y;
-	data.data_rot.rotZ = _rot.z;
+	/*data.data_rot.X = _X;
+	data.data_rot.Y = _Y;
+	data.data_rot.Z = _Z;
+	data.data_rot.rot = _rot;
+	data.data_rot.rot = _yRotation;*/
+	data.data_rot.rotX = _X;
+	data.data_rot.rotY = _Y;
+	data.data_rot.rotZ = _Z;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
