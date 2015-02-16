@@ -10,6 +10,7 @@
 #include "CPushStart.h"
 #include "SoundAL.h"
 #include <math.h>
+#include "TitleDirection.h"
 
 // static member
 const float CTitle::RADIUS_SKY = 500.0f;   // ‹ó‚Ì”¼Œa
@@ -32,8 +33,10 @@ CTitle::~CTitle()
 void CTitle::Init(void)
 {
 	// Logo
-	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 3.0f,0),VECTOR2(750.0f,375.0f));
-	Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
+	//Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 3.0f,0),VECTOR2(750.0f,375.0f));
+	//Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
+
+	TitleD->Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3.0f, 0), VECTOR2(750.0f, 375.0f));
 
 	// pushenter
 	PushEnter = CPushStart::Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 1.25f, 0), VECTOR2(400.0f, 64.0f));
@@ -118,6 +121,7 @@ void CTitle::Update(void)
 	}
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
+		CSoundAL::Play(CSoundAL::SE_ENTER);
 		CManager::ChangeScene(SCENE_CONNECTION);
 	}
 }

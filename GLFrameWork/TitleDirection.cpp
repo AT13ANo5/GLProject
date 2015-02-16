@@ -1,80 +1,104 @@
 //=============================================================================
 //
-// 成績表 [ResultSheet.h]
+// タイトル演出
 //
-// Auther : masato masuda
+// Auther : Takahiro Kikushima
 //
 //=============================================================================
 
 //=============================================================================
 // include
 //=============================================================================
-#include "ResultSheet.h"
-#include <math.h>
+#include "TitleDirection.h"
 #include "Texture.h"
+//#include "Model.h"
+#include "CPlayer.h"
+#include "PlayerCamera.h"
+#include "ManagerGL.h"
+
+
+CPolygon2D* Title = nullptr;
+CPolygon2D* Word = nullptr;
+CPlayer* Model = nullptr;
 
 //=============================================================================
 // macro
 //=============================================================================
 namespace{
-  const float ALPHA_MOVE_SPEED = 0.05f;
 }
 
 
 //=============================================================================
 // constructor
 //=============================================================================
-CResultSheet::CResultSheet() :CPolygon2D()
+CTitleDirection::CTitleDirection() :CPolygon2D()
 {
-  drawFlag = true;
-	alphaMax = 1.0f;
+	number = 0;
+	drawFlag = true;
+	Size = VECTOR2(833.33f,166.66f);
+	Count = 0;
+	UDflag = false;
+}
+
+void CTitleDirection::Init(void)
+{
 }
 
 //=============================================================================
 // create
 //=============================================================================
-CResultSheet* CResultSheet::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
+CTitleDirection* CTitleDirection::Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot, const COLOR& color)
 {
-	CResultSheet* Scene = new CResultSheet;
-	Scene->_Pos = pos;
-	Scene->_Rot = rot;
-	Scene->_Size = size;
-	Scene->_Color = color;
-	Scene->Init();
+	CTitleDirection* Title = new CTitleDirection;
+	Title->_Size = size;
+	Title->_Rot = rot;
+	Title->_Size = size;
+	Title->_Color = color;
+	Title->Init();
 
-	return Scene;
+	Word = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/2,0,0),VECTOR2(Title->Size.x,Title->Size.y));
+	Word->SetTex(CTexture::Texture(TEX_TITLELOGO));
+
+	return Title;
 }
 
 //=============================================================================
 // update
 //=============================================================================
-void CResultSheet::Update(void)
+void CTitleDirection::Update(void)
 {
-  if (drawFlag == true){
-		if (Color().a < alphaMax){
-			float alpha = Color().a + ALPHA_MOVE_SPEED;
-			if (alpha >= alphaMax){
-				alpha = alphaMax;
-			}
-			_Color.a = alpha;
+	Count++;
+
+	if (Count <= 120)
+	{
+		Word->AddPos(0, 1.5f, 0);
+		Word->AddSize(1.5f, 1.5f);
+	}
+	if (Count >= 120)
+	{
+		if (UDflag == true)
+		{
+			Word->AddSize(-1.0f, -1.0f);
 		}
-	}else {
-		if (Color().a > 0.0f){
-			float alpha = Color().a - ALPHA_MOVE_SPEED;
-			_Color.a = alpha;
+		else
+		{
+			Word->AddSize(1.0f, 1.0f);
+		}
+
+		if (Count >= 180)
+		{
+			Count = 120;
+			UDflag = !UDflag;
 		}
 	}
 }
 
 //=============================================================================
-// SetColor
-//-----------------------------------------------------------------------------
-// col	:	色
+// draw
 //=============================================================================
-void CResultSheet::SetColor(COLOR col)
+void CTitleDirection::Draw(void)
 {
-	_Color = col;
-}
 
+}
 
 // end of file

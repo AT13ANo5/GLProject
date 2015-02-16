@@ -32,7 +32,7 @@ public:
 	void SetEye(float posx,float posy,float posz){_Eye.x = posx;_Eye.y = posy;_Eye.z = posz;}
 	void SetEye(const VECTOR3& pos){_Eye = pos;}
 	void SetLookat(float posx,float posy,float posz){_Lookat.x = posx;_Lookat.y = posy;_Lookat.z = posz;}
-	void SetLookat(VECTOR3& pos){_Lookat = pos;}
+	void SetLookat(const VECTOR3& pos){_Lookat = pos;}
 	void SetUpVec(float vecx,float vecy,float vecz){_UpVec.x = vecx,_UpVec.y = vecy,_UpVec.z = vecz;}
 	void SetUpVec(VECTOR3& vec){_UpVec = vec;}
 	

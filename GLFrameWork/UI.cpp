@@ -124,7 +124,6 @@ void CUI::Init(void)
 	//ミニマップの初期化
 	miniMap = new CMiniMap;
 	miniMap->Init();
-	CMiniMap::SetFieldSize(VECTOR3(0,0,0));//サイズ仮置き
 }
 
 //=============================================================================

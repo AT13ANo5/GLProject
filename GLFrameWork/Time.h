@@ -38,6 +38,8 @@ public:
 private:
 	int TimeCount;
 	int Timer;
+	VECTOR3 Pos;
+	VECTOR2 Size;
 	float x;//vtx—p
 	float y;//vtx—p
 };

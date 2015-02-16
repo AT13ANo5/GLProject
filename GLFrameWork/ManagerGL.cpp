@@ -436,6 +436,13 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 						//	データタイプに応じてプレイヤーへ情報をセット
 						CGame::SetPlayerState(data, DATA_TYPE_POS);
 
+						if (data.data_pos.posX > 1000.0f || data.data_pos.posX < -1000.0f ||
+							data.data_pos.posZ > 1000.0f || data.data_pos.posZ < -1000.0f ||
+							data.data_pos.posY > 500.0f || data.data_pos.posY < -1000.0f)
+						{
+							Console::Print("posError!!\n");
+						}
+
 						//	位置情報セット
 						userInfo[data.charNum].pos.x = data.data_pos.posX;
 						userInfo[data.charNum].pos.y = data.data_pos.posY;
@@ -539,6 +546,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 						}
 						else
 						{
+							CSoundAL::Play(CSoundAL::SE_ENTRY);
 							CConnection::setEntry(data.charNum);
 						}
 					}
@@ -576,6 +584,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 					{
 						if (netData.charNum != 0)
 						{
+							CSoundAL::Play(CSoundAL::SE_GAME_START);
 							CManager::ChangeScene(SCENE_GAME);
 						}
 					}
@@ -718,8 +727,8 @@ void CManager::ChangeScene(short next)
 {
 	if (CFade::Instance().State() == CFade::FADE_NONE&&ChangeFlag == false)
 	{
-		CFade::Set(1.0f, 30);
-		CSoundAL::FadeAll(20);
+		CFade::Set(1.0f, 60);
+		CSoundAL::FadeBGM(50);
 		NextScene = next;
 		ChangeFlag = true;
 	}

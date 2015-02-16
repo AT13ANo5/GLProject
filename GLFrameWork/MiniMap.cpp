@@ -48,6 +48,7 @@ void CMiniMap::Init(void)
 {
 	MiniMapSize = VECTOR2(256.0f,256.0f);
 	Map = CMap2D::Create(VECTOR3(SCREEN_WIDTH - MiniMapSize.x / 2.0f - 5.0f, MiniMapSize.y / 2.0f + 5.0f, 0), MiniMapSize);
+	Map->SetRotZ(180.0f);
 	Map->SetTex(CTexture::Texture(TEX_MINIMAP));
 	for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
 	{

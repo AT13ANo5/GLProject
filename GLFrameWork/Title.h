@@ -10,6 +10,7 @@ class CMeshGround;
 class CMeshSphere;
 class CCamera;
 class CPushStart;
+class CTitleDirection;
 
 class CTitle :public CScene
 {
@@ -31,6 +32,8 @@ private:
   CMeshGround*  Ground;   // ’nŒ`
   CMeshSphere*  Sky;      // ‹ó
   CCamera* Camera;
+  CTitleDirection* TitleD;
+
   float CameraRotation;
 };
 #endif

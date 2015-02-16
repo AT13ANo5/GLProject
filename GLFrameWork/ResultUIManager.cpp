@@ -19,7 +19,8 @@ namespace{
   // sheet
   const float   RESULT_SHEET_SCALE = 1.0f;
   const VECTOR2 RESULT_SHEET_SIZE = VECTOR2(SCREEN_WIDTH * RESULT_SHEET_SCALE, 256.0f * RESULT_SHEET_SCALE);
-  const VECTOR3 RESULT_SHEET_POS = VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f + 200.0f, 0);
+	const VECTOR2 RESULT_SHEET_BASE_SIZE = VECTOR2(RESULT_SHEET_SIZE.x * 0.95f, RESULT_SHEET_SIZE.y * 1.1f);
+	const VECTOR3 RESULT_SHEET_POS = VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f + 200.0f, 0);
 
   // name
   const float   NAME_SCALE = 1.2f;
@@ -37,7 +38,9 @@ namespace{
 //=============================================================================
 CResultUIManager::CResultUIManager() :CObject(LAYER_NUM - 2)
 {
+	Logo = nullptr;
   ResultSheet = nullptr;
+	ResultSheetBase = nullptr;
   ResultNumber = nullptr;
   memset(PlayerName, NULL, sizeof(PlayerName));
 }
@@ -58,10 +61,19 @@ CResultUIManager* CResultUIManager::Create(void)
 //=============================================================================
 void CResultUIManager::Init(void)
 {
-  // ¬Ñ•\
-  ResultSheet = CResultSheet::Create(RESULT_SHEET_POS, RESULT_SHEET_SIZE);
-  ResultSheet->SetTex(CTexture::Texture(TEX_RESULT_TEXT));
-  ResultSheet->SetAlpha(0.0f);
+	// logo
+	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f - 300.0f, 0), VECTOR2(512.0f, 128.0f));
+	Logo->SetTex(CTexture::Texture(TEX_RESULT_LOGO));
+
+	// ¬Ñ•\‚Ì”wŒi
+	ResultSheetBase = CResultSheet::Create(RESULT_SHEET_POS, RESULT_SHEET_BASE_SIZE);
+	ResultSheetBase->SetColor(COLOR(0.0f, 0.0f, 0.0f, 0.3f));
+	ResultSheetBase->SetAlphaMax(0.4f);
+
+	// ¬Ñ•\
+	ResultSheet = CResultSheet::Create(RESULT_SHEET_POS, RESULT_SHEET_SIZE);
+	ResultSheet->SetTex(CTexture::Texture(TEX_RESULT_TEXT));
+	ResultSheet->SetAlpha(0.0f);
 
   // ¬Ñ•\‚Ì”Ô†
   ResultNumber = CResultNumberManager::Create();
@@ -112,6 +124,7 @@ void CResultUIManager::Draw(void)
 void CResultUIManager::SetResultSheetDisable(void)
 {
   ResultSheet->DrawDisable();
+	ResultSheetBase->DrawDisable();
 }
 
 //=============================================================================

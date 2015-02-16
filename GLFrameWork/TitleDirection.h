@@ -1,16 +1,16 @@
 //=============================================================================
 //
-// 成績表 [ResultSheet.h]
+// タイトル演出
 //
-// Auther : masato masuda
+// Auther : Takahiro Kikushima
 //
 //=============================================================================
 
 //=============================================================================
 // include guard
 //=============================================================================
-#ifndef _RESULT_SHEET_H_
-#define _RESULT_SHEET_H_
+#ifndef _TITLE_DIRECTION_H_
+#define _TITLE_DIRECTION_H_
 
 //=============================================================================
 // include
@@ -21,12 +21,18 @@
 //=============================================================================
 // class
 //=============================================================================
-class CResultSheet :public CPolygon2D
+class CTitleDirection :public CPolygon2D
 {
 public:
-	CResultSheet();
-	~CResultSheet(){}
+
+	CTitleDirection();
+	~CTitleDirection(){}
+
 	void Update(void);
+	void Init(void);
+	void Draw(void);
+
+	void SetAlpha(float a){ _Color.a = a; }
 
 	//===========================================================================
 	// Create
@@ -36,20 +42,19 @@ public:
 	//	VECTOR3 ： 回転
 	//	COLOR   ： 頂点カラー
 	//===========================================================================
-	static CResultSheet* Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot=VECTOR3(0,0,0),const COLOR& color=COLOR(1.0f,1.0f,1.0f,1.0f));
+	static CTitleDirection* Create(const VECTOR3& pos, const VECTOR2& size, const VECTOR3& rot = VECTOR3(0, 0, 0), const COLOR& color = COLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
-	// Geter / Seter
-	void DrawEnable(void){ drawFlag = true; }
-	void DrawDisable(void){ drawFlag = false; }
+	void SetDrawFlag(bool flag){ drawFlag = flag; }
+	void DrawDisable(void);
 
-	// color
-	void SetColor(COLOR col);
-	void SetAlphaMax(float al){ alphaMax = al; }
 
 private:
 
-	bool		drawFlag;
-	float		alphaMax;
+	int   number;
+	bool  drawFlag;
+	VECTOR2	Size;
+	bool	UDflag;
+	int Count;
 };
 
 #endif

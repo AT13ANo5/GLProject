@@ -54,8 +54,10 @@ public:
 
 protected:
 
-  CResultSheet* ResultSheet;  // 成績表
-  CResultNumberManager* ResultNumber;  // 成績表番号
+	CPolygon2D*						Logo;								// リザルト文字
+	CResultSheet*					ResultSheet;				// 成績表
+	CResultSheet*					ResultSheetBase;		// 成績表
+	CResultNumberManager*	ResultNumber;				// 成績表番号
   CResultSheet* PlayerName[PLAYER_MAX];
 
 };
