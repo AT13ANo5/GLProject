@@ -72,6 +72,8 @@ public:
 	VECTOR2 Size(void)const{return _Size;}
 	UV Uv(void)const{ return uv; }
 
+	void SetDrawFlag(bool drawFlag){DrawFlag = drawFlag;}	// 描画フラグセッター
+
 private:
 
 	UV uv;
@@ -80,6 +82,8 @@ private:
 	MATERIAL Material;
 
 	void ResizeVtx(void);
+
+	bool DrawFlag;											// 描画フラグ（2015/02/16 宗像）
 
 protected:
 	VECTOR2 _Size;

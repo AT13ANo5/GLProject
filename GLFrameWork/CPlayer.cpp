@@ -60,6 +60,7 @@ CPlayer::~CPlayer()
 {
 	SafeDelete(Ballistic);
 	SafeDelete(_Feed);
+	SafeRelease(_nari);
 }
 
 //------------------------------------------------------------------------------
@@ -166,6 +167,7 @@ void CPlayer::Update()
 			_State = PLAYER_STATE_WAIT;
 			_Feed->SetAlpha(0);
    _nari->SetAlpha(0.0f);
+			Ballistic->SetDrawFlag(true);
 
 		}
 		return;
@@ -349,16 +351,22 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	// ライフの減算
-	if (CKeyboard::GetPress(DIK_L))
+	if (CKeyboard::GetTrigger(DIK_L))
 	{
 		this->AddPlayerLife(-1);
 		_State = PLAYER_STATE_DAMAGE;
 	}
 
 	// 弾の削除確認
-	if (CKeyboard::GetPress(DIK_M))
+	if (CKeyboard::GetTrigger(DIK_M))
 	{
 		this->ReleaseBullet();
+	}
+
+	// タイマー即回復
+	if (CKeyboard::GetTrigger(DIK_K))
+	{
+		_ReloadTimer = PLAYER_RELOAD_TIME;
 	}
 
 #endif
@@ -407,6 +415,14 @@ void CPlayer::UpdateCPU(void)
 	}
 }
 
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
+// 引数
+//  なし
+// 戻り値
+//  なし
+//------------------------------------------------------------------------------
 void CPlayer::setBarrelRot(VECTOR3 _rot)
 {
 	Barrel->SetRot(_rot);			// 回転
@@ -426,7 +442,6 @@ void CPlayer::ReleaseBullet(void)
 	if (_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
-  SafeRelease(_nari);
 		_BulletUseFlag = false;
 	}
 }
@@ -474,6 +489,8 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 		_PlayerRespown = pos;
   _nari->SetAlpha(1.0f);
 
+		Ballistic->SetDrawFlag(false);	// 弾道を非表示に
+
 		if (_charNum == CManager::netData.charNum)
 			_Feed->SetAlpha(0);
   VECTOR3 pos = _Pos;
@@ -496,6 +513,7 @@ void CPlayer::SetRespawn(void)
 	_PlayerRespown.y += kHeightMax;
 	SetPos(_PlayerRespown);
 	_PlayerLife = PLAYER_LIFE;
+	_ReloadTimer = PLAYER_RELOAD_TIME;
 
 	if (PlayerID == CManager::netData.charNum)
 		_Feed->SetAlpha(1);
@@ -515,11 +533,10 @@ void CPlayer::SetRespawn(void)
 // 加算処理
 //------------------------------------------------------------------------------
 // 引数
-// addVal			: ライフ
+// addVal	: ライフ
 // 戻り値
 // なし
 //------------------------------------------------------------------------------
-
 void CPlayer::AddPlayerLife(int addVal)
 {
 	if (_Timer != 0 || _State != PLAYER_STATE_DAMAGE)
@@ -530,10 +547,12 @@ void CPlayer::AddPlayerLife(int addVal)
 			_PlayerLife = 0;
 		}
 		else
+		{
 			if (_PlayerLife > PLAYER_LIFE)
 			{
 				_PlayerLife = PLAYER_LIFE;
 			}
+		}
 	}
 }
 
