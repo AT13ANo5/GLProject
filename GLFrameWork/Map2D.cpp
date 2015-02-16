@@ -34,10 +34,11 @@ void CMap2D::Init(void)
 	MaterialStencil.emission = COLOR(0, 0, 0, 1.0f);
 	MaterialStencil.shininess = 0.0f;
 
-	VtxStencil[0] = VECTOR3(_Size.x / 2, -_Size.y / 2.0f, 0);
-	VtxStencil[1] = VECTOR3(-_Size.x / 2, -_Size.y / 2.0f, 0);
-	VtxStencil[2] = VECTOR3(_Size.x / 2, _Size.y / 2.0f, 0);
-	VtxStencil[3] = VECTOR3(-_Size.x / 2, _Size.y / 2.0f, 0);
+	const float scl = 0.49f;
+	VtxStencil[0] = VECTOR3(_Size.x * scl, -_Size.y * scl, 0);
+	VtxStencil[1] = VECTOR3(-_Size.x * scl, -_Size.y * scl, 0);
+	VtxStencil[2] = VECTOR3(_Size.x * scl, _Size.y * scl, 0);
+	VtxStencil[3] = VECTOR3(-_Size.x * scl, _Size.y * scl, 0);
 
 	SetTex2(CTexture::Texture(TEX_MINIMAP_BG));
 

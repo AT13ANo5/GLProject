@@ -21,7 +21,7 @@
 namespace{
   const float   NUMBER_SCAL = 0.5f;
   const VECTOR2 NUMBER_SIZE = VECTOR2(128.0f*NUMBER_SCAL, 100.0f*NUMBER_SCAL); // 128 100
-  const VECTOR3 PLAYER_1_POS = VECTOR3(450.0f + 60.0f, 231.0f, 0.0f);
+  const VECTOR3 PLAYER_1_POS = VECTOR3(450.0f + 60.0f, 231.0f + 30.0f, 0.0f);
   const VECTOR2 DEATH_POS_ADD = VECTOR2(290.0f, NUMBER_SIZE.y + 17.0f);
 }
 
@@ -65,7 +65,7 @@ void CNumberManager::Init(void)
       number[num]._kill[figure]->SetNumber(0);
       number[num]._death[figure]->SetNumber(0);
     }
-    SetNumber((TYPE)num, num * 1, num * 10);
+    SetNumber((TYPE)num, 0, 0);
   }
 }
 
@@ -139,7 +139,7 @@ void CNumberManager::SetDrawFlag(bool flag)
       number[num]._death[figure]->SetDrawFlag(flag);
     }
     if (flag == true){
-      SetNumber((TYPE)num, num * 1, num * 10);
+//      SetNumber((TYPE)num, num * 1, num * 10);
     }
   }
 }
