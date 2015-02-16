@@ -15,6 +15,7 @@
 //=============================================================================
 #include "main.h"
 #include "Renderer.h"
+#include "NumberManager.h"
 
 class CLife;
 class CMiniMap;
@@ -25,6 +26,7 @@ class CNumber2D;
 class CReport;
 class CNumberManager;
 class CTime;
+class CPolygon2D;
 
 
 //=============================================================================
@@ -42,18 +44,24 @@ public:
 	void Uninit(void);
 	void Update(void);
 
+	// getter setter
 	// player
 	void SetPlayer(CPlayer** p){ player = p; }
 
+	// minimap
 	CMiniMap* MiniMap(void){return miniMap;}
 
+	//=============================================================================
+	// SetNumber
+	//-----------------------------------------------------------------------------
+	//  type  :  タイプ, kill  :  KILL数, DEATH  :  DEATH数
+	//  typeは(CNumberManager::TYPE)にキャストして使ってね
+	//=============================================================================
+	void SetNumber(CNumberManager::TYPE type, int kill, int death);
 
-
-	void setMyID(int _id)
-	{
+	void setMyID(int _id){
 		myID = _id;
 	}
-
 
 
 private:
@@ -67,10 +75,9 @@ private:
 	CReport*        report;
 	CNumberManager* numberManager;
 	CTime*					Time;
+	CPolygon2D*			timeFrame;
 
 	CPlayer**				player;
-
-
 
 	int myID;
 

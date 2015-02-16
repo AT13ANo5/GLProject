@@ -57,7 +57,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/sandCloud.tga",
 	"data/texture/minimapBG.dds",
 	"data/texture/naritada.dds",
-	};
+	"data/texture/timer.tga",
+};
 
 void CTexture::Initialize(void)
 {

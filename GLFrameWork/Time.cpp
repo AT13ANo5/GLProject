@@ -1,6 +1,7 @@
 //=============================================================================
-//	タイムクラス
-//	Tkahiro Kikushima
+//2Dライフクラス
+//	Kikushima
+//	Masato Masuda
 //=============================================================================
 
 //=============================================================================
@@ -12,22 +13,28 @@
 #include "Time.h"
 #include "Number2D.h"
 
-CNumber2D* Nomber[3] = { nullptr };
+//=============================================================================
+// マクロ
+//=============================================================================
+namespace{
+	const int MAX_TIME = 180;
+	const int LIMIT_TIME = 10;
+	const COLOR COLOR_NORMAL = COLOR(0.2f, 0.8f, 0.2f, 1.0f);
+	const COLOR COLOR_HALF = COLOR(0.85f, 0.7f, 0.2f, 1.0f);
+	const COLOR COLOR_LIMIT = COLOR(0.8f, 0.2f, 0.2f, 1.0f);
+}
+
+
+//CNumber2D* Nomber[MAX_DIGIT] = { nullptr };
 //=============================================================================
 //コストラクタ
 //=============================================================================
 CTime::CTime()
 {
-	_Pos.x =
-		_Pos.y =
-		_Pos.z = 0;
+	_Pos = VECTOR3(0.0f, 0.0f, 0.0f);
+	_Rot = VECTOR3(0.0f, 0.0f, 0.0f);
 
-	_Rot.x =
-		_Rot.y =
-		_Rot.z = 0;
-
-	x =
-		y = 0;
+	memset(Nomber, NULL, sizeof(Nomber));
 }
 //=============================================================================
 //初期化
@@ -37,13 +44,13 @@ void CTime::Init(void)
 //	CPolygon2D::Init();
 
 	TimeCount = 0;
-	Timer = 300;
+	Timer = MAX_TIME;
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < MAX_DIGIT; i++)
 	{
-		Nomber[i] = CNumber2D::Create(VECTOR3(Pos.x+(i * 80.0f), Pos.y, Pos.z),Size);
+		Nomber[i] = CNumber2D::Create(VECTOR3(Pos.x + (i * (Size.x*0.8f)), Pos.y, Pos.z), Size);
 		Nomber[i]->SetTex((CTexture::Texture(TEX_NUMBER)));
-		Nomber[i]->SetColor(COLOR(0.2f,0.7f,0.2f,1.0f));
+		Nomber[i]->SetColor(COLOR_NORMAL);
 	}
 
 }
@@ -72,7 +79,12 @@ void CTime::Uninit(void)
 //=============================================================================
 void CTime::Update(void)
 {
-	//CPolygon2D::AddSize(x, y);
+	// color
+	if (Timer == LIMIT_TIME){
+		SetColor(COLOR_LIMIT);
+	}else if (Timer == (MAX_TIME / 2)){
+		SetColor(COLOR_HALF);
+	}
 
 	TimeCount++;
 	if (TimeCount == 60)
@@ -82,7 +94,7 @@ void CTime::Update(void)
 		if (Timer <= 0)
 		{
 			//終了
-			Release();
+			Timer = 0;
 		}
 		TimeCount = 0;
 	}
@@ -91,8 +103,18 @@ void CTime::Update(void)
 	Nomber[1]->SetNumber(Timer/10);
 
 	Nomber[2]->SetNumber(Timer);
-
 }
+
 //=============================================================================
-//描画
+// SetColor
+//-----------------------------------------------------------------------------
+// 色指定すると全部の数字の色かえるよ
 //=============================================================================
+void CTime::SetColor(const COLOR col)
+{
+	for (int i = 0; i < MAX_DIGIT; ++i){
+		Nomber[i]->SetColor(col);
+	}
+}
+
+// EOF

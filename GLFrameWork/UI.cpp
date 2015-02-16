@@ -19,6 +19,7 @@
 #include "NumberManager.h"
 #include "Keyboard.h"
 #include "Time.h"
+#include "Polygon2D.h"
 
 #include "CPlayer.h"
 
@@ -41,11 +42,22 @@ namespace{
 	const float			ICON_SIZE = 70.0f;
 	const VECTOR3		ICON_POS = VECTOR3(10.0f + ICON_SIZE / 2, GAUGE_POS.y + (ICON_SIZE / 2) - 15.0f, 0.0f);
 	// 成績表
-	const VECTOR3		REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f,SCREEN_HEIGHT*0.5f,0.0f);
-	const COLOR			REPORT_BG_COLOR = COLOR(0.0f,0.05f,0.0f,0.6f);
+	const float			REPORT_ADD_Y = 30.0f;
+	const VECTOR3		REPORT_BG_POS = VECTOR3(SCREEN_WIDTH*0.5f, (SCREEN_HEIGHT*0.5f) + REPORT_ADD_Y, 0.0f);
+	const VECTOR3		REPORT_BASE_POS = VECTOR3(SCREEN_WIDTH*0.5f, (SCREEN_HEIGHT*0.5f), 0.0f);
+	const COLOR			REPORT_BG_COLOR = COLOR(0.0f, 0.05f, 0.0f, 0.6f);
 	// ライフ
 	const VECTOR3		LIFE_POS = VECTOR3(10.0f,0.0f,0.0f);
 	const VECTOR2		LIFE_SIZE = VECTOR2(100.0f, 100.0f);
+	//タイマー生成
+	const VECTOR3 TIME_POS = VECTOR3(570, 90, 0);
+	const VECTOR2 TIME_SIZE = VECTOR2(65, 65);
+	// タイマーフレーム
+	const VECTOR3 TIME_F_POS = VECTOR3(SCREEN_WIDTH*0.5f, 80, 0);
+	const float TIME_F_SCALE = 0.9f;
+	const VECTOR2 TIME_F_SIZE = VECTOR2(256.0f * TIME_F_SCALE, 170.0f * TIME_F_SCALE);
+//	const COLOR TIME_F_COLOR = COLOR(0.2f, 0.65f, 0.2f, 1.0f);
+	const COLOR TIME_F_COLOR = COLOR(0.9f, 0.9f, 0.9f, 1.0f);
 }
 
 //=============================================================================
@@ -62,7 +74,6 @@ CUI::CUI()
 	report = nullptr;
 	numberManager = nullptr;
 	Time = nullptr;
-	
 
 
 	myID = 0;
@@ -81,7 +92,12 @@ CUI::~CUI()
 void CUI::Init(void)
 {
 	//タイマー生成
-	Time = CTime::Create(VECTOR3(570,50,0),VECTOR2(100,100));
+	Time = CTime::Create(TIME_POS, TIME_SIZE);
+
+	//タイマーの枠
+	timeFrame = CPolygon2D::Create(TIME_F_POS, TIME_F_SIZE);
+	timeFrame->SetTex(CTexture::Texture(TEX_TIMEFRAME));
+	timeFrame->SetColor(TIME_F_COLOR);
 
 	//ライフ生成
 	life = CLife::Create(LIFE_POS, LIFE_SIZE);
@@ -105,7 +121,7 @@ void CUI::Init(void)
 	canonIcon->SetTex(CTexture::Texture(TEX_GAUGE_ICON));
 
 	// 成績表の背景
-	reportBg = CReport::Create(REPORT_BG_POS,VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
+	reportBg = CReport::Create(REPORT_BASE_POS, VECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	reportBg->SetColor(REPORT_BG_COLOR);
 
 	// 成績表
@@ -198,5 +214,14 @@ void CUI::Update(void)
 
 }
 
+//=============================================================================
+// SetNumber
+//-----------------------------------------------------------------------------
+//  type  :  タイプ, kill  :  KILL数, DEATH  :  DEATH数
+//=============================================================================
+void CUI::SetNumber(CNumberManager::TYPE type, int kill, int death)
+{
+	numberManager->SetNumber(type, kill, death);
+}
 
 // end of file
