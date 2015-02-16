@@ -15,6 +15,7 @@ typedef struct
 	ALuint Buffer;
 	bool* Using;
 	bool loop;
+	bool bgm;
 	short MultiPlayNum;
 	short PlayingNum;
 
@@ -78,6 +79,7 @@ private:
 	float SubVolume;
 	static int _Num;
 	bool _Loop;
+	bool _BGM;
 
 	void LinkList(void);
 	void UnlinkList(void);
@@ -181,6 +183,7 @@ public:
 	float MaxDistance(void)const{ return _MaxDistance; }
 	ALuint Source(void){ return Buffer[Type].Source[id]; }
 	bool Loop(void){ return _Loop; }
+	bool BGM(void){return _BGM; }
 
 	static VECTOR3 ListenerPos(void){ return _ListenerPos; }
 	static VECTOR3 ListenerSpeed(void){ return _ListenerSpeed; }
