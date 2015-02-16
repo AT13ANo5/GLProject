@@ -368,7 +368,7 @@ void CPlayer::UpdatePlayer(void)
 	{
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
+			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),PlayerColor);
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;

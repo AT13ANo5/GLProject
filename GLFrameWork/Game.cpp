@@ -164,6 +164,46 @@ void CGame::Init(void)
 	}	//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
 
+	// 【テスト】各プレイヤーの色をセット
+	for(int i = 0; i < PLAYER_MAX; i++)
+	{
+		switch(i)
+		{
+			// 赤
+			case 0:
+				Player[i]->SetPlayerColor(RED(0.5f));
+				break;
+
+			// 青
+			case 1:
+				Player[i]->SetPlayerColor(BLUE(0.5f));
+				break;
+
+			// 水
+			case 2:
+				Player[i]->SetPlayerColor(CYAN(0.5f));
+				break;
+
+			// 橙
+			case 3:
+				Player[i]->SetPlayerColor(COLOR(1.0f, 0.7f, 0.0f, 0.5f));
+				break;
+		
+			// 白
+			case 4:
+				Player[i]->SetPlayerColor(WHITE(0.5f));
+				break;
+
+			// P
+			case 5:
+				Player[i]->SetPlayerColor(YELLOW(0.5f));
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	// UI初期化
 	UI = new CUI;
 	UI->Init();
