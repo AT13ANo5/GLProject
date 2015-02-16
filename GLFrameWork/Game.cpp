@@ -207,10 +207,11 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 
 		case DATA_TYPE_ROT:
 
-			Player[_netData.charNum]->SetRotX(_netData.data_rot.rotX);
+			/*Player[_netData.charNum]->SetAxisRotation(VECTOR3(_netData.data_rot.X, _netData.data_rot.Y, _netData.data_rot.Z));
+			Player[_netData.charNum]->SetRotationAxis(_netData.data_rot.rot);
+			Player[_netData.charNum]->SetRotY(_netData.data_rot.yRotation);*/
 			Player[_netData.charNum]->SetRotY(_netData.data_rot.rotY);
-			Player[_netData.charNum]->SetRotZ(_netData.data_rot.rotZ);
-
+			
 			break;
 
 		case DATA_TYPE_CANNONROT:
@@ -435,6 +436,12 @@ void CGame::CheckHitPlayer(void)
 					//	E‚µ‚½”‰ÁZ
 					pPlayerOffense->addKillCount();
 					CManager::SendKill(pPlayerOffense->getKillCount(), pPlayerOffense->getPlayerID());
+
+					if (CManager::userInfo[pPlayerDefense->getPlayerID()].entryFlag == false)
+					{
+						if (CManager::netData.charNum == 0)
+							CManager::SendDeathFlag(pPlayerDefense->getPlayerID());
+					}
 				}
 
 				// ˆ—I—¹
