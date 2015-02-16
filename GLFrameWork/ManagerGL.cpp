@@ -106,6 +106,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	//	サーバーのアドレス取得
 	fp = fopen("address.txt", "r");
 	fscanf(fp, "%s", add);
+	fclose(fp);
 
 	//ネットワーク処理
 	//-----------------------------------------------------------------
