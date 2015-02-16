@@ -35,6 +35,8 @@ void CBillboard::Init(void)
 	Vtx[1] = VECTOR3(-_Size.x / 2.0f,_Size.y / 2.0f,0);
 	Vtx[2] = VECTOR3(_Size.x / 2.0f,-_Size.y / 2.0f,0);
 	Vtx[3] = VECTOR3(-_Size.x / 2.0f,-_Size.y / 2.0f,0);
+
+	DrawFlag = true;
 }
 
 CBillboard* CBillboard::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
@@ -69,6 +71,12 @@ void CBillboard::Update(void)
 //=============================================================================
 void CBillboard::Draw(void)
 {
+	// 描画フラグを見て表示 / 非表示を切り替え
+	if(DrawFlag == false)
+	{
+		return;
+	}
+
 	//ライティング無効
 	glDisable(GL_LIGHTING);
 	glEnable(GL_ALPHA_TEST_REF);

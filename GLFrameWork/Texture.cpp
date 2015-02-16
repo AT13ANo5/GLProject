@@ -53,6 +53,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/MiniMap.dds",
 	"data/texture/MiniMapArrow.dds",
 	"data/texture/explosion.tga",
+	"data/texture/spark.tga",
+	"data/texture/sandCloud.tga",
 	"data/texture/minimapBG.dds",
 	"data/texture/naritada.dds",
 	"data/texture/timer.tga",

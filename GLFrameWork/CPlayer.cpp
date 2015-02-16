@@ -19,6 +19,7 @@
 #include "Ballistic.h"
 #include "ManagerGL.h"
 #include "Explosion.h"
+#include "SandCloud.h"
 #define NARI_SCL (15.0f)
 const int kHeightMax = 400;
 const int kUpSpeed = 3;
@@ -48,6 +49,7 @@ CPlayer::CPlayer() :CModel()
 
 	killCount = 0;
 	deathCount = 0;
+	_SandTime = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -60,6 +62,7 @@ CPlayer::~CPlayer()
 {
 	SafeDelete(Ballistic);
 	SafeDelete(_Feed);
+	SafeRelease(_nari);
 }
 
 //------------------------------------------------------------------------------
@@ -95,9 +98,9 @@ void CPlayer::Init(void)
 	Barrel->Init();
 	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW));
 
- _nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
- _nari->SetTex(CTexture::Texture(TEX_NARITADA));
- _nari->SetAlpha(0.0f);
+	_nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
+	_nari->SetTex(CTexture::Texture(TEX_NARITADA));
+	_nari->SetAlpha(0.0f);
 	//高さ初期化
 	_Hegiht = 0;
 	// 体力
@@ -133,7 +136,8 @@ void CPlayer::Update()
 
 		Barrel->SetPos(_Pos);			// 位置
 		CManager::SendPos(_Pos);
-		CManager::SendRot(_Rot);
+		//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
 		CManager::SendCannonRot(Barrel->Rot());
 
 
@@ -157,7 +161,8 @@ void CPlayer::Update()
 
 		Barrel->SetPos(_Pos);			// 位置
 		CManager::SendPos(_Pos);
-		CManager::SendRot(_Rot);
+		//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
 		CManager::SendCannonRot(Barrel->Rot());
 
 
@@ -165,8 +170,8 @@ void CPlayer::Update()
 		{
 			_State = PLAYER_STATE_WAIT;
 			_Feed->SetAlpha(0);
-   _nari->SetAlpha(0.0f);
-
+			_nari->SetAlpha(0.0f);
+			Ballistic->SetDrawFlag(true);
 		}
 		return;
 	}
@@ -296,6 +301,34 @@ void CPlayer::UpdatePlayer(void)
 	// キャラクターの移動値を加算
 	AddPos(Movement);
 
+	// 移動エフェクト
+	if (_SandTime >= 0)
+	{
+		_SandTime--;
+	}
+	else if (abs(Movement.x) > 0.1f || abs(Movement.z) > 0.1f)
+	{
+		VECTOR3	posEffect = _Pos;
+		VECTOR3 vecMove = VECTOR3(0.0f, 0.0f, 0.0f);
+
+		if (Movement.x != 0)
+		{
+			vecMove.x = Movement.x / abs(Movement.x);
+		}
+
+		if (Movement.z != 0)
+		{
+			vecMove.z = Movement.z / abs(Movement.z);
+		}
+
+		posEffect.x -= 8.0f * vecMove.x;
+		posEffect.z -= 8.0f * vecMove.z;
+		posEffect.y -= 10.0f;
+
+		CSandCloud::Create(posEffect);
+		_SandTime = 16;
+	}
+
 	// 減速
 	Movement *= 0.95f;
 
@@ -337,7 +370,8 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	CManager::SendPos(_Pos);
-	CManager::SendRot(_Rot);
+	//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 	CManager::SendCannonRot(Barrel->Rot());
 
 #ifdef _DEBUG
@@ -349,16 +383,22 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	// ライフの減算
-	if (CKeyboard::GetPress(DIK_L))
+	if (CKeyboard::GetTrigger(DIK_L))
 	{
 		this->AddPlayerLife(-1);
 		_State = PLAYER_STATE_DAMAGE;
 	}
 
 	// 弾の削除確認
-	if (CKeyboard::GetPress(DIK_M))
+	if (CKeyboard::GetTrigger(DIK_M))
 	{
 		this->ReleaseBullet();
+	}
+
+	// タイマー即回復
+	if (CKeyboard::GetTrigger(DIK_K))
+	{
+		_ReloadTimer = PLAYER_RELOAD_TIME;
 	}
 
 #endif
@@ -388,8 +428,42 @@ void CPlayer::BlastBullet()
 //------------------------------------------------------------------------------
 void CPlayer::UpdateCPU(void)
 {
+	VECTOR3 oldPos = _Pos;
+
 	Barrel->SetPos(_Pos);			// 位置
 	BarrelRotX = Barrel->Rot().x;
+
+	// 移動値
+	Movement = _Pos - oldPos;
+
+	// 移動エフェクト
+	if (_SandTime >= 0)
+	{
+		_SandTime--;
+	}
+	else if (abs(Movement.x) > 0.1f || abs(Movement.z) > 0.1f)
+	{
+		VECTOR3	posEffect = _Pos;
+		VECTOR3 vecMove = VECTOR3(0.0f, 0.0f, 0.0f);
+
+		if (Movement.x != 0)
+		{
+			vecMove.x = Movement.x / abs(Movement.x);
+		}
+
+		if (Movement.z != 0)
+		{
+			vecMove.z = Movement.z / abs(Movement.z);
+		}
+
+		posEffect.x -= 8.0f * vecMove.x;
+		posEffect.z -= 8.0f * vecMove.z;
+		posEffect.y -= 10.0f;
+
+		CSandCloud::Create(posEffect);
+		_SandTime = 16;
+	}
+
 	// 弾が発射されていなかった時
 	if (LaunchFlag == true)
 	{
@@ -407,6 +481,14 @@ void CPlayer::UpdateCPU(void)
 	}
 }
 
+//------------------------------------------------------------------------------
+// 
+//------------------------------------------------------------------------------
+// 引数
+//  なし
+// 戻り値
+//  なし
+//------------------------------------------------------------------------------
 void CPlayer::setBarrelRot(VECTOR3 _rot)
 {
 	Barrel->SetRot(_rot);			// 回転
@@ -426,7 +508,6 @@ void CPlayer::ReleaseBullet(void)
 	if (_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
-  SafeRelease(_nari);
 		_BulletUseFlag = false;
 	}
 }
@@ -472,13 +553,15 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
-  _nari->SetAlpha(1.0f);
+		_nari->SetAlpha(1.0f);
+
+		Ballistic->SetDrawFlag(false);	// 弾道を非表示に
 
 		if (_charNum == CManager::netData.charNum)
 			_Feed->SetAlpha(0);
-  VECTOR3 pos = _Pos;
-  pos.y += kHeightMax - 100;
-  _nari->SetPos(pos);
+		VECTOR3 pos = _Pos;
+		pos.y += kHeightMax - 100;
+		_nari->SetPos(pos);
 	}
 }
 //------------------------------------------------------------------------------
@@ -496,17 +579,19 @@ void CPlayer::SetRespawn(void)
 	_PlayerRespown.y += kHeightMax;
 	SetPos(_PlayerRespown);
 	_PlayerLife = PLAYER_LIFE;
+	_ReloadTimer = PLAYER_RELOAD_TIME;
 
 	if (PlayerID == CManager::netData.charNum)
 		_Feed->SetAlpha(1);
- _nari->SetPos(_PlayerRespown);
+	_nari->SetPos(_PlayerRespown);
 
 	Movement = VECTOR3(0,0,0);
 
 
 	Barrel->SetPos(_Pos);			// 位置
 	CManager::SendPos(_Pos);
-	CManager::SendRot(_Rot);
+	//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
 	CManager::SendCannonRot(Barrel->Rot());
 	CManager::SendCannon(LaunchFlag);
 
@@ -515,11 +600,10 @@ void CPlayer::SetRespawn(void)
 // 加算処理
 //------------------------------------------------------------------------------
 // 引数
-// addVal			: ライフ
+// addVal	: ライフ
 // 戻り値
 // なし
 //------------------------------------------------------------------------------
-
 void CPlayer::AddPlayerLife(int addVal)
 {
 	if (_Timer != 0 || _State != PLAYER_STATE_DAMAGE)
@@ -530,10 +614,12 @@ void CPlayer::AddPlayerLife(int addVal)
 			_PlayerLife = 0;
 		}
 		else
+		{
 			if (_PlayerLife > PLAYER_LIFE)
 			{
 				_PlayerLife = PLAYER_LIFE;
 			}
+		}
 	}
 }
 

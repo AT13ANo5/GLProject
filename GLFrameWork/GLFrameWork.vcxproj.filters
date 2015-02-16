@@ -313,6 +313,12 @@
     <ClCompile Include="Map2D.cpp">
       <Filter>02_ゲーム\ミニマップ\Map2D</Filter>
     </ClCompile>
+    <ClCompile Include="SandCloud.cpp">
+      <Filter>00_システム\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Spark.cpp">
+      <Filter>00_システム\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -476,6 +482,12 @@
     </ClInclude>
     <ClInclude Include="Map2D.h">
       <Filter>02_ゲーム\ミニマップ\Map2D</Filter>
+    </ClInclude>
+    <ClInclude Include="SandCloud.h">
+      <Filter>00_システム\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Spark.h">
+      <Filter>00_システム\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

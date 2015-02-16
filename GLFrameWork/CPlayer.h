@@ -134,12 +134,12 @@ private:
 	int PlayerID;			// プレイヤー判別用ID
 	bool PlayerFlag;		// 操作キャラクターかどうか
 	CBallistic* Ballistic;	// 弾道
- CPolygon2D* _Feed;
- int _Timer;//無敵時間タイマー
- float _Hegiht;//高さでカウント
- VECTOR3 _PlayerRespown;//次の復活地点作成
- CBillboard* _nari;
-
+	CPolygon2D* _Feed;
+	int _Timer;				//無敵時間タイマー
+	float _Hegiht;			//高さでカウント
+	VECTOR3 _PlayerRespown;	//次の復活地点作成
+	CBillboard* _nari;
+	int _SandTime;
 
 
  int killCount;

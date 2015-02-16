@@ -83,6 +83,11 @@ void initUserInfo()
 }
 
 //=============================================================================
+//	ＣＰＵの回転量セット処理
+//=============================================================================
+void sendQuart()
+
+//=============================================================================
 //	メイン処理関数
 //=============================================================================
 int main(void)
@@ -192,9 +197,7 @@ int main(void)
 				case DATA_TYPE_ROT:
 
 					//	回転情報のセット
-					userInfo[data.charNum].rot.x = data.data_rot.rotX;
-					userInfo[data.charNum].rot.y = data.data_rot.rotY;
-					userInfo[data.charNum].rot.z = data.data_rot.rotZ;
+					userInfo[data.charNum].rot.y = data.data_rot.yRotation;
 
 					//	マルチキャストで送信（送信先で自分のデータだったら勝手にはじけ）
 					sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAdd, sizeof(sendAdd));
@@ -377,8 +380,6 @@ unsigned __stdcall aiUpdate(void *p)
 
 		if (CurrentTime - PrevTime >= 1000 / 60)
 		{
-
-
 			//	AI更新処理
 			AI::SetUserInfo(userInfo);
 			AI::UpdateAll();
