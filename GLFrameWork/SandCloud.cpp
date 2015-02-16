@@ -13,10 +13,10 @@
 //=============================================================================
 #define EFFECT_TEX			(TEX_SAND_CLOUD)
 #define EFFECT_SIZE			(30.0f)
-#define EFFECT_WIDTH		(0.33f)
+#define EFFECT_WIDTH		(0.25f)
 #define EFFECT_HEIGHT		(1.0f)
-#define EFFECT_1_FRAME		(5)		// 1つの状態のフレーム数
-#define EFFECT_LIFE_FRAME	(50)	// 寿命フレーム数
+#define EFFECT_1_FRAME		(4)	// 1つの状態のフレーム数
+#define EFFECT_LIFE_FRAME	(16)	// 寿命フレーム数
 
 //=============================================================================
 // 生成

@@ -19,6 +19,7 @@
 #include "Ballistic.h"
 #include "ManagerGL.h"
 #include "Explosion.h"
+#include "SandCloud.h"
 #define NARI_SCL (15.0f)
 const int kHeightMax = 400;
 const int kUpSpeed = 3;
@@ -48,6 +49,7 @@ CPlayer::CPlayer() :CModel()
 
 	killCount = 0;
 	deathCount = 0;
+	_SandTime = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -95,9 +97,9 @@ void CPlayer::Init(void)
 	Barrel->Init();
 	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW));
 
- _nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
- _nari->SetTex(CTexture::Texture(TEX_NARITADA));
- _nari->SetAlpha(0.0f);
+	_nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
+	_nari->SetTex(CTexture::Texture(TEX_NARITADA));
+	_nari->SetAlpha(0.0f);
 	//高さ初期化
 	_Hegiht = 0;
 	// 体力
@@ -165,7 +167,7 @@ void CPlayer::Update()
 		{
 			_State = PLAYER_STATE_WAIT;
 			_Feed->SetAlpha(0);
-   _nari->SetAlpha(0.0f);
+			_nari->SetAlpha(0.0f);
 
 		}
 		return;
@@ -296,6 +298,34 @@ void CPlayer::UpdatePlayer(void)
 	// キャラクターの移動値を加算
 	AddPos(Movement);
 
+	// 移動エフェクト
+	if (_SandTime >= 0)
+	{
+		_SandTime--;
+	}
+	else if (abs(Movement.x) > 0.1f || abs(Movement.z) > 0.1f)
+	{
+		VECTOR3	posEffect = _Pos;
+		VECTOR3 vecMove = VECTOR3(0.0f, 0.0f, 0.0f);
+
+		if (Movement.x != 0)
+		{
+			vecMove.x = Movement.x / abs(Movement.x);
+		}
+
+		if (Movement.z != 0)
+		{
+			vecMove.z = Movement.z / abs(Movement.z);
+		}
+
+		posEffect.x -= 8.0f * vecMove.x;
+		posEffect.z -= 8.0f * vecMove.z;
+		posEffect.y -= 10.0f;
+
+		CSandCloud::Create(posEffect);
+		_SandTime = 16;
+	}
+
 	// 減速
 	Movement *= 0.95f;
 
@@ -388,8 +418,42 @@ void CPlayer::BlastBullet()
 //------------------------------------------------------------------------------
 void CPlayer::UpdateCPU(void)
 {
+	VECTOR3 oldPos = _Pos;
+
 	Barrel->SetPos(_Pos);			// 位置
 	BarrelRotX = Barrel->Rot().x;
+
+	// 移動値
+	Movement = _Pos - oldPos;
+
+	// 移動エフェクト
+	if (_SandTime >= 0)
+	{
+		_SandTime--;
+	}
+	else if (abs(Movement.x) > 0.1f || abs(Movement.z) > 0.1f)
+	{
+		VECTOR3	posEffect = _Pos;
+		VECTOR3 vecMove = VECTOR3(0.0f, 0.0f, 0.0f);
+
+		if (Movement.x != 0)
+		{
+			vecMove.x = Movement.x / abs(Movement.x);
+		}
+
+		if (Movement.z != 0)
+		{
+			vecMove.z = Movement.z / abs(Movement.z);
+		}
+
+		posEffect.x -= 8.0f * vecMove.x;
+		posEffect.z -= 8.0f * vecMove.z;
+		posEffect.y -= 10.0f;
+
+		CSandCloud::Create(posEffect);
+		_SandTime = 16;
+	}
+
 	// 弾が発射されていなかった時
 	if (LaunchFlag == true)
 	{
@@ -426,7 +490,7 @@ void CPlayer::ReleaseBullet(void)
 	if (_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
-  SafeRelease(_nari);
+		SafeRelease(_nari);
 		_BulletUseFlag = false;
 	}
 }
@@ -472,13 +536,13 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
-  _nari->SetAlpha(1.0f);
+		_nari->SetAlpha(1.0f);
 
 		if (_charNum == CManager::netData.charNum)
 			_Feed->SetAlpha(0);
-  VECTOR3 pos = _Pos;
-  pos.y += kHeightMax - 100;
-  _nari->SetPos(pos);
+		VECTOR3 pos = _Pos;
+		pos.y += kHeightMax - 100;
+		_nari->SetPos(pos);
 	}
 }
 //------------------------------------------------------------------------------
@@ -499,7 +563,7 @@ void CPlayer::SetRespawn(void)
 
 	if (PlayerID == CManager::netData.charNum)
 		_Feed->SetAlpha(1);
- _nari->SetPos(_PlayerRespown);
+	_nari->SetPos(_PlayerRespown);
 
 	Movement = VECTOR3(0,0,0);
 
