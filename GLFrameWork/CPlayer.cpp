@@ -41,6 +41,9 @@ CPlayer::CPlayer() :CModel()
 	// íeèâä˙âª
 	_Bullet = nullptr;
 
+	DriveSE = nullptr;
+	IdlingSE = nullptr;
+
 	// ëïìUéûä‘
 	_ReloadTimer = PLAYER_RELOAD_TIME;
 
@@ -60,6 +63,8 @@ CPlayer::CPlayer() :CModel()
 //------------------------------------------------------------------------------
 CPlayer::~CPlayer()
 {
+	//SafeRelease(DriveSE);
+	//SafeRelease(IdlingSE);
 	SafeDelete(Ballistic);
 	SafeDelete(_Feed);
 }
@@ -107,6 +112,9 @@ void CPlayer::Init(void)
 	_Feed = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f,0),VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
 	_Feed->SetColor(COLOR(0,0,0,0));
 	_Timer = 0;
+	DriveSE = CSoundAL::Play(CSoundAL::SE_DRIVE,_Pos);
+	DriveSE->SetVolume(0);
+	IdlingSE = CSoundAL::Play(CSoundAL::SE_IDLING,_Pos);
 }
 
 //------------------------------------------------------------------------------
@@ -119,6 +127,9 @@ void CPlayer::Init(void)
 //------------------------------------------------------------------------------
 void CPlayer::Update()
 {
+
+	DriveSE->SetPos(_Pos);
+	IdlingSE->SetPos(_Pos);
 	//ÉÇÅ[ÉhëIë
 	switch (_State)
 	{
@@ -155,8 +166,9 @@ void CPlayer::Update()
 
 
 		if (PlayerID == CManager::netData.charNum)
+		{
 			_Feed->AddAlpha(-Alpha);
-
+		}
 
 		Barrel->SetPos(_Pos);			// à íu
 		CManager::SendPos(_Pos);
@@ -169,7 +181,7 @@ void CPlayer::Update()
 		{
 			_State = PLAYER_STATE_WAIT;
 			_Feed->SetAlpha(0);
-   _nari->SetAlpha(0.0f);
+			_nari->SetAlpha(0.0f);
 
 		}
 		return;
@@ -242,13 +254,21 @@ void CPlayer::UpdatePlayer(void)
 	{
 		Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
 		Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
+		IdlingSE->SetVolume(0);
+		DriveSE->SetVolume(1.0f);
 	}
-
 	// â∫
 	else if (CKeyboard::GetPress(DIK_S))
 	{
 		Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
 		Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
+		IdlingSE->SetVolume(0);
+		DriveSE->SetVolume(1.0f);
+	}
+	else
+	{
+		IdlingSE->SetVolume(1.0f);
+		DriveSE->SetVolume(0);
 	}
 
 	// ç∂
@@ -433,7 +453,7 @@ void CPlayer::ReleaseBullet(void)
 	if (_Bullet != nullptr)
 	{
 		SafeRelease(_Bullet);
-  SafeRelease(_nari);
+		SafeRelease(_nari);
 		_BulletUseFlag = false;
 	}
 }

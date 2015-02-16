@@ -422,7 +422,10 @@ void CGame::CheckHitPlayer(void)
 				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
-				CSoundAL::Play(CSoundAL::SE_HIT,pPlayerDefense->Pos());
+				if (pPlayerDefense->PlayerLife() > 0)
+				{
+					CSoundAL::Play(CSoundAL::SE_HIT,pPlayerDefense->Pos());
+				}
 				CExplosion::Create(pPlayerDefense->Pos());
 
 				//	長崎

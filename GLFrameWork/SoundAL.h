@@ -36,6 +36,8 @@ public:
 		SE_HIT,
 		SE_IMPACT,
 		SE_BREAK,
+		SE_DRIVE,
+		SE_IDLING,
 		SOUND_MAX
 
 	}SOUND;
