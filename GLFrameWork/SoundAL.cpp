@@ -30,6 +30,7 @@ const PARAM File[CSoundAL::SOUND_MAX] =
 	{ "data/sound/SE/Entry.wav",false,2 },
 	{ "data/sound/SE/PushEnter.wav",false,2 },
 	{ "data/sound/SE/ToGame.wav",false,2 },
+	{ "data/sound/SE/Cannon.wav",false,7 },
 
 };
 
@@ -389,11 +390,11 @@ void CSoundAL::SetListenerOri(void)
 	if (!Device){ return; }
 	_ListenerOri[0] = _ListenerFrontVec.x;
 	_ListenerOri[1] = _ListenerFrontVec.y;
-	_ListenerOri[2] = -_ListenerFrontVec.z;
+	_ListenerOri[2] = _ListenerFrontVec.z;
 
 	_ListenerOri[3] = _ListenerUpVec.x;
 	_ListenerOri[4] = _ListenerUpVec.y;
-	_ListenerOri[5] = -_ListenerUpVec.z;
+	_ListenerOri[5] = _ListenerUpVec.z;
 
 	alListenerfv(AL_ORIENTATION,_ListenerOri);
 }

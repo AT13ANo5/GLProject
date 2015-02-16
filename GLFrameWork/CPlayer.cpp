@@ -19,6 +19,8 @@
 #include "Ballistic.h"
 #include "ManagerGL.h"
 #include "Explosion.h"
+#include "SoundAL.h"
+
 #define NARI_SCL (15.0f)
 const int kHeightMax = 400;
 const int kUpSpeed = 3;
@@ -95,9 +97,9 @@ void CPlayer::Init(void)
 	Barrel->Init();
 	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW));
 
- _nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
- _nari->SetTex(CTexture::Texture(TEX_NARITADA));
- _nari->SetAlpha(0.0f);
+	_nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
+	_nari->SetTex(CTexture::Texture(TEX_NARITADA));
+	_nari->SetAlpha(0.0f);
 	//‚‚³‰Šú‰»
 	_Hegiht = 0;
 	// ‘Ì—Í
@@ -127,9 +129,9 @@ void CPlayer::Update()
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 
 		if (PlayerID == CManager::netData.charNum)
+		{
 			_Feed->AddAlpha(Alpha);
-
-
+		}
 
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
@@ -314,6 +316,7 @@ void CPlayer::UpdatePlayer(void)
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
 			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
+			CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
@@ -372,6 +375,7 @@ void CPlayer::BlastBullet()
 	if (LaunchFlag == false)
 	{
 		_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
+		CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 		LaunchFlag = true;
 		_BulletUseFlag = true;
 		_ReloadTimer = 0;
