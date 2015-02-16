@@ -36,16 +36,16 @@
 const float CGame::RADIUS_SKY = 2500.0f;   // 空の半径
 CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
-const float	CGame::RADIUS_DEFENSE_CHARACTER = 10.0f;	// キャラクターの防御半径
-const float	CGame::HEIGHT_DEFENSE_CHARACTER = 10.0f;	// キャラクターの防御中心高さ
+const float	CGame::RADIUS_DEFENSE_CHARACTER = 12.0f;	// キャラクターの防御半径
+const float	CGame::HEIGHT_DEFENSE_CHARACTER = 0.0f;		// キャラクターの防御中心高さ
 const float	CGame::RADIUS_OFFENSE_BULLET = 10.0f;		// 砲弾の攻撃半径
-const float	CGame::HEIGHT_OFFENSE_BULLET = 10.0f;		// 砲弾の攻撃中心高さ
+const float	CGame::HEIGHT_OFFENSE_BULLET = 0.0f;		// 砲弾の攻撃中心高さ
 const float	CGame::RADIUS_PUSH_CHARACTER = 10.0f;		// キャラクターの押し戻し半径
-const float	CGame::HEIGHT_PUSH_CHARACTER = 10.0f;		// キャラクターの押し戻し中心高さ
-const float	CGame::RADIUS_DEFENSE_ROCK = 45.0f;			// 岩の防御半径
-const float	CGame::HEIGHT_DEFENSE_ROCK = 45.0f;			// 岩の防御中心高さ
-const float	CGame::RADIUS_PUSH_ROCK = 45.0f;			// 岩の押し戻し半径
-const float	CGame::HEIGHT_PUSH_ROCK = 45.0f;			// 岩の押し戻し中心高さ
+const float	CGame::HEIGHT_PUSH_CHARACTER = 0.0f;		// キャラクターの押し戻し中心高さ
+const float	CGame::RADIUS_DEFENSE_ROCK = 28.0f;			// 岩の防御半径
+const float	CGame::HEIGHT_DEFENSE_ROCK = 0.0f;			// 岩の防御中心高さ
+const float	CGame::RADIUS_PUSH_ROCK = 38.0f;			// 岩の押し戻し半径
+const float	CGame::HEIGHT_PUSH_ROCK = 0.0f;				// 岩の押し戻し中心高さ
 const float CGame::FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
 const float	CGame::HEIGHT_PLAYER_TO_FIELD = 10.0f;		// プレイヤーと地面の差
 
