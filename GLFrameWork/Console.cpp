@@ -7,7 +7,7 @@ COORD Console::Cursor = { 0,0 };
 HANDLE Console::ConsoleHandle = nullptr;
 
 Console* Console::Self = nullptr;
-bool Console::_Active = true;
+bool Console::_Active = false;
 
 Console::Console()
 {
@@ -21,7 +21,7 @@ Console::Console()
 	SetConsoleTitle("Debug");
 	SMALL_RECT rect = {0,0,60,20};
 	SetConsoleWindowInfo(ConsoleHandle,TRUE,&rect);
-	_Active = true;
+	_Active = false;
 }
 
 Console::~Console()
