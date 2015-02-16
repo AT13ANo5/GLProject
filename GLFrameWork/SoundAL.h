@@ -33,6 +33,9 @@ public:
 		SE_ENTER,
 		SE_GAME_START,
 		SE_CANNON,
+		SE_HIT,
+		SE_IMPACT,
+		SE_BREAK,
 		SOUND_MAX
 
 	}SOUND;

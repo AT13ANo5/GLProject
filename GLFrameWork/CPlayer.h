@@ -58,32 +58,32 @@ public:
 	void Update(void);
 
 	// 現在の装填時間ゲッター
-	int ReloadTimer(void){return _ReloadTimer;}
+	int ReloadTimer(void){ return _ReloadTimer; }
 
 	// 体力
-	int PlayerLife(void){return _PlayerLife;}				// ゲッター
-	void SetPlayerLife(int life){_PlayerLife = life;}		// セッター
+	int PlayerLife(void){ return _PlayerLife; }				// ゲッター
+	void SetPlayerLife(int life){ _PlayerLife = life; }		// セッター
 	void AddPlayerLife(int addVal);	// 加算
 
 	// 生成
-	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
+	static CPlayer* Create(int modelID,const VECTOR3& pos,int PlayerID);
 
 	// 弾ポインタゲッター
-	CBullet* Bullet(void){return _Bullet;}
+	CBullet* Bullet(void){ return _Bullet; }
 
 	// 状態
-	PLAYER_STATE State(void){return _State;}			// ゲッター
-	void SetState(PLAYER_STATE state){_State = state;}	// セッター
+	PLAYER_STATE State(void){ return _State; }			// ゲッター
+	void SetState(PLAYER_STATE state){ _State = state; }	// セッター
 
-	void SetPlayerFlag(bool flag){PlayerFlag = flag;}
-	bool BulletUseFlag(void){return _BulletUseFlag;}
+	void SetPlayerFlag(bool flag){ PlayerFlag = flag; }
+	bool BulletUseFlag(void){ return _BulletUseFlag; }
 
 	void ReleaseBullet(void);	// 弾を削除
 
 	void BlastBullet();
 	void setBarrelRot(VECTOR3 _rot);
 
-	void SetDeath(VECTOR3 posint , int _charNum);//死亡処理
+	void SetDeath(VECTOR3 posint,int _charNum);//死亡処理
 	void SetRespawn(void);//復活処理
 
 
@@ -134,16 +134,16 @@ private:
 	int PlayerID;			// プレイヤー判別用ID
 	bool PlayerFlag;		// 操作キャラクターかどうか
 	CBallistic* Ballistic;	// 弾道
- CPolygon2D* _Feed;
- int _Timer;//無敵時間タイマー
- float _Hegiht;//高さでカウント
- VECTOR3 _PlayerRespown;//次の復活地点作成
- CBillboard* _nari;
+	CPolygon2D* _Feed;
+	int _Timer;//無敵時間タイマー
+	float _Hegiht;//高さでカウント
+	VECTOR3 _PlayerRespown;//次の復活地点作成
+	CBillboard* _nari;
 
 
 
- int killCount;
- int deathCount;
+	int killCount;
+	int deathCount;
 
 };
 

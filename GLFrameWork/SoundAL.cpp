@@ -31,6 +31,9 @@ const PARAM File[CSoundAL::SOUND_MAX] =
 	{ "data/sound/SE/PushEnter.wav",false,2 },
 	{ "data/sound/SE/ToGame.wav",false,2 },
 	{ "data/sound/SE/Cannon.wav",false,7 },
+	{ "data/sound/SE/Hit.wav",false,7 },
+	{ "data/sound/SE/Impact.wav",false,7 },
+	{ "data/sound/SE/Break.wav",false,7 },
 
 };
 

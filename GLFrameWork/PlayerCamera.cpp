@@ -10,7 +10,7 @@ CPlayerCamera* CPlayerCamera::Create(CObject* parent,float r)
 	CPlayerCamera* camera = new CPlayerCamera;
 	if (camera == nullptr){return nullptr;}
 
-	camera->Length = r*5;
+	camera->Length = r;
 	camera->Parent = parent;
 	camera->Init();
 
@@ -56,9 +56,9 @@ void CPlayerCamera::Update(void)
 
 	_Eye.y += (DestEye.y - _Eye.y)*0.5f;
 
-	_Lookat.x = sinf(DEG2RAD(rot.y)+PI/2)*Length;
+	_Lookat.x = sinf(DEG2RAD(rot.y))*Length;
 	_Lookat.y = 0;
-	_Lookat.z = cosf(DEG2RAD(rot.y) + PI / 2)*Length;
+	_Lookat.z = cosf(DEG2RAD(rot.y))*Length;
 	_Lookat += pos;
 
 	VECTOR3 vec;

@@ -476,16 +476,19 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 {
 	if (_State != PLAYER_STATE_DEATH)
 	{
+		CSoundAL::Play(CSoundAL::SE_BREAK,_Pos);
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
-  _nari->SetAlpha(1.0f);
+		_nari->SetAlpha(1.0f);
 
 		if (_charNum == CManager::netData.charNum)
+		{
 			_Feed->SetAlpha(0);
-  VECTOR3 pos = _Pos;
-  pos.y += kHeightMax - 100;
-  _nari->SetPos(pos);
+		}
+		VECTOR3 pos = _Pos;
+		pos.y += kHeightMax - 100;
+		_nari->SetPos(pos);
 	}
 }
 //------------------------------------------------------------------------------
@@ -505,8 +508,10 @@ void CPlayer::SetRespawn(void)
 	_PlayerLife = PLAYER_LIFE;
 
 	if (PlayerID == CManager::netData.charNum)
+	{
 		_Feed->SetAlpha(1);
- _nari->SetPos(_PlayerRespown);
+	}
+	_nari->SetPos(_PlayerRespown);
 
 	Movement = VECTOR3(0,0,0);
 
