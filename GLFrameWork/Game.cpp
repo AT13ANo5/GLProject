@@ -148,14 +148,14 @@ void CGame::Init(void)
 	// ƒvƒŒƒCƒ„[¶¬
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		if (i == 0)
+		if (i % 2 == 1)
 			Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),i);
 		else
 			Player[i] = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), i);
 
-		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_YELLOW + i));
+		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
 		Player[i]->SetRot(0.0f,180.0f,0.0f);
-		Player[i]->setBarrelTex(TEX_YOUJO_YELLOW + i);
+		Player[i]->setBarrelTex(TEX_YOUJO_RED + i);
 
 		if (i == CManager::netData.charNum)
 		{
