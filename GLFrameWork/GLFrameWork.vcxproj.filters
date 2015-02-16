@@ -313,7 +313,9 @@
     <ClCompile Include="Map2D.cpp">
       <Filter>02_ゲーム\ミニマップ\Map2D</Filter>
     </ClCompile>
-    <ClCompile Include="TitleDirection.cpp" />
+    <ClCompile Include="TitleDirection.cpp">
+      <Filter>01_タイトル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -478,6 +480,8 @@
     <ClInclude Include="Map2D.h">
       <Filter>02_ゲーム\ミニマップ\Map2D</Filter>
     </ClInclude>
-    <ClInclude Include="TitleDirection.h" />
+    <ClInclude Include="TitleDirection.h">
+      <Filter>01_タイトル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
