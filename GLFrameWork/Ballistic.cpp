@@ -48,14 +48,22 @@ CBallistic::~CBallistic()
 //------------------------------------------------------------------------------
 void CBallistic::Init( COLOR color)
 {
-  for (int cnt = 0; cnt < MARK_MAX; cnt++)
-  {
-    BallisticMark[cnt] = CBillboard::Create(VECTOR3(0.0f, 0.0f, 0.0f),
-                                            VECTOR2(1.5f, 1.5f),
-                                            VECTOR3(0.0f, 0.0f, 0.0f),
-                                            color);
-    BallisticMark[cnt]->SetTex(CTexture::Texture(TEX_BALLISTIC));
-  }
+	// 弾道マーク
+	for (int cnt = 0; cnt < MARK_MAX; cnt++)
+	{
+		BallisticMark[cnt] = CBillboard::Create(VECTOR3(0.0f, 0.0f, 0.0f),
+												VECTOR2(1.5f, 1.5f),
+												VECTOR3(0.0f, 0.0f, 0.0f),
+												color);
+		BallisticMark[cnt]->SetTex(CTexture::Texture(TEX_BALLISTIC));
+	}
+
+	// 着弾マーク
+	Landing = CPolygon3D::Create(VECTOR3(0.0f, 0.0f, 0.0f),
+								VECTOR2(40.0f, 40.0f),
+								VECTOR3(0.0f, 0.0f, 0.0f),
+								COLOR(color.r, color.g, color.b, 1.0f));
+	Landing->SetTex(CTexture::Texture(TEX_LANDING));
 }
 
 //------------------------------------------------------------------------------
@@ -69,34 +77,35 @@ void CBallistic::Init( COLOR color)
 //------------------------------------------------------------------------------
 void CBallistic::Update(VECTOR3 pos, VECTOR3 rot)
 {
-  VECTOR3 MoveVec;
-  VECTOR3 MoveSpeed = VECTOR3(BULLET_SPEED, BULLET_SPEED, BULLET_SPEED);
+	VECTOR3 MoveVec;
+	VECTOR3 MoveSpeed = VECTOR3(BULLET_SPEED, BULLET_SPEED, BULLET_SPEED);
 
-  // 回転量の変換
-  rot.x = DEG2RAD(rot.x);
-  rot.y = DEG2RAD(rot.y);
-  REVISE_PI(rot.x);
-  REVISE_PI(rot.y);
+	// 回転量の変換
+	rot.x = DEG2RAD(rot.x);
+	rot.y = DEG2RAD(rot.y);
+	REVISE_PI(rot.x);
+	REVISE_PI(rot.y);
 
-  // 進行方向
-  MoveVec.x = sinf(rot.y) * cosf(rot.x);
-  MoveVec.z = cosf(rot.y) * cosf(rot.x);
-  MoveVec.y = -sinf(rot.x);
+	// 進行方向
+	MoveVec.x = sinf(rot.y) * cosf(rot.x);
+	MoveVec.z = cosf(rot.y) * cosf(rot.x);
+	MoveVec.y = -sinf(rot.x);
 
-  // 移動量
-  MoveSpeed.x *= MoveVec.x;
-  MoveSpeed.z *= MoveVec.z;
-  MoveSpeed.y *= MoveVec.y;
+	// 移動量
+	MoveSpeed.x *= MoveVec.x;
+	MoveSpeed.z *= MoveVec.z;
+	MoveSpeed.y *= MoveVec.y;
 
-  for (int cnt = 0; cnt < MARK_MAX; cnt++)
-  {
-    pos.x += MoveSpeed.x * BALLISTICT_SPACE;
-    pos.z += MoveSpeed.z * BALLISTICT_SPACE;
-    pos.y += MoveSpeed.y * BALLISTICT_SPACE;
-	MoveSpeed.y += BULLET_GRAVITY * BALLISTICT_SPACE;
+	// 弾道
+	for (int cnt = 0; cnt < MARK_MAX; cnt++)
+	{
+		pos.x += MoveSpeed.x * BALLISTICT_SPACE;
+		pos.z += MoveSpeed.z * BALLISTICT_SPACE;
+		pos.y += MoveSpeed.y * BALLISTICT_SPACE;
+		MoveSpeed.y += BULLET_GRAVITY * BALLISTICT_SPACE;
 
-    BallisticMark[cnt]->SetPos(pos);
-  }
+		BallisticMark[cnt]->SetPos(pos);
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -109,7 +118,7 @@ void CBallistic::Update(VECTOR3 pos, VECTOR3 rot)
 //------------------------------------------------------------------------------
 CBallistic* CBallistic::Create(COLOR color)
 {
-  CBallistic* Scene = new CBallistic;
+	CBallistic* Scene = new CBallistic;
 
 	Scene->Init(color);
 
