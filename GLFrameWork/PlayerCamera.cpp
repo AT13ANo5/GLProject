@@ -40,7 +40,6 @@ void CPlayerCamera::Init(void)
 	CSoundAL::SetListenerPos(_Eye);
 	CSoundAL::SetListenerFVec(vec);
 	CSoundAL::SetListenerUVec(VECTOR3(0,1.0f,0));
-	CSoundAL::SetDefaultMaxDistance(400.0f);
 
 }
 

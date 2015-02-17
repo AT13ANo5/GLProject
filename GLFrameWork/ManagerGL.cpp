@@ -602,7 +602,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 					{
 						if (netData.charNum != 0)
 						{
-							CSoundAL::Play(CSoundAL::SE_GAME_START);
+							CSoundAL::Play(CSoundAL::SE_ENTER);
 							CManager::ChangeScene(SCENE_GAME);
 						}
 					}

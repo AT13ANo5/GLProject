@@ -4,7 +4,7 @@
 
 CSoundAL* CSoundAL::Top = nullptr;
 CSoundAL* CSoundAL::Cur = nullptr;
-float CSoundAL::_DefaultMaxDistance = 25000.0f;
+float CSoundAL::_DefaultMaxDistance = 300.0f;
 float CSoundAL::_MasterVolume = 1.0f;
 int CSoundAL::_Num = 0;
 bool CSoundAL::Device = false;
@@ -217,18 +217,21 @@ CSoundAL* CSoundAL::Play(SOUND id,const VECTOR3& pos,float distance,bool autoRel
 	
 	VECTOR3 dis = pos - _ListenerPos;
 	
-	if (distance > 0)
+	if (Buffer[id].loop == false)
 	{
-		if (((dis.x*dis.x) + (dis.z*dis.z)) > ((distance)*(distance)))
+		if (distance > 0)
 		{
-			return nullptr;
+			if (((dis.x*dis.x) + (dis.z*dis.z)) > ((distance)*(distance)))
+			{
+				return nullptr;
+			}
 		}
-	}
-	else
-	{
-		if (((dis.x*dis.x) + (dis.z*dis.z)) > ((_DefaultMaxDistance)*(_DefaultMaxDistance)))
+		else
 		{
-			return nullptr;
+			if (((dis.x*dis.x) + (dis.z*dis.z)) > ((_DefaultMaxDistance)*(_DefaultMaxDistance)))
+			{
+				return nullptr;
+			}
 		}
 	}
 	
@@ -251,14 +254,12 @@ void CSoundAL::Init(void)
 {
 	_MaxDistance = _DefaultMaxDistance;
 	_Volume = _MasterVolume;
-	if (Buffer[Type].loop == false)
-	{
-		_Volume *= 0.5f;
-	}
+
 	_Loop = Buffer[Type].loop;
 	_BGM = Buffer[Type].bgm;
+
 	alSourcef(Buffer[Type].Source[id],AL_GAIN,_Volume);
-	alSourcef(Buffer[Type].Source[id],AL_MIN_GAIN,0.0f);
+	if (!_BGM) { alSourcef(Buffer[Type].Source[id],AL_MIN_GAIN,0.0f); }
 	alSourcef(Buffer[Type].Source[id],AL_MAX_GAIN,_Volume);
 	alSourcef(Buffer[Type].Source[id],AL_MAX_DISTANCE,_MaxDistance);
 

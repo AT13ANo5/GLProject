@@ -64,8 +64,8 @@ CPlayer::CPlayer() :CModel()
 //------------------------------------------------------------------------------
 CPlayer::~CPlayer()
 {
-	//SafeRelease(DriveSE);
-	//SafeRelease(IdlingSE);
+	SafeRelease(DriveSE);
+	SafeRelease(IdlingSE);
 	SafeDelete(Ballistic);
 	SafeDelete(_Feed);
 	SafeRelease(_nari);
@@ -117,6 +117,7 @@ void CPlayer::Init(void)
 	DriveSE = CSoundAL::Play(CSoundAL::SE_DRIVE,_Pos);
 	DriveSE->SetVolume(0);
 	IdlingSE = CSoundAL::Play(CSoundAL::SE_IDLING,_Pos);
+	
 }
 
 //------------------------------------------------------------------------------
@@ -279,7 +280,7 @@ void CPlayer::UpdatePlayer(void)
 		Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
 		Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
 		IdlingSE->SetVolume(0);
-		DriveSE->SetVolume(1.0f);
+		DriveSE->SetVolume(0.5f);
 	}
 	// ‰º
 	else if (CKeyboard::GetPress(DIK_S))
@@ -287,11 +288,11 @@ void CPlayer::UpdatePlayer(void)
 		Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
 		Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
 		IdlingSE->SetVolume(0);
-		DriveSE->SetVolume(1.0f);
+		DriveSE->SetVolume(0.5f);
 	}
 	else
 	{
-		IdlingSE->SetVolume(1.0f);
+		IdlingSE->SetVolume(0.5f);
 		DriveSE->SetVolume(0);
 	}
 
@@ -517,6 +518,17 @@ void CPlayer::UpdateCPU(void)
 		_SandTime = 16;
 	}
 
+	if (abs(Movement.x) > 0.1f || abs(Movement.z) > 0.1f)
+	{
+		IdlingSE->SetVolume(0);
+		DriveSE->SetVolume(0.3f);
+	}
+	else
+	{
+		IdlingSE->SetVolume(0.3f);
+		DriveSE->SetVolume(0);
+	}
+
 	// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚È‚©‚Á‚½Žž
 	if (LaunchFlag == true)
 	{
@@ -617,6 +629,7 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 		if (_charNum == CManager::netData.charNum)
 		{
 			_Feed->SetAlpha(0);
+		}
 		VECTOR3 pos = _Pos;
 		pos.y += kHeightMax - 100;
 		_nari->SetPos(pos);
@@ -642,8 +655,8 @@ void CPlayer::SetRespawn(void)
 	if (PlayerID == CManager::netData.charNum)
 	{
 		_Feed->SetAlpha(1);
+	}
 	_nari->SetPos(_PlayerRespown);
-
 	Movement = VECTOR3(0,0,0);
 
 
