@@ -17,9 +17,11 @@
 #include "MiniMap.h"
 #include "Report.h"
 #include "NumberManager.h"
+#include "Number2D.h"
 #include "Keyboard.h"
 #include "Time.h"
 #include "Polygon2D.h"
+#include "ManagerGL.h"
 
 #include "CPlayer.h"
 
@@ -74,7 +76,7 @@ CUI::CUI()
 	report = nullptr;
 	numberManager = nullptr;
 	Time = nullptr;
-
+	counter = nullptr;
 
 	myID = 0;
 }
@@ -93,6 +95,7 @@ void CUI::Init(void)
 {
 	//タイマー生成
 	Time = CTime::Create(TIME_POS, TIME_SIZE);
+	Time->SetUpdateFlag(false);
 
 	//タイマーの枠
 	timeFrame = CPolygon2D::Create(TIME_F_POS, TIME_F_SIZE);
@@ -140,6 +143,15 @@ void CUI::Init(void)
 	//ミニマップの初期化
 	miniMap = new CMiniMap;
 	miniMap->Init();
+
+//	const VECTOR2 COUNTER_POS = VECTOR2(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f);
+	const VECTOR3 COUNTER_POS = VECTOR3(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f,0.0f);
+	const float   COUNTER_SCAL = 2.0f;
+	const VECTOR2 COUNTER_SIZE = VECTOR2(128.0f*COUNTER_SCAL, 100.0f*COUNTER_SCAL); // 128 100
+	counter = CNumber2D::Create(COUNTER_POS, COUNTER_SIZE);
+	counter->SetNumber(3);
+	counter->SetTex(CTexture::Texture(TEX_NUMBER));
+	counter->SetDrawFlag(false);
 }
 
 //=============================================================================
@@ -162,6 +174,8 @@ void CUI::Uninit(void)
 	SafeRelease(loadString);
 
 	SafeRelease(Time);
+
+	SafeRelease(counter);
 
 	player = nullptr;
 }
@@ -205,6 +219,14 @@ void CUI::Update(void)
 		reportBg->SetDrawFlag(true);
 		report->SetDrawFlag(true);
 		numberManager->SetDrawFlag(true);
+
+		// kill / death
+		for (int playerCnt = 0; playerCnt < PLAYER_MAX; ++playerCnt){
+			numberManager->SetNumber((CNumberManager::TYPE)playerCnt,
+				CManager::userInfo[playerCnt].kill,
+				CManager::userInfo[playerCnt].death);
+		}
+
 	}
 	else {
 		reportBg->SetDrawFlag(false);
@@ -223,5 +245,36 @@ void CUI::SetNumber(CNumberManager::TYPE type, int kill, int death)
 {
 	numberManager->SetNumber(type, kill, death);
 }
+
+//=============================================================================
+// SetNumber
+//-----------------------------------------------------------------------------
+//  type  :  タイプ, kill  :  KILL数, DEATH  :  DEATH数
+//=============================================================================
+void CUI::SetNumber(int num)
+{
+	counter->SetNumber(num); 
+}
+
+//=============================================================================
+// SetNumberDrawFlag
+//-----------------------------------------------------------------------------
+//  bool : ON/OFF
+//=============================================================================
+void CUI::SetNumberDrawFlag(bool flag)
+{
+	counter->SetDrawFlag(flag);
+}
+
+//=============================================================================
+// SetTimeUpdateFlag
+//-----------------------------------------------------------------------------
+//  bool : ON/OFF
+//=============================================================================
+void CUI::SetTimeUpdateFlag(bool flag)
+{
+	Time->SetUpdateFlag(flag);
+}
+
 
 // end of file
