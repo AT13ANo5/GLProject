@@ -14,11 +14,13 @@
 // ヘッダインクルード
 //------------------------------------------------------------------------------
 #include "CBullet.h"
-#include "Billboard.h"
+#include "Polygon3D.h"
 
 //------------------------------------------------------------------------------
 // クラス宣言
 //------------------------------------------------------------------------------
+class CBillboard;
+
 class CBallistic
 {
 public:
@@ -26,9 +28,13 @@ public:
 	~CBallistic();
 
 	void Init(COLOR color);
-  void Update(VECTOR3 pos, VECTOR3 rot);
+	void Update(VECTOR3 pos, VECTOR3 rot);
 
 	static CBallistic* Create(COLOR color);
+
+	CBillboard* GetMark(int no){return BallisticMark[no];}
+
+	void SetLanding(VECTOR3 pos){Landing->SetPos(pos);}
 	
 	void SetDrawFlag(bool drawFlag)
 	{
@@ -39,7 +45,8 @@ public:
 	}
 
 private:
-  CBillboard* BallisticMark[MARK_MAX]; // 弾道のマーク
+	CBillboard* BallisticMark[MARK_MAX];	// 弾道のマーク
+	CPolygon3D* Landing;					// 着弾マーク
 };
 
 //------------------------------------------------------------------------------

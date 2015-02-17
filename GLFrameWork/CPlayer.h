@@ -118,6 +118,9 @@ public:
 	}
 
 	void SetPlayerColor(COLOR color){PlayerColor = color;}
+	COLOR GetPlayerColor(void){return PlayerColor;}
+
+	CBallistic* GetBallistic(void){return Ballistic;}
 
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新

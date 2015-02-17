@@ -57,6 +57,7 @@ private:
 	void PushBackBattleArea(void);					// 行動可能範囲の押し戻し
 	bool NeedsSkipPlayer(CPlayer* pPlayer);			// プレイヤー判定スキップ
 	bool NeedsSkipBullet(CPlayer* pPlayer);			// 砲弾判定スキップ
+	void HitBulletToField(void);						// 着弾地点判定
 
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空

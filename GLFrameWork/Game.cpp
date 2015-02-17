@@ -19,6 +19,7 @@
 #include "Effect3D.h"
 #include "Explosion.h"
 #include "Smoke.h"
+#include "Ballistic.h"
 #include "Polygon3D.h"
 #include "Texture.h"
 #include "BattleAreaCylinder.h"
@@ -403,6 +404,9 @@ void CGame::Update(void)
 
 	// 行動可能範囲判定
 	PushBackBattleArea();
+
+	// 着弾地点判定
+	HitBulletToField();
 
 	// UIのアップデート
 	UI->Update();
@@ -843,6 +847,37 @@ bool CGame::NeedsSkipBullet(CPlayer* pPlayer)
 
 	// スキップしない
 	return false;
+}
+
+//==============================================================================
+// 着弾地点判定
+//==============================================================================
+void CGame::HitBulletToField(void)
+{
+	VECTOR3		nor;
+	float		height;
+	CBillboard* mark;
+	VECTOR3		markPos;
+	CBallistic* ballistic = Player[CManager::netData.charNum]->GetBallistic();
+
+	for (int cnt = 0; cnt < MARK_MAX; ++cnt)
+	{
+		// 初期化
+		nor = VECTOR3(0.0f, 0.0f, 0.0f);
+		height = 0.0f;
+
+		// マーク情報
+		mark = ballistic->GetMark(cnt);
+		markPos = mark->Pos();
+
+		// 高さ判定
+		height = Ground->GetHeight(markPos, &nor);
+		if (height >= markPos.y)
+		{
+			ballistic->SetLanding(VECTOR3(markPos.x, height + 0.1f, markPos.z));
+			break;
+		}
+	}
 }
 
 //------------------------------------------------------------------------------
