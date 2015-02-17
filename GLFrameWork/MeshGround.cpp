@@ -646,5 +646,8 @@ void CMeshGround::GetNormal(float fPosX, float fPosZ, VECTOR3* pOut)
 			}
 		}
 	}
-	*pOut = vecNormal;
+ if(pOut)
+ {
+  *pOut = vecNormal;
+ }
 }

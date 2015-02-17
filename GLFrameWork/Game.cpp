@@ -473,6 +473,7 @@ void CGame::CheckHitPlayer(void)
 				if (pPlayerDefense->PlayerLife() > 0)
 				{
 					CSoundAL::Play(CSoundAL::SE_HIT,pPlayerDefense->Pos());
+					CSoundAL::Play(CSoundAL::SE_DAMAGE,pPlayerDefense->Pos());
 				}
 				CExplosion::Create(pPlayerDefense->Pos());
 
