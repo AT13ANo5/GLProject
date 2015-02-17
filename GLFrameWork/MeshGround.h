@@ -66,10 +66,13 @@ private:
 	float* HeightMap;
 	int* Index;
 	int MapNum;
+	VECTOR3*	BufferNormal;
 
 	void GetPanelIndex(VECTOR3 pos,int* OutIndexX,int* OutIndexY);
 	float GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VECTOR3& p2,VECTOR3& pos,VECTOR3* Normal = nullptr);
 	void LoadImg(const char * imgFile);//âÊëúÉfÅ[É^ì«Ç›çûÇ›
+	void CalculateBufferNormal(void);
+	void GetNormal(float fPosX, float fPosZ, VECTOR3* pOut);
 
 };
 

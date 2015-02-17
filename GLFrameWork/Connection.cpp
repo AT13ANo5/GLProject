@@ -108,22 +108,22 @@ void CConnection::Init(void)
 		waitPlayer = new CPolygon2D*[connectionPlayerMax];
 
 		waitPlayer[0] = CPolygon2D::Create(waitPlayerPos[0], VECTOR2(waitPlayerWidth * 2.0f, waitPlayerHeight * 2.0f));
-		waitPlayer[0]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_RINCHAN));
+		waitPlayer[0]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_RED));
 
 		waitPlayer[1] = CPolygon2D::Create(waitPlayerPos[1], VECTOR2(waitPlayerWidth, waitPlayerHeight));
 		waitPlayer[1]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_BLUE));
 
 		waitPlayer[2] = CPolygon2D::Create(waitPlayerPos[2], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[2]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_ORANGE));
+		waitPlayer[2]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_WATER));
 
 		waitPlayer[3] = CPolygon2D::Create(waitPlayerPos[3], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[3]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_RED));
+		waitPlayer[3]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_ORANGE));
 
 		waitPlayer[4] = CPolygon2D::Create(waitPlayerPos[4], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[4]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_WATER));
+		waitPlayer[4]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_WHITE));
 
 		waitPlayer[5] = CPolygon2D::Create(waitPlayerPos[5], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-		waitPlayer[5]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_WHITE));
+		waitPlayer[5]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_RINCHAN));
 	}
 	//-------------------------------------------------
 

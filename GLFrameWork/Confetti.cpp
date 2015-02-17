@@ -17,13 +17,13 @@ CConfetti* CConfetti::Create(void)
 	CConfetti* effect = new CConfetti;
 	if (effect == nullptr){ return nullptr; }
 
-	VECTOR3 pos = VECTOR3(0,0,400.0f);
-	pos.x = rand() % 301 - 150.0f;
-	pos.y = 300.0f;
-	pos.z = rand() % 131 - 150.0f;
+	VECTOR3 pos = VECTOR3(0,0,-150);
+	pos.x += rand() % 301 - 150.0f;
+	pos.y += 400.0f;
+	pos.z += rand() % 131 - 150.0f;
 
 	effect->_Pos = pos;
-	effect->SetSize(VECTOR2(10.0f,10.0f));
+	effect->SetSize(VECTOR2(8.0f,8.0f));
 	effect->Init();
 
 	return effect;
