@@ -136,8 +136,18 @@ void CPlayer::Update()
 
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
-		//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
-		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
+
+		/*
+#ifdef ROT_QUART
+		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
+#endif
+
+#ifdef ROT_NORMAL
+		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
+#endif
+		*/
+		CManager::SendRot(_Rot.y);
+
 		CManager::SendCannonRot(Barrel->Rot());
 
 
@@ -161,8 +171,20 @@ void CPlayer::Update()
 
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
-		//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
-		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
+
+
+		/*
+		#ifdef ROT_QUART
+		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
+		#endif
+
+		#ifdef ROT_NORMAL
+		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
+		#endif
+		*/
+		CManager::SendRot(_Rot.y);
+
+
 		CManager::SendCannonRot(Barrel->Rot());
 
 
@@ -346,7 +368,7 @@ void CPlayer::UpdatePlayer(void)
 	{
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
+			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),PlayerColor);
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
@@ -370,8 +392,18 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	CManager::SendPos(_Pos);
-	//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
+
+	/*
+	#ifdef ROT_QUART
+	CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
+	#endif
+
+	#ifdef ROT_NORMAL
 	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
+	#endif
+	*/
+	CManager::SendRot(_Rot.y);
+
 	CManager::SendCannonRot(Barrel->Rot());
 
 #ifdef _DEBUG
@@ -591,8 +623,19 @@ void CPlayer::SetRespawn(void)
 
 	Barrel->SetPos(_Pos);			// ˆÊ’u
 	CManager::SendPos(_Pos);
-	//CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, rot.y);
-	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, 0.0f);
+	
+	/*
+	#ifdef ROT_QUART
+	CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
+	#endif
+
+	#ifdef ROT_NORMAL
+	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
+	#endif
+	*/
+	CManager::SendRot(_Rot.y);
+
+
 	CManager::SendCannonRot(Barrel->Rot());
 	CManager::SendCannon(LaunchFlag);
 

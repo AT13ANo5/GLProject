@@ -106,6 +106,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	//	サーバーのアドレス取得
 	fp = fopen("address.txt", "r");
 	fscanf(fp, "%s", add);
+	fclose(fp);
 
 	//ネットワーク処理
 	//-----------------------------------------------------------------
@@ -274,20 +275,29 @@ void CManager::SendPos(VECTOR3 _pos)
 //=============================================================================
 //	回転送信処理
 //=============================================================================
-void CManager::SendRot(float _X, float _Y, float _Z, float _rot, float _yRotation)
+//void CManager::SendRot(float _X, float _Y, float _Z, float _rot, float _yRotation)
+void CManager::SendRot(float _rotY)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_ROT;
 	data.servID = SERV_ID;
 	data.charNum = netData.charNum;
-	/*data.data_rot.X = _X;
+
+	data.data_rot.rotY = _rotY;
+
+/*#ifdef ROT_QUART
+	data.data_rot.X = _X;
 	data.data_rot.Y = _Y;
 	data.data_rot.Z = _Z;
 	data.data_rot.rot = _rot;
-	data.data_rot.rot = _yRotation;*/
+	data.data_rot.rot = _yRotation;
+#endif
+
+#ifdef ROT_NORMAL
 	data.data_rot.rotX = _X;
 	data.data_rot.rotY = _Y;
 	data.data_rot.rotZ = _Z;
+#endif*/
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -342,6 +352,15 @@ void CManager::SendKillDeath(int _kill, int _death)
 	data.charNum = netData.charNum;
 	data.data_killDeath.value = _death;
 	userInfo[netData.charNum].death = _death;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+void CManager::SendDeathFlag(int _id)
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_SEND_DEATH;
+	data.servID = SERV_ID;
+	data.charNum = _id;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -464,9 +483,8 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 						CGame::SetPlayerState(data, DATA_TYPE_ROT);
 
 						//	回転情報セット
-						userInfo[data.charNum].rot.x = data.data_rot.rotX;
+						//userInfo[data.charNum].rot.y = data.data_rot.yRotation;
 						userInfo[data.charNum].rot.y = data.data_rot.rotY;
-						userInfo[data.charNum].rot.z = data.data_rot.rotZ;
 					}
 
 					break;
@@ -541,6 +559,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 							//	識別番号を取得
 							netData.charNum = data.charNum;
 							entryFlag = true;
+							userInfo[netData.charNum].entryFlag = true;
 
 							//	エントリーをセット
 							CConnection::setEntry(data.charNum);
@@ -565,6 +584,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 						if (data.data_connection.entryFlag[count] == true)
 						{
 							CConnection::setEntry(count);
+							userInfo[count].entryFlag = true;
 						}
 						else
 							break;

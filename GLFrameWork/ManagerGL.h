@@ -62,7 +62,8 @@ public:
 	static void ChangeScene(short next);
 	static void SendEntry();
 	static void SendPos(VECTOR3 _pos);
-	static void SendRot(float _X, float _Y, float _Z, float _rot, float _yRotation);
+	//static void SendRot(float _X, float _Y, float _Z, float _rot, float _yRotation);
+	static void SendRot(float _rotY);
 	static void SendCannonRot(VECTOR3 _rot);
 	static void SendCannon(bool _flag);
 	static void sendGameStart();
@@ -73,6 +74,7 @@ public:
 
 	static void SendKill(int _kill, int _id);
 	static void SendDeath(int _death, int _id);
+	static void SendDeathFlag(int _id);
 
 
 	static int* getRanking();

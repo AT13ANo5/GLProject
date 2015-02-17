@@ -164,6 +164,46 @@ void CGame::Init(void)
 	}	//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
 
+	// 【テスト】各プレイヤーの色をセット
+	for(int i = 0; i < PLAYER_MAX; i++)
+	{
+		switch(i)
+		{
+			// 赤
+			case 0:
+				Player[i]->SetPlayerColor(RED(0.5f));
+				break;
+
+			// 青
+			case 1:
+				Player[i]->SetPlayerColor(BLUE(0.5f));
+				break;
+
+			// 水
+			case 2:
+				Player[i]->SetPlayerColor(CYAN(0.5f));
+				break;
+
+			// 橙
+			case 3:
+				Player[i]->SetPlayerColor(COLOR(1.0f, 0.7f, 0.0f, 0.5f));
+				break;
+		
+			// 白
+			case 4:
+				Player[i]->SetPlayerColor(WHITE(0.5f));
+				break;
+
+			// P
+			case 5:
+				Player[i]->SetPlayerColor(YELLOW(0.5f));
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	// UI初期化
 	UI = new CUI;
 	UI->Init();
@@ -207,10 +247,11 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 
 		case DATA_TYPE_ROT:
 
-			Player[_netData.charNum]->SetRotX(_netData.data_rot.rotX);
+			/*Player[_netData.charNum]->SetAxisRotation(VECTOR3(_netData.data_rot.X, _netData.data_rot.Y, _netData.data_rot.Z));
+			Player[_netData.charNum]->SetRotationAxis(_netData.data_rot.rot);
+			Player[_netData.charNum]->SetRotY(_netData.data_rot.yRotation);*/
 			Player[_netData.charNum]->SetRotY(_netData.data_rot.rotY);
-			Player[_netData.charNum]->SetRotZ(_netData.data_rot.rotZ);
-
+			
 			break;
 
 		case DATA_TYPE_CANNONROT:
@@ -435,6 +476,12 @@ void CGame::CheckHitPlayer(void)
 					//	殺した数加算
 					pPlayerOffense->addKillCount();
 					CManager::SendKill(pPlayerOffense->getKillCount(), pPlayerOffense->getPlayerID());
+
+					if (CManager::userInfo[pPlayerDefense->getPlayerID()].entryFlag == false)
+					{
+						if (CManager::netData.charNum == 0)
+							CManager::SendDeathFlag(pPlayerDefense->getPlayerID());
+					}
 				}
 
 				// 処理終了
@@ -721,6 +768,11 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	//********************************************************
 	// 2015_02_12 姿勢制御用の処理を追加 ここまで
 	//********************************************************
+	if (pObject == Player[0])
+	{
+		Console::SetCursorPos(1, 1);
+		Console::Print("%9.3f, %9.3f, %9.3f\n", NormalGround.x, NormalGround.y, NormalGround.z);
+	}
 }
 
 //==============================================================================

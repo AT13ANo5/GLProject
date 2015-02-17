@@ -117,6 +117,8 @@ public:
 		return PlayerID;
 	}
 
+	void SetPlayerColor(COLOR color){PlayerColor = color;}
+
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
@@ -145,6 +147,8 @@ private:
 
  int killCount;
  int deathCount;
+
+	COLOR PlayerColor;		// プレイヤーの色を退避
 
 };
 
