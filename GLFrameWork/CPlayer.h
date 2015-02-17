@@ -122,6 +122,7 @@ public:
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
+ void UpdateNari(void); //なり更新
 
 	PLAYER_STATE _State;	// プレイヤーの状態
 	CModel* Barrel;			// 砲身
@@ -143,7 +144,7 @@ private:
 	CBillboard* _nari;
 	int _SandTime;			// 土埃時間
 	VECTOR3 _OldPos;		// 前座標
-
+ float _NariSclSpeed; // なりの大きさ変わるスピード
 
  int killCount;
  int deathCount;
