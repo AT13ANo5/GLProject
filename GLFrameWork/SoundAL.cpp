@@ -34,6 +34,8 @@ const PARAM File[CSoundAL::SOUND_MAX] =
 	{ "data/sound/SE/Hit.wav"		,false	,false,7 },
 	{ "data/sound/SE/Impact.wav"	,false	,false,7 },
 	{ "data/sound/SE/Break.wav"		,false	,false,7 },
+	{ "data/sound/SE/Death.wav"		,false,false,7 },
+	{ "data/sound/SE/Damage.wav"	,false,false,7 },
 	{ "data/sound/SE/Drive.wav"		,true	,false,7 },
 	{ "data/sound/SE/Idling.wav"	,true	,false,7 },
 };

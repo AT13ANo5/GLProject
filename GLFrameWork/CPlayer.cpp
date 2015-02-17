@@ -619,6 +619,7 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 	if (_State != PLAYER_STATE_DEATH)
 	{
 		CSoundAL::Play(CSoundAL::SE_BREAK,_Pos);
+		CSoundAL::Play(CSoundAL::SE_DEATH,_Pos);
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
