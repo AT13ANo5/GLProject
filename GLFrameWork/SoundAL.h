@@ -32,7 +32,6 @@ public:
 		BGM_RESULT,
 		SE_ENTRY,
 		SE_ENTER,
-		SE_GAME_START,
 		SE_CANNON,
 		SE_HIT,
 		SE_IMPACT,
