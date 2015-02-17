@@ -20,6 +20,7 @@
 #include "ManagerGL.h"
 #include "Explosion.h"
 #include "SandCloud.h"
+#include "SoundAL.h"
 #define NARI_SCL (15.0f)
 const int kHeightMax = 400;
 const int kUpSpeed = 3;
@@ -39,6 +40,9 @@ CPlayer::CPlayer() :CModel()
 
 	// ’e‰Šú‰»
 	_Bullet = nullptr;
+
+	DriveSE = nullptr;
+	IdlingSE = nullptr;
 
 	// ‘•“UŽžŠÔ
 	_ReloadTimer = PLAYER_RELOAD_TIME;
@@ -60,6 +64,8 @@ CPlayer::CPlayer() :CModel()
 //------------------------------------------------------------------------------
 CPlayer::~CPlayer()
 {
+	//SafeRelease(DriveSE);
+	//SafeRelease(IdlingSE);
 	SafeDelete(Ballistic);
 	SafeDelete(_Feed);
 	SafeRelease(_nari);
@@ -108,6 +114,9 @@ void CPlayer::Init(void)
 	_Feed = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f,0),VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
 	_Feed->SetColor(COLOR(0,0,0,0));
 	_Timer = 0;
+	DriveSE = CSoundAL::Play(CSoundAL::SE_DRIVE,_Pos);
+	DriveSE->SetVolume(0);
+	IdlingSE = CSoundAL::Play(CSoundAL::SE_IDLING,_Pos);
 }
 
 //------------------------------------------------------------------------------
@@ -120,6 +129,9 @@ void CPlayer::Init(void)
 //------------------------------------------------------------------------------
 void CPlayer::Update()
 {
+
+	DriveSE->SetPos(_Pos);
+	IdlingSE->SetPos(_Pos);
 	//ƒ‚[ƒh‘I‘ð
 	switch (_State)
 	{
@@ -130,9 +142,9 @@ void CPlayer::Update()
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 
 		if (PlayerID == CManager::netData.charNum)
+		{
 			_Feed->AddAlpha(Alpha);
-
-
+		}
 
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
@@ -166,8 +178,9 @@ void CPlayer::Update()
 
 
 		if (PlayerID == CManager::netData.charNum)
+		{
 			_Feed->AddAlpha(-Alpha);
-
+		}
 
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos);
@@ -265,13 +278,21 @@ void CPlayer::UpdatePlayer(void)
 	{
 		Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
 		Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
+		IdlingSE->SetVolume(0);
+		DriveSE->SetVolume(1.0f);
 	}
-
 	// ‰º
 	else if (CKeyboard::GetPress(DIK_S))
 	{
 		Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
 		Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
+		IdlingSE->SetVolume(0);
+		DriveSE->SetVolume(1.0f);
+	}
+	else
+	{
+		IdlingSE->SetVolume(1.0f);
+		DriveSE->SetVolume(0);
 	}
 
 	// ¶
@@ -369,6 +390,7 @@ void CPlayer::UpdatePlayer(void)
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
 			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),PlayerColor);
+			CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
@@ -444,6 +466,7 @@ void CPlayer::BlastBullet()
 	if (LaunchFlag == false)
 	{
 		_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
+		CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 		LaunchFlag = true;
 		_BulletUseFlag = true;
 		_ReloadTimer = 0;
@@ -583,6 +606,7 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 {
 	if (_State != PLAYER_STATE_DEATH)
 	{
+		CSoundAL::Play(CSoundAL::SE_BREAK,_Pos);
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
@@ -591,6 +615,7 @@ void CPlayer::SetDeath(VECTOR3 pos, int _charNum)
 		Ballistic->SetDrawFlag(false);	// ’e“¹‚ð”ñ•\Ž¦‚É
 
 		if (_charNum == CManager::netData.charNum)
+		{
 			_Feed->SetAlpha(0);
 		VECTOR3 pos = _Pos;
 		pos.y += kHeightMax - 100;
@@ -615,6 +640,7 @@ void CPlayer::SetRespawn(void)
 	_ReloadTimer = PLAYER_RELOAD_TIME;
 
 	if (PlayerID == CManager::netData.charNum)
+	{
 		_Feed->SetAlpha(1);
 	_nari->SetPos(_PlayerRespown);
 

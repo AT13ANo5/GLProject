@@ -161,7 +161,7 @@
     <Filter Include="02_ゲーム\ミニマップ\Map2D">
       <UniqueIdentifier>{62bf8f75-5e6c-4074-81dc-634ddc6432fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00_システム\Model\Manager">
+    <Filter Include="00_システム\Manager">
       <UniqueIdentifier>{56236559-af7b-4543-a17d-4d90f7e1fd4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -170,7 +170,7 @@
       <Filter>00_システム\main</Filter>
     </ClCompile>
     <ClCompile Include="ManagerGL.cpp">
-      <Filter>00_システム\Model\Manager</Filter>
+      <Filter>00_システム\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>00_システム\Camera</Filter>
@@ -316,9 +316,11 @@
     <ClCompile Include="SandCloud.cpp">
       <Filter>00_システム\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="TitleDirection.cpp" />
     <ClCompile Include="Smoke.cpp">
       <Filter>00_システム\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleDirection.cpp">
+      <Filter>01_タイトル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -326,7 +328,7 @@
       <Filter>00_システム\main</Filter>
     </ClInclude>
     <ClInclude Include="ManagerGL.h">
-      <Filter>00_システム\Model\Manager</Filter>
+      <Filter>00_システム\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>00_システム\Camera</Filter>
@@ -487,9 +489,11 @@
     <ClInclude Include="SandCloud.h">
       <Filter>00_システム\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="TitleDirection.h" />
     <ClInclude Include="Smoke.h">
       <Filter>00_システム\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleDirection.h">
+      <Filter>01_タイトル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -464,6 +464,10 @@ void CGame::CheckHitPlayer(void)
 				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
+				if (pPlayerDefense->PlayerLife() > 0)
+				{
+					CSoundAL::Play(CSoundAL::SE_HIT,pPlayerDefense->Pos());
+				}
 				CExplosion::Create(pPlayerDefense->Pos());
 
 				//	長崎
@@ -714,6 +718,7 @@ void CGame::IsLandField(void)
 		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
 		{
 			// 弾の消滅処理
+			CSoundAL::Play(CSoundAL::SE_IMPACT,pBulletCurrent->Pos());
 			pPlayerCurrent->ReleaseBullet();
 
 			// エフェクト：爆発　弾と地形の判定

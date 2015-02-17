@@ -19,18 +19,24 @@ typedef struct
 {
 	char* file;
 	bool loop;
+	bool bgm;
 	short MultiPlayNum;
 }PARAM;
 const PARAM File[CSoundAL::SOUND_MAX] =
 {
-	{ "data/sound/BGM/Title.wav",true,2 },
-	{ "data/sound/BGM/Connect.wav",true,2 },
-	{ "data/sound/BGM/Game.wav",true,2 },
-	{ "data/sound/BGM/Result.wav",true,2 },
-	{ "data/sound/SE/Entry.wav",false,2 },
-	{ "data/sound/SE/PushEnter.wav",false,2 },
-	{ "data/sound/SE/ToGame.wav",false,2 },
-
+	{ "data/sound/BGM/Title.wav"	,true	,true,2 },
+	{ "data/sound/BGM/Connect.wav"	,true	,true,2 },
+	{ "data/sound/BGM/Game.wav"		,true	,true,2 },
+	{ "data/sound/BGM/Result.wav"	,true	,true,2 },
+	{ "data/sound/SE/Entry.wav"		,false	,false,2 },
+	{ "data/sound/SE/PushEnter.wav"	,false	,false,2 },
+	{ "data/sound/SE/ToGame.wav"	,false	,false,2 },
+	{ "data/sound/SE/Cannon.wav"	,false	,false,7 },
+	{ "data/sound/SE/Hit.wav"		,false	,false,7 },
+	{ "data/sound/SE/Impact.wav"	,false	,false,7 },
+	{ "data/sound/SE/Break.wav"		,false	,false,7 },
+	{ "data/sound/SE/Drive.wav"		,true	,false,7 },
+	{ "data/sound/SE/Idling.wav"	,true	,false,7 },
 };
 
 SOUND_BUFF CSoundAL::Buffer[SOUND_MAX];
@@ -142,6 +148,7 @@ void CSoundAL::Initialize(void)
 			}
 		}
 		Buffer[cnt].loop = File[cnt].loop;
+		Buffer[cnt].bgm = File[cnt].bgm;
 		alGenSources(Buffer[cnt].MultiPlayNum,Buffer[cnt].Source);
 
 		for (int num = 0;num < Buffer[cnt].MultiPlayNum;num++)
@@ -249,6 +256,7 @@ void CSoundAL::Init(void)
 		_Volume *= 0.5f;
 	}
 	_Loop = Buffer[Type].loop;
+	_BGM = Buffer[Type].bgm;
 	alSourcef(Buffer[Type].Source[id],AL_GAIN,_Volume);
 	alSourcef(Buffer[Type].Source[id],AL_MIN_GAIN,0.0f);
 	alSourcef(Buffer[Type].Source[id],AL_MAX_GAIN,_Volume);
@@ -389,11 +397,11 @@ void CSoundAL::SetListenerOri(void)
 	if (!Device){ return; }
 	_ListenerOri[0] = _ListenerFrontVec.x;
 	_ListenerOri[1] = _ListenerFrontVec.y;
-	_ListenerOri[2] = -_ListenerFrontVec.z;
+	_ListenerOri[2] = _ListenerFrontVec.z;
 
 	_ListenerOri[3] = _ListenerUpVec.x;
 	_ListenerOri[4] = _ListenerUpVec.y;
-	_ListenerOri[5] = -_ListenerUpVec.z;
+	_ListenerOri[5] = _ListenerUpVec.z;
 
 	alListenerfv(AL_ORIENTATION,_ListenerOri);
 }
@@ -430,7 +438,7 @@ void CSoundAL::FadeBGM(int frame)
 
 	while (sound)
 	{
-		if (sound->Loop())
+		if (sound->BGM())
 		{
 			sound->SetFade(0,frame,true);
 		}
