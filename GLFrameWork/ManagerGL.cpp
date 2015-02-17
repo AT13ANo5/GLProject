@@ -384,7 +384,7 @@ void CManager::SendDeath(int _death, int _id)
 	data.servID = SERV_ID;
 	data.charNum = _id;
 	data.data_killDeath.value = _death;
-	userInfo[_id].kill = _death;
+	userInfo[_id].death = _death;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
