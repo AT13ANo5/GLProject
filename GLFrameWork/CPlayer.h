@@ -139,7 +139,8 @@ private:
 	float _Hegiht;			//高さでカウント
 	VECTOR3 _PlayerRespown;	//次の復活地点作成
 	CBillboard* _nari;
-	int _SandTime;
+	int _SandTime;			// 土埃時間
+	VECTOR3 _OldPos;		// 前座標
 
 
  int killCount;
