@@ -30,7 +30,6 @@ const PARAM File[CSoundAL::SOUND_MAX] =
 	{ "data/sound/BGM/Result.wav"	,true	,true,2 },
 	{ "data/sound/SE/Entry.wav"		,false	,false,2 },
 	{ "data/sound/SE/PushEnter.wav"	,false	,false,2 },
-	{ "data/sound/SE/ToGame.wav"	,false	,false,2 },
 	{ "data/sound/SE/Cannon.wav"	,false	,false,7 },
 	{ "data/sound/SE/Hit.wav"		,false	,false,7 },
 	{ "data/sound/SE/Impact.wav"	,false	,false,7 },
