@@ -757,7 +757,7 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	}
 	vectorAxisRotation.Normalize();
 	rotation = VECTOR3::Dot(NormalGround, vectorUp);
-	if (rotation > 2.0f * FLT_EPSILON || rotation < -2.0f * FLT_EPSILON)
+	if (rotation <= 1.0f && rotation >= -1.0f)
 	{
 		rotation = RAD_TO_DEG * acosf(rotation);
 	}
@@ -773,11 +773,6 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	//********************************************************
 	// 2015_02_12 épê®êßå‰ópÇÃèàóùÇí«â¡ Ç±Ç±Ç‹Ç≈
 	//********************************************************
-	if (pObject == Player[0])
-	{
-		Console::SetCursorPos(1, 1);
-		Console::Print("%9.3f, %9.3f, %9.3f\n", NormalGround.x, NormalGround.y, NormalGround.z);
-	}
 }
 
 //==============================================================================
