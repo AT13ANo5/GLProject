@@ -27,9 +27,12 @@ public:
   void Update(void);
 
 private:
+  static const int kROCKMAX = 4;
   static const float  RADIUS_SKY;   // ‹ó‚Ì”¼Œa
 
-  CModel*       Player;
+  CModel*       Player[PLAYER_MAX];
+  CModel*       Barrel[PLAYER_MAX];
+  CModel*       Rock[kROCKMAX];
   CMeshGround*  Ground;       // ’nŒ`
   CMeshSphere*  Sky;          // ‹ó
   CResultUIManager* UIManager;

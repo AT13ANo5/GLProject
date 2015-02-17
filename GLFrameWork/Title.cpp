@@ -122,7 +122,7 @@ void CTitle::Update(void)
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CSoundAL::Play(CSoundAL::SE_ENTER);
-		CManager::ChangeScene(SCENE_CONNECTION);
+		CManager::ChangeScene(SCENE_RESULT);
 	}
 }
 

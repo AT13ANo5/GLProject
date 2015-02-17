@@ -12,7 +12,6 @@ CMeshGround::CMeshGround(int priority) :CObject(priority)
 	Nor = nullptr;
 	NormalMap = nullptr;
 	HeightMap = nullptr;
-	BufferNormal = nullptr;
 }
 CMeshGround::~CMeshGround()
 {
@@ -46,8 +45,6 @@ CMeshGround::~CMeshGround()
 		delete[] HeightMap;
 		HeightMap = nullptr;
 	}
-	delete[] BufferNormal;
-	BufferNormal = nullptr;
 }
 CMeshGround* CMeshGround::Create(VECTOR3 pos,VECTOR2 PanelSize,VECTOR2 PanelNum,float heightMag)
 {
@@ -79,8 +76,6 @@ void CMeshGround::Init(void)
 	Vtx = new VECTOR3[VertexNum];
 	Tex = new VECTOR2[VertexNum];
 	Nor = new VECTOR3[VertexNum];
-
-	BufferNormal = new VECTOR3[VertexNum];
 
 	_Size.x = PanelNum.x*PanelSize.x;
 	_Size.y = 0;
@@ -269,9 +264,6 @@ void CMeshGround::Init(void)
 	glEnd();
 
 	glEndList();
-
-	// 法線バッファ作成
-	CalculateBufferNormal();
 }
 
 void CMeshGround::Uninit(void)
@@ -327,8 +319,8 @@ void CMeshGround::GetPanelIndex(VECTOR3 pos,int* OutIndexX,int* OutIndexY)
 	*OutIndexX = (int)(PanelNum.x - pos.x / PanelSize.x);
 	*OutIndexY = (int)(pos.z / PanelSize.y);
 
-	//Console::SetCursorPos(1,3);
-	//Console::Print("GroundIndex : (%03d, %03d)\n",*OutIndexX,*OutIndexY);
+	Console::SetCursorPos(1,3);
+	Console::Print("GroundIndex : (%03d, %03d)\n",*OutIndexX,*OutIndexY);
 }
 
 float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
@@ -345,14 +337,14 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 
 	for (int cntVertex = 0; cntVertex < 4; ++cntVertex)
 	{
-		//Console::SetCursorPos(1,4 + cntVertex);
-		//Console::Print("Vertex[%d] : (%9.3f, %9.3f) : Height(%9.3f)\n",cntVertex,VertexPos[cntVertex].x,VertexPos[cntVertex].z,VertexPos[cntVertex].y);
+		Console::SetCursorPos(1,4 + cntVertex);
+		Console::Print("Vertex[%d] : (%9.3f, %9.3f) : Height(%9.3f)\n",cntVertex,VertexPos[cntVertex].x,VertexPos[cntVertex].z,VertexPos[cntVertex].y);
 	}
-	//Console::SetCursorPos(1,8);
-	//Console::Print("VertexIndex[0] : %2d : %9.3f\n",Index,VertexPos[0].y);
-	//Console::Print("VertexIndex[1] : %2d : %9.3f\n",Index + 1,VertexPos[1].y);
-	//Console::Print("VertexIndex[2] : %2d : %9.3f\n",Index + ((int)PanelNum.x + 2),VertexPos[2].y);
-	//Console::Print("VertexIndex[3] : %2d : %9.3f\n",Index + ((int)PanelNum.x + 1),VertexPos[3].y);
+	Console::SetCursorPos(1,8);
+	Console::Print("VertexIndex[0] : %2d : %9.3f\n",Index,VertexPos[0].y);
+	Console::Print("VertexIndex[1] : %2d : %9.3f\n",Index + 1,VertexPos[1].y);
+	Console::Print("VertexIndex[2] : %2d : %9.3f\n",Index + ((int)PanelNum.x + 2),VertexPos[2].y);
+	Console::Print("VertexIndex[3] : %2d : %9.3f\n",Index + ((int)PanelNum.x + 1),VertexPos[3].y);
 #if 0
 	for (int cnt = 0;cnt<4;cnt++)
 	{
@@ -363,9 +355,6 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 #endif
 	VECTOR3 Vec0 = VertexPos[1] - VertexPos[0];
 	VECTOR3 Vec1 = VECTOR3(0,0,0);
-
-	// 法線の取得
-	GetNormal(pos.x, pos.z, normal);
 
 	bool flag = false;
 	for (int cnt = 0;cnt < 3;cnt++)
@@ -384,15 +373,15 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 	}
 	if (flag)
 	{
-		//Console::SetCursorPos(1,12);
-		//Console::Print("上\n");
-		return GetHeightPolygon(VertexPos[1],VertexPos[2],VertexPos[0],pos,nullptr);
+		Console::SetCursorPos(1,12);
+		Console::Print("上\n");
+		return GetHeightPolygon(VertexPos[1],VertexPos[2],VertexPos[0],pos,normal);
 	}
 	else
 	{
-		//Console::SetCursorPos(1,12);
-		//Console::Print("下\n");
-		return GetHeightPolygon(VertexPos[3],VertexPos[0],VertexPos[2],pos,nullptr);
+		Console::SetCursorPos(1,12);
+		Console::Print("下\n");
+		return GetHeightPolygon(VertexPos[3],VertexPos[0],VertexPos[2],pos,normal);
 	}
 
 	return 0;
@@ -400,30 +389,29 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 
 float CMeshGround::GetHeightPolygon(const VECTOR3& p0,const VECTOR3& p1,const VECTOR3& p2,VECTOR3& pos,VECTOR3* Normal)
 {
-	//Console::SetCursorPos(1,13);
-	//Console::Print("Pos[0] : (%9.3f, %9.3f) : Height(%9.3f)\n",p0.x,p0.z,p0.y);
-	//Console::Print("Pos[1] : (%9.3f, %9.3f) : Height(%9.3f)\n",p1.x,p1.z,p1.y);
-	//Console::Print("Pos[2] : (%9.3f, %9.3f) : Height(%9.3f)\n",p2.x,p2.z,p2.y);
+	Console::SetCursorPos(1,13);
+	Console::Print("Pos[0] : (%9.3f, %9.3f) : Height(%9.3f)\n",p0.x,p0.z,p0.y);
+	Console::Print("Pos[1] : (%9.3f, %9.3f) : Height(%9.3f)\n",p1.x,p1.z,p1.y);
+	Console::Print("Pos[2] : (%9.3f, %9.3f) : Height(%9.3f)\n",p2.x,p2.z,p2.y);
 	VECTOR3 Vec1,Vec0;
 	VECTOR3 normal = VECTOR3(0,0,0);
 	Vec0 = p1 - p0;
 	Vec1 = p2 - p0;
-	//Console::Print("Vec[0] : (%9.3f, %9.3f, %9.3f)\n",Vec0.x,Vec0.y,Vec0.z);
-	//Console::Print("Vec[1] : (%9.3f, %9.3f, %9.3f)\n",Vec1.x,Vec1.y,Vec1.z);
+	Console::Print("Vec[0] : (%9.3f, %9.3f, %9.3f)\n",Vec0.x,Vec0.y,Vec0.z);
+	Console::Print("Vec[1] : (%9.3f, %9.3f, %9.3f)\n",Vec1.x,Vec1.y,Vec1.z);
 	VECTOR3::Cross(&normal,Vec0,Vec1);
 	normal.Normalize();
 	if (normal.y == 0.0f)
 	{
 		return 0;
 	}
-	if (Normal != nullptr)
-	{
-		*Normal = normal;
-	}
-
+ if(Normal)
+ {
+  *Normal = normal;
+ }
 	float Height = p0.y - (-normal.x*(pos.x - p0.x) + normal.z*(pos.z - p0.z)) / normal.y;
-	//Console::Print("Height : %9.3f\n",Height);
-	//Console::Print("Normal : (%9.3f, %9.3f, %9.3f)\n",normal.x,normal.y,normal.z);
+	Console::Print("Height : %9.3f\n",Height);
+	Console::Print("Normal : (%9.3f, %9.3f, %9.3f)\n",normal.x,normal.y,normal.z);
 
 	return Height;
 
@@ -530,121 +518,4 @@ void CMeshGround::LoadImg(const char * imgFile)
 		PanelNum.y = ImgSize.y - 1;
 	}
 
-}
-
-void CMeshGround::CalculateBufferNormal(void)
-{
-	// 頂点数の取得
-	UINT	numVertexX = static_cast< int >(PanelNum.x) + 1;		// X方向頂点数
-	UINT	numVertexZ = static_cast< int >(PanelNum.y) + 1;		// Z方向頂点数
-
-	// 法線の設定
-	VECTOR3	vectorNormal[2];		// 法線ベクトル
-	VECTOR3	vectorPlaneX[2];		// X方向ベクトル
-	VECTOR3	vectorPlaneZ[2];		// Z方向ベクトル
-	for (UINT cntZ = 1; cntZ < numVertexZ - 1; ++cntZ)
-	{
-		for (UINT cntX = 1; cntX < numVertexX - 1; ++cntX)
-		{
-			vectorPlaneX[0].x = -PanelSize.x;
-			vectorPlaneX[0].z = 0.0f;
-			vectorPlaneX[0].y = HeightMap[numVertexX * cntZ + (cntX + 1)];
-			vectorPlaneZ[0].x = 0.0f;
-			vectorPlaneZ[0].z = PanelSize.y;
-			vectorPlaneZ[0].y = HeightMap[numVertexX * (cntZ + 1) + cntX];
-			vectorPlaneX[1].x = PanelSize.x;
-			vectorPlaneX[1].z = 0.0f;
-			vectorPlaneX[1].y = HeightMap[numVertexX * cntZ + (cntX - 1)];
-			vectorPlaneZ[1].x = 0.0f;
-			vectorPlaneZ[1].z = -PanelSize.y;
-			vectorPlaneZ[1].y = HeightMap[numVertexX * (cntZ - 1) + cntX];
-			vectorPlaneX[0].y -= HeightMap[numVertexX * cntZ + cntX];
-			vectorPlaneX[1].y -= HeightMap[numVertexX * cntZ + cntX];
-			vectorPlaneZ[0].y -= HeightMap[numVertexX * cntZ + cntX];
-			vectorPlaneZ[1].y -= HeightMap[numVertexX * cntZ + cntX];
-			vectorPlaneX[0].Normalize();
-			vectorPlaneX[1].Normalize();
-			vectorPlaneZ[0].Normalize();
-			vectorPlaneZ[1].Normalize();
-			VECTOR3::Cross(&vectorNormal[0], vectorPlaneX[0], vectorPlaneZ[0]);
-			VECTOR3::Cross(&vectorNormal[1], vectorPlaneX[1], vectorPlaneZ[1]);
-			vectorNormal[0].Normalize();
-			vectorNormal[1].Normalize();
-			vectorNormal[0] += vectorNormal[1];
-			vectorNormal[0].Normalize();
-			BufferNormal[numVertexX * cntZ + (static_cast< int >(PanelNum.x) - 1 - cntX)] = vectorNormal[0];
-		}
-	}
-
-	// 端の法線の設定
-	for (UINT cntZ = 1; cntZ < numVertexZ - 1; ++cntZ)
-	{
-		BufferNormal[numVertexX * cntZ] = BufferNormal[numVertexX * cntZ + 1];
-		BufferNormal[numVertexX * cntZ + numVertexX - 1] = BufferNormal[numVertexX * cntZ + numVertexX - 2];
-	}
-	for (UINT cntX = 1; cntX < numVertexX - 1; ++cntX)
-	{
-		BufferNormal[cntX] = BufferNormal[numVertexX + cntX];
-		BufferNormal[numVertexX * (numVertexZ - 1) + cntX] = BufferNormal[numVertexX * (numVertexZ - 2) + cntX];
-	}
-	vectorNormal[0] = BufferNormal[1] + BufferNormal[numVertexX];
-	BufferNormal[0] = vectorNormal[0];
-	BufferNormal[0].Normalize();
-	vectorNormal[0] = BufferNormal[numVertexX - 2] + BufferNormal[numVertexX * 2 - 1];
-	BufferNormal[numVertexX - 1] = vectorNormal[0];
-	BufferNormal[numVertexX - 1].Normalize();
-	vectorNormal[0] = BufferNormal[numVertexX * (numVertexZ - 1) + 1] + BufferNormal[numVertexX * (numVertexZ - 2)];
-	BufferNormal[numVertexX * (numVertexZ - 1)] = vectorNormal[0];
-	BufferNormal[numVertexX * (numVertexZ - 1)].Normalize();
-	vectorNormal[0] = BufferNormal[numVertexX * (numVertexZ - 1) + numVertexX - 2] + BufferNormal[numVertexX * (numVertexZ - 2) + numVertexX - 1];
-	BufferNormal[numVertexX * (numVertexZ - 1) + numVertexX - 1] = vectorNormal[0];
-	BufferNormal[numVertexX * (numVertexZ - 1) + numVertexX - 1].Normalize();
-}
-
-void CMeshGround::GetNormal(float fPosX, float fPosZ, VECTOR3* pOut)
-{
-	// 頂点の番号を算出
-	int		nIdxVtxX = static_cast< int >((fPosX + PanelSize.x * static_cast< int >(PanelNum.x) * 0.5f) / PanelSize.x);
-	int		nIdxVtxZ = static_cast< int >((fPosZ + PanelSize.y * static_cast< int >(PanelNum.y) * 0.5f) / PanelSize.y);
-
-	// 割合を算出
-	float	fRateX;
-	float	fRateZ;
-	fRateX = (fPosX - PanelSize.x * (nIdxVtxX - static_cast< int >(PanelNum.x) * 0.5f)) / PanelSize.x;
-	if (fRateX < 0.0f)
-	{
-		fRateX = 0.0f;
-	}
-	else if (fRateX > 1.0f)
-	{
-		fRateX = 1.0f;
-	}
-	fRateZ = (fPosZ - PanelSize.y * (nIdxVtxZ - static_cast< int >(PanelNum.y) * 0.5f)) / PanelSize.y;
-	if (fRateZ < 0.0f)
-	{
-		fRateZ = 0.0f;
-	}
-	else if (fRateZ > 1.0f)
-	{
-		fRateZ = 1.0f;
-	}
-
-	// 法線を設定
-	VECTOR3	vecNormal(0.0f, 0.0f, 0.0f);
-	vecNormal += BufferNormal[(nIdxVtxZ + 0) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 0)] * (1.0f - fRateX) * (1.0f - fRateZ);
-	vecNormal += BufferNormal[(nIdxVtxZ + 0) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 1)] * fRateX * (1.0f - fRateZ);
-	vecNormal += BufferNormal[(nIdxVtxZ + 1) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 0)] * (1.0f - fRateX) * fRateZ;
-	vecNormal += BufferNormal[(nIdxVtxZ + 1) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 1)] * fRateX * fRateZ;
-	if (vecNormal.y < 0.01f && vecNormal.y > -0.01f)
-	{
-		if (vecNormal.x < 0.01f && vecNormal.x > -0.01f)
-		{
-			if (vecNormal.z < 0.01f && vecNormal.z > -0.01f)
-			{
-				vecNormal.x = vecNormal.z = 0.0f;
-				vecNormal.y = 1.0f;
-			}
-		}
-	}
-	*pOut = vecNormal;
 }
