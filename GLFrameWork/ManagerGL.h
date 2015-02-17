@@ -61,14 +61,15 @@ public:
 
 	static void ChangeScene(short next);
 	static void SendEntry();
-	static void SendPos(VECTOR3 _pos);
+	static void SendPos(VECTOR3 _pos, int _id);
 	//static void SendRot(float _X, float _Y, float _Z, float _rot, float _yRotation);
-	static void SendRot(float _rotY);
-	static void SendCannonRot(VECTOR3 _rot);
-	static void SendCannon(bool _flag);
+	static void SendRot(float _rotY, int _id);
+	static void SendCannonRot(VECTOR3 _rot, int _id);
+	static void SendCannon(bool _flag, int _id);
 	static void sendGameStart();
 	static void SendChangeGame();
 	static void SendChangeResult();
+	static void SendReborn(int _id);
 	static void SendKillDeath(int _kill, int _death);
 
 

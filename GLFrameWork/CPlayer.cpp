@@ -129,13 +129,15 @@ void CPlayer::Update()
 		_Hegiht += kUpSpeed;
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 
+
+
 		if (PlayerID == CManager::netData.charNum)
 			_Feed->AddAlpha(Alpha);
 
 
 
 		Barrel->SetPos(_Pos);			// 位置
-		CManager::SendPos(_Pos);
+		CManager::SendPos(_Pos, PlayerID);
 
 		/*
 #ifdef ROT_QUART
@@ -146,9 +148,9 @@ void CPlayer::Update()
 		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 #endif
 		*/
-		CManager::SendRot(_Rot.y);
+		CManager::SendRot(_Rot.y, PlayerID);
 
-		CManager::SendCannonRot(Barrel->Rot());
+		CManager::SendCannonRot(Barrel->Rot(), PlayerID);
 
 
 		if (_Hegiht > kHeightMax)
@@ -170,9 +172,7 @@ void CPlayer::Update()
 
 
 		Barrel->SetPos(_Pos);			// 位置
-		CManager::SendPos(_Pos);
-
-
+		CManager::SendPos(_Pos, PlayerID);
 		/*
 		#ifdef ROT_QUART
 		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
@@ -182,11 +182,8 @@ void CPlayer::Update()
 		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 		#endif
 		*/
-		CManager::SendRot(_Rot.y);
-
-
-		CManager::SendCannonRot(Barrel->Rot());
-
+		CManager::SendRot(_Rot.y, PlayerID);
+		CManager::SendCannonRot(Barrel->Rot(), PlayerID);
 
 		if (_Hegiht > kHeightMax)
 		{
@@ -194,6 +191,8 @@ void CPlayer::Update()
 			_Feed->SetAlpha(0);
 			_nari->SetAlpha(0.0f);
 			Ballistic->SetDrawFlag(true);
+
+			CManager::SendReborn(PlayerID);
 		}
 		return;
 	}
@@ -372,7 +371,7 @@ void CPlayer::UpdatePlayer(void)
 			LaunchFlag = true;
 			_BulletUseFlag = true;
 			_ReloadTimer = 0;
-			CManager::SendCannon(LaunchFlag);
+			CManager::SendCannon(LaunchFlag, PlayerID);
 		}
 	}
 	// 弾が発射されている時
@@ -391,20 +390,18 @@ void CPlayer::UpdatePlayer(void)
 		}
 	}
 
-	CManager::SendPos(_Pos);
 
+	CManager::SendPos(_Pos, PlayerID);
 	/*
 	#ifdef ROT_QUART
 	CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
 	#endif
-
 	#ifdef ROT_NORMAL
 	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 	#endif
 	*/
-	CManager::SendRot(_Rot.y);
-
-	CManager::SendCannonRot(Barrel->Rot());
+	CManager::SendRot(_Rot.y, PlayerID);
+	CManager::SendCannonRot(Barrel->Rot(), PlayerID);
 
 #ifdef _DEBUG
 	// デバッグ用
@@ -621,7 +618,7 @@ void CPlayer::SetRespawn(void)
 
 
 	Barrel->SetPos(_Pos);			// 位置
-	CManager::SendPos(_Pos);
+	CManager::SendPos(_Pos, PlayerID);
 	
 	/*
 	#ifdef ROT_QUART
@@ -632,11 +629,11 @@ void CPlayer::SetRespawn(void)
 	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 	#endif
 	*/
-	CManager::SendRot(_Rot.y);
+	CManager::SendRot(_Rot.y, PlayerID);
 
 
-	CManager::SendCannonRot(Barrel->Rot());
-	CManager::SendCannon(LaunchFlag);
+	CManager::SendCannonRot(Barrel->Rot(), PlayerID);
+	CManager::SendCannon(LaunchFlag, PlayerID);
 
 }
 //------------------------------------------------------------------------------
