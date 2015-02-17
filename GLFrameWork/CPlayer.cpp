@@ -451,12 +451,6 @@ void CPlayer::UpdatePlayer(void)
 		this->ReleaseBullet();
 	}
 
-	// タイマー即回復
-	if (CKeyboard::GetTrigger(DIK_K))
-	{
-		_ReloadTimer = PLAYER_RELOAD_TIME;
-	}
-
 #endif
 }
 
@@ -467,8 +461,8 @@ void CPlayer::BlastBullet()
 {
 	if (LaunchFlag == false)
 	{
-		_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
-		CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
+  _Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),PlayerColor);
+  CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 		LaunchFlag = true;
 		_BulletUseFlag = true;
 		_ReloadTimer = 0;
