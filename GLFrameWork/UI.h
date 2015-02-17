@@ -51,6 +51,13 @@ public:
 	// minimap
 	CMiniMap* MiniMap(void){return miniMap;}
 
+	// number
+	void SetNumber(int num);
+	void SetNumberDrawFlag(bool flag);
+
+	// time
+	void SetTimeUpdateFlag(bool flag);
+
 	//=============================================================================
 	// SetNumber
 	//-----------------------------------------------------------------------------
@@ -74,6 +81,7 @@ private:
 	CReport*        reportBg;
 	CReport*        report;
 	CNumberManager* numberManager;
+	CNumber2D*			counter;
 	CTime*					Time;
 	CPolygon2D*			timeFrame;
 

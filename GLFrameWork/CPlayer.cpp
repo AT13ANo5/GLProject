@@ -27,7 +27,7 @@ const int kUpSpeed = 3;
 const int kDamageCntMax = 60;
 const float BARREL_ROTX_SPEED = 1.0f;
 const float PLAYER_ROTY_SPEED = 1.0f;
-const int NARI_SCL_SPEED = 2;
+const int NARI_SCL_SPEED = 6;
 //------------------------------------------------------------------------------
 // コンストラクタ
 //------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ void CPlayer::Update()
 			_Feed->AddAlpha(Alpha);
 		}
 
-	_nari->AddAlpha(Alpha);
+	_nari->AddAlpha(Alpha * 3);
 	_nari->AddPosY(kUpSpeed);
 		Barrel->SetPos(_Pos);			// 位置
 		CManager::SendPos(_Pos, PlayerID);
@@ -175,6 +175,7 @@ void CPlayer::Update()
 		{
 			SetRespawn();
 		}
+  UpdateNari();
 		return;
 	}
 	case PLAYER_STATE_RESPAWN:
@@ -189,7 +190,7 @@ void CPlayer::Update()
 		{
 			_Feed->AddAlpha(-Alpha);
 		}
-  		_nari->AddAlpha(-Alpha);
+  		_nari->AddAlpha(-Alpha * 3);
 		Barrel->SetPos(_Pos);			// 位置
 		CManager::SendPos(_Pos, PlayerID);
 		/*
@@ -213,6 +214,7 @@ void CPlayer::Update()
 
 			CManager::SendReborn(PlayerID);
 		}
+  UpdateNari();
 		return;
 	}
 	case PLAYER_STATE_DAMAGE:
@@ -224,7 +226,6 @@ void CPlayer::Update()
 	default:
 		break;
 	}
- UpdateNari();
 
 	if (_Timer != 0)
 	{

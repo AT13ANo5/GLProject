@@ -49,6 +49,8 @@ public:
 	// ƒ^ƒCƒ€Žæ“¾
 	int GetTime(void){ return Timer; }
 
+	// 
+	void SetUpdateFlag(bool flag){ updateFlag = flag; }
 
 private:
 
@@ -57,6 +59,7 @@ private:
 	int Timer;
 	VECTOR3 Pos;
 	VECTOR2 Size;
+	bool updateFlag;
 };
 
 #endif

@@ -18,12 +18,23 @@ class UI;
 class CGame :public CScene
 {
 public:
+
 	CGame();
 	~CGame();
 
 	void Init(void);
 	void Uninit(void);
 	void Update(void);
+
+	typedef enum {
+		PHASE_NONE = 0,
+		PHASE_3,
+		PHASE_2,
+		PHASE_1,
+		PHASE_START,
+		PHASE_MAX
+	} PHSE;
+
 
 	static void SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType);
 private:
@@ -58,17 +69,16 @@ private:
 	bool NeedsSkipPlayer(CPlayer* pPlayer);			// プレイヤー判定スキップ
 	bool NeedsSkipBullet(CPlayer* pPlayer);			// 砲弾判定スキップ
 	void HitBulletToField(void);						// 着弾地点判定
+	void StartCount(void);
 
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
 	static CPlayer**       Player;     // プレイヤー	CNumberManager* numberManager;
 	CBattleAreaCylinder*	CylinderArea;			// 戦闘可能エリア
-	//CReport*        reportBg;
-	//CReport*        report;
-	//CNumberManager* numberManager;
 	CUI*		UI;
-
 	CModel**		ppRock_;	//	岩
 
+	PHSE				gamePhase;
+	int					gamePhaseCnt;
 };
 #endif
