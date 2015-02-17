@@ -370,6 +370,8 @@ void CGame::Update(void)
 	// 空の位置プレイヤーに合わせる
 	Sky->SetPosX(Player[0]->Pos().x);
 	Sky->SetPosZ(Player[0]->Pos().z);
+
+
 	for (int loop = 0;loop < PLAYER_MAX;loop++)
 	{
 		if (Player[loop]->PlayerLife() <= 0)

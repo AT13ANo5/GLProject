@@ -240,11 +240,11 @@ void CManager::sendGameStart()
 //=============================================================================
 //	弾発射フラグ送信処理
 //=============================================================================
-void CManager::SendCannon(bool _flag)
+void CManager::SendCannon(bool _flag, int _id)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_CANNON;
-	data.charNum = netData.charNum;
+	data.charNum = _id;
 	data.servID = SERV_ID;
 	data.data_cannon.flag = _flag;
 
@@ -253,12 +253,12 @@ void CManager::SendCannon(bool _flag)
 //=============================================================================
 //	位置送信処理
 //=============================================================================
-void CManager::SendPos(VECTOR3 _pos)
+void CManager::SendPos(VECTOR3 _pos, int _id)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_POS;
 	data.servID = SERV_ID;
-	data.charNum = netData.charNum;
+	data.charNum = _id;
 	data.data_pos.posX = _pos.x;
 	data.data_pos.posY = _pos.y;
 	data.data_pos.posZ = _pos.z;
@@ -269,12 +269,12 @@ void CManager::SendPos(VECTOR3 _pos)
 //	回転送信処理
 //=============================================================================
 //void CManager::SendRot(float _X, float _Y, float _Z, float _rot, float _yRotation)
-void CManager::SendRot(float _rotY)
+void CManager::SendRot(float _rotY, int _id)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_ROT;
 	data.servID = SERV_ID;
-	data.charNum = netData.charNum;
+	data.charNum = _id;
 
 	data.data_rot.rotY = _rotY;
 
@@ -297,12 +297,12 @@ void CManager::SendRot(float _rotY)
 //=============================================================================
 //	回転送信処理
 //=============================================================================
-void CManager::SendCannonRot(VECTOR3 _rot)
+void CManager::SendCannonRot(VECTOR3 _rot, int _id)
 {
 	NET_DATA data;
 	data.type = DATA_TYPE_CANNONROT;
 	data.servID = SERV_ID;
-	data.charNum = netData.charNum;
+	data.charNum = _id;
 	data.data_cannonRot.rotX = _rot.x;
 	data.data_cannonRot.rotY = _rot.y;
 	data.data_cannonRot.rotZ = _rot.z;
@@ -325,6 +325,15 @@ void CManager::SendChangeResult()
 	data.type = DATA_TYPE_CHANGE_RESULT;
 	data.servID = SERV_ID;
 	data.charNum = netData.charNum;
+
+	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+}
+void CManager::SendReborn(int _id)
+{
+	NET_DATA data;
+	data.type = DATA_TYPE_SEND_REBORN;
+	data.servID = SERV_ID;
+	data.charNum = _id;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -453,12 +462,6 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 						//	データタイプに応じてプレイヤーへ情報をセット
 						CGame::SetPlayerState(data, DATA_TYPE_POS);
 
-						if (data.data_pos.posX > 1000.0f || data.data_pos.posX < -1000.0f ||
-							data.data_pos.posZ > 1000.0f || data.data_pos.posZ < -1000.0f ||
-							data.data_pos.posY > 500.0f || data.data_pos.posY < -1000.0f)
-						{
-							Console::Print("posError!!\n");
-						}
 
 						//	位置情報セット
 						userInfo[data.charNum].pos.x = data.data_pos.posX;
