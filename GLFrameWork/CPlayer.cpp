@@ -460,13 +460,11 @@ void CPlayer::BlastBullet()
 //------------------------------------------------------------------------------
 void CPlayer::UpdateCPU(void)
 {
-	VECTOR3 oldPos = _Pos;
-
 	Barrel->SetPos(_Pos);			// 位置
 	BarrelRotX = Barrel->Rot().x;
 
 	// 移動値
-	Movement = _Pos - oldPos;
+	Movement = _Pos - _OldPos;
 
 	// 移動エフェクト
 	if (_SandTime >= 0)
@@ -511,6 +509,9 @@ void CPlayer::UpdateCPU(void)
 			_ReloadTimer = PLAYER_RELOAD_TIME;
 		}
 	}
+
+	// 現在の座標を保存
+	_OldPos = _Pos;
 }
 
 //------------------------------------------------------------------------------
