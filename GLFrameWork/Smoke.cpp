@@ -1,29 +1,29 @@
 //=============================================================================
-// CSparkクラス [Spark.cpp]
+// CSmokeクラス [Smoke.cpp]
 // Author :Mai Tanabe
 //=============================================================================
 
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "Spark.h"
+#include "Smoke.h"
 
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define EFFECT_TEX			(TEX_SPARK)
-#define EFFECT_SIZE			(10.0f)
-#define EFFECT_WIDTH		(0.5f)
+#define EFFECT_TEX			(TEX_SMOKE)
+#define EFFECT_SIZE			(25.0f)
+#define EFFECT_WIDTH		(0.25f)
 #define EFFECT_HEIGHT		(1.0f)
-#define EFFECT_1_FRAME		(30)		// 1つの状態のフレーム数
-#define EFFECT_LIFE_FRAME	(60)	// 寿命フレーム数
+#define EFFECT_1_FRAME		(5)		// 1つの状態のフレーム数
+#define EFFECT_LIFE_FRAME	(20)	// 寿命フレーム数
 
 //=============================================================================
 // 生成
 //=============================================================================
-void CSpark::Create(const VECTOR3& pos)
+void CSmoke::Create(const VECTOR3& pos)
 {
-	CSpark* pointer = new CSpark;
+	CSmoke* pointer = new CSmoke;
 
 	pointer->SetPos(pos + VECTOR3(0.0f, 10.0f, 0.0f));
 	pointer->SetRot(0.0f, 0.0f, 0.0f);
@@ -38,7 +38,7 @@ void CSpark::Create(const VECTOR3& pos)
 //=============================================================================
 // 初期化
 //=============================================================================
-void CSpark::Init(void)
+void CSmoke::Init(void)
 {
 	// 親クラス初期化
 	CBillboard::Init();
@@ -47,7 +47,7 @@ void CSpark::Init(void)
 //=============================================================================
 // 終了
 //=============================================================================
-void CSpark::Uninit(void)
+void CSmoke::Uninit(void)
 {
 	// 親クラスの終了
 	CBillboard::Uninit();
@@ -56,7 +56,7 @@ void CSpark::Uninit(void)
 //=============================================================================
 // 更新
 //=============================================================================
-void CSpark::Update(void)
+void CSmoke::Update(void)
 {
 	// カウントアップ
 	m_cntAnim++;
@@ -65,8 +65,8 @@ void CSpark::Update(void)
 	VECTOR2	texcord;
 	int		nowTex = m_cntAnim / EFFECT_1_FRAME;
 
-	texcord = VECTOR2((int)(nowTex) * EFFECT_WIDTH,
-					  (int)((nowTex) * EFFECT_WIDTH) * EFFECT_HEIGHT);
+	texcord = VECTOR2((int)(nowTex)* EFFECT_WIDTH,
+					  (int)((nowTex)* EFFECT_WIDTH) * EFFECT_HEIGHT);
 
 	SetUV_X(texcord.x);
 	SetUV_Y(texcord.y);
@@ -80,7 +80,7 @@ void CSpark::Update(void)
 //=============================================================================
 // 描画
 //=============================================================================
-void CSpark::Draw(void)
+void CSmoke::Draw(void)
 {
 	// 親クラスの描画
 	CBillboard::Draw();

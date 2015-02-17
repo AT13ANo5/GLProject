@@ -316,7 +316,8 @@
     <ClCompile Include="SandCloud.cpp">
       <Filter>00_システム\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Spark.cpp">
+    <ClCompile Include="TitleDirection.cpp" />
+    <ClCompile Include="Smoke.cpp">
       <Filter>00_システム\Effect</Filter>
     </ClCompile>
   </ItemGroup>
@@ -486,7 +487,8 @@
     <ClInclude Include="SandCloud.h">
       <Filter>00_システム\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Spark.h">
+    <ClInclude Include="TitleDirection.h" />
+    <ClInclude Include="Smoke.h">
       <Filter>00_システム\Effect</Filter>
     </ClInclude>
   </ItemGroup>

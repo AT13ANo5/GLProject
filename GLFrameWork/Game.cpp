@@ -18,7 +18,7 @@
 #include "Billboard.h"
 #include "Effect3D.h"
 #include "Explosion.h"
-#include "Spark.h"
+#include "Smoke.h"
 #include "Polygon3D.h"
 #include "Texture.h"
 #include "BattleAreaCylinder.h"
@@ -533,7 +533,7 @@ void CGame::CheckHitRock(void)
 				pPlayerOffense->ReleaseBullet();
 
 				// エフェクト：爆発　弾が岩に当たったとき
-				CExplosion::Create(positionOffense);
+				CSmoke::Create(positionOffense);
 
 				// 処理終了
 				break;
@@ -717,7 +717,7 @@ void CGame::IsLandField(void)
 			pPlayerCurrent->ReleaseBullet();
 
 			// エフェクト：爆発　弾と地形の判定
-			CExplosion::Create(pBulletCurrent->Pos());
+			CSmoke::Create(pBulletCurrent->Pos());
 		}
 	}
 }
