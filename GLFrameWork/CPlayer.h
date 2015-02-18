@@ -117,8 +117,11 @@ public:
 		return PlayerID;
 	}
 
-	void SetPlayerColor(COLOR color){PlayerColor = color;}
-	COLOR GetPlayerColor(void){return PlayerColor;}
+	void SetPlayerColor(COLOR color){_PlayerColor = color;}
+	COLOR PlayerColor(void){return _PlayerColor;}
+
+	void SetInputFlag(bool flag){_InputFlag = flag;}
+	bool InputFlag(void){return _InputFlag;}
 
 	CBallistic* GetBallistic(void){return Ballistic;}
 
@@ -155,8 +158,8 @@ private:
 	int killCount;
 	int deathCount;
 
-	COLOR PlayerColor;		// プレイヤーの色を退避
-
+	COLOR _PlayerColor;	// プレイヤーの色を退避
+	bool _InputFlag;	// 入力可不可判定（true 可能 / false 不可）
 };
 
 #endif

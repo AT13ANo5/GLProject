@@ -120,7 +120,8 @@ void CPlayer::Init(void)
 	DriveSE = CSoundAL::Play(CSoundAL::SE_DRIVE,_Pos);
 	DriveSE->SetVolume(0);
 	IdlingSE = CSoundAL::Play(CSoundAL::SE_IDLING,_Pos);
-	
+
+	_InputFlag = true;
 }
 
 //------------------------------------------------------------------------------
@@ -395,7 +396,7 @@ void CPlayer::UpdatePlayer(void)
 	{
 		if (CKeyboard::GetTrigger(DIK_SPACE))
 		{
-			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),PlayerColor);
+			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
 			CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 			LaunchFlag = true;
 			_BulletUseFlag = true;
@@ -463,7 +464,7 @@ void CPlayer::BlastBullet()
 {
 	if (LaunchFlag == false)
 	{
-  _Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),PlayerColor);
+  _Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
   CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 		LaunchFlag = true;
 		_BulletUseFlag = true;
