@@ -700,8 +700,12 @@ void CGame::PushBackField(void)
 void CGame::IsLandField(void)
 {
 	// 判定
-	CPlayer*	pPlayerCurrent = nullptr;		// 対象プレイヤー
-	CBullet*	pBulletCurrent = nullptr;		// 対象オブジェクト
+	VECTOR3	 nor;			// 法線
+	float	 height;		// 高さ
+	VECTOR3	 bulletPos;		// 対象オブジェクト座標
+
+	CPlayer* pPlayerCurrent = nullptr;		// 対象プレイヤー
+
 	for (int cntBullet = 0; cntBullet < PLAYER_MAX; ++cntBullet)
 	{
 		// 対象プレイヤーの取得
@@ -713,20 +717,19 @@ void CGame::IsLandField(void)
 			continue;
 		}
 
-		// 対象オブジェクトを取得
-		pBulletCurrent = pPlayerCurrent->Bullet();
+		// 対象オブジェクト座標を取得
+		bulletPos = pPlayerCurrent->Bullet()->Pos();
 
 		// 判定
-		CBullet	bulletHit = *pBulletCurrent;
-		PushBackObjectByField(&bulletHit);
-		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
+		height = Ground->GetHeight(bulletPos - VECTOR3(0.0f, BULLET_SIZE * 0.5f, 0.0f), &nor);
+		if (height >= bulletPos.y)
 		{
 			// 弾の消滅処理
-			CSoundAL::Play(CSoundAL::SE_IMPACT,pBulletCurrent->Pos());
+			CSoundAL::Play(CSoundAL::SE_IMPACT, bulletPos);
 			pPlayerCurrent->ReleaseBullet();
 
 			// エフェクト：爆発　弾と地形の判定
-			CSmoke::Create(pBulletCurrent->Pos());
+			CSmoke::Create(VECTOR3(bulletPos.x, height, bulletPos.z));
 		}
 	}
 }
@@ -870,7 +873,7 @@ void CGame::HitBulletToField(void)
 		markPos = mark->Pos();
 
 		// 高さ判定
-		height = Ground->GetHeight(markPos,&nor);
+		height = Ground->GetHeight(markPos - VECTOR3(0.0f, BULLET_SIZE * 0.5f, 0.0f), &nor);
 		if(height >= markPos.y)
 		{
 			// 回転を求める
@@ -900,7 +903,7 @@ void CGame::HitBulletToField(void)
 			}
 
 			// 着弾マークに設定する
-			landing->SetPos(VECTOR3(markPos.x, height + 1.0f, markPos.z));
+			landing->SetPos(VECTOR3(markPos.x, height + 0.5f, markPos.z));
 			landing->SetAxisRotation(vectorAxisRotation);
 			landing->SetRotationAxis(rotation);
 			break;

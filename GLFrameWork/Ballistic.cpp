@@ -14,6 +14,7 @@
 // ヘッダインクルード
 //------------------------------------------------------------------------------
 #include <math.h>
+#include <float.h>
 
 #include "Ballistic.h"
 
@@ -77,34 +78,31 @@ void CBallistic::Init( COLOR color)
 //------------------------------------------------------------------------------
 void CBallistic::Update(VECTOR3 pos, VECTOR3 rot)
 {
-	VECTOR3 MoveVec;
-	VECTOR3 MoveSpeed = VECTOR3(BULLET_SPEED, BULLET_SPEED, BULLET_SPEED);
+	VECTOR3 Move;
 
 	// 回転量の変換
 	rot.x = DEG2RAD(rot.x);
 	rot.y = DEG2RAD(rot.y);
+	rot.z = 0;
+
 	REVISE_PI(rot.x);
 	REVISE_PI(rot.y);
 
-	// 進行方向
-	MoveVec.x = sinf(rot.y) * cosf(rot.x);
-	MoveVec.z = cosf(rot.y) * cosf(rot.x);
-	MoveVec.y = -sinf(rot.x);
+	// 移動値
+	Move.x = (BULLET_SPEED * cosf(rot.x)) * sinf(rot.y);
+	Move.z = (BULLET_SPEED * cosf(rot.x)) * cosf(rot.y);
+	Move.y = BULLET_SPEED * -sinf(rot.x);
 
-	// 移動量
-	MoveSpeed.x *= MoveVec.x;
-	MoveSpeed.z *= MoveVec.z;
-	MoveSpeed.y *= MoveVec.y;
+	max(Move.x, FLT_MIN);
+	max(Move.z, FLT_MIN);
 
 	// 弾道
 	for (int cnt = 0; cnt < MARK_MAX; cnt++)
 	{
-		pos.x += MoveSpeed.x * BALLISTICT_SPACE;
-		pos.z += MoveSpeed.z * BALLISTICT_SPACE;
-		pos.y += MoveSpeed.y * BALLISTICT_SPACE;
-		MoveSpeed.y += BULLET_GRAVITY * BALLISTICT_SPACE;
-
+		pos += Move * BALLISTICT_SPACE;
 		BallisticMark[cnt]->SetPos(pos);
+
+		Move.y += BULLET_GRAVITY * BALLISTICT_SPACE;
 	}
 }
 
