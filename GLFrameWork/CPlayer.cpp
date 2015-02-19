@@ -94,7 +94,6 @@ void CPlayer::Init(void)
 	_Bullet = nullptr;
 
 	// ’e“¹
-
 	Ballistic = CBallistic::Create(COLOR(1.0f,0.0f,0.0f,0.3f));
 
 	// Œp³Œ³‚Ì‰Šú‰»
@@ -108,8 +107,10 @@ void CPlayer::Init(void)
 	_nari = CBillboard::Create(_Pos,VECTOR2(512 / NARI_SCL,1024 / NARI_SCL));
 	_nari->SetTex(CTexture::Texture(TEX_NARITADA));
 	_nari->SetAlpha(0.0f);
+
 	//‚‚³‰Šú‰»
 	_Hegiht = 0;
+
 	// ‘Ì—Í
 	_PlayerLife = PLAYER_LIFE;
 	_Feed = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f,0),VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
@@ -279,49 +280,82 @@ void CPlayer::UpdatePlayer(void)
 	// ‰Šú‰»
 	VECTOR3 rot = VECTOR3(0.0f,0.0f,0.0f);
 
-	// ˆÚ“®
-	// ã
-	if (CKeyboard::GetPress(DIK_W))
+	if(_InputFlag == true)
 	{
-		Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
-		Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
-		IdlingSE->SetVolume(0);
-		DriveSE->SetVolume(0.5f);
-	}
-	// ‰º
-	else if (CKeyboard::GetPress(DIK_S))
-	{
-		Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
-		Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
-		IdlingSE->SetVolume(0);
-		DriveSE->SetVolume(0.5f);
-	}
-	else
-	{
-		IdlingSE->SetVolume(0.5f);
-		DriveSE->SetVolume(0);
-	}
+		// ˆÚ“®
+		// ã
+		if (CKeyboard::GetPress(DIK_W))
+		{
+			Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
+			Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
+			IdlingSE->SetVolume(0);
+			DriveSE->SetVolume(0.5f);
+		}
+		// ‰º
+		else if (CKeyboard::GetPress(DIK_S))
+		{
+			Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
+			Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
+			IdlingSE->SetVolume(0);
+			DriveSE->SetVolume(0.5f);
+		}
+		else
+		{
+			IdlingSE->SetVolume(0.5f);
+			DriveSE->SetVolume(0);
+		}
 
-	// ¶
-	if (CKeyboard::GetPress(DIK_A))
-	{
-		rot.y += PLAYER_ROTY_SPEED;
-	}
+		// ¶
+		if (CKeyboard::GetPress(DIK_A))
+		{
+			rot.y += PLAYER_ROTY_SPEED;
+		}
 
-	// ‰E
-	else if (CKeyboard::GetPress(DIK_D))
-	{
-		rot.y -= PLAYER_ROTY_SPEED;
-	}
+		// ‰E
+		else if (CKeyboard::GetPress(DIK_D))
+		{
+			rot.y -= PLAYER_ROTY_SPEED;
+		}
 
-	// –Cg‚Ìã‰º
-	if (CKeyboard::GetPress(DIK_UP))
-	{
-		BarrelRotX -= BARREL_ROTX_SPEED;
-	}
-	else if (CKeyboard::GetPress(DIK_DOWN))
-	{
-		BarrelRotX += BARREL_ROTX_SPEED;
+		// –Cg‚Ìã‰º
+		if (CKeyboard::GetPress(DIK_UP))
+		{
+			BarrelRotX -= BARREL_ROTX_SPEED;
+		}
+		else if (CKeyboard::GetPress(DIK_DOWN))
+		{
+			BarrelRotX += BARREL_ROTX_SPEED;
+		}
+
+		// ’e‚Ì”­ŽË
+		// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚È‚©‚Á‚½Žž
+		if (LaunchFlag == false)
+		{
+			if (CKeyboard::GetTrigger(DIK_SPACE))
+			{
+				_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
+				CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
+				LaunchFlag = true;
+				_BulletUseFlag = true;
+				_ReloadTimer = 0;
+				CManager::SendCannon(LaunchFlag, PlayerID);
+			}
+		}
+		// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚éŽž
+		else
+		{
+			// ƒŠƒ[ƒh‰Â”\‚Ü‚Å‚ÌŽžŠÔ‚ð‰ÁŽZ
+			_ReloadTimer++;
+
+			// ƒŠƒ[ƒh§ŒÀŽžŠÔ‚ð’´‚¦‚½‚ç
+			if (_ReloadTimer >= PLAYER_RELOAD_TIME)
+			{
+				// Ä”­ŽË‰Â”\‚É
+				LaunchFlag = false;
+				_BulletUseFlag = false;
+				_ReloadTimer = PLAYER_RELOAD_TIME;
+			}
+		}
 	}
 
 	// ƒLƒƒƒ‰ƒNƒ^[‚Ì‰ñ“]
@@ -390,37 +424,6 @@ void CPlayer::UpdatePlayer(void)
 	// ’e“¹‚ÌXV
 	Ballistic->Update(_Pos,VECTOR3(BarrelRotX,_Rot.y,_Rot.z));
 
-	// ’e‚Ì”­ŽË
-	// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚È‚©‚Á‚½Žž
-	if (LaunchFlag == false)
-	{
-		if (CKeyboard::GetTrigger(DIK_SPACE))
-		{
-			_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
-			CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
-			LaunchFlag = true;
-			_BulletUseFlag = true;
-			_ReloadTimer = 0;
-			CManager::SendCannon(LaunchFlag, PlayerID);
-		}
-	}
-	// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚éŽž
-	else
-	{
-		// ƒŠƒ[ƒh‰Â”\‚Ü‚Å‚ÌŽžŠÔ‚ð‰ÁŽZ
-		_ReloadTimer++;
-
-		// ƒŠƒ[ƒh§ŒÀŽžŠÔ‚ð’´‚¦‚½‚ç
-		if (_ReloadTimer >= PLAYER_RELOAD_TIME)
-		{
-			// Ä”­ŽË‰Â”\‚É
-			LaunchFlag = false;
-			_BulletUseFlag = false;
-			_ReloadTimer = PLAYER_RELOAD_TIME;
-		}
-	}
-
-
 	CManager::SendPos(_Pos, PlayerID);
 	/*
 	#ifdef ROT_QUART
@@ -453,7 +456,6 @@ void CPlayer::UpdatePlayer(void)
 	{
 		this->ReleaseBullet();
 	}
-
 #endif
 }
 
