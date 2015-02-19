@@ -643,6 +643,8 @@ void CPlayer::SetDeath(VECTOR3 pos,int _charNum)
    _Feed->SetAlpha(0);
    VECTOR3 pos = _Pos;
    pos.y += 10;
+   pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
+   pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
    _nari->SetPos(pos);
   }
  }
@@ -669,7 +671,13 @@ void CPlayer::SetRespawn(void)
  {
   _Feed->SetAlpha(1);
   _PlayerRespown.y += 10;
-  _nari->SetPos(_PlayerRespown);
+
+  VECTOR3 pos = _Pos;
+  pos.y += 20;
+  pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
+  pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
+
+  _nari->SetPos(pos);
 
   Movement = VECTOR3(0,0,0);
 
