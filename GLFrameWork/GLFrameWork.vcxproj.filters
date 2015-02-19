@@ -167,6 +167,9 @@
     <Filter Include="00_システム\Common\Random">
       <UniqueIdentifier>{35cbb291-d898-45bb-9fa1-1c423160a582}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_ゲーム\Shadow">
+      <UniqueIdentifier>{f6ccf436-ec63-40b6-a511-995e720c27c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -327,6 +330,9 @@
     </ClCompile>
     <ClCompile Include="Random.cpp">
       <Filter>00_システム\Common\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>02_ゲーム\Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,6 +509,9 @@
     </ClInclude>
     <ClInclude Include="Random.h">
       <Filter>00_システム\Common\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>02_ゲーム\Shadow</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -131,6 +131,7 @@
     <ClCompile Include="ResultSheet.cpp" />
     <ClCompile Include="ResultUIManager.cpp" />
     <ClCompile Include="SandCloud.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Smoke.cpp" />
     <ClCompile Include="SoundAL.cpp" />
     <ClCompile Include="Splash.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="ResultUIManager.h" />
     <ClInclude Include="SandCloud.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="Smoke.h" />
     <ClInclude Include="SoundAL.h" />
     <ClInclude Include="Splash.h" />
