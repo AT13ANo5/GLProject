@@ -1,3 +1,5 @@
+//kikushima takahiro
+
 #include "Title.h"
 #include "Polygon2D.h"
 #include "Texture.h"
@@ -11,18 +13,19 @@
 #include "SoundAL.h"
 #include <math.h>
 #include "TitleDirection.h"
+#include "CPlayer.h"
 
 // static member
 const float CTitle::RADIUS_SKY = 500.0f;   // 空の半径
 
 CTitle::CTitle()
 {
-	Logo = nullptr;
 	PushEnter = nullptr;
 	Player = nullptr;
 	Ground = nullptr;
 	Sky = nullptr;
 	Camera = nullptr;
+	TitleD = nullptr;
 	CameraRotation = 0.0f;
 }
 
@@ -32,10 +35,9 @@ CTitle::~CTitle()
 
 void CTitle::Init(void)
 {
-	// Logo
-	//Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2,SCREEN_HEIGHT / 3.0f,0),VECTOR2(750.0f,375.0f));
-	//Logo->SetTex(CTexture::Texture(TEX_TITLELOGO));
+	//岩、バレル削除、もとからあったPlayerをCModelからCPlayerに変更 (kikushima) 2/16
 
+	//タイトルロゴ
 	TitleD->Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3.0f, 0), VECTOR2(750.0f, 375.0f));
 
 	// pushenter
@@ -44,23 +46,15 @@ void CTitle::Init(void)
 	PushEnter->SetAlphaSpeed(0.015f);
 
 	// Player
-	Player = CModel::Create(CModel::RINCHAN,VECTOR3(0.0f,0.0f,0.0f));
+	Player = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + 0 * 50.0f, 30.0f, 0.0f), 0);
 	Player->SetTex(CTexture::Texture(TEX_YOUJO_WHITE));
 	Player->SetRot(0.0f,180.0f,0.0f);
-
-	//Barrel
-	Barrel = CModel::Create(CModel::TANK_BARREL,VECTOR3(0.0f,0.0f,0.0f));
-	Barrel->SetTex(CTexture::Texture(TEX_YOUJO_WHITE));
-	Barrel->SetRot(0.0f,180.0f,0.0f);
+	Player->setBarrelTex(TEX_YOUJO_WHITE);
 
 	// Ground
 	Ground = nullptr;
 	Ground = CMeshGround::Create(VECTOR3(0.0f,-100.0f,0.0f),VECTOR2(50.0f,50.0f),VECTOR2(20.0f,20.0f));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
-
-	//Rock
-	Rock = CModel::Create(CModel::ROCK,VECTOR3(0.0f,0.0f,0.0f));
-	Rock->SetTex(CTexture::Texture(TEX_ROCK));
 
 	// Sky
 	Sky = nullptr;
@@ -75,21 +69,20 @@ void CTitle::Init(void)
 
 void CTitle::Uninit(void)
 {
-	SafeRelease(Rock);
-	SafeRelease(Logo);
 	SafeRelease(Player);
-	SafeRelease(Barrel);
+	SafeRelease(TitleD);
 	CMeshGround::ReleaseAll();
 }
 
 void CTitle::Update(void)
 {
+	// playerの移動処理　コメントアウト (kikushima)
 	// TODO カメラ動かしてみるテスト（masuda）
 	const float cameraLength = 200.0f;
 	CameraRotation += 0.001f;
 	Camera->SetEye(VECTOR3(0.0f - sinf(CameraRotation) * cameraLength,80.0f,0.0f - cosf(CameraRotation) * cameraLength));
 
-	if (CKeyboard::GetPress(DIK_W))
+	/*if (CKeyboard::GetPress(DIK_W))
 	{
 		Player->AddPosZ(1.0f);
 		Barrel->AddPosZ(1.0f);
@@ -118,7 +111,8 @@ void CTitle::Update(void)
 	{
 		Barrel->AddRotZ(1.0f);
 
-	}
+	}*/
+
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
 		CSoundAL::Play(CSoundAL::SE_ENTER);
