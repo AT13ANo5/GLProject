@@ -1,3 +1,5 @@
+//kikushima takahiro ä‚çÌèú
+
 #ifndef _TITLE_H_
 #define _TITLE_H_
 #include "main.h"
@@ -6,6 +8,7 @@
 
 class CPolygon2D;
 class CModel;
+class CPlayer;
 class CMeshGround;
 class CMeshSphere;
 class CCamera;
@@ -24,11 +27,10 @@ public:
 private:
   static const float  RADIUS_SKY;   // ãÛÇÃîºåa
 
-	CPolygon2D* Logo;
-	CPushStart* PushEnter;
-  CModel*     Player;
+  CPolygon2D* Logo;
+  CPushStart* PushEnter;
+  CPlayer*     Player;
   CModel* Barrel;
-  CModel* Rock;
   CMeshGround*  Ground;   // ínå`
   CMeshSphere*  Sky;      // ãÛ
   CCamera* Camera;

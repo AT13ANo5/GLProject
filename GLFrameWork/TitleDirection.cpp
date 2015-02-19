@@ -11,37 +11,36 @@
 //=============================================================================
 #include "TitleDirection.h"
 #include "Texture.h"
-//#include "Model.h"
 #include "CPlayer.h"
 #include "PlayerCamera.h"
 #include "ManagerGL.h"
-
-
-CPolygon2D* Title = nullptr;
-CPolygon2D* Word = nullptr;
-CPlayer* Model = nullptr;
-
-//=============================================================================
-// macro
-//=============================================================================
-namespace{
-}
-
+#include "math.h"
+#include "Explosion.h"
+#include "Polygon2D.h"
 
 //=============================================================================
 // constructor
 //=============================================================================
-CTitleDirection::CTitleDirection() :CPolygon2D()
+CTitleDirection::CTitleDirection()// :CPolygon2D()
 {
-	number = 0;
-	drawFlag = true;
-	Size = VECTOR2(833.33f,166.66f);
-	Count = 0;
-	UDflag = false;
+
 }
 
 void CTitleDirection::Init(void)
 {
+	Title = nullptr;
+
+	number = 0;
+	Size = VECTOR2(833.33f, 166.66f);
+	Count = 0;
+	UDflag = false;
+	Title = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2, 0, 0), VECTOR2(Size.x, Size.y));
+	Title->SetTex(CTexture::Texture(TEX_TITLELOGO));
+}
+
+void CTitleDirection::Uninit(void)
+{
+	SafeRelease(Title);
 }
 
 //=============================================================================
@@ -56,9 +55,6 @@ CTitleDirection* CTitleDirection::Create(const VECTOR3& pos, const VECTOR2& size
 	Title->_Color = color;
 	Title->Init();
 
-	Word = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH/2,0,0),VECTOR2(Title->Size.x,Title->Size.y));
-	Word->SetTex(CTexture::Texture(TEX_TITLELOGO));
-
 	return Title;
 }
 
@@ -67,28 +63,32 @@ CTitleDirection* CTitleDirection::Create(const VECTOR3& pos, const VECTOR2& size
 //=============================================================================
 void CTitleDirection::Update(void)
 {
-	Count++;
-
-	if (Count <= 120)
+	
+	if (Title != nullptr)
 	{
-		Word->AddPos(0, 1.5f, 0);
-		Word->AddSize(1.5f, 1.5f);
-	}
-	if (Count >= 120)
-	{
-		if (UDflag == true)
-		{
-			Word->AddSize(-1.0f, -1.0f);
-		}
-		else
-		{
-			Word->AddSize(1.0f, 1.0f);
-		}
+		Count++;
 
-		if (Count >= 180)
+		if (Count <= 120)
 		{
-			Count = 120;
-			UDflag = !UDflag;
+			Title->AddPos(0, 1.5f, 0);
+			Title->AddSize(1.5f, 1.5f);
+		}
+		if (Count >= 120)
+		{
+			if (UDflag == true)
+			{
+				Title->AddSize(-1.0f, -1.0f);
+			}
+			else
+			{
+				Title->AddSize(1.0f, 1.0f);
+			}
+
+			if (Count >= 180)
+			{
+				Count = 120;
+				UDflag = !UDflag;
+			}
 		}
 	}
 }
