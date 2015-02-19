@@ -19,6 +19,7 @@
 #include "Effect3D.h"
 #include "Explosion.h"
 #include "Smoke.h"
+#include "Ballistic.h"
 #include "Polygon3D.h"
 #include "Texture.h"
 #include "BattleAreaCylinder.h"
@@ -97,6 +98,8 @@ CGame::CGame()
 
 	UI = nullptr;
 	ppRock_ = nullptr;
+	gamePhase = PHASE_3;
+	gamePhaseCnt = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -352,11 +355,8 @@ void CGame::Uninit(void)
 //------------------------------------------------------------------------------
 void CGame::Update(void)
 {
-	// 装填ゲージ
-	const float currentTimer = (float)Player[0]->ReloadTimer();
-	const float maxTimer = (float)PLAYER_RELOAD_TIME;
-	const float rate = currentTimer / maxTimer;
-
+	// 最初のカウントダウン
+	StartCount();
 
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
@@ -368,8 +368,8 @@ void CGame::Update(void)
 	}
 
 	// 空の位置プレイヤーに合わせる
-	Sky->SetPosX(Player[0]->Pos().x);
-	Sky->SetPosZ(Player[0]->Pos().z);
+	Sky->SetPosX(Player[CManager::netData.charNum]->Pos().x);
+	Sky->SetPosZ(Player[CManager::netData.charNum]->Pos().z);
 	for (int loop = 0;loop < PLAYER_MAX;loop++)
 	{
 		if (Player[loop]->PlayerLife() <= 0)
@@ -401,6 +401,9 @@ void CGame::Update(void)
 
 	// 行動可能範囲判定
 	PushBackBattleArea();
+
+	// 着弾地点判定
+	HitBulletToField();
 
 	// UIのアップデート
 	UI->Update();
@@ -464,6 +467,11 @@ void CGame::CheckHitPlayer(void)
 				pPlayerDefense->SetState(PLAYER_STATE_DAMAGE);
 
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
+				if (pPlayerDefense->PlayerLife() > 0)
+				{
+					CSoundAL::Play(CSoundAL::SE_HIT,pPlayerDefense->Pos());
+					CSoundAL::Play(CSoundAL::SE_DAMAGE,pPlayerDefense->Pos());
+				}
 				CExplosion::Create(pPlayerDefense->Pos());
 
 				//	長崎
@@ -714,6 +722,7 @@ void CGame::IsLandField(void)
 		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
 		{
 			// 弾の消滅処理
+			CSoundAL::Play(CSoundAL::SE_IMPACT,pBulletCurrent->Pos());
 			pPlayerCurrent->ReleaseBullet();
 
 			// エフェクト：爆発　弾と地形の判定
@@ -752,7 +761,7 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	}
 	vectorAxisRotation.Normalize();
 	rotation = VECTOR3::Dot(NormalGround, vectorUp);
-	if (rotation > 2.0f * FLT_EPSILON || rotation < -2.0f * FLT_EPSILON)
+	if (rotation <= 1.0f && rotation >= -1.0f)
 	{
 		rotation = RAD_TO_DEG * acosf(rotation);
 	}
@@ -768,11 +777,6 @@ void CGame::PushBackObjectByField(CObject* pObject)
 	//********************************************************
 	// 2015_02_12 姿勢制御用の処理を追加 ここまで
 	//********************************************************
-	if (pObject == Player[0])
-	{
-		Console::SetCursorPos(1, 1);
-		Console::Print("%9.3f, %9.3f, %9.3f\n", NormalGround.x, NormalGround.y, NormalGround.z);
-	}
 }
 
 //==============================================================================
@@ -841,6 +845,94 @@ bool CGame::NeedsSkipBullet(CPlayer* pPlayer)
 
 	// スキップしない
 	return false;
+}
+
+//==============================================================================
+// 着弾地点判定
+//==============================================================================
+void CGame::HitBulletToField(void)
+{
+ VECTOR3		nor;
+ float		height;
+ CBillboard* mark;
+ VECTOR3		markPos;
+ CBallistic* ballistic = Player[CManager::netData.charNum]->GetBallistic();
+
+ for(int cnt = 0; cnt < MARK_MAX; ++cnt)
+ {
+  // 初期化
+  nor = VECTOR3(0.0f,0.0f,0.0f);
+  height = 0.0f;
+
+  // マーク情報
+  mark = ballistic->GetMark(cnt);
+  markPos = mark->Pos();
+
+  // 高さ判定
+  height = Ground->GetHeight(markPos,&nor);
+  if(height >= markPos.y)
+  {
+   ballistic->SetLanding(VECTOR3(markPos.x,height + 0.1f,markPos.z));
+   break;
+  }
+ }
+}
+ //==============================================================================
+ // 最初のカウントダウンのやつ
+//==============================================================================
+void CGame::StartCount(void)
+{
+	gamePhaseCnt++;
+
+	const int PHASE_COUNT_3 = 60 * 1;
+	const int PHASE_COUNT_2 = 60 * 2;
+	const int PHASE_COUNT_1 = 60 * 3;
+	const int PHASE_COUNT_START = 60 * 4;
+
+	switch (gamePhase){
+
+		case PHASE_NONE:
+		{
+			break;
+		}
+		case PHASE_3:
+		{
+			if (gamePhaseCnt == PHASE_COUNT_3){
+				UI->SetNumber(3);
+				UI->SetNumberDrawFlag(true);
+				UI->SetTimeUpdateFlag(false);
+				gamePhase = PHASE_2;
+			}
+			break;
+		}
+		case PHASE_2:
+		{
+			if (gamePhaseCnt == PHASE_COUNT_2){
+				UI->SetNumber(2);
+				gamePhase = PHASE_1;
+			}
+			break;
+		}
+		case PHASE_1:
+		{
+			if (gamePhaseCnt == PHASE_COUNT_1){
+				UI->SetNumber(1);
+				gamePhase = PHASE_START;
+			}
+			break;
+		}
+		case PHASE_START:
+		{
+			if (gamePhaseCnt == PHASE_COUNT_START){
+				UI->SetNumber(0);
+				UI->SetNumberDrawFlag(false);
+				UI->SetTimeUpdateFlag(true);
+				gamePhase = PHASE_NONE;
+			}
+			break;
+		}
+	}
+
 }
 
 //------------------------------------------------------------------------------

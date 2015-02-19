@@ -37,6 +37,7 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/rock.dds",
 	"data/texture/bullet100.tga",
 	"data/texture/ballistic.tga",
+	"data/texture/landing.tga",
 	"data/texture/gaugeIcon.tga",
 	"data/texture/number011.tga",
 	"data/texture/pause.tga",

@@ -236,7 +236,7 @@ void CConnection::keyUpdate()
 		//	ÉVÅ[ÉìêÿÇËë÷Ç¶
 		if (CKeyboard::GetTrigger(DIK_RETURN))
 		{
-			CSoundAL::Play(CSoundAL::SE_GAME_START);
+			CSoundAL::Play(CSoundAL::SE_ENTER);
 			CManager::SendChangeGame();
 			CManager::ChangeScene(SCENE_GAME);
 		}

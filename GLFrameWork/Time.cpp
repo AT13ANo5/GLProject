@@ -35,6 +35,7 @@ CTime::CTime()
 	_Rot = VECTOR3(0.0f, 0.0f, 0.0f);
 
 	memset(Nomber, NULL, sizeof(Nomber));
+	updateFlag = true;
 }
 //=============================================================================
 //èâä˙âª
@@ -45,6 +46,7 @@ void CTime::Init(void)
 
 	TimeCount = 0;
 	Timer = MAX_TIME;
+	updateFlag = true;
 
 	for (int i = 0; i < MAX_DIGIT; i++)
 	{
@@ -86,7 +88,10 @@ void CTime::Update(void)
 		SetColor(COLOR_HALF);
 	}
 
-	TimeCount++;
+	if (updateFlag == true){
+		TimeCount++;
+	}
+
 	if (TimeCount == 60)
 	{
 		Timer--;

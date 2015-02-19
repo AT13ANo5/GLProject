@@ -8,6 +8,7 @@ CBattleAreaCylinder::CBattleAreaCylinder(int priority) :CMeshCylinder(priority)
 
 CBattleAreaCylinder::~CBattleAreaCylinder()
 {
+ SafeDeletes(Color);
 }
 
 CBattleAreaCylinder* CBattleAreaCylinder::Create(VECTOR3 pos,float PanelHeight,VECTOR2 PanelNum,float radius,VECTOR2 TexDivide)

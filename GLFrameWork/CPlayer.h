@@ -41,7 +41,7 @@ typedef enum
 // 前方宣言
 //------------------------------------------------------------------------------
 class CBullet;
-
+class CSoundAL;
 //------------------------------------------------------------------------------
 // クラス宣言
 //------------------------------------------------------------------------------
@@ -58,32 +58,32 @@ public:
 	void Update(void);
 
 	// 現在の装填時間ゲッター
-	int ReloadTimer(void){return _ReloadTimer;}
+	int ReloadTimer(void){ return _ReloadTimer; }
 
 	// 体力
-	int PlayerLife(void){return _PlayerLife;}				// ゲッター
-	void SetPlayerLife(int life){_PlayerLife = life;}		// セッター
+	int PlayerLife(void){ return _PlayerLife; }				// ゲッター
+	void SetPlayerLife(int life){ _PlayerLife = life; }		// セッター
 	void AddPlayerLife(int addVal);	// 加算
 
 	// 生成
-	static CPlayer* Create(int modelID, const VECTOR3& pos, int PlayerID);
+	static CPlayer* Create(int modelID,const VECTOR3& pos,int PlayerID);
 
 	// 弾ポインタゲッター
-	CBullet* Bullet(void){return _Bullet;}
+	CBullet* Bullet(void){ return _Bullet; }
 
 	// 状態
-	PLAYER_STATE State(void){return _State;}			// ゲッター
-	void SetState(PLAYER_STATE state){_State = state;}	// セッター
+	PLAYER_STATE State(void){ return _State; }			// ゲッター
+	void SetState(PLAYER_STATE state){ _State = state; }	// セッター
 
-	void SetPlayerFlag(bool flag){PlayerFlag = flag;}
-	bool BulletUseFlag(void){return _BulletUseFlag;}
+	void SetPlayerFlag(bool flag){ PlayerFlag = flag; }
+	bool BulletUseFlag(void){ return _BulletUseFlag; }
 
 	void ReleaseBullet(void);	// 弾を削除
 
 	void BlastBullet();
 	void setBarrelRot(VECTOR3 _rot);
 
-	void SetDeath(VECTOR3 posint , int _charNum);//死亡処理
+	void SetDeath(VECTOR3 posint,int _charNum);//死亡処理
 	void SetRespawn(void);//復活処理
 
 
@@ -117,11 +117,18 @@ public:
 		return PlayerID;
 	}
 
-	void SetPlayerColor(COLOR color){PlayerColor = color;}
+	void SetPlayerColor(COLOR color){_PlayerColor = color;}
+	COLOR PlayerColor(void){return _PlayerColor;}
+
+	void SetInputFlag(bool flag){_InputFlag = flag;}
+	bool InputFlag(void){return _InputFlag;}
+
+	CBallistic* GetBallistic(void){return Ballistic;}
 
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
+ void UpdateNari(void); //なり更新
 
 	PLAYER_STATE _State;	// プレイヤーの状態
 	CModel* Barrel;			// 砲身
@@ -144,12 +151,15 @@ private:
 	int _SandTime;			// 土埃時間
 	VECTOR3 _OldPos;		// 前座標
 
+	float _NariSclSpeed; // なりの大きさ変わるスピード
+	CSoundAL* DriveSE;
+	CSoundAL* IdlingSE;
 
- int killCount;
- int deathCount;
+	int killCount;
+	int deathCount;
 
-	COLOR PlayerColor;		// プレイヤーの色を退避
-
+	COLOR _PlayerColor;	// プレイヤーの色を退避
+	bool _InputFlag;	// 入力可不可判定（true 可能 / false 不可）
 };
 
 #endif
