@@ -47,10 +47,13 @@ void CTitle::Init(void)
 
 	// Player
 	Player = nullptr;
-	Player = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + 0 * 50.0f, 30.0f, 0.0f), 0);
-	Player->SetTex(CTexture::Texture(TEX_YOUJO_WHITE));
-	Player->SetRot(0.0f,180.0f,0.0f);
-	Player->setBarrelTex(TEX_YOUJO_WHITE);
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		Player = CPlayer::Create(CModel::YOUJO, VECTOR3(-100.0f + i * 40.0f, 30.0f, -100.0f), 0);
+		Player->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
+		Player->SetRot(0.0f, 180.0f, 0.0f);
+		Player->setBarrelTex(TEX_YOUJO_RED + i);
+	}
 
 	// Ground
 	Ground = nullptr;
