@@ -60,7 +60,7 @@ void CBallistic::Init( COLOR color)
 
 	// ’…’eƒ}[ƒN
 	Landing = CPolygon3D::Create(VECTOR3(0.0f, 0.0f, 0.0f),
-								VECTOR2(40.0f, 40.0f),
+								VECTOR2(30.0f, 30.0f),
 								VECTOR3(0.0f, 0.0f, 0.0f),
 								COLOR(color.r, color.g, color.b, 1.0f));
 	Landing->SetTex(CTexture::Texture(TEX_LANDING));

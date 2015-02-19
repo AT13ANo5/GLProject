@@ -852,30 +852,60 @@ bool CGame::NeedsSkipBullet(CPlayer* pPlayer)
 //==============================================================================
 void CGame::HitBulletToField(void)
 {
- VECTOR3		nor;
- float		height;
- CBillboard* mark;
- VECTOR3		markPos;
- CBallistic* ballistic = Player[CManager::netData.charNum]->GetBallistic();
+	VECTOR3		nor;
+	float		height;
+	CBillboard* mark;
+	VECTOR3		markPos;
+	CBallistic* ballistic = Player[CManager::netData.charNum]->GetBallistic();
+	CPolygon3D* landing = ballistic->GetLanding();
 
- for(int cnt = 0; cnt < MARK_MAX; ++cnt)
- {
-  // 初期化
-  nor = VECTOR3(0.0f,0.0f,0.0f);
-  height = 0.0f;
+	for(int cnt = 0; cnt < MARK_MAX; ++cnt)
+	{
+		// 初期化
+		nor = VECTOR3(0.0f,0.0f,0.0f);
+		height = 0.0f;
 
-  // マーク情報
-  mark = ballistic->GetMark(cnt);
-  markPos = mark->Pos();
+		// マーク情報
+		mark = ballistic->GetMark(cnt);
+		markPos = mark->Pos();
 
-  // 高さ判定
-  height = Ground->GetHeight(markPos,&nor);
-  if(height >= markPos.y)
-  {
-   ballistic->SetLanding(VECTOR3(markPos.x,height + 0.1f,markPos.z));
-   break;
-  }
- }
+		// 高さ判定
+		height = Ground->GetHeight(markPos,&nor);
+		if(height >= markPos.y)
+		{
+			// 回転を求める
+			VECTOR3	vectorUp(0.0f, 1.0f, 0.0f);		// 上方向ベクトル
+			VECTOR3	vectorAxisRotation;				// 回転軸
+			float	rotation = 0.0f;				// 回転量
+			VECTOR3::Cross(&vectorAxisRotation, nor, vectorUp);
+			if (vectorAxisRotation.x < FLT_EPSILON && vectorAxisRotation.x > -FLT_EPSILON)
+			{
+				if (vectorAxisRotation.z < FLT_EPSILON && vectorAxisRotation.z > -FLT_EPSILON)
+				{
+					if (vectorAxisRotation.y < FLT_EPSILON && vectorAxisRotation.y > -FLT_EPSILON)
+					{
+						vectorAxisRotation.y = 1.0f;
+					}
+				}
+			}
+			vectorAxisRotation.Normalize();
+			rotation = VECTOR3::Dot(nor, vectorUp);
+			if (rotation <= 1.0f && rotation >= -1.0f)
+			{
+				rotation = RAD_TO_DEG * acosf(rotation);
+			}
+			else
+			{
+				rotation = 0.0f;
+			}
+
+			// 着弾マークに設定する
+			landing->SetPos(VECTOR3(markPos.x, height + 1.0f, markPos.z));
+			landing->SetAxisRotation(vectorAxisRotation);
+			landing->SetRotationAxis(rotation);
+			break;
+		}
+	}
 }
  //==============================================================================
  // 最初のカウントダウンのやつ
