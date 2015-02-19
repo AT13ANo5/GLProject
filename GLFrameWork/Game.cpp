@@ -56,6 +56,24 @@ const float	CGame::HEIGHT_WALL = 500.0f;				// ï«ÇÃçÇÇ≥
 
 const int	CGame::MAX_ROCK = 20;						// ä‚ÇÃêî
 
+const VECTOR3 CGame::PLAYER_POSITION_LIST[PLAYER_MAX] = {
+ VECTOR3(-0.0f,100.0f,800),
+ VECTOR3(690,100.0f,400),
+ VECTOR3(690,100.0f,-400),
+ VECTOR3(0,100.0f,-800),
+ VECTOR3(-700,100.0f,-400),
+ VECTOR3(-700,100.0f,400),
+};
+
+const VECTOR3 CGame::PLAYER_ROTATION_LIST[PLAYER_MAX] = {
+ VECTOR3(0,180,0),
+ VECTOR3(0,240.0f,0),
+ VECTOR3(0,300.0f,0),
+ VECTOR3(0,0,0),
+ VECTOR3(0,60.0f,0),
+ VECTOR3(0,120.0f,0),
+};
+
 const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
 	VECTOR3(-214.0f,100.0f,421.0f),
 	VECTOR3(359.0f,100.0f,188.0f),
@@ -152,12 +170,12 @@ void CGame::Init(void)
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
 		if (i % 2 == 1)
-			Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(0.0f + i * 50.0f,30.0f,0.0f),i);
+			Player[i] = CPlayer::Create(CModel::RINCHAN,PLAYER_POSITION_LIST[i],i);
 		else
-			Player[i] = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + i * 50.0f, 30.0f, 0.0f), i);
+   Player[i] = CPlayer::Create(CModel::YOUJO,PLAYER_POSITION_LIST[i],i);
 
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
-		Player[i]->SetRot(0.0f,180.0f,0.0f);
+  Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
 		Player[i]->setBarrelTex(TEX_YOUJO_RED + i);
 
 		if (i == CManager::netData.charNum)
