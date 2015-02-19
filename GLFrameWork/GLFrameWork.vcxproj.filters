@@ -164,6 +164,9 @@
     <Filter Include="00_システム\Manager">
       <UniqueIdentifier>{56236559-af7b-4543-a17d-4d90f7e1fd4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\Common\Random">
+      <UniqueIdentifier>{35cbb291-d898-45bb-9fa1-1c423160a582}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -321,6 +324,9 @@
     </ClCompile>
     <ClCompile Include="TitleDirection.cpp">
       <Filter>01_タイトル</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>00_システム\Common\Random</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -494,6 +500,9 @@
     </ClInclude>
     <ClInclude Include="TitleDirection.h">
       <Filter>01_タイトル</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>00_システム\Common\Random</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
