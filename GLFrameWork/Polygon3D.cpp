@@ -81,7 +81,14 @@ void CPolygon3D::Draw(void)
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();//ビューマトリックスを退避
 	//描画設定
-	glTranslatef(_Pos.x,_Pos.y,_Pos.z);
+	glTranslatef(_Pos.x, _Pos.y, _Pos.z);
+	//********************************************************
+	// 姿勢制御用処理追加 ここから
+	//********************************************************
+	glRotatef(RotationAxis, VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z);
+	//********************************************************
+	// 姿勢制御用処理追加 ここまで
+	//********************************************************
 	glRotatef(_Rot.z,	0,		0,			1.0f);
 	glRotatef(_Rot.y,	0,		1.0f,		0);
 	glRotatef(_Rot.x,	1.0f,	0,		0);

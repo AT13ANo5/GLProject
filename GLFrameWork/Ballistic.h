@@ -33,6 +33,7 @@ public:
 	static CBallistic* Create(COLOR color);
 
 	CBillboard* GetMark(int no){return BallisticMark[no];}
+	CPolygon3D* GetLanding(void){return Landing;}
 
 	void SetLanding(VECTOR3 pos){Landing->SetPos(pos);}
 	
