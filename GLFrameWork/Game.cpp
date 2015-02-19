@@ -31,6 +31,7 @@
 #include "PlayerCamera.h"
 #include "MiniMap.h"
 #include "SoundAL.h"
+#include "Shadow.h"
 
 #include "UI.h"
 
@@ -222,7 +223,24 @@ void CGame::Init(void)
 		ppRock_[cntRock] = CModel::Create(CModel::ROCK,ROCK_POSITION_LIST[cntRock]);
 		ppRock_[cntRock]->SetScl(1,1,1);
 		ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
-		PushBackObjectByField(ppRock_[cntRock]);
+		PushBackObjectByField(ppRock_[cntRock], 10.0f);
+	}
+
+	// 影生成
+	Shadow = new CShadow*[2 * PLAYER_MAX];
+	for (int cntShadow = 0; cntShadow < 2 * PLAYER_MAX; ++cntShadow)
+	{
+		Shadow[cntShadow] = nullptr;
+		Shadow[cntShadow] = CShadow::Create(VECTOR3(0.0f, 0.0f, 0.0f), VECTOR2(1.0f, 1.0f));
+		if (cntShadow < PLAYER_MAX)
+		{
+			Shadow[cntShadow]->SetScl(30, 30, 30);
+		}
+		else
+		{
+			Shadow[cntShadow]->SetScl(20, 20, 20);
+		}
+		Shadow[cntShadow]->SetTex(CTexture::Texture(TEX_SHADOW));
 	}
 
 	CManager::gameStartFlag = true;
@@ -302,6 +320,15 @@ void CGame::Uninit(void)
 							Player[CManager::netData.charNum]->getDeathCount());
 
 	CManager::gameStartFlag = false;
+
+	// 影の破棄
+	for (int chtShadow = 0; chtShadow < 2 * PLAYER_MAX; ++chtShadow)
+	{
+		delete Shadow[chtShadow];
+		Shadow[chtShadow] = nullptr;
+	}
+	delete[] Shadow;
+	Shadow = nullptr;
 
 	// 岩の破棄
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
@@ -404,6 +431,26 @@ void CGame::Update(void)
 
 	// 着弾地点判定
 	HitBulletToField();
+
+	// 影を合わせる
+	for (int cntShadow = 0; cntShadow < PLAYER_MAX; ++cntShadow)
+	{
+		VECTOR3	positionShadow = Player[cntShadow]->Pos();
+		positionShadow.y -= HEIGHT_PLAYER_TO_FIELD;
+		Shadow[cntShadow]->SetPos(positionShadow);
+		PushBackObjectByField(Shadow[cntShadow], 1.0f);
+	}
+	for (int cntShadow = 0; cntShadow < PLAYER_MAX; ++cntShadow)
+	{
+		if (NeedsSkipBullet(Player[cntShadow]))
+		{
+			Shadow[cntShadow + PLAYER_MAX]->SetPos(VECTOR3(0.0f, 1000.0f, 0.0f));
+			continue;
+		}
+		VECTOR3	positionShadow = Player[cntShadow]->Bullet()->Pos();
+		Shadow[cntShadow + PLAYER_MAX]->SetPos(positionShadow);
+		PushBackObjectByField(Shadow[cntShadow + PLAYER_MAX], 1.0f);
+	}
 
 	// UIのアップデート
 	UI->Update();
@@ -690,7 +737,7 @@ void CGame::PushBackField(void)
 		}
 
 		// 押し戻し
-		PushBackObjectByField(pPlayerCurrent);
+		PushBackObjectByField(pPlayerCurrent, HEIGHT_PLAYER_TO_FIELD);
 	}
 }
 
@@ -718,7 +765,7 @@ void CGame::IsLandField(void)
 
 		// 判定
 		CBullet	bulletHit = *pBulletCurrent;
-		PushBackObjectByField(&bulletHit);
+		PushBackObjectByField(&bulletHit, 10.0f);
 		if (bulletHit.Pos().y >= pBulletCurrent->Pos().y)
 		{
 			// 弾の消滅処理
@@ -734,12 +781,12 @@ void CGame::IsLandField(void)
 //==============================================================================
 // オブジェクトの地形による押し戻し
 //==============================================================================
-void CGame::PushBackObjectByField(CObject* pObject)
+void CGame::PushBackObjectByField(CObject* pObject, float offsetY)
 {
 	// 地形とのあたり判定
 	VECTOR3	NormalGround;		// 地形の法線
 	float	HeightGround;		// 地形の高さ
-	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround) + HEIGHT_PLAYER_TO_FIELD;
+	HeightGround = Ground->GetHeight(pObject->Pos(), &NormalGround) + offsetY;
 
 	//********************************************************
 	// 2015_02_12 姿勢制御用の処理を追加 ここから
