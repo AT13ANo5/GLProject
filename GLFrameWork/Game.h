@@ -58,6 +58,8 @@ private:
 
 	static const int	MAX_ROCK;					// 岩の数
 	static const VECTOR3 ROCK_POSITION_LIST[];		// 岩の座標リスト
+ static const VECTOR3 PLAYER_POSITION_LIST[PLAYER_MAX]; // プレイヤー座標リスト
+ static const VECTOR3 PLAYER_ROTATION_LIST[PLAYER_MAX]; // プレイヤー角度リスト
 
 	void CheckHitPlayer(void);						// 攻撃判定の当たり判定 プレイヤー
 	void CheckHitRock(void);						// 攻撃判定の当たり判定 岩
