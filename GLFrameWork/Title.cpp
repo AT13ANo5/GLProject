@@ -46,10 +46,14 @@ void CTitle::Init(void)
 	PushEnter->SetAlphaSpeed(0.015f);
 
 	// Player
-	Player = CPlayer::Create(CModel::YOUJO, VECTOR3(0.0f + 0 * 50.0f, 30.0f, 0.0f), 0);
-	Player->SetTex(CTexture::Texture(TEX_YOUJO_WHITE));
-	Player->SetRot(0.0f,180.0f,0.0f);
-	Player->setBarrelTex(TEX_YOUJO_WHITE);
+	Player = nullptr;
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		Player = CPlayer::Create(CModel::YOUJO, VECTOR3(-100.0f + i * 40.0f, 30.0f, -100.0f), 0);
+		Player->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
+		Player->SetRot(0.0f, 180.0f, 0.0f);
+		Player->setBarrelTex(TEX_YOUJO_RED + i);
+	}
 
 	// Ground
 	Ground = nullptr;
@@ -61,9 +65,10 @@ void CTitle::Init(void)
 	Sky = CMeshSphere::Create(VECTOR3(0.0f,0.0f,0.0f),VECTOR2(16.0f,8.0f),RADIUS_SKY);
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
 
+	Camera = nullptr;
 	Camera = CCamera::Camera(0);
+	Camera->SetLookat(VECTOR3(0.0f, 0.0f, 0.0f));
 
-	Camera->SetEye(VECTOR3(0.0f,80.0f,0.0f));
 	CSoundAL::Play(CSoundAL::BGM_TITLE);
 }
 
@@ -71,47 +76,18 @@ void CTitle::Uninit(void)
 {
 	SafeRelease(Player);
 	SafeRelease(TitleD);
+	SafeDelete(Camera);
+	SafeDelete(Sky);
+	SafeDelete(PushEnter);
 	CMeshGround::ReleaseAll();
 }
 
 void CTitle::Update(void)
 {
-	// playerの移動処理　コメントアウト (kikushima)
+
 	// TODO カメラ動かしてみるテスト（masuda）
 	const float cameraLength = 200.0f;
-	CameraRotation += 0.001f;
 	Camera->SetEye(VECTOR3(0.0f - sinf(CameraRotation) * cameraLength,80.0f,0.0f - cosf(CameraRotation) * cameraLength));
-
-	/*if (CKeyboard::GetPress(DIK_W))
-	{
-		Player->AddPosZ(1.0f);
-		Barrel->AddPosZ(1.0f);
-	}
-	else if (CKeyboard::GetPress(DIK_S))
-	{
-		Player->AddPosZ(-1.0f);
-		Barrel->AddPosZ(-1.0f);
-	}
-	if (CKeyboard::GetPress(DIK_A))
-	{
-		Player->AddRotY(1.0f);
-		Barrel->AddRotY(1.0f);
-	}
-	else if (CKeyboard::GetPress(DIK_D))
-	{
-		Player->AddRotY(-1.0f);
-		Barrel->AddRotY(-1.0f);
-	}
-	if (CKeyboard::GetPress(DIK_Q))
-	{
-		Barrel->AddRotZ(-1.0f);
-
-	}
-	if (CKeyboard::GetPress(DIK_E))
-	{
-		Barrel->AddRotZ(1.0f);
-
-	}*/
 
 	if (CKeyboard::GetTrigger(DIK_RETURN))
 	{
