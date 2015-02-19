@@ -14,6 +14,7 @@ class CLoadString;
 class CReport;
 class CNumberManager;
 class UI;
+class CShadow;
 
 class CGame :public CScene
 {
@@ -64,7 +65,7 @@ private:
 	void PushBackRock(void);						// キャラクターと岩の押し戻し
 	void PushBackField(void);						// 地形の押し戻し
 	void IsLandField(void);							// 地形との判定
-	void PushBackObjectByField(CObject* pObject);	// オブジェクトの地形による押し戻し
+	void PushBackObjectByField(CObject* pObject, float offsetY);	// オブジェクトの地形による押し戻し
 	void PushBackBattleArea(void);					// 行動可能範囲の押し戻し
 	bool NeedsSkipPlayer(CPlayer* pPlayer);			// プレイヤー判定スキップ
 	bool NeedsSkipBullet(CPlayer* pPlayer);			// 砲弾判定スキップ
@@ -77,6 +78,7 @@ private:
 	CBattleAreaCylinder*	CylinderArea;			// 戦闘可能エリア
 	CUI*		UI;
 	CModel**		ppRock_;	//	岩
+	CShadow**		Shadow;		// 影
 
 	PHSE				gamePhase;
 	int					gamePhaseCnt;
