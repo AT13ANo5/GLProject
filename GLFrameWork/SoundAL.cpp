@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "SoundAL.h"
+#include "Random.h"
 #include<stdio.h>
 
 CSoundAL* CSoundAL::Top = nullptr;
@@ -30,14 +31,17 @@ const PARAM File[CSoundAL::SOUND_MAX] =
 	{ "data/sound/BGM/Result.wav"	,true	,true,2 },
 	{ "data/sound/SE/Entry.wav"		,false	,false,2 },
 	{ "data/sound/SE/PushEnter.wav"	,false	,false,2 },
+	{ "data/sound/SE/scream.wav"	,false	,false,2 },
 	{ "data/sound/SE/Cannon.wav"	,false	,false,7 },
 	{ "data/sound/SE/Hit.wav"		,false	,false,7 },
 	{ "data/sound/SE/Impact.wav"	,false	,false,7 },
 	{ "data/sound/SE/Break.wav"		,false	,false,7 },
-	{ "data/sound/SE/Death.wav"		,false,false,7 },
-	{ "data/sound/SE/Damage.wav"	,false,false,7 },
+	{ "data/sound/SE/Death.wav"		,false	,false,7 },
+	{ "data/sound/SE/Damage.wav"	,false	,false,7 },
 	{ "data/sound/SE/Drive.wav"		,true	,false,7 },
 	{ "data/sound/SE/Idling.wav"	,true	,false,7 },
+	{ "data/sound/SE/CountDown.wav", false	,false,3 },
+	{ "data/sound/SE/Start.wav"		,false	,false,2 },
 };
 
 SOUND_BUFF CSoundAL::Buffer[SOUND_MAX];
@@ -214,6 +218,16 @@ CSoundAL* CSoundAL::Play(SOUND id,bool autoRelease)
 CSoundAL* CSoundAL::Play(SOUND id,const VECTOR3& pos,float distance,bool autoRelease)
 {
 	if (!Device){ return nullptr; }
+
+	if (id == SE_DEATH || id == SE_DAMAGE)
+	{
+		int num = RandomMT::getRandomI(0,20);
+		if (num > 19)
+		{
+			id = SE_SCREEM;
+		}
+	}
+
 	if (Buffer[id].MultiPlayNum < Buffer[id].PlayingNum){ return nullptr; }
 	
 	VECTOR3 dis = pos - _ListenerPos;

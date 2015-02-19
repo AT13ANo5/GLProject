@@ -20,6 +20,7 @@
 #include "Game.h"
 #include "Result.h"
 #include "Fade.h"
+#include "Random.h"
 
 //*****************************************************************************
 //	Ã“I•Ï”’è‹`
@@ -76,6 +77,8 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	CSoundAL::Initialize();
 	CModel::Initialize();
 	CTexture::Initialize();
+	RandomMT::initRand();
+
 	Light = new CLight;
 	Light->Create(VECTOR4(1.0f, 100.0f, -200.0f, 0));
  	Light->SetAmbient(COLOR(1.0f,1.0f,1.0f,1.0f));

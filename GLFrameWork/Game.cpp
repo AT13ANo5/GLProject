@@ -902,6 +902,7 @@ void CGame::StartCount(void)
 				UI->SetNumberDrawFlag(true);
 				UI->SetTimeUpdateFlag(false);
 				gamePhase = PHASE_2;
+				CSoundAL::Play(CSoundAL::SE_COUNT_DOWN);
 			}
 			break;
 		}
@@ -910,6 +911,7 @@ void CGame::StartCount(void)
 			if (gamePhaseCnt == PHASE_COUNT_2){
 				UI->SetNumber(2);
 				gamePhase = PHASE_1;
+				CSoundAL::Play(CSoundAL::SE_COUNT_DOWN);
 			}
 			break;
 		}
@@ -918,6 +920,7 @@ void CGame::StartCount(void)
 			if (gamePhaseCnt == PHASE_COUNT_1){
 				UI->SetNumber(1);
 				gamePhase = PHASE_START;
+				CSoundAL::Play(CSoundAL::SE_COUNT_DOWN);
 			}
 			break;
 		}
@@ -928,6 +931,7 @@ void CGame::StartCount(void)
 				UI->SetNumberDrawFlag(false);
 				UI->SetTimeUpdateFlag(true);
 				gamePhase = PHASE_NONE;
+				CSoundAL::Play(CSoundAL::SE_START);
 			}
 			break;
 		}

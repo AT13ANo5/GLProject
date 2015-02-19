@@ -32,6 +32,7 @@ public:
 		BGM_RESULT,
 		SE_ENTRY,
 		SE_ENTER,
+		SE_SCREEM,
 		SE_CANNON,
 		SE_HIT,
 		SE_IMPACT,
@@ -40,6 +41,8 @@ public:
 		SE_DAMAGE,
 		SE_DRIVE,
 		SE_IDLING,
+		SE_COUNT_DOWN,
+		SE_START,
 		SOUND_MAX
 
 	}SOUND;
