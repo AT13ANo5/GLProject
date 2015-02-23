@@ -129,6 +129,9 @@ public:
 
 	CBallistic* GetBallistic(void){return Ballistic;}
 
+	bool LunchFlag(void){return _LaunchFlag;}
+	void SetLaunchFlag(bool flag){_LaunchFlag = flag;}
+
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
@@ -140,7 +143,7 @@ private:
 	VECTOR3 Movement;		// 移動量
 	float Speed;			// 移動速度
 	float BarrelRotX;		// 砲身のX軸回転量
-	bool LaunchFlag;		// 弾発射フラグ（true : 使用 / false : 不使用）
+	bool _LaunchFlag;		// 弾発射フラグ（true : 使用 / false : 不使用）
 	bool _BulletUseFlag;	// 弾存在フラグ
 	int _ReloadTimer;		// 現在の装填時間
 	int _PlayerLife;		// 体力

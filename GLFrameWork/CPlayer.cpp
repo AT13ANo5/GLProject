@@ -89,7 +89,8 @@ void CPlayer::Init(void)
 	// ’eŽg—pƒtƒ‰ƒO
 	_BulletUseFlag = false;
 
-	LaunchFlag = false;
+	// ’e”­ŽËƒtƒ‰ƒO
+	_LaunchFlag = false;
 
 	// ’e
 	_Bullet = nullptr;
@@ -315,17 +316,17 @@ void CPlayer::UpdatePlayer(void)
 
 		// ’e‚Ì”­ŽË
 		// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚È‚©‚Á‚½Žž
-		if (LaunchFlag == false)
+		if (_LaunchFlag == false)
 		{
 			if (vc->Trigger(COMMAND_SHOT))
 			{
 				_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),_PlayerColor);
 				vc->SetVibration(0.5f,20,0.5f,20);
 				CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
-				LaunchFlag = true;
+				_LaunchFlag = true;
 				_BulletUseFlag = true;
 				_ReloadTimer = 0;
-				CManager::SendCannon(LaunchFlag,PlayerID);
+				CManager::SendCannon(_LaunchFlag,PlayerID);
 			}
 		}
 		// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚éŽž
@@ -338,7 +339,7 @@ void CPlayer::UpdatePlayer(void)
 			if (_ReloadTimer >= PLAYER_RELOAD_TIME)
 			{
 				// Ä”­ŽË‰Â”\‚É
-				LaunchFlag = false;
+				_LaunchFlag = false;
 				_BulletUseFlag = false;
 				_ReloadTimer = PLAYER_RELOAD_TIME;
 			}
@@ -454,7 +455,7 @@ void CPlayer::BlastBullet()
 {
 		_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),_PlayerColor);
 		CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
-		LaunchFlag = true;
+		_LaunchFlag = true;
 		_BulletUseFlag = true;
 		_ReloadTimer = 0;
 }
@@ -515,7 +516,7 @@ void CPlayer::UpdateCPU(void)
 	}
 
 	// ’e‚ª”­ŽË‚³‚ê‚Ä‚¢‚È‚©‚Á‚½Žž
-	if (LaunchFlag == true)
+	if (_LaunchFlag == true)
 	{
 		// ƒŠƒ[ƒh‰Â”\‚Ü‚Å‚ÌŽžŠÔ‚ð‰ÁŽZ
 		_ReloadTimer++;
@@ -524,7 +525,7 @@ void CPlayer::UpdateCPU(void)
 		if (_ReloadTimer >= PLAYER_RELOAD_TIME)
 		{
 			// Ä”­ŽË‰Â”\‚É
-			LaunchFlag = false;
+			_LaunchFlag = false;
 			_BulletUseFlag = false;
 			_ReloadTimer = PLAYER_RELOAD_TIME;
 		}
@@ -687,7 +688,7 @@ void CPlayer::SetRespawn(void)
 
 
 		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
-		CManager::SendCannon(LaunchFlag,PlayerID);
+		CManager::SendCannon(_LaunchFlag,PlayerID);
 
 	}
 }
