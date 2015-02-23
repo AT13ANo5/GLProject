@@ -19,7 +19,7 @@ VC* VC::Self = new VC;//Ž©ŒÈƒ|ƒCƒ“ƒ^
 //=============================================================================
 static UINT Key[COMMAND_MAX][3] =
 {
-	{DIK_Q,DIK_RETURN,DIK_SPACE},
+	{DIK_Q,DIK_RETURN,-1},
 	{DIK_E,DIK_X,-1},
 	{DIK_RETURN,DIK_P,-1},
 	{DIK_BACKSPACE,DIK_V,-1},
