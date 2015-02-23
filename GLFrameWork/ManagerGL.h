@@ -101,6 +101,8 @@ public:
 	static bool gameStartFlag;
 	static bool entryFlag;
 
+	static short CurrentScene;
+
 private:
 
 	bool myBind(SOCKET* _socket, SOCKADDR_IN* _sockAdd);

@@ -81,7 +81,7 @@ void CResultUIManager::Init(void)
   int* ranking = CManager::getRanking();
 
   // ƒvƒŒƒCƒ„[–¼
-  for (int player = 0; player < PLAYER_MAX; ++player){
+  for (int player = 0; player < PLAYER_MAX; player++){
     VECTOR3 pos = ResultNumber->GetNumPosition((CResultNumberManager::TYPE)player);
     pos.x -= NAME_POS_X_SUB;
     PlayerName[player] = CResultSheet::Create(pos, NAME_SIZE);

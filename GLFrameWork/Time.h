@@ -11,6 +11,7 @@
 //=============================================================================
 #include "main.h"
 #include "Polygon2D.h"
+#include "Number2D.h"
 
 //=============================================================================
 //定数
@@ -21,7 +22,7 @@ static const int MAX_DIGIT = 3;
 //=============================================================================
 //クラス定義
 //=============================================================================
-class CNumber2D;
+//class CNumber2D;
 
 class CTime :public CPolygon2D
 {
@@ -48,7 +49,27 @@ public:
 
 	// タイム取得
 	int		GetTime(void){ return Timer; }
-	void	SetTime(int time){ Timer = time; TimeCount = 0; }
+	void	SetTime(int time)
+	{
+		Timer = time; TimeCount = 0;
+		Nomber[0]->SetNumber(Timer / 100);
+
+		Nomber[1]->SetNumber(Timer / 10);
+
+		Nomber[2]->SetNumber(Timer);
+	}
+	void	SubTime()
+	{
+		if (updateFlag == true)
+		{
+			Timer--; TimeCount = 0;
+			Nomber[0]->SetNumber(Timer / 100);
+
+			Nomber[1]->SetNumber(Timer / 10);
+
+			Nomber[2]->SetNumber(Timer);
+		}
+	}
 
 	// 
 	void SetUpdateFlag(bool flag){ updateFlag = flag; }

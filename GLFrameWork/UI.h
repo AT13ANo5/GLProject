@@ -59,6 +59,7 @@ public:
 	void	SetTimeUpdateFlag(bool flag);
 	int		GetTime(void);
 	void	SetTime(int time);
+	void	SubTime();
 
 	//=============================================================================
 	// SetNumber

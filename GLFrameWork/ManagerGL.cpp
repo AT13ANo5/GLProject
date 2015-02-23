@@ -40,6 +40,7 @@ NETWORK_DATA CManager::netWorkData;
 bool CManager::gameStartFlag;
 bool CManager::entryFlag;
 int CManager::ranking[PLAYER_MAX];
+short CManager::CurrentScene = SCENE_SPLASH;
 
 //=============================================================================
 //	コンストラクタ
@@ -89,6 +90,8 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	Scene = new CSplash();
 	Scene->Init();
 	CFade::Set(0, 60);
+
+	CurrentScene = SCENE_SPLASH;
 
 
 
@@ -529,7 +532,8 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 
 				case DATA_TYPE_TIMER:
 
-					CGame::subTimer();
+					if (CManager::CurrentScene == SCENE_GAME)
+						CGame::subTimer();
 
 					break;
 
@@ -569,6 +573,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 
 							//	エントリーをセット
 							CConnection::setEntry(data.charNum);
+							CConnection::setTexHostPos(data.charNum);
 
 							//	他の参加者のエントリー情報をゲットする
 							data.type = DATA_TYPE_GET_ENTRY;
@@ -715,20 +720,25 @@ void CManager::Update(void)
 		{
 		case SCENE_SPLASH:
 			Scene = new CSplash;
+			CurrentScene = SCENE_SPLASH;
 			break;
 		case SCENE_TITLE:
 			Scene = new CTitle;
+			CurrentScene = SCENE_TITLE;
 			break;
 		case SCENE_CONNECTION:
 			Scene = new CConnection;
+			CurrentScene = SCENE_CONNECTION;
 			break;
 		case SCENE_GAME:
 			CCamera::ReleaseAll();
 			pCamera = nullptr;
 			Scene = new CGame;
+			CurrentScene = SCENE_GAME;
 			break;
 		case SCENE_RESULT:
 			Scene = new CResult;
+			CurrentScene = SCENE_RESULT;
 			break;
 		default:
 			break;

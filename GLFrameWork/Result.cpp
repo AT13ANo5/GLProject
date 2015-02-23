@@ -159,6 +159,8 @@ void CResult::Init(void)
 		Barrel[loop]->SetPos(Player[loop]->Pos());
 		Barrel[loop]->SetRot(Player[loop]->Rot());
 	}
+
+	CManager::SendChangeResult();
 }
 
 //=============================================================================
