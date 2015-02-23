@@ -39,6 +39,7 @@
 const float CGame::RADIUS_SKY = 2500.0f;   // 空の半径
 CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
+int CGame::gamePhaseCnt = 0;
 const float	CGame::RADIUS_DEFENSE_CHARACTER = 12.0f;	// キャラクターの防御半径
 const float	CGame::HEIGHT_DEFENSE_CHARACTER = 0.0f;		// キャラクターの防御中心高さ
 const float	CGame::RADIUS_OFFENSE_BULLET = 10.0f;		// 砲弾の攻撃半径
@@ -224,6 +225,11 @@ void CGame::Init(void)
 			default:
 				break;
 		}
+	}
+
+	// プレイヤーの入力を止める
+	for (int i = 0; i < PLAYER_MAX; i++){
+		Player[i]->SetInputFlag(false);
 	}
 
 	// UI初期化
@@ -975,8 +981,8 @@ void CGame::HitBulletToField(void)
 		}
 	}
 }
- //==============================================================================
- // 最初のカウントダウンのやつ
+//==============================================================================
+// 最初のカウントダウンのやつ
 //==============================================================================
 void CGame::StartCount(void)
 {
@@ -986,6 +992,7 @@ void CGame::StartCount(void)
 	const int PHASE_COUNT_2 = 60 * 2;
 	const int PHASE_COUNT_1 = 60 * 3;
 	const int PHASE_COUNT_START = 60 * 4;
+	const int PHASE_COUNT_START_FIN = 60 * 5;
 
 	switch (gamePhase){
 
@@ -999,6 +1006,7 @@ void CGame::StartCount(void)
 				UI->SetNumber(3);
 				UI->SetNumberDrawFlag(true);
 				UI->SetTimeUpdateFlag(false);
+				UI->SetCountSizeRefresh();
 				gamePhase = PHASE_2;
 				CSoundAL::Play(CSoundAL::SE_COUNT_DOWN);
 			}
@@ -1008,6 +1016,7 @@ void CGame::StartCount(void)
 		{
 			if (gamePhaseCnt == PHASE_COUNT_2){
 				UI->SetNumber(2);
+				UI->SetCountSizeRefresh();
 				gamePhase = PHASE_1;
 				CSoundAL::Play(CSoundAL::SE_COUNT_DOWN);
 			}
@@ -1017,6 +1026,7 @@ void CGame::StartCount(void)
 		{
 			if (gamePhaseCnt == PHASE_COUNT_1){
 				UI->SetNumber(1);
+				UI->SetCountSizeRefresh();
 				gamePhase = PHASE_START;
 				CSoundAL::Play(CSoundAL::SE_COUNT_DOWN);
 			}
@@ -1025,16 +1035,48 @@ void CGame::StartCount(void)
 		case PHASE_START:
 		{
 			if (gamePhaseCnt == PHASE_COUNT_START){
+				UI->SetStringDrawFlag(true);
 				UI->SetNumber(0);
 				UI->SetNumberDrawFlag(false);
 				UI->SetTimeUpdateFlag(true);
-				gamePhase = PHASE_NONE;
+				gamePhase = PHASE_START_FIN;
 				CSoundAL::Play(CSoundAL::SE_START);
+
+				// プレイヤーの入力を止める
+				for (int i = 0; i < PLAYER_MAX; i++){
+					Player[i]->SetInputFlag(true);
+				}
+			}
+				break;
+		}
+		case PHASE_START_FIN:
+		{
+			if (gamePhaseCnt == PHASE_COUNT_START_FIN){
+				UI->SetStringDrawFlag(false);
+				gamePhase = PHASE_PLAY;
 			}
 			break;
 		}
+		case PHASE_PLAY:
+		{
+			if (UI->GetTime() == 0){
+				gamePhase = PHASE_END;
+				UI->SetStringDrawFlag(true);
+				UI->SetStringTexture(CTexture::Texture(TEX_END));
+				// プレイヤーの攻撃を止める
+				for (int i = 0; i < PLAYER_MAX; i++){
+//					Player[i]->set
+				}
+			}
+			break;
+		}
+		case PHASE_END:
+		{
+			CManager::SendChangeResult();
+			CManager::ChangeScene(SCENE_RESULT);
+			break;
+		}
 	}
-
 }
 
 //------------------------------------------------------------------------------

@@ -33,6 +33,9 @@ public:
 		PHASE_2,
 		PHASE_1,
 		PHASE_START,
+		PHASE_START_FIN,
+		PHASE_PLAY,
+		PHASE_END,
 		PHASE_MAX
 	} PHSE;
 
@@ -73,6 +76,7 @@ private:
 	bool NeedsSkipBullet(CPlayer* pPlayer);			// 砲弾判定スキップ
 	void HitBulletToField(void);						// 着弾地点判定
 	void StartCount(void);
+	static void SetGamePhaseCount(int cnt){ gamePhaseCnt = cnt; }
 
 	CMeshGround*    Ground;     // フィールド
 	CMeshSphere*    Sky;        // 空
@@ -83,6 +87,6 @@ private:
 	CShadow**		Shadow;		// 影
 
 	PHSE				gamePhase;
-	int					gamePhaseCnt;
+	static int	gamePhaseCnt;
 };
 #endif

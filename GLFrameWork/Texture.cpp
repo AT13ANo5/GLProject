@@ -60,6 +60,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/naritada.dds",
 	"data/texture/timer.tga",
 	"data/texture/shadow100.tga",
+	"data/texture/start.tga",
+	"data/texture/end.tga",
 };
 
 void CTexture::Initialize(void)

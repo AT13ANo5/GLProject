@@ -47,10 +47,12 @@ public:
 	void SetColor(const COLOR col);
 
 	// ƒ^ƒCƒ€Žæ“¾
-	int GetTime(void){ return Timer; }
+	int		GetTime(void){ return Timer; }
+	void	SetTime(int time){ Timer = time; TimeCount = 0; }
 
 	// 
 	void SetUpdateFlag(bool flag){ updateFlag = flag; }
+	bool GetUpdateFlag(void){ return updateFlag; }
 
 private:
 

@@ -60,6 +60,14 @@ namespace{
 	const VECTOR2 TIME_F_SIZE = VECTOR2(256.0f * TIME_F_SCALE, 170.0f * TIME_F_SCALE);
 //	const COLOR TIME_F_COLOR = COLOR(0.2f, 0.65f, 0.2f, 1.0f);
 	const COLOR TIME_F_COLOR = COLOR(0.9f, 0.9f, 0.9f, 1.0f);
+	// カウントする数字
+	const float   COUNTER_SCAL = 2.5f;
+	const VECTOR2 COUNTER_SIZE = VECTOR2(128.0f*COUNTER_SCAL, 100.0f*COUNTER_SCAL); // 128 100
+	const VECTOR3 COUNTER_POS = VECTOR3(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f, 0.0f);
+	// 文字
+	const float STRING_SCAL = 1.5f;
+	const VECTOR2 STRING_SIZE = VECTOR2(430 * STRING_SCAL, 150 * STRING_SCAL);
+	const VECTOR3 STRING_POS = VECTOR3(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f, 0.0f);
 }
 
 //=============================================================================
@@ -77,6 +85,7 @@ CUI::CUI()
 	numberManager = nullptr;
 	Time = nullptr;
 	counter = nullptr;
+	string = nullptr;
 
 	myID = 0;
 }
@@ -144,14 +153,16 @@ void CUI::Init(void)
 	miniMap = new CMiniMap;
 	miniMap->Init();
 
-//	const VECTOR2 COUNTER_POS = VECTOR2(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f);
-	const VECTOR3 COUNTER_POS = VECTOR3(SCREEN_WIDTH*0.5f, SCREEN_HEIGHT*0.5f,0.0f);
-	const float   COUNTER_SCAL = 2.0f;
-	const VECTOR2 COUNTER_SIZE = VECTOR2(128.0f*COUNTER_SCAL, 100.0f*COUNTER_SCAL); // 128 100
+	// カウントする数字
 	counter = CNumber2D::Create(COUNTER_POS, COUNTER_SIZE);
 	counter->SetNumber(3);
 	counter->SetTex(CTexture::Texture(TEX_NUMBER));
 	counter->SetDrawFlag(false);
+
+	// スタート文字
+	string = CPolygon2D::Create(STRING_POS, STRING_SIZE);
+	string->SetTex(CTexture::Texture(TEX_START));
+	string->SetDrawFlag(false);
 }
 
 //=============================================================================
@@ -212,28 +223,33 @@ void CUI::Update(void)
 		// ライフをプレイヤーから取得して表示
 		int lifeP = player[myID]->PlayerLife();
 		life->SetLife(lifeP);
-	}
 
-	// 成績表のON/OFF
-	if (CKeyboard::GetPress(DIK_P)){
-		reportBg->SetDrawFlag(true);
-		report->SetDrawFlag(true);
-		numberManager->SetDrawFlag(true);
-
-		// kill / death
-		for (int playerCnt = 0; playerCnt < PLAYER_MAX; ++playerCnt){
-			numberManager->SetNumber((CNumberManager::TYPE)playerCnt,
-				CManager::userInfo[playerCnt].kill,
-				CManager::userInfo[playerCnt].death);
+		if (counter->GetDrawFlag() == true){
+			const float subScale = 0.012f;
+			const VECTOR2 counterSub = VECTOR2(COUNTER_SIZE.x * subScale, COUNTER_SIZE.y * subScale);
+			counter->SubSize(counterSub);
 		}
-
-	}
-	else {
-		reportBg->SetDrawFlag(false);
-		report->SetDrawFlag(false);
-		numberManager->SetDrawFlag(false);
 	}
 
+	if (Time->GetUpdateFlag() == true){
+		// 成績表のON/OFF
+		if (CKeyboard::GetPress(DIK_P)){
+			reportBg->SetDrawFlag(true);
+			report->SetDrawFlag(true);
+			numberManager->SetDrawFlag(true);
+
+			// kill / death
+			for (int playerCnt = 0; playerCnt < PLAYER_MAX; ++playerCnt){
+				numberManager->SetNumber((CNumberManager::TYPE)playerCnt,
+					CManager::userInfo[playerCnt].kill,
+					CManager::userInfo[playerCnt].death);
+			}
+		} else {
+			reportBg->SetDrawFlag(false);
+			report->SetDrawFlag(false);
+			numberManager->SetDrawFlag(false);
+		}
+	}
 }
 
 //=============================================================================
@@ -274,6 +290,56 @@ void CUI::SetNumberDrawFlag(bool flag)
 void CUI::SetTimeUpdateFlag(bool flag)
 {
 	Time->SetUpdateFlag(flag);
+}
+
+//=============================================================================
+// SetStringTexture
+//-----------------------------------------------------------------------------
+//	好きなテクスチャ張れるよ
+//=============================================================================
+void CUI::SetStringTexture(TEX_INFO tex)
+{
+	string->SetTex(tex);
+}
+
+//=============================================================================
+// SetStringSizeRefresh
+//-----------------------------------------------------------------------------
+//	サイズを戻すよ
+//=============================================================================
+void CUI::SetCountSizeRefresh(void)
+{
+	counter->SetSize(COUNTER_SIZE);
+}
+
+//=============================================================================
+// SetDrawFlag
+//-----------------------------------------------------------------------------
+//	描画きるよー
+//=============================================================================
+void CUI::SetStringDrawFlag(bool draw)
+{
+	string->SetDrawFlag(draw);
+}
+
+//=============================================================================
+// GetTime
+//-----------------------------------------------------------------------------
+// タイマー取得
+//=============================================================================
+int		CUI::GetTime(void)
+{
+	return Time->GetTime();
+}
+
+//=============================================================================
+// SetTime
+//-----------------------------------------------------------------------------
+// タイム設定
+//=============================================================================
+void	CUI::SetTime(int time)
+{
+	Time->SetTime(time);
 }
 
 
