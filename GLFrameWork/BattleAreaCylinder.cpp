@@ -13,7 +13,7 @@ CBattleAreaCylinder::~CBattleAreaCylinder()
 
 CBattleAreaCylinder* CBattleAreaCylinder::Create(VECTOR3 pos,float PanelHeight,VECTOR2 PanelNum,float radius,VECTOR2 TexDivide)
 {
-	CBattleAreaCylinder* Field = new CBattleAreaCylinder;
+	CBattleAreaCylinder* Field = new CBattleAreaCylinder(4);
 	if(Field == nullptr)
 	{
 		return nullptr;
@@ -124,6 +124,9 @@ void CBattleAreaCylinder::Draw(void)
 	glRotatef(_Rot.x,1.0f,0,0);
 	glScalef(1.0f,1.0f,1.0f);
 
+	glDepthMask(GL_FALSE);
+	glDisable(GL_CULL_FACE);
+
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
 
 	//É|ÉäÉSÉìï`âÊ
@@ -132,5 +135,6 @@ void CBattleAreaCylinder::Draw(void)
 	// ê›íËÇñﬂÇ∑
 	glPopMatrix();
 	glBindTexture(GL_TEXTURE_2D,0);
-
+	glDepthMask(GL_TRUE);
+	glEnable(GL_CULL_FACE);
 }
