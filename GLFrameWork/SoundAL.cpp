@@ -119,6 +119,7 @@ void CSoundAL::UnlinkList(void)
 	Next = NULL;
 
 }
+
 void CSoundAL::Initialize(void)
 {
 	int argc = 0;
@@ -182,6 +183,7 @@ void CSoundAL::Initialize(void)
 	_ListenerSpeed = VECTOR3(0,0,0);
 
 }
+
 void CSoundAL::Finalize(void)
 {
 	ReleaseAll();
@@ -215,6 +217,7 @@ CSoundAL* CSoundAL::Play(SOUND id,bool autoRelease)
 
 	return sound;
 }
+
 CSoundAL* CSoundAL::Play(SOUND id,const VECTOR3& pos,float distance,bool autoRelease)
 {
 	if (!Device){ return nullptr; }

@@ -29,9 +29,6 @@
     <Filter Include="00_システム\Input">
       <UniqueIdentifier>{30a9dc15-08c7-4b0d-bc9b-28dacefafc43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00_システム\Input\Keyboard">
-      <UniqueIdentifier>{88315306-9f0d-440c-ad55-4fd75381a712}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00_システム\Light">
       <UniqueIdentifier>{bbcc5d08-858a-45dd-a210-6c472c29ed5f}</UniqueIdentifier>
     </Filter>
@@ -170,6 +167,12 @@
     <Filter Include="02_ゲーム\Shadow">
       <UniqueIdentifier>{f6ccf436-ec63-40b6-a511-995e720c27c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00_システム\Input\GamePad">
+      <UniqueIdentifier>{a2f711b1-2275-4608-9bfa-c7db6bf64d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_システム\Input\Keyboard">
+      <UniqueIdentifier>{82184c93-0ce8-4839-be31-c5407ef1d6fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -181,14 +184,8 @@
     <ClCompile Include="Camera.cpp">
       <Filter>00_システム\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="CInput.cpp">
-      <Filter>00_システム\Input</Filter>
-    </ClCompile>
     <ClCompile Include="CommonGL.cpp">
       <Filter>00_システム\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>00_システム\Input\Keyboard</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>00_システム\Light</Filter>
@@ -334,6 +331,15 @@
     <ClCompile Include="Shadow.cpp">
       <Filter>02_ゲーム\Shadow</Filter>
     </ClCompile>
+    <ClCompile Include="Input\VC.cpp">
+      <Filter>00_システム\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\GamePad.cpp">
+      <Filter>00_システム\Input\GamePad</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Keyboard.cpp">
+      <Filter>00_システム\Input\Keyboard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -345,14 +351,8 @@
     <ClInclude Include="Camera.h">
       <Filter>00_システム\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CInput.h">
-      <Filter>00_システム\Input</Filter>
-    </ClInclude>
     <ClInclude Include="CommonGL.h">
       <Filter>00_システム\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>00_システム\Input\Keyboard</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>00_システム\Light</Filter>
@@ -512,6 +512,15 @@
     </ClInclude>
     <ClInclude Include="Shadow.h">
       <Filter>02_ゲーム\Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\VC.h">
+      <Filter>00_システム\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\GamePad.h">
+      <Filter>00_システム\Input\GamePad</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Keyboard.h">
+      <Filter>00_システム\Input\Keyboard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

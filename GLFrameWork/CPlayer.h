@@ -122,6 +122,7 @@ public:
 
 	void SetInputFlag(bool flag){_InputFlag = flag;}
 	bool InputFlag(void){return _InputFlag;}
+	bool GetPreyerFlag(void){ return PlayerFlag; }
 
 	CBallistic* GetBallistic(void){return Ballistic;}
 
