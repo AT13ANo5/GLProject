@@ -16,7 +16,6 @@
 #include "Camera.h"
 #include "CBullet.h"
 #include "CommonGL.h"
-#include "Ballistic.h"
 #include "ManagerGL.h"
 #include "Explosion.h"
 #include "SandCloud.h"

@@ -53,6 +53,7 @@ void CTitle::Init(void)
 		Player->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
 		Player->SetRot(0.0f, 180.0f, 0.0f);
 		Player->setBarrelTex(TEX_YOUJO_RED + i);
+		Player->SetBallisticDrawFlag(false);
 	}
 
 	// Ground

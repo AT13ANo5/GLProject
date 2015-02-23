@@ -24,6 +24,7 @@
 #include "Model.h"
 #include "Polygon2D.h"
 #include "Billboard.h"
+#include "Ballistic.h"
 //------------------------------------------------------------------------------
 // 列挙体宣言
 //------------------------------------------------------------------------------
@@ -86,6 +87,7 @@ public:
 	void SetDeath(VECTOR3 posint,int _charNum);//死亡処理
 	void SetRespawn(void);//復活処理
 
+	void SetBallisticDrawFlag(bool drawFlag){Ballistic->SetDrawFlag(drawFlag);}
 
 	//	長崎
 	//	砲塔のテクスチャセット関数
