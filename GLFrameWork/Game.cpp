@@ -83,9 +83,9 @@ const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
 	VECTOR3(94.0f,100.0f,-458.0f),
 	VECTOR3(-198.0f,100.0f,222.0f),
 	VECTOR3(419.0f,100.0f,293.0f),
-	VECTOR3(-335.0f,100.0f,164.0f),
+	VECTOR3(-325.0f,100.0f,164.0f),
 	VECTOR3(-471.0f,100.0f,-115.0f),
-	VECTOR3(368.0f,100.0f,-363.0f),
+	VECTOR3(368.0f,100.0f,-373.0f),
 	VECTOR3(-476.0f,100.0f,231.0f),
 	VECTOR3(-249.0f,100.0f,-319.0f),
 	VECTOR3(-243.0f,100.0f,481.0f),
@@ -99,6 +99,29 @@ const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
 	VECTOR3(-302.0f,100.0f,-296.0f),
 	VECTOR3(-171.0f,100.0f,-274.0f),
 
+};
+
+const VECTOR3 CGame::ROCK_ROTATION_LIST[] = {
+	VECTOR3(10.0f, 10.0f, 10.0f),
+	VECTOR3(20.0f, 20.0f, 20.0f),
+	VECTOR3(30.0f, 30.0f, 30.0f),
+	VECTOR3(40.0f, 40.0f, 40.0f),
+	VECTOR3(50.0f, 50.0f, 50.0f),
+	VECTOR3(60.0f, 95.0f, 60.0f),
+	VECTOR3(70.0f, 70.0f, 70.0f),
+	VECTOR3(80.0f, 110.0f, 80.0f),
+	VECTOR3(90.0f, 90.0f, 90.0f),
+	VECTOR3(100.0f, 100.0f, 100.0f),
+	VECTOR3(110.0f, 110.0f, 110.0f),
+	VECTOR3(120.0f, 120.0f, 120.0f),
+	VECTOR3(130.0f, 130.0f, 130.0f),
+	VECTOR3(140.0f, 140.0f, 140.0f),
+	VECTOR3(150.0f, 150.0f, 150.0f),
+	VECTOR3(160.0f, 160.0f, 160.0f),
+	VECTOR3(170.0f, 170.0f, 170.0f),
+	VECTOR3(180.0f, 185.0f, 180.0f),
+	VECTOR3(190.0f, 190.0f, 190.0f),
+	VECTOR3(200.0f, 200.0f, 200.0f)
 };
 
 // 定数
@@ -248,6 +271,7 @@ void CGame::Init(void)
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
 		ppRock_[cntRock] = CModel::Create(CModel::ROCK,ROCK_POSITION_LIST[cntRock]);
+		ppRock_[cntRock]->SetRot(ROCK_ROTATION_LIST[cntRock]);
 		ppRock_[cntRock]->SetScl(1,1,1);
 		ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
 		PushBackObjectByField(ppRock_[cntRock], 10.0f);
@@ -425,6 +449,18 @@ void CGame::Update(void)
 			CManager::ChangeScene(SCENE_RESULT);
 		}
 	}
+
+	static int	indexRock = 0;
+	if (vc->Trigger(COMMAND_SHOT))
+	{
+		++indexRock;
+		if (indexRock >= sizeof(ROCK_POSITION_LIST) / sizeof(ROCK_POSITION_LIST[0]))
+		{
+			indexRock = 0;
+		}
+	}
+	ppRock_[indexRock]->AddRot(0.0f, 2.0f, 0.0f);
+	Console::Print("%d", indexRock);
 
 	// 空の位置プレイヤーに合わせる
 	Sky->SetPosX(Player[CManager::netData.charNum]->Pos().x);
