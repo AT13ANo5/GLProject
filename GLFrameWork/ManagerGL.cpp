@@ -527,6 +527,12 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 
 					break;
 
+				case DATA_TYPE_TIMER:
+
+					CGame::subTimer();
+
+					break;
+
 				case DATA_TYPE_KILL:
 
 					if (gameStartFlag == true)

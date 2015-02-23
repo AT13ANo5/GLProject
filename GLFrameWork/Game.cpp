@@ -274,6 +274,11 @@ void CGame::Init(void)
 	CManager::sendGameStart();
 }
 
+void CGame::subTimer()
+{
+	//	UIのタイマー減らす処理
+}
+
 //=============================================================================
 //	プレイヤー情報のセット関数
 //=============================================================================
@@ -341,7 +346,6 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 //------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
-	
 	CManager::SendKillDeath(Player[CManager::netData.charNum]->getKillCount(),
 							Player[CManager::netData.charNum]->getDeathCount());
 
