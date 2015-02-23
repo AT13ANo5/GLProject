@@ -25,6 +25,7 @@ public:
 	void Update(void);
 
 	static void setEntry(int _charNum);
+ static void setTexHostPos(int _id);
 
 private:
 
@@ -36,6 +37,8 @@ private:
 	static CPolygon2D** waitBackGround;
 	static CPolygon2D** waitPlayer;
 	static CPushStart* pushStart;
+ static CPolygon2D* texHost;
+ static CPolygon2D* texPlayer;
 
 	static bool PlayerEntry[PLAYER_MAX];
 };
