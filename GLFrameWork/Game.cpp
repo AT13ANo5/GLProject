@@ -14,7 +14,7 @@
 #include "main.h"
 #include "Game.h"
 #include "ManagerGL.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
 #include "Billboard.h"
 #include "Effect3D.h"
 #include "Explosion.h"
@@ -37,6 +37,7 @@
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 2500.0f;   // 空の半径
+CUI* CGame::UI = nullptr;
 CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
 int CGame::gamePhaseCnt = 0;
@@ -82,9 +83,9 @@ const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
 	VECTOR3(94.0f,100.0f,-458.0f),
 	VECTOR3(-198.0f,100.0f,222.0f),
 	VECTOR3(419.0f,100.0f,293.0f),
-	VECTOR3(-335.0f,100.0f,164.0f),
+	VECTOR3(-325.0f,100.0f,164.0f),
 	VECTOR3(-471.0f,100.0f,-115.0f),
-	VECTOR3(368.0f,100.0f,-363.0f),
+	VECTOR3(368.0f,100.0f,-373.0f),
 	VECTOR3(-476.0f,100.0f,231.0f),
 	VECTOR3(-249.0f,100.0f,-319.0f),
 	VECTOR3(-243.0f,100.0f,481.0f),
@@ -98,6 +99,29 @@ const VECTOR3 CGame::ROCK_POSITION_LIST[] = {
 	VECTOR3(-302.0f,100.0f,-296.0f),
 	VECTOR3(-171.0f,100.0f,-274.0f),
 
+};
+
+const VECTOR3 CGame::ROCK_ROTATION_LIST[] = {
+	VECTOR3(10.0f, 10.0f, 10.0f),
+	VECTOR3(20.0f, 20.0f, 20.0f),
+	VECTOR3(30.0f, 30.0f, 30.0f),
+	VECTOR3(40.0f, 40.0f, 40.0f),
+	VECTOR3(50.0f, 50.0f, 50.0f),
+	VECTOR3(60.0f, 95.0f, 60.0f),
+	VECTOR3(70.0f, 70.0f, 70.0f),
+	VECTOR3(80.0f, 110.0f, 80.0f),
+	VECTOR3(90.0f, 90.0f, 90.0f),
+	VECTOR3(100.0f, 100.0f, 100.0f),
+	VECTOR3(110.0f, 110.0f, 110.0f),
+	VECTOR3(120.0f, 120.0f, 120.0f),
+	VECTOR3(130.0f, 130.0f, 130.0f),
+	VECTOR3(140.0f, 140.0f, 140.0f),
+	VECTOR3(150.0f, 150.0f, 150.0f),
+	VECTOR3(160.0f, 160.0f, 160.0f),
+	VECTOR3(170.0f, 170.0f, 170.0f),
+	VECTOR3(180.0f, 185.0f, 180.0f),
+	VECTOR3(190.0f, 190.0f, 190.0f),
+	VECTOR3(200.0f, 200.0f, 200.0f)
 };
 
 // 定数
@@ -174,17 +198,19 @@ void CGame::Init(void)
 		if (i % 2 == 1)
 			Player[i] = CPlayer::Create(CModel::RINCHAN,PLAYER_POSITION_LIST[i],i);
 		else
-   Player[i] = CPlayer::Create(CModel::YOUJO,PLAYER_POSITION_LIST[i],i);
+			Player[i] = CPlayer::Create(CModel::YOUJO,PLAYER_POSITION_LIST[i],i);
 
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
-  Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
+		Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
 		Player[i]->setBarrelTex(TEX_YOUJO_RED + i);
 
 		if (i == CManager::netData.charNum)
 		{
 			Player[i]->SetPlayerFlag(true);
+			Player[i]->CreateBallistic();
 		}
-	}	//プレイヤーカメラ生成
+	}
+		//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
 
 	// 【テスト】各プレイヤーの色をセット
@@ -245,6 +271,7 @@ void CGame::Init(void)
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
 	{
 		ppRock_[cntRock] = CModel::Create(CModel::ROCK,ROCK_POSITION_LIST[cntRock]);
+		ppRock_[cntRock]->SetRot(ROCK_ROTATION_LIST[cntRock]);
 		ppRock_[cntRock]->SetScl(1,1,1);
 		ppRock_[cntRock]->SetTex(CTexture::Texture(TEX_ROCK));
 		PushBackObjectByField(ppRock_[cntRock], 10.0f);
@@ -270,6 +297,11 @@ void CGame::Init(void)
 	CManager::gameStartFlag = true;
 
 	CManager::sendGameStart();
+}
+
+void CGame::subTimer()
+{
+	//	UIのタイマー減らす処理
 }
 
 //=============================================================================
@@ -339,7 +371,6 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 //------------------------------------------------------------------------------
 void CGame::Uninit(void)
 {
-	
 	CManager::SendKillDeath(Player[CManager::netData.charNum]->getKillCount(),
 							Player[CManager::netData.charNum]->getDeathCount());
 
@@ -406,10 +437,11 @@ void CGame::Uninit(void)
 //------------------------------------------------------------------------------
 void CGame::Update(void)
 {
+	VC* vc = VC::Instance();
 	// 最初のカウントダウン
 	StartCount();
 
-	if (CKeyboard::GetTrigger(DIK_RETURN))
+	if (vc->Trigger(COMMAND_OK))
 	{
 		if (CManager::netData.charNum == 0)
 		{
@@ -478,7 +510,6 @@ void CGame::Update(void)
 
 	// UIのアップデート
 	UI->Update();
-
 }
 
 //==============================================================================
@@ -540,6 +571,10 @@ void CGame::CheckHitPlayer(void)
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
 				if (pPlayerDefense->PlayerLife() > 0)
 				{
+					if (pPlayerDefense->GetPreyerFlag())
+					{
+						VC::Instance()->SetVibration(0.7f,30,0.7f,30);
+					}
 					CSoundAL::Play(CSoundAL::SE_HIT,pPlayerDefense->Pos());
 					CSoundAL::Play(CSoundAL::SE_DAMAGE,pPlayerDefense->Pos());
 				}
@@ -1042,6 +1077,11 @@ void CGame::StartCount(void)
 				gamePhase = PHASE_START_FIN;
 				CSoundAL::Play(CSoundAL::SE_START);
 
+				CManager::SendReborn(1);
+				CManager::SendReborn(2);
+				CManager::SendReborn(3);
+				CManager::SendReborn(4);
+				CManager::SendReborn(5);
 				// プレイヤーの入力を止める
 				for (int i = 0; i < PLAYER_MAX; i++){
 					Player[i]->SetInputFlag(true);

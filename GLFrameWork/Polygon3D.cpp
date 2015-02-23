@@ -38,10 +38,10 @@ void CPolygon3D::Init(void)
 
 	for (int cnt = 0;cnt < 4;cnt++)
 	{
-		Nor[cnt] = VECTOR3(0,0,-1.0f);
+		Nor[cnt] = VECTOR3(0,1.0f,0);
 	}
 
-	
+	DrawFlag = true;
 }
 CPolygon3D* CPolygon3D::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
@@ -74,6 +74,12 @@ void CPolygon3D::Update(void)
 //=============================================================================
 void CPolygon3D::Draw(void)
 {
+	// 描画フラグを見て表示 / 非表示を切り替え
+	if (DrawFlag == false)
+	{
+		return;
+	}
+
 	//ライティング無効
 	glEnable(GL_LIGHTING);
 	

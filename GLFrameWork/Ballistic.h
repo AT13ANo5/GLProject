@@ -1,9 +1,11 @@
 //------------------------------------------------------------------------------
 //
-// 弾 [Ballistic.h]
+// 弾道 [Ballistic.h]
 // Author : AT-13A-273 Mai Tanabe
 //
 //------------------------------------------------------------------------------
+#ifndef _Ballistic_H_
+#define _Ballistic_H_
 
 //------------------------------------------------------------------------------
 // マクロ定義
@@ -42,13 +44,16 @@ public:
 		for(int i = 0; i < MARK_MAX; i++)
 		{
 			BallisticMark[i]->SetDrawFlag(drawFlag);
+			Landing->SetDrawFlag(drawFlag);
 		}
 	}
 
 private:
 	CBillboard* BallisticMark[MARK_MAX];	// 弾道のマーク
 	CPolygon3D* Landing;					// 着弾マーク
+	float		LandingAddRot;
 };
 
+#endif
 //------------------------------------------------------------------------------
 // EOF

@@ -65,6 +65,7 @@ void CBallistic::Init( COLOR color)
 								VECTOR3(0.0f, 0.0f, 0.0f),
 								COLOR(color.r, color.g, color.b, 1.0f));
 	Landing->SetTex(CTexture::Texture(TEX_LANDING));
+	LandingAddRot = 0.0f;
 }
 
 //------------------------------------------------------------------------------
@@ -79,6 +80,14 @@ void CBallistic::Init( COLOR color)
 void CBallistic::Update(VECTOR3 pos, VECTOR3 rot)
 {
 	VECTOR3 Move;
+
+	// ’…’eƒ}[ƒN‚Ì‰ñ“]
+	LandingAddRot += 1.0f;
+	if (LandingAddRot == 360.0f)
+	{
+		LandingAddRot = 0;
+	}
+	Landing->SetRotY(rot.y + LandingAddRot);
 
 	// ‰ñ“]—Ê‚Ì•ÏŠ·
 	rot.x = DEG2RAD(rot.x);

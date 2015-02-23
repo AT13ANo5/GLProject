@@ -15,7 +15,7 @@ class CRenderer;
 class CScene;
 class CCamera;
 class CLight;
-class CKeyboard;
+class VC;
 
 //*****************************************************************************
 //	ç\ë¢ëÃíËã`
@@ -112,7 +112,7 @@ private:
 	CRenderer* Render;
 	CCamera* pCamera;
 	CLight* Light;
-	CKeyboard* Keyboard;
+	VC* vc;
 
 	static short NextScene;
 	static bool ChangeFlag;

@@ -24,6 +24,7 @@
 #include "Model.h"
 #include "Polygon2D.h"
 #include "Billboard.h"
+#include "Ballistic.h"
 //------------------------------------------------------------------------------
 // 列挙体宣言
 //------------------------------------------------------------------------------
@@ -86,6 +87,8 @@ public:
 	void SetDeath(VECTOR3 posint,int _charNum);//死亡処理
 	void SetRespawn(void);//復活処理
 
+	void CreateBallistic(void){Ballistic = CBallistic::Create(COLOR(1.0f, 0.0f, 0.0f, 0.3f));}
+	void SetBallisticDrawFlag(bool drawFlag){Ballistic->SetDrawFlag(drawFlag);}
 
 	//	長崎
 	//	砲塔のテクスチャセット関数
@@ -122,8 +125,12 @@ public:
 
 	void SetInputFlag(bool flag){_InputFlag = flag;}
 	bool InputFlag(void){return _InputFlag;}
+	bool GetPreyerFlag(void){ return PlayerFlag; }
 
 	CBallistic* GetBallistic(void){return Ballistic;}
+
+	bool LunchFlag(void){return _LaunchFlag;}
+	void SetLaunchFlag(bool flag){_LaunchFlag = flag;}
 
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
@@ -136,7 +143,7 @@ private:
 	VECTOR3 Movement;		// 移動量
 	float Speed;			// 移動速度
 	float BarrelRotX;		// 砲身のX軸回転量
-	bool LaunchFlag;		// 弾発射フラグ（true : 使用 / false : 不使用）
+	bool _LaunchFlag;		// 弾発射フラグ（true : 使用 / false : 不使用）
 	bool _BulletUseFlag;	// 弾存在フラグ
 	int _ReloadTimer;		// 現在の装填時間
 	int _PlayerLife;		// 体力

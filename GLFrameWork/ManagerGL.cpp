@@ -11,7 +11,8 @@
 #include "Model.h"
 #include "Camera.h"
 #include "Light.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
+#include "Input/Keyboard.h"
 #include "SoundAL.h"
 #include "Scene.h"
 #include "Splash.h"
@@ -46,7 +47,7 @@ int CManager::ranking[PLAYER_MAX];
 CManager::CManager()
 {
 	Render = nullptr;
-	Keyboard = nullptr;
+	vc = nullptr;
 	Scene = nullptr;
 	ChangeFlag = false;
 	gameStartFlag = false;
@@ -82,8 +83,8 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	Light = new CLight;
 	Light->Create(VECTOR4(1.0f, 100.0f, -200.0f, 0));
  	Light->SetAmbient(COLOR(1.0f,1.0f,1.0f,1.0f));
-	Keyboard = new CKeyboard;
-	Keyboard->Init(hInstance, hWnd);
+	vc = VC::Instance();
+	vc->Init(hWnd);
 
 	Scene = new CSplash();
 	Scene->Init();
@@ -526,6 +527,12 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 
 					break;
 
+				case DATA_TYPE_TIMER:
+
+					CGame::subTimer();
+
+					break;
+
 				case DATA_TYPE_KILL:
 
 					if (gameStartFlag == true)
@@ -658,11 +665,10 @@ void CManager::Uninit(HWND hWnd)
 	CTexture::Finalize();
 
 
-	if (Keyboard != nullptr)
+	if (vc != nullptr)
 	{
-		Keyboard->Uninit();
-		delete Keyboard;
-		Keyboard = nullptr;
+		vc->Uninit();
+		vc = nullptr;
 	}
 
 	CCamera::ReleaseAll();
@@ -679,13 +685,13 @@ void CManager::Uninit(HWND hWnd)
 void CManager::Update(void)
 {
 #ifdef _DEBUG
-	if(CKeyboard::GetTrigger(DIK_0))
+	if(CKeyboard::Instance()->GetTrigger(DIK_0))
 	{
 		(Console::Active()) ? Console::SetActive(false) : Console::SetActive(true);
 	}
 
 #endif
-	Keyboard->Update();
+	vc->Update();
 	CSoundAL::UpdateAll();
 	CCamera::UpdateAll();
 	Light->Update();

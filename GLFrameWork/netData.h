@@ -39,6 +39,7 @@ typedef enum
 	DATA_TYPE_KILL,	//	殺した
 	DATA_TYPE_PAUSE,	//	ポーズ状態
 	DATA_TYPE_EMPTY,	//	満杯
+ DATA_TYPE_TIMER,
 	DATA_TYPE_MAX	//	最大値
 }DATA_TYPE;
 //----------------------------------------------------------------
@@ -168,7 +169,7 @@ typedef struct {
 } USER_INFO;
 //----------------------------------------------------------------
 
-static const int SERV_ID = 130;
+static const int SERV_ID = 131;
 
 #endif
 

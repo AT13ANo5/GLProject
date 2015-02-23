@@ -10,7 +10,7 @@
 #include "Polygon2D.h"
 #include "CPushStart.h"
 #include "ManagerGL.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
 #include "netData.h"
 #include "ManagerGL.h"
 #include "SoundAL.h"
@@ -51,6 +51,7 @@ CPolygon2D* CConnection::backGround;
 CPolygon2D** CConnection::waitBackGround;
 CPolygon2D** CConnection::waitPlayer;
 CPushStart* CConnection::pushStart;
+bool CConnection::PlayerEntry[] = { false };
 
 //*****************************************************************************
 //	変数定義
@@ -158,6 +159,11 @@ void CConnection::Init(void)
 //=============================================================================
 void CConnection::Uninit(void)
 {
+	for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
+	{
+		PlayerEntry[cnt] = false;
+	}
+
 	if (pushStart != nullptr)
 	{
 		pushStart->Release();
@@ -210,6 +216,14 @@ void CConnection::Update(void)
 {
 	recvUpdate();
 	keyUpdate();
+
+	for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
+	{
+		if (PlayerEntry[cnt])
+		{
+			waitBackGround[cnt]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_READY));
+		}
+	}
 }
 //=============================================================================
 //	サーバーからの受信状況による更新処理
@@ -234,7 +248,7 @@ void CConnection::keyUpdate()
 	if (CManager::netData.charNum == 0)
 	{
 		//	シーン切り替え
-		if (CKeyboard::GetTrigger(DIK_RETURN))
+		if (VC::Instance()->Trigger(COMMAND_OK))
 		{
 			CSoundAL::Play(CSoundAL::SE_ENTER);
 			CManager::SendChangeGame();
@@ -247,7 +261,8 @@ void CConnection::keyUpdate()
 //=============================================================================
 void CConnection::setEntry(int _charNum)
 {
-	waitBackGround[_charNum]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_READY));
+//	waitBackGround[_charNum]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_READY));
+	PlayerEntry[_charNum] = true;
 }
 
 //	EOF

@@ -68,6 +68,8 @@ public:
 	VECTOR2 Size(void)const{ return _Size; }
 	UV Uv(void)const{ return uv; }
 
+	void SetDrawFlag(bool drawFlag){ DrawFlag = drawFlag; }	// 描画フラグセッター
+
 protected:
 
 	VECTOR2 _Size;
@@ -77,6 +79,8 @@ protected:
 	MATERIAL Material;
 
 	void Resize(void);
+
+	bool DrawFlag;	// 描画フラグ（2015/02/23 田邊）
 
 };
 

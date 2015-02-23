@@ -12,15 +12,16 @@
 
 #include "main.h"
 #include "CPlayer.h"
-#include "Keyboard.h"
 #include "Camera.h"
 #include "CBullet.h"
 #include "CommonGL.h"
-#include "Ballistic.h"
 #include "ManagerGL.h"
 #include "Explosion.h"
 #include "SandCloud.h"
 #include "SoundAL.h"
+#include "Input\VC.h"
+#include "Input\Keyboard.h"
+
 #define NARI_SCL (30.0f)
 const int kHeightMax = 400;
 const int kUpSpeed = 3;
@@ -88,13 +89,14 @@ void CPlayer::Init(void)
 	// 弾使用フラグ
 	_BulletUseFlag = false;
 
-	LaunchFlag = false;
+	// 弾発射フラグ
+	_LaunchFlag = false;
 
 	// 弾
 	_Bullet = nullptr;
 
 	// 弾道
-	Ballistic = CBallistic::Create(COLOR(1.0f,0.0f,0.0f,0.3f));
+	Ballistic = nullptr;
 
 	// 継承元の初期化
 	CModel::Init();
@@ -116,7 +118,7 @@ void CPlayer::Init(void)
 	_Feed = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f,0),VECTOR2(SCREEN_WIDTH,SCREEN_HEIGHT));
 	_Feed->SetColor(COLOR(0,0,0,0));
 	_Timer = 0;
-	
+
 	_NariSclSpeed = NARI_SCL_SPEED;
 	DriveSE = CSoundAL::Play(CSoundAL::SE_DRIVE,_Pos);
 	DriveSE->SetVolume(0);
@@ -143,7 +145,7 @@ void CPlayer::Update()
 	{
 	case PLAYER_STATE_DEATH:
 	{
-		AddPosY(kUpSpeed+0.0f);
+		AddPosY(kUpSpeed + 0.0f);
 		_Hegiht += kUpSpeed;
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 
@@ -154,30 +156,30 @@ void CPlayer::Update()
 			_Feed->AddAlpha(Alpha);
 		}
 
-	_nari->AddAlpha(Alpha * 3);
-	_nari->AddPosY(kUpSpeed);
+		_nari->AddAlpha(Alpha * 3);
+		_nari->AddPosY(kUpSpeed);
 		Barrel->SetPos(_Pos);			// 位置
-		CManager::SendPos(_Pos, PlayerID);
+		CManager::SendPos(_Pos,PlayerID);
 
 		/*
 #ifdef ROT_QUART
 		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
-#endif
+		#endif
 
-#ifdef ROT_NORMAL
+		#ifdef ROT_NORMAL
 		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
-#endif
+		#endif
 		*/
-		CManager::SendRot(_Rot.y, PlayerID);
+		CManager::SendRot(_Rot.y,PlayerID);
 
-		CManager::SendCannonRot(Barrel->Rot(), PlayerID);
+		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
 
 
 		if (_Hegiht > kHeightMax)
 		{
 			SetRespawn();
 		}
-  UpdateNari();
+		UpdateNari();
 		return;
 	}
 	case PLAYER_STATE_RESPAWN:
@@ -185,16 +187,16 @@ void CPlayer::Update()
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 		AddPosY(-kUpSpeed);
 		_Hegiht += kUpSpeed;
-  _nari->AddPosY(-kUpSpeed);
+		_nari->AddPosY(-kUpSpeed);
 
 
 		if (PlayerID == CManager::netData.charNum)
 		{
 			_Feed->AddAlpha(-Alpha);
 		}
-  		_nari->AddAlpha(-Alpha * 3);
+		_nari->AddAlpha(-Alpha * 3);
 		Barrel->SetPos(_Pos);			// 位置
-		CManager::SendPos(_Pos, PlayerID);
+		CManager::SendPos(_Pos,PlayerID);
 		/*
 		#ifdef ROT_QUART
 		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
@@ -204,19 +206,23 @@ void CPlayer::Update()
 		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 		#endif
 		*/
-		CManager::SendRot(_Rot.y, PlayerID);
-		CManager::SendCannonRot(Barrel->Rot(), PlayerID);
+		CManager::SendRot(_Rot.y,PlayerID);
+		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
 
 		if (_Hegiht > kHeightMax)
 		{
 			_State = PLAYER_STATE_WAIT;
 			_Feed->SetAlpha(0);
 			_nari->SetAlpha(0.0f);
-			Ballistic->SetDrawFlag(true);
+
+			if(PlayerFlag)
+			{
+				Ballistic->SetDrawFlag(true);
+			}
 
 			CManager::SendReborn(PlayerID);
 		}
-  UpdateNari();
+		UpdateNari();
 		return;
 	}
 	case PLAYER_STATE_DAMAGE:
@@ -271,6 +277,7 @@ void CPlayer::Update()
 //------------------------------------------------------------------------------
 void CPlayer::UpdatePlayer(void)
 {
+	VC* vc = VC::Instance();
 	// 弾の使用状態を確定
 	if (_Bullet == nullptr)
 	{
@@ -280,22 +287,16 @@ void CPlayer::UpdatePlayer(void)
 	// 初期化
 	VECTOR3 rot = VECTOR3(0.0f,0.0f,0.0f);
 
-	if(_InputFlag == true)
+	if (_InputFlag == true)
 	{
 		// 移動
 		// 上
-		if (CKeyboard::GetPress(DIK_W))
+
+		Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed * vc->LeftStick().y;
+		Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed * vc->LeftStick().y;
+		
+		if (vc->LeftStick().y > 0 || vc->LeftStick().y < 0)
 		{
-			Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
-			Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
-			IdlingSE->SetVolume(0);
-			DriveSE->SetVolume(0.5f);
-		}
-		// 下
-		else if (CKeyboard::GetPress(DIK_S))
-		{
-			Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
-			Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
 			IdlingSE->SetVolume(0);
 			DriveSE->SetVolume(0.5f);
 		}
@@ -305,40 +306,27 @@ void CPlayer::UpdatePlayer(void)
 			DriveSE->SetVolume(0);
 		}
 
-		// 左
-		if (CKeyboard::GetPress(DIK_A))
-		{
-			rot.y += PLAYER_ROTY_SPEED;
-		}
-
-		// 右
-		else if (CKeyboard::GetPress(DIK_D))
-		{
-			rot.y -= PLAYER_ROTY_SPEED;
-		}
+		//旋回
+		rot.y -= PLAYER_ROTY_SPEED*vc->LeftStick().x;
 
 		// 砲身の上下
-		if (CKeyboard::GetPress(DIK_UP))
-		{
-			BarrelRotX -= BARREL_ROTX_SPEED;
-		}
-		else if (CKeyboard::GetPress(DIK_DOWN))
-		{
-			BarrelRotX += BARREL_ROTX_SPEED;
-		}
+		BarrelRotX -= BARREL_ROTX_SPEED * vc->RightStick().y;
+
+		
 
 		// 弾の発射
 		// 弾が発射されていなかった時
-		if (LaunchFlag == false)
+		if (_LaunchFlag == false)
 		{
-			if (CKeyboard::GetTrigger(DIK_SPACE))
+			if (vc->Trigger(COMMAND_SHOT))
 			{
-				_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
+				_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),_PlayerColor);
+				vc->SetVibration(0.5f,20,0.5f,20);
 				CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
-				LaunchFlag = true;
+				_LaunchFlag = true;
 				_BulletUseFlag = true;
 				_ReloadTimer = 0;
-				CManager::SendCannon(LaunchFlag, PlayerID);
+				CManager::SendCannon(_LaunchFlag,PlayerID);
 			}
 		}
 		// 弾が発射されている時
@@ -351,7 +339,7 @@ void CPlayer::UpdatePlayer(void)
 			if (_ReloadTimer >= PLAYER_RELOAD_TIME)
 			{
 				// 再発射可能に
-				LaunchFlag = false;
+				_LaunchFlag = false;
 				_BulletUseFlag = false;
 				_ReloadTimer = PLAYER_RELOAD_TIME;
 			}
@@ -393,7 +381,7 @@ void CPlayer::UpdatePlayer(void)
 	else if (abs(Movement.x) > 0.1f || abs(Movement.z) > 0.1f)
 	{
 		VECTOR3	posEffect = _Pos;
-		VECTOR3 vecMove = VECTOR3(0.0f, 0.0f, 0.0f);
+		VECTOR3 vecMove = VECTOR3(0.0f,0.0f,0.0f);
 
 		if (Movement.x != 0)
 		{
@@ -424,7 +412,7 @@ void CPlayer::UpdatePlayer(void)
 	// 弾道の更新
 	Ballistic->Update(_Pos,VECTOR3(BarrelRotX,_Rot.y,_Rot.z));
 
-	CManager::SendPos(_Pos, PlayerID);
+	CManager::SendPos(_Pos,PlayerID);
 	/*
 	#ifdef ROT_QUART
 	CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
@@ -433,29 +421,30 @@ void CPlayer::UpdatePlayer(void)
 	CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
 	#endif
 	*/
-	CManager::SendRot(_Rot.y, PlayerID);
-	CManager::SendCannonRot(Barrel->Rot(), PlayerID);
+	CManager::SendRot(_Rot.y,PlayerID);
+	CManager::SendCannonRot(Barrel->Rot(),PlayerID);
 
 #ifdef _DEBUG
 	// デバッグ用
 	// 連射
-	if (CKeyboard::GetPress(DIK_V))
+	CKeyboard* keyboard = CKeyboard::Instance();
+	if (keyboard->GetPress(DIK_V))
 	{
 		CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
 	}
 
 	// ライフの減算
-	if (CKeyboard::GetTrigger(DIK_L))
+	if (keyboard->GetTrigger(DIK_L))
 	{
 		this->AddPlayerLife(-1);
 		_State = PLAYER_STATE_DAMAGE;
 	}
 
 	// 弾の削除確認
-	if (CKeyboard::GetTrigger(DIK_M))
+	if (keyboard->GetTrigger(DIK_M))
 	{
 		this->ReleaseBullet();
-	}
+}
 #endif
 }
 
@@ -464,14 +453,11 @@ void CPlayer::UpdatePlayer(void)
 //=============================================================================
 void CPlayer::BlastBullet()
 {
-	if (LaunchFlag == false)
-	{
-  _Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
-  CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
-		LaunchFlag = true;
+		_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),_PlayerColor);
+		CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
+		_LaunchFlag = true;
 		_BulletUseFlag = true;
 		_ReloadTimer = 0;
-	}
 }
 
 //------------------------------------------------------------------------------
@@ -498,7 +484,7 @@ void CPlayer::UpdateCPU(void)
 	else if (abs(Movement.x) > 0.1f || abs(Movement.z) > 0.1f)
 	{
 		VECTOR3	posEffect = _Pos;
-		VECTOR3 vecMove = VECTOR3(0.0f, 0.0f, 0.0f);
+		VECTOR3 vecMove = VECTOR3(0.0f,0.0f,0.0f);
 
 		if (Movement.x != 0)
 		{
@@ -530,7 +516,7 @@ void CPlayer::UpdateCPU(void)
 	}
 
 	// 弾が発射されていなかった時
-	if (LaunchFlag == true)
+	if (_LaunchFlag == true)
 	{
 		// リロード可能までの時間を加算
 		_ReloadTimer++;
@@ -539,7 +525,7 @@ void CPlayer::UpdateCPU(void)
 		if (_ReloadTimer >= PLAYER_RELOAD_TIME)
 		{
 			// 再発射可能に
-			LaunchFlag = false;
+			_LaunchFlag = false;
 			_BulletUseFlag = false;
 			_ReloadTimer = PLAYER_RELOAD_TIME;
 		}
@@ -561,14 +547,14 @@ void CPlayer::UpdateCPU(void)
 //------------------------------------------------------------------------------
 void CPlayer::UpdateNari(void)
 {
- if(_State == PLAYER_STATE_RESPAWN || _State == PLAYER_STATE_DEATH)
- {
-  if(_nari->Size().y > 1024 / NARI_SCL || _nari->Size().y < ( 1024 / NARI_SCL ) / 2)
-  {
-   _NariSclSpeed *= -1;
-  }
-  _nari->AddSizeY(_NariSclSpeed);
- }
+	if (_State == PLAYER_STATE_RESPAWN || _State == PLAYER_STATE_DEATH)
+	{
+		if (_nari->Size().y > 1024 / NARI_SCL || _nari->Size().y < (1024 / NARI_SCL) / 2)
+		{
+			_NariSclSpeed *= -1;
+		}
+		_nari->AddSizeY(_NariSclSpeed);
+	}
 }
 void CPlayer::setBarrelRot(VECTOR3 _rot)
 {
@@ -629,27 +615,30 @@ CPlayer* CPlayer::Create(int modelID,const VECTOR3& pos,int playerID)
 //------------------------------------------------------------------------------
 void CPlayer::SetDeath(VECTOR3 pos,int _charNum)
 {
- if(_State != PLAYER_STATE_DEATH)
- {
-  CSoundAL::Play(CSoundAL::SE_BREAK,_Pos);
-  CSoundAL::Play(CSoundAL::SE_DEATH,_Pos);
-  _Hegiht = 0;
-  _State = PLAYER_STATE_DEATH;
-  _PlayerRespown = pos;
-  _nari->SetAlpha(0.01f);
+	if (_State != PLAYER_STATE_DEATH)
+	{
+		CSoundAL::Play(CSoundAL::SE_BREAK,_Pos);
+		CSoundAL::Play(CSoundAL::SE_DEATH,_Pos);
+		if (PlayerFlag)
+		{
+			VC::Instance()->SetVibration(1.0f,60,1.0f,180);
+			Ballistic->SetDrawFlag(false);	// 弾道を非表示に
+		}
+		_Hegiht = 0;
+		_State = PLAYER_STATE_DEATH;
+		_PlayerRespown = pos;
+		_nari->SetAlpha(0.01f);
 
-  Ballistic->SetDrawFlag(false);	// 弾道を非表示に
-
-  if(_charNum == CManager::netData.charNum)
-  {
-   _Feed->SetAlpha(0);
-   VECTOR3 pos = _Pos;
-   pos.y += 10;
-   pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
-   pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
-   _nari->SetPos(pos);
-  }
- }
+		if (_charNum == CManager::netData.charNum)
+		{
+			_Feed->SetAlpha(0);
+			VECTOR3 pos = _Pos;
+			pos.y += 10;
+			pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
+			pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
+			_nari->SetPos(pos);
+		}
+	}
 
 }
 //------------------------------------------------------------------------------
@@ -662,46 +651,46 @@ void CPlayer::SetDeath(VECTOR3 pos,int _charNum)
 //------------------------------------------------------------------------------
 void CPlayer::SetRespawn(void)
 {
- _Hegiht = 0;
- _State = PLAYER_STATE_RESPAWN;
- _PlayerRespown.y += kHeightMax;
- SetPos(_PlayerRespown);
- _PlayerLife = PLAYER_LIFE;
- _ReloadTimer = PLAYER_RELOAD_TIME;
+	_Hegiht = 0;
+	_State = PLAYER_STATE_RESPAWN;
+	_PlayerRespown.y += kHeightMax;
+	SetPos(_PlayerRespown);
+	_PlayerLife = PLAYER_LIFE;
+	_ReloadTimer = PLAYER_RELOAD_TIME;
 
- if(PlayerID == CManager::netData.charNum)
- {
-  _Feed->SetAlpha(1);
-  _PlayerRespown.y += 10;
+	if (PlayerID == CManager::netData.charNum)
+	{
+		_Feed->SetAlpha(1);
+		_PlayerRespown.y += 10;
 
-  VECTOR3 pos = _Pos;
-  pos.y += 20;
-  pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
-  pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
+		VECTOR3 pos = _Pos;
+		pos.y += 20;
+		pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
+		pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
 
-  _nari->SetPos(pos);
+		_nari->SetPos(pos);
 
-  Movement = VECTOR3(0,0,0);
+		Movement = VECTOR3(0,0,0);
 
-  Barrel->SetPos(_Pos);			// 位置
-  CManager::SendPos(_Pos,PlayerID);
+		Barrel->SetPos(_Pos);			// 位置
+		CManager::SendPos(_Pos,PlayerID);
 
-  /*
-  #ifdef ROT_QUART
-  CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
-  #endif
+		/*
+		#ifdef ROT_QUART
+		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
+		#endif
 
-  #ifdef ROT_NORMAL
-  CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
-  #endif
-  */
-  CManager::SendRot(_Rot.y,PlayerID);
+		#ifdef ROT_NORMAL
+		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
+		#endif
+		*/
+		CManager::SendRot(_Rot.y,PlayerID);
 
 
-  CManager::SendCannonRot(Barrel->Rot(),PlayerID);
-  CManager::SendCannon(LaunchFlag,PlayerID);
+		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
+		CManager::SendCannon(_LaunchFlag,PlayerID);
 
- }
+	}
 }
 //------------------------------------------------------------------------------
 // 加算処理

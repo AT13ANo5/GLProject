@@ -18,7 +18,7 @@
 #include "Report.h"
 #include "NumberManager.h"
 #include "Number2D.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
 #include "Time.h"
 #include "Polygon2D.h"
 #include "ManagerGL.h"
@@ -233,8 +233,8 @@ void CUI::Update(void)
 
 	if (Time->GetUpdateFlag() == true){
 		// ¬Ñ•\‚ÌON/OFF
-		if (CKeyboard::GetPress(DIK_P)){
-			reportBg->SetDrawFlag(true);
+  if(VC::Instance()->Press(COMMAND_SCORE)){
+   reportBg->SetDrawFlag(true);
 			report->SetDrawFlag(true);
 			numberManager->SetDrawFlag(true);
 

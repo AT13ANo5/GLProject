@@ -11,33 +11,34 @@
 //=============================================================================
 #define REPEATE_TRIGGER (20)
 
-BYTE CKeyboard::g_aKeyState[256];		
-BYTE CKeyboard::TriggerKeyState[256];
-BYTE CKeyboard::ReleaseKeyState[256];
-BYTE CKeyboard::RepeateKeyState[256];
-short CKeyboard::RepeateKeyFlame[256];
+CKeyboard* CKeyboard::Self = new CKeyboard;
+
+CKeyboard::~CKeyboard()
+{
+	if (InputDevice != nullptr)
+	{
+		InputDevice->Release();
+		InputDevice = nullptr;
+	}
+}
 
 //=============================================================================
 // 初期化
 //=============================================================================
-HRESULT CKeyboard::Init(HINSTANCE hInstance,HWND hWnd)
+HRESULT CKeyboard::Init(LPDIRECTINPUT8 DInput,HINSTANCE hInstance,HWND hWnd)
 {
+
 	HRESULT hr;
-	if(FAILED(CInput::Init(hInstance,hWnd)))
-	{
-		return E_FAIL;
-	}
+
 	// デバイスオブジェクトを作成
-	hr = DInput -> CreateDevice(GUID_SysKeyboard,&pInputDevice,NULL);
-	if(FAILED(hr))
+	hr = DInput->CreateDevice(GUID_SysKeyboard,&InputDevice,NULL);
+	if (FAILED(hr))
 	{
-		MessageBox(NULL,"デバイスオブジェクトの作成に失敗しました","ERROR!",(MB_ICONERROR|MB_OK));
+		MessageBox(NULL,"デバイスオブジェクトの作成に失敗しました","ERROR!",(MB_ICONERROR | MB_OK));
 		return hr;
 	}
-	
-
 	// データフォーマットを設定
-	hr = pInputDevice->SetDataFormat(&c_dfDIKeyboard);
+	hr = InputDevice->SetDataFormat(&c_dfDIKeyboard);
 
 	if(FAILED(hr))
 	{
@@ -46,7 +47,7 @@ HRESULT CKeyboard::Init(HINSTANCE hInstance,HWND hWnd)
 	}
 
 	// 協調モードを設定（フォアグラウンド＆非排他モード）
-	hr = pInputDevice->SetCooperativeLevel(hWnd,(DISCL_FOREGROUND | DISCL_NONEXCLUSIVE));
+	hr = InputDevice->SetCooperativeLevel(hWnd,(DISCL_FOREGROUND | DISCL_NONEXCLUSIVE));
 
 	if(FAILED(hr))
 	{
@@ -55,24 +56,31 @@ HRESULT CKeyboard::Init(HINSTANCE hInstance,HWND hWnd)
 	}
 
 	// キーボードへのアクセス権を獲得(入力制御開始)
-	pInputDevice->Acquire();
+	InputDevice->Acquire();
 	return S_OK;
 }
+
+void CKeyboard::Uninit(void)
+{
+	delete Self;
+	Self = nullptr;
+}
+
 //=============================================================================
 // 更新
 //=============================================================================
 void CKeyboard::Update(void)
 {
-	BYTE aKeyState[256] ={0};
-	if(SUCCEEDED(pInputDevice->GetDeviceState(sizeof(aKeyState),&aKeyState[0])))
+	BYTE CurrentKeyState[256] ={0};
+	if(SUCCEEDED(InputDevice->GetDeviceState(sizeof(CurrentKeyState),&CurrentKeyState[0])))
 	{
 		for(int nKey=0;nKey<256;nKey++)
 		{
-			TriggerKeyState[nKey] = (g_aKeyState[nKey]^aKeyState[nKey]) & aKeyState[nKey];	//トリガー取得
-			ReleaseKeyState[nKey] = (g_aKeyState[nKey]^aKeyState[nKey]) & g_aKeyState[nKey];//リリース取得
+			TriggerKeyState[nKey] = (KeyState[nKey]^CurrentKeyState[nKey]) & CurrentKeyState[nKey];	//トリガー取得
+			ReleaseKeyState[nKey] = (KeyState[nKey]^CurrentKeyState[nKey]) & KeyState[nKey];//リリース取得
 
 			//リピート取得
-			if((g_aKeyState[nKey]&aKeyState[nKey]))
+			if((KeyState[nKey]&CurrentKeyState[nKey]))
 			{
 				RepeateKeyFlame[nKey]++;//押されている間はカウントアップ
 			}
@@ -83,18 +91,18 @@ void CKeyboard::Update(void)
 
 			if(RepeateKeyFlame[nKey]>REPEATE_TRIGGER)
 			{
-				RepeateKeyState[nKey] = aKeyState[nKey];	//指定フレーム数押され続けたらホールド
+				RepeateKeyState[nKey] = CurrentKeyState[nKey];	//指定フレーム数押され続けたらホールド
 			}
 			else
 			{
 				RepeateKeyState[nKey] = TriggerKeyState[nKey];	//指定されたフレーム数までトリガー
 			}
-			g_aKeyState[nKey] = aKeyState[nKey];
+			KeyState[nKey] = CurrentKeyState[nKey];
 		}
 	}
 	else
 	{
-		pInputDevice->Acquire();
+		InputDevice->Acquire();
 	}
 
 }
@@ -104,7 +112,7 @@ void CKeyboard::Update(void)
 //=============================================================================
 bool CKeyboard::GetPress(int nKey)
 {
-	return g_aKeyState[nKey] ? true:false;
+	return KeyState[nKey] ? true:false;
 }
 
 //=============================================================================

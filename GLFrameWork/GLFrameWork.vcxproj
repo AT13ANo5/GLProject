@@ -91,7 +91,6 @@
     <ClCompile Include="Billboard.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CBullet.cpp" />
-    <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CommonGL.cpp" />
     <ClCompile Include="Confetti.cpp" />
     <ClCompile Include="Connection.cpp" />
@@ -103,6 +102,9 @@
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Input\GamePad.cpp" />
+    <ClCompile Include="Input\Keyboard.cpp" />
+    <ClCompile Include="Input\VC.cpp" />
     <ClCompile Include="Life.cpp" />
     <ClCompile Include="LoadGauge.cpp" />
     <ClCompile Include="LoadString.cpp" />
@@ -112,7 +114,6 @@
     <ClCompile Include="Number2D.cpp" />
     <ClCompile Include="NumberManager.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerGL.cpp" />
@@ -150,7 +151,6 @@
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CBullet.h" />
-    <ClInclude Include="CInput.h" />
     <ClInclude Include="CommonGL.h" />
     <ClInclude Include="Confetti.h" />
     <ClInclude Include="Connection.h" />
@@ -162,6 +162,9 @@
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Input\GamePad.h" />
+    <ClInclude Include="Input\Keyboard.h" />
+    <ClInclude Include="Input\VC.h" />
     <ClInclude Include="Life.h" />
     <ClInclude Include="LoadGauge.h" />
     <ClInclude Include="LoadString.h" />
@@ -171,7 +174,6 @@
     <ClInclude Include="Number2D.h" />
     <ClInclude Include="NumberManager.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="ManagerGL.h" />

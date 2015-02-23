@@ -29,7 +29,7 @@ private:
 
   CPolygon2D* Logo;
   CPushStart* PushEnter;
-  CPlayer*     Player;
+  CPlayer**    Player;
   CModel* Barrel;
   CMeshGround*  Ground;   // ’nŒ`
   CMeshSphere*  Sky;      // ‹ó
@@ -37,5 +37,8 @@ private:
   CTitleDirection* TitleD;
 
   float CameraRotation;
+  float MoveSpeed;
+  float RotSpeed;
+  float MoveRot;
 };
 #endif
