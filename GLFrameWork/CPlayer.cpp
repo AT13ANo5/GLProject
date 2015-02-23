@@ -213,7 +213,11 @@ void CPlayer::Update()
 			_State = PLAYER_STATE_WAIT;
 			_Feed->SetAlpha(0);
 			_nari->SetAlpha(0.0f);
-			Ballistic->SetDrawFlag(true);
+
+			if(PlayerFlag)
+			{
+				Ballistic->SetDrawFlag(true);
+			}
 
 			CManager::SendReborn(PlayerID);
 		}
@@ -617,13 +621,12 @@ void CPlayer::SetDeath(VECTOR3 pos,int _charNum)
 		if (PlayerFlag)
 		{
 			VC::Instance()->SetVibration(1.0f,60,1.0f,180);
+			Ballistic->SetDrawFlag(false);	// ’e“¹‚ð”ñ•\Ž¦‚É
 		}
 		_Hegiht = 0;
 		_State = PLAYER_STATE_DEATH;
 		_PlayerRespown = pos;
 		_nari->SetAlpha(0.01f);
-
-		Ballistic->SetDrawFlag(false);	// ’e“¹‚ð”ñ•\Ž¦‚É
 
 		if (_charNum == CManager::netData.charNum)
 		{
