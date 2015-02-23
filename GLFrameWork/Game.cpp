@@ -37,6 +37,7 @@
 
 // 静的メンバ変数
 const float CGame::RADIUS_SKY = 2500.0f;   // 空の半径
+CUI* CGame::UI = nullptr;
 CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
 int CGame::gamePhaseCnt = 0;
