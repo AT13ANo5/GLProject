@@ -56,7 +56,9 @@ public:
 	void SetNumberDrawFlag(bool flag);
 
 	// time
-	void SetTimeUpdateFlag(bool flag);
+	void	SetTimeUpdateFlag(bool flag);
+	int		GetTime(void);
+	void	SetTime(int time);
 
 	//=============================================================================
 	// SetNumber
@@ -70,6 +72,12 @@ public:
 		myID = _id;
 	}
 
+	// •¶š‚Ìİ’è
+	void SetStringTexture(TEX_INFO tex);
+	void SetStringDrawFlag(bool draw);
+
+	// ƒJƒEƒ“ƒg”š
+	void SetCountSizeRefresh(void);
 
 private:
 
@@ -84,10 +92,11 @@ private:
 	CNumber2D*			counter;
 	CTime*					Time;
 	CPolygon2D*			timeFrame;
-
 	CPlayer**				player;
+	CPolygon2D*			string;
 
 	int myID;
+	bool counterActive;
 
 };
 

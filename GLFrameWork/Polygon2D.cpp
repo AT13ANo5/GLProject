@@ -16,7 +16,8 @@ CPolygon2D::CPolygon2D():CObject(LAYER_NUM-2)
 	_Rot.x = 
 	_Rot.y = 
 	_Rot.z = 0;
-	
+
+	drawFlag = true;
 }
 //=============================================================================
 //初期化
@@ -34,8 +35,6 @@ void CPolygon2D::Init(void)
 	Vtx[1] = VECTOR3(-_Size.x / 2,-_Size.y / 2.0f,0);
 	Vtx[2] = VECTOR3(_Size.x / 2,_Size.y / 2.0f,0);
 	Vtx[3] = VECTOR3(-_Size.x / 2,_Size.y / 2.0f,0);
-	
-
 }
 //=============================================================================
 //作成
@@ -71,7 +70,8 @@ void CPolygon2D::Update(void)
 //=============================================================================
 void CPolygon2D::Draw(void)
 {
-	
+	if (drawFlag == false) return;
+
 	//ライティング無効
 	glDisable(GL_LIGHTING);
 	//2D用マトリクス設定
@@ -136,3 +136,5 @@ void CPolygon2D::Resize(void)
 	Vtx[2] = VECTOR3(_Size.x / 2,_Size.y / 2.0f,0);
 	Vtx[3] = VECTOR3(-_Size.x / 2,_Size.y / 2.0f,0);
 }
+
+

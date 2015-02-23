@@ -64,6 +64,8 @@ public:
 	VECTOR2 Size(void)const{ return _Size; }
 	UV Uv(void)const{ return uv; }
 
+	void SetDrawFlag(bool flag){ drawFlag = flag; }
+
 protected:
 
 	VECTOR2 _Size;
@@ -72,6 +74,7 @@ protected:
 	MATERIAL Material;
 
 	void Resize(void);
+	bool drawFlag;
 
 };
 

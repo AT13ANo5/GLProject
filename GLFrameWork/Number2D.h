@@ -49,8 +49,11 @@ public:
   // Geter / Seter
   // •`‰æ‚·‚é‚©‚Ç‚¤‚©Œˆ‚ß‚é‚æ
   void SetDrawFlag(bool flag){ drawFlag = flag; }
+	bool GetDrawFlag(void) { return drawFlag; }
   void DrawDisable(void);
 
+	// ƒTƒCƒY
+	void SubSize(VECTOR2 size);
 
 private:
 
