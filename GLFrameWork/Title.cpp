@@ -3,7 +3,7 @@
 #include "Title.h"
 #include "Polygon2D.h"
 #include "Texture.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
 #include "ManagerGL.h"
 #include "Model.h"
 #include "MeshGround.h"
@@ -90,7 +90,7 @@ void CTitle::Update(void)
 	const float cameraLength = 200.0f;
 	Camera->SetEye(VECTOR3(0.0f - sinf(CameraRotation) * cameraLength,80.0f,0.0f - cosf(CameraRotation) * cameraLength));
 
-	if (CKeyboard::GetTrigger(DIK_RETURN))
+	if (VC::Instance()->Trigger(COMMAND_OK))
 	{
 		CSoundAL::Play(CSoundAL::SE_ENTER);
 		CManager::ChangeScene(SCENE_CONNECTION);

@@ -14,7 +14,7 @@
 #include "main.h"
 #include "Game.h"
 #include "ManagerGL.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
 #include "Billboard.h"
 #include "Effect3D.h"
 #include "Explosion.h"
@@ -400,10 +400,11 @@ void CGame::Uninit(void)
 //------------------------------------------------------------------------------
 void CGame::Update(void)
 {
+	VC* vc = VC::Instance();
 	// 最初のカウントダウン
 	StartCount();
 
-	if (CKeyboard::GetTrigger(DIK_RETURN))
+	if (vc->Trigger(COMMAND_OK))
 	{
 		if (CManager::netData.charNum == 0)
 		{
@@ -533,6 +534,10 @@ void CGame::CheckHitPlayer(void)
 				// エフェクト：爆発　弾がプレイヤーに当たったとき
 				if (pPlayerDefense->PlayerLife() > 0)
 				{
+					if (pPlayerDefense->GetPreyerFlag())
+					{
+						VC::Instance()->SetVibration(0.7f,30,0.7f,30);
+					}
 					CSoundAL::Play(CSoundAL::SE_HIT,pPlayerDefense->Pos());
 					CSoundAL::Play(CSoundAL::SE_DAMAGE,pPlayerDefense->Pos());
 				}

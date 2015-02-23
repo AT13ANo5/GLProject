@@ -10,7 +10,7 @@
 #include "Polygon2D.h"
 #include "CPushStart.h"
 #include "ManagerGL.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
 #include "netData.h"
 #include "ManagerGL.h"
 #include "SoundAL.h"
@@ -234,7 +234,7 @@ void CConnection::keyUpdate()
 	if (CManager::netData.charNum == 0)
 	{
 		//	ƒV[ƒ“Ø‚è‘Ö‚¦
-		if (CKeyboard::GetTrigger(DIK_RETURN))
+		if (VC::Instance()->Trigger(COMMAND_OK))
 		{
 			CSoundAL::Play(CSoundAL::SE_ENTER);
 			CManager::SendChangeGame();

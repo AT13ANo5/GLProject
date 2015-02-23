@@ -2,7 +2,7 @@
 #include "ManagerGL.h"
 #include "Polygon2D.h"
 #include "CommonGL.h"
-#include "Keyboard.h"
+#include "Input/VC.h"
 
 CSplash::CSplash()
 {
@@ -30,7 +30,7 @@ void CSplash::Uninit(void)
 
 void CSplash::Update(void)
 {
-	if (Frame>90 || CKeyboard::GetTrigger(DIK_RETURN))
+	if (Frame>90 || VC::Instance()->Trigger(COMMAND_OK))
 	{
 		CManager::ChangeScene(SCENE_TITLE);
 	}
