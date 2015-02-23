@@ -38,6 +38,9 @@ public:
 
 
 	static void SetPlayerState(NET_DATA _netData, DATA_TYPE _dataType);
+	static void subTimer();
+
+
 private:
 	static const float  RADIUS_SKY;					// 空の半径
 	static const float	RADIUS_DEFENSE_CHARACTER;	// キャラクターの防御半径
@@ -78,7 +81,7 @@ private:
 	CMeshSphere*    Sky;        // 空
 	static CPlayer**       Player;     // プレイヤー	CNumberManager* numberManager;
 	CBattleAreaCylinder*	CylinderArea;			// 戦闘可能エリア
-	CUI*		UI;
+	static CUI*		UI;
 	CModel**		ppRock_;	//	岩
 	CShadow**		Shadow;		// 影
 
