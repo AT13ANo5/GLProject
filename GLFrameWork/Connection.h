@@ -36,6 +36,8 @@ private:
 	static CPolygon2D** waitBackGround;
 	static CPolygon2D** waitPlayer;
 	static CPushStart* pushStart;
+
+	static bool PlayerEntry[PLAYER_MAX];
 };
 
 #endif
