@@ -51,6 +51,7 @@ public:
 private:
 	CBillboard* BallisticMark[MARK_MAX];	// 弾道のマーク
 	CPolygon3D* Landing;					// 着弾マーク
+	float		LandingAddRot;
 };
 
 #endif

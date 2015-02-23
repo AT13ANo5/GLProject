@@ -38,7 +38,7 @@ void CPolygon3D::Init(void)
 
 	for (int cnt = 0;cnt < 4;cnt++)
 	{
-		Nor[cnt] = VECTOR3(0,0,-1.0f);
+		Nor[cnt] = VECTOR3(0,1.0f,0);
 	}
 
 	DrawFlag = true;
