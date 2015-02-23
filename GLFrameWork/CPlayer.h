@@ -87,6 +87,7 @@ public:
 	void SetDeath(VECTOR3 posint,int _charNum);//€–Sˆ—
 	void SetRespawn(void);//•œŠˆˆ—
 
+	void CreateBallistic(void){Ballistic = CBallistic::Create(COLOR(1.0f, 0.0f, 0.0f, 0.3f));}
 	void SetBallisticDrawFlag(bool drawFlag){Ballistic->SetDrawFlag(drawFlag);}
 
 	//	’·è
