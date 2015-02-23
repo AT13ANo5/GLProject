@@ -450,18 +450,6 @@ void CGame::Update(void)
 		}
 	}
 
-	static int	indexRock = 0;
-	if (vc->Trigger(COMMAND_SHOT))
-	{
-		++indexRock;
-		if (indexRock >= sizeof(ROCK_POSITION_LIST) / sizeof(ROCK_POSITION_LIST[0]))
-		{
-			indexRock = 0;
-		}
-	}
-	ppRock_[indexRock]->AddRot(0.0f, 2.0f, 0.0f);
-	Console::Print("%d", indexRock);
-
 	// 空の位置プレイヤーに合わせる
 	Sky->SetPosX(Player[CManager::netData.charNum]->Pos().x);
 	Sky->SetPosZ(Player[CManager::netData.charNum]->Pos().z);
