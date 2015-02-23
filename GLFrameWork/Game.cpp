@@ -472,7 +472,6 @@ void CGame::Update(void)
 
 	// UIのアップデート
 	UI->Update();
-
 }
 
 //==============================================================================
@@ -1030,6 +1029,12 @@ void CGame::StartCount(void)
 				UI->SetTimeUpdateFlag(true);
 				gamePhase = PHASE_NONE;
 				CSoundAL::Play(CSoundAL::SE_START);
+
+				CManager::SendReborn(1);
+				CManager::SendReborn(2);
+				CManager::SendReborn(3);
+				CManager::SendReborn(4);
+				CManager::SendReborn(5);
 			}
 			break;
 		}
