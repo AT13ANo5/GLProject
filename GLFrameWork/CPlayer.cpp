@@ -463,14 +463,14 @@ void CPlayer::UpdatePlayer(void)
 //=============================================================================
 void CPlayer::BlastBullet()
 {
-	if (LaunchFlag == false)
-	{
-  _Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
-  CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
+	//if (LaunchFlag == false)
+	//{
+		_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z), _PlayerColor);
+		CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
 		LaunchFlag = true;
 		_BulletUseFlag = true;
 		_ReloadTimer = 0;
-	}
+	//}
 }
 
 //------------------------------------------------------------------------------
