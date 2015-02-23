@@ -142,7 +142,13 @@ void CResult::Init(void)
 			TEX_YOUJO_WATER,
 			TEX_YOUJO_WHITE
 		};
-		Player[loop] = CModel::Create(CModel::RINCHAN,VECTOR3(0.0f,0.0f,0.0f));
+  if(ranking[loop] % 2 == 0)
+  {
+   Player[loop] = CModel::Create(CModel::RINCHAN,VECTOR3(0.0f,0.0f,0.0f));
+  }
+  else{
+   Player[loop] = CModel::Create(CModel::YOUJO,VECTOR3(0.0f,0.0f,0.0f));
+  }
 		Player[loop]->SetTex(CTexture::Texture(PLAYER_TEX[ranking[loop]]));
 		Player[loop]->SetRot(PlayerRot[loop]);
 		Player[loop]->SetPos(PlayerPos[loop]);
