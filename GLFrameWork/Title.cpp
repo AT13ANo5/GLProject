@@ -1,5 +1,6 @@
 //kikushima takahiro
-
+#include <float.h>
+#include <math.h>
 #include "Title.h"
 #include "Polygon2D.h"
 #include "Texture.h"
@@ -16,8 +17,11 @@
 #include "CPlayer.h"
 
 // static member
-const float CTitle::RADIUS_SKY = 500.0f;   // 空の半径
-
+const float CTitle::RADIUS_SKY = 800.0f;   // 空の半径
+namespace{
+ const VECTOR3 CAMERA_EYE = VECTOR3(50.0f,15.0f,-400.0f);
+ const VECTOR3 CAMERA_LOOKAT = VECTOR3(0.0f,20.0f,0.0f);
+}
 CTitle::CTitle()
 {
 	PushEnter = nullptr;
@@ -47,9 +51,17 @@ void CTitle::Init(void)
 
 	// Player
 	Player = new CPlayer*[PLAYER_MAX];
+ float rot = PI * 2 / PLAYER_MAX;
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
-		Player[i] = CPlayer::Create(CModel::YOUJO, VECTOR3(-100.0f + i * 40.0f, 30.0f, -100.0f), 0);
+  if(i % 2 == 1)
+  {
+   Player[i] = CPlayer::Create(CModel::RINCHAN,VECTOR3(-50.0f + i * 40.0f,30.0f,cosf(rot * i) * -50.0f),i);
+  }
+  else
+  {
+   Player[i] = CPlayer::Create(CModel::YOUJO,VECTOR3(-50.0f + i * 40.0f,30.0f,cosf(rot * i) * -50.0f),i);
+  }
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
 		Player[i]->SetRot(0.0f, 180.0f, 0.0f);
 		Player[i]->setBarrelTex(TEX_YOUJO_RED + i);
@@ -57,7 +69,7 @@ void CTitle::Init(void)
 
 	// Ground
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f,-100.0f,0.0f),VECTOR2(50.0f,50.0f),VECTOR2(20.0f,20.0f));
+	Ground = CMeshGround::Create(VECTOR3(0.0f,0,0.0f),VECTOR2(80.0f,80.0f),VECTOR2(0.0f,0.0f));
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
 
 	// Sky
@@ -66,8 +78,11 @@ void CTitle::Init(void)
 	Sky->SetTex(CTexture::Texture(TEX_SKY));
 
 	Camera = nullptr;
-	Camera = CCamera::Camera(0);
-	Camera->SetLookat(VECTOR3(0.0f, 0.0f, 0.0f));
+ Camera = CCamera::Camera(0);
+ Camera->SetLookat(CAMERA_LOOKAT);
+ MoveSpeed = 2.0f;
+ RotSpeed = 0.002f;
+ MoveRot = 0.0f;
 
 	CSoundAL::Play(CSoundAL::BGM_TITLE);
 }
@@ -87,10 +102,74 @@ void CTitle::Uninit(void)
 
 void CTitle::Update(void)
 {
+ Sky->SetPosX(Player[4]->Pos().x);
+ Sky->SetPosZ(Player[4]->Pos().z);
+ MoveRot += RotSpeed;
+ REVISE_PI(MoveRot);
+ for(int i = 0; i < PLAYER_MAX; i++)
+ {
+  VECTOR3 PlayerPos = Player[i]->Pos();
 
-	// TODO カメラ動かしてみるテスト（masuda）
-	const float cameraLength = 200.0f;
-	Camera->SetEye(VECTOR3(0.0f - sinf(CameraRotation) * cameraLength,80.0f,0.0f - cosf(CameraRotation) * cameraLength));
+
+  PlayerPos.x += sinf(MoveRot) * MoveSpeed;
+  PlayerPos.z += cosf(MoveRot) * MoveSpeed;
+  Player[i]->SetPosX(PlayerPos.x);
+  Player[i]->SetPosZ(PlayerPos.z);
+
+  Player[i]->SetRotY(RAD2DEG(MoveRot));
+
+  VECTOR3	NormalGround;		// 地形の法線
+
+  float pos = Ground->GetHeight(Player[i]->Pos(),&NormalGround);
+
+
+  //********************************************************
+  // 2015_02_12 姿勢制御用の処理を追加 ここから
+  //********************************************************
+  // 回転を求める
+  VECTOR3	vectorUp(0.0f,1.0f,0.0f);		// 上方向ベクトル
+  VECTOR3	vectorAxisRotation;				// 回転軸
+  float	rotation = 0.0f;				// 回転量
+  VECTOR3::Cross(&vectorAxisRotation,NormalGround,vectorUp);
+  if(vectorAxisRotation.x < FLT_EPSILON && vectorAxisRotation.x > -FLT_EPSILON)
+  {
+   if(vectorAxisRotation.z < FLT_EPSILON && vectorAxisRotation.z > -FLT_EPSILON)
+   {
+    if(vectorAxisRotation.y < FLT_EPSILON && vectorAxisRotation.y > -FLT_EPSILON)
+    {
+     vectorAxisRotation.y = 1.0f;
+    }
+   }
+  }
+  vectorAxisRotation.Normalize();
+  rotation = VECTOR3::Dot(NormalGround,vectorUp);
+  if(rotation <= 1.0f && rotation >= -1.0f)
+  {
+   rotation = RAD_TO_DEG * acosf(rotation);
+  }
+  else
+  {
+   rotation = 0.0f;
+  }
+  Player[i]->SetPosY(pos + 12.0f);
+
+  // キャラクターに設定する
+  Player[i]->SetAxisRotation(vectorAxisRotation);
+  Player[i]->SetRotationAxis(rotation);
+  //********************************************************
+  // 2015_02_12 姿勢制御用の処理を追加 ここまで
+  //********************************************************
+
+  Player[i]->setBarrelRot(Player[i]->Rot());
+ }
+
+ // TODO カメラ回す
+ const float cameraLength = 120.0f;
+ CameraRotation -= 0.004f;
+ REVISE_PI(CameraRotation);
+ float pos = Ground->GetHeight(Camera->Eye());
+ Camera->SetEye(VECTOR3(Player[3]->Pos().x + sinf(CameraRotation) * cameraLength,pos + 40.0f,Player[3]->Pos().z + cosf(CameraRotation) * cameraLength));
+ Camera->SetLookat(Player[3]->Pos());
 
 	if (VC::Instance()->Trigger(COMMAND_OK))
 	{

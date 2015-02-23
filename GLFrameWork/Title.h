@@ -37,5 +37,8 @@ private:
   CTitleDirection* TitleD;
 
   float CameraRotation;
+  float MoveSpeed;
+  float RotSpeed;
+  float MoveRot;
 };
 #endif
