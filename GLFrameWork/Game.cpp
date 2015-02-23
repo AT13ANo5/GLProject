@@ -173,17 +173,19 @@ void CGame::Init(void)
 		if (i % 2 == 1)
 			Player[i] = CPlayer::Create(CModel::RINCHAN,PLAYER_POSITION_LIST[i],i);
 		else
-   Player[i] = CPlayer::Create(CModel::YOUJO,PLAYER_POSITION_LIST[i],i);
+			Player[i] = CPlayer::Create(CModel::YOUJO,PLAYER_POSITION_LIST[i],i);
 
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
-  Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
+		Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
 		Player[i]->setBarrelTex(TEX_YOUJO_RED + i);
 
 		if (i == CManager::netData.charNum)
 		{
 			Player[i]->SetPlayerFlag(true);
+			Player[i]->CreateBallistic();
 		}
-	}	//プレイヤーカメラ生成
+	}
+		//プレイヤーカメラ生成
 	CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
 
 	// 【テスト】各プレイヤーの色をセット

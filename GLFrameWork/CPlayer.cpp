@@ -93,7 +93,7 @@ void CPlayer::Init(void)
 	_Bullet = nullptr;
 
 	// ’e“¹
-	Ballistic = CBallistic::Create(COLOR(1.0f,0.0f,0.0f,0.3f));
+	Ballistic = nullptr;
 
 	// Œp³Œ³‚Ì‰Šú‰»
 	CModel::Init();
