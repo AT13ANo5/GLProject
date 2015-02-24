@@ -155,21 +155,15 @@ void CPlayer::Update()
 		{
 			_Feed->AddAlpha(Alpha);
 		}
+  VECTOR3 pos = _Pos;
+  pos.y += 10;
+  pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
+  pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
 
+  _nari->SetPos(pos);
 		_nari->AddAlpha(Alpha * 3);
-		_nari->AddPosY(kUpSpeed);
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos,PlayerID);
-
-		/*
-#ifdef ROT_QUART
-		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
-		#endif
-
-		#ifdef ROT_NORMAL
-		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
-		#endif
-		*/
 		CManager::SendRot(_Rot.y,PlayerID);
 
 		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
@@ -187,8 +181,12 @@ void CPlayer::Update()
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 		AddPosY(-kUpSpeed);
 		_Hegiht += kUpSpeed;
-		_nari->AddPosY(-kUpSpeed);
+  VECTOR3 pos = _Pos;
+  pos.y += 20;
+  pos.x += sinf(DEG2RAD(_Rot.y)) * -15;
+  pos.z += cosf(DEG2RAD(_Rot.y)) * -15;
 
+  _nari->SetPos(pos);
 
 		if (PlayerID == CManager::netData.charNum)
 		{
@@ -197,15 +195,6 @@ void CPlayer::Update()
 		_nari->AddAlpha(-Alpha * 3);
 		Barrel->SetPos(_Pos);			// ˆÊ’u
 		CManager::SendPos(_Pos,PlayerID);
-		/*
-		#ifdef ROT_QUART
-		CManager::SendRot(VectorAxisRotation.x, VectorAxisRotation.y, VectorAxisRotation.z, RotationAxis, _Rot.y);
-		#endif
-
-		#ifdef ROT_NORMAL
-		CManager::SendRot(_Rot.x, _Rot.y, _Rot.z, RotationAxis, rot.y);
-		#endif
-		*/
 		CManager::SendRot(_Rot.y,PlayerID);
 		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
 
