@@ -701,6 +701,9 @@ void CPlayer::SetRespawn(void)
 		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
 		CManager::SendCannon(_LaunchFlag,PlayerID);
 
+		// ƒtƒ‰ƒO‚Ì‰Šú‰»
+		_BulletUseFlag = false;
+		_LaunchFlag = false;
 	}
 }
 //------------------------------------------------------------------------------
