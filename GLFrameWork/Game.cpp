@@ -173,6 +173,11 @@ CGame::~CGame()
 //------------------------------------------------------------------------------
 void CGame::Init(void)
 {
+	gamePhase = PHASE_3;
+	gamePhaseCnt = 0;
+	gameEndCount = 0;
+
+
 	CSoundAL::Play(CSoundAL::BGM_GAME);
 	//ínå`ê∂ê¨
 	Ground = nullptr;

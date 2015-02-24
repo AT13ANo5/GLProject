@@ -210,6 +210,12 @@ void CManager::initUserInfo()
 	}
 
 	sendEntryFlag = false;
+	ChangeFlag = false;
+	gameStartFlag = false;
+	entryFlag = false;
+	sendEntryFlag = false;
+
+	netData.charNum = 0;
 }
 //=============================================================================
 //	©ìƒoƒCƒ“ƒhŠÖ”
