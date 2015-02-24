@@ -84,9 +84,9 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	RandomMT::initRand();
 
 	Light = new CLight;
- Light->Create(VECTOR4(100.0f,120.0f,-200.0f,0));
- Light->SetAmbient(COLOR(0.85f,0.9f,1.0f,1.0f));
- Light->SetDiffuse(COLOR(1.0f,0.95f,0.85f,1.0f));
+	Light->Create(VECTOR4(100.0f,120.0f,-200.0f,0));
+	Light->SetAmbient(COLOR(0.85f,0.9f,1.0f,1.0f));
+	Light->SetDiffuse(COLOR(1.0f,0.95f,0.85f,1.0f));
 	vc = VC::Instance();
 	vc->Init(hWnd);
 
@@ -103,14 +103,20 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	netWorkData.emptyFlag = false;
 
 	FILE* fp;
-	char add[256] = { '\0' };
+	char recvAdd[256] = { '\0' };
+	char sendAdd[256] = { '\0' };
 
 	//	ユーザー情報の初期化
 	initUserInfo();
 
-	//	サーバーのアドレス取得
-	fp = fopen("address.txt", "r");
-	fscanf(fp, "%s", add);
+	//	受信アドレス取得
+	fp = fopen("recvAddress.txt", "r");
+	fscanf(fp, "%s", recvAdd);
+	fclose(fp);
+
+	//	送信アドレス取得
+	fp = fopen("sendAddress.txt", "r");
+	fscanf(fp, "%s", sendAdd);
 	fclose(fp);
 
 	//ネットワーク処理
@@ -125,7 +131,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 		printf("Winsockの初期化失敗\nエラーコード : %d\n", WSAGetLastError());
 	}
 
-	//	送信時用変数群生成
+	/*//	送信時用変数群生成
 	//-------------------------------------------------
 	//	ソケットの生成
 	sendSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -139,6 +145,21 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	int ret = setsockopt(sendSock, SOL_SOCKET, SO_BROADCAST, (char*)&param, sizeof(param));
 	if (ret != 0)
 		ret = WSAGetLastError();
+	//-------------------------------------------------*/
+
+	//	送信時用変数群生成
+	//-------------------------------------------------
+	//	ソケットの生成
+	sendSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+	//	送信先アドレス
+	sendAddress.sin_port = htons(3000);
+	sendAddress.sin_family = AF_INET;
+	sendAddress.sin_addr.S_un.S_addr = inet_addr(sendAdd);//マルチキャストアドレス
+
+	int param = 1;
+	int ret = setsockopt(sendSock, IPPROTO_IP, IP_MULTICAST_TTL, (char*)&param, sizeof(param));
+	ret = WSAGetLastError();
 	//-------------------------------------------------
 
 	//	受信時用変数群生成
@@ -156,7 +177,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	myBind(&recvSock, &recvAddress);
 
 	ip_mreq mreq;
-	mreq.imr_multiaddr.S_un.S_addr = inet_addr("239.0.0.23");
+	mreq.imr_multiaddr.S_un.S_addr = inet_addr(recvAdd);
 	mreq.imr_interface.S_un.S_addr = INADDR_ANY;
 	ret = setsockopt(recvSock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (const char *)&mreq, sizeof(mreq));
 	if (ret != 0)
