@@ -41,6 +41,7 @@ bool CManager::gameStartFlag;
 bool CManager::entryFlag;
 int CManager::ranking[PLAYER_MAX];
 short CManager::CurrentScene = SCENE_SPLASH;
+bool CManager::sendEntryFlag;
 
 //=============================================================================
 //	コンストラクタ
@@ -53,6 +54,7 @@ CManager::CManager()
 	ChangeFlag = false;
 	gameStartFlag = false;
 	entryFlag = false;
+	sendEntryFlag = false;
 
 	netData.ID = rand();
 
@@ -98,12 +100,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 
 
 	//	長崎ここから
-
-
 	netWorkData.emptyFlag = false;
-
-
-
 
 	FILE* fp;
 	char add[256] = { '\0' };
@@ -170,9 +167,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 	_beginthreadex(NULL, 0, &CManager::recvUpdate, NULL, NULL, NULL);
 	//
 	//-----------------------------------------------------------------
-
 	//	長崎ここまで
-
 
 
 
@@ -192,6 +187,8 @@ void CManager::initUserInfo()
 		userInfo[count].rot = VECTOR3(0.0f, 0.0f, 0.0f);
 		userInfo[count].cannon = false;
 	}
+
+	sendEntryFlag = false;
 }
 //=============================================================================
 //	自作バインド関数
@@ -226,6 +223,8 @@ void CManager::SendEntry()
 	NET_DATA data;
 	data.type = DATA_TYPE_ENTRY;
 	data.servID = SERV_ID;
+
+	sendEntryFlag = true;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -587,26 +586,29 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 
 					if (gameStartFlag == false)
 					{
-						if (entryFlag == false)
+						if (sendEntryFlag == true)
 						{
-							//	エントリー処理完了
-							//	識別番号を取得
-							netData.charNum = data.charNum;
-							entryFlag = true;
-							userInfo[netData.charNum].entryFlag = true;
+							if (entryFlag == false)
+							{
+								//	エントリー処理完了
+								//	識別番号を取得
+								netData.charNum = data.charNum;
+								entryFlag = true;
+								userInfo[netData.charNum].entryFlag = true;
 
-							//	エントリーをセット
-							CConnection::setEntry(data.charNum);
-							CConnection::setTexHostPos(data.charNum);
+								//	エントリーをセット
+								CConnection::setEntry(data.charNum);
+								CConnection::setTexHostPos(data.charNum);
 
-							//	他の参加者のエントリー情報をゲットする
-							data.type = DATA_TYPE_GET_ENTRY;
-							sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
-						}
-						else
-						{
-							CSoundAL::Play(CSoundAL::SE_ENTRY);
-							CConnection::setEntry(data.charNum);
+								//	他の参加者のエントリー情報をゲットする
+								data.type = DATA_TYPE_GET_ENTRY;
+								sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
+							}
+							else
+							{
+								CSoundAL::Play(CSoundAL::SE_ENTRY);
+								CConnection::setEntry(data.charNum);
+							}
 						}
 					}
 
