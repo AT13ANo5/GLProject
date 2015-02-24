@@ -514,11 +514,6 @@ void CGame::Update(void)
 
 	// UIのアップデート
 	UI->Update();
-
-	if (UI->GetTime() == 0)
-	{
-		CManager::ChangeScene(SCENE_RESULT);
-	}
 }
 
 //==============================================================================

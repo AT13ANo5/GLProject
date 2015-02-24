@@ -62,7 +62,8 @@ public:
 	{
 		if (updateFlag == true)
 		{
-			Timer--; TimeCount = 0;
+			Timer--;
+			TimeCount = 0;
 			Nomber[0]->SetNumber(Timer / 100);
 
 			Nomber[1]->SetNumber(Timer / 10);
