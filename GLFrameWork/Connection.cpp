@@ -51,7 +51,6 @@ CPolygon2D* CConnection::backGround;
 CPolygon2D** CConnection::waitBackGround;
 CPolygon2D** CConnection::waitPlayer;
 CPushStart* CConnection::pushStart;
-CPolygon2D* CConnection::texHost;
 CPolygon2D* CConnection::texPlayer;
 int CConnection::HostID = -1;
 bool CConnection::PlayerEntry[] = { false };
@@ -136,7 +135,7 @@ void CConnection::Init(void)
 	{
 		waitBackGround = new CPolygon2D*[connectionPlayerMax];
 		waitBackGround[0] = CPolygon2D::Create(windowPos[0],VECTOR2(windowWidth * 2.0f, windowHeight * 2.0f));
-		waitBackGround[0]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
+		waitBackGround[0]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_HOST));
 
 		waitBackGround[1] = CPolygon2D::Create(windowPos[1], VECTOR2(windowWidth, windowHeight));
 		waitBackGround[1]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
@@ -153,13 +152,6 @@ void CConnection::Init(void)
 		waitBackGround[5] = CPolygon2D::Create(windowPos[5], VECTOR2(windowWidth, windowHeight));
 		waitBackGround[5]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 	}
-	//-------------------------------------------------
-
-
-	//	文字オブジェクト「texHost」の配置
-	//-------------------------------------------------
-	texHost = CPolygon2D::Create(waitPlayerPos[0], VECTOR2(waitPlayerWidth, waitPlayerHeight));
-	texHost->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_HOST));
 	//-------------------------------------------------
 
 	//	文字オブジェクト「texPlayer」の配置
@@ -184,12 +176,6 @@ void CConnection::setTexHostPos(int _id)
 //=============================================================================
 void CConnection::Uninit(void)
 {
-	if (texHost != nullptr)
-	{
-		texHost->Release();
-		texHost = nullptr;
-	}
-
 	if (texPlayer != nullptr)
 	{
 		texPlayer->Release();
@@ -254,7 +240,7 @@ void CConnection::Update(void)
 	recvUpdate();
 	keyUpdate();
 
-	for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
+	for (int cnt = 1;cnt < PLAYER_MAX;cnt++)
 	{
 		if (PlayerEntry[cnt])
 		{
@@ -264,6 +250,10 @@ void CConnection::Update(void)
 
 	if (HostID >= 0)
 	{
+		if (HostID == 0)
+		{
+			texPlayer->SetSize(VECTOR2(waitPlayerWidth * 2, waitPlayerHeight * 2));
+		}
 		texPlayer->SetPos(waitPlayerPos[HostID]);
 	}
 }
