@@ -53,6 +53,7 @@ CPolygon2D** CConnection::waitPlayer;
 CPushStart* CConnection::pushStart;
 CPolygon2D* CConnection::texHost;
 CPolygon2D* CConnection::texPlayer;
+int Connection::HostID; = -1;
 bool CConnection::PlayerEntry[] = { false };
 
 //*****************************************************************************
@@ -174,7 +175,8 @@ void CConnection::Init(void)
 //=============================================================================
 void CConnection::setTexHostPos(int _id)
 {
-	texPlayer->SetPos(waitPlayerPos[_id]);
+	HostID = _id;
+	//texPlayer->SetPos(waitPlayerPos[_id]);
 }
 
 //=============================================================================
@@ -258,6 +260,11 @@ void CConnection::Update(void)
 		{
 			waitBackGround[cnt]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_READY));
 		}
+	}
+
+	if (HostID >= 0)
+	{
+		texPlayer->SetPos(waitPlayerPos[HostID]);
 	}
 }
 //=============================================================================

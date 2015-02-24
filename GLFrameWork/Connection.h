@@ -37,6 +37,7 @@ private:
 	static CPolygon2D** waitBackGround;
 	static CPolygon2D** waitPlayer;
 	static CPushStart* pushStart;
+	static int HostID;
  static CPolygon2D* texHost;
  static CPolygon2D* texPlayer;
 
