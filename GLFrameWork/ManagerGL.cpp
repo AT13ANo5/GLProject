@@ -83,8 +83,8 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 
 	Light = new CLight;
  Light->Create(VECTOR4(100.0f,120.0f,-200.0f,0));
- Light->SetDiffuse(COLOR(0.95f,0.98f,1.0f,1.0f));
- Light->SetAmbient(COLOR(1.0f,1.0f,0.96f,1.0f));
+ Light->SetAmbient(COLOR(0.85f,0.9f,1.0f,1.0f));
+ Light->SetDiffuse(COLOR(1.0f,0.95f,0.85f,1.0f));
 	vc = VC::Instance();
 	vc->Init(hWnd);
 

@@ -132,7 +132,7 @@ void CModel::UnlinkList(void)
 //=============================================================================
 void CModel::Init(void)
 {
-	Material.ambient = COLOR(0.3f,0.3f,0.5f,1.0f);
+	Material.ambient = COLOR(0.4f,0.4f,0.55f,1.0f);
 	Material.diffuse = COLOR(1.0f,1.0f,0.9f,1.0f);
 	Material.specular = COLOR(0,0,0,1.0f);
 	Material.emission = COLOR(0,0,0,1.0f);

@@ -17,7 +17,7 @@
 #include "CPlayer.h"
 
 // static member
-const float CTitle::RADIUS_SKY = 1200.0f;   // ‹ó‚Ì”¼Œa
+const float CTitle::RADIUS_SKY = 2400.0f;   // ‹ó‚Ì”¼Œa
 const int kRockMax = 34;
 namespace{
  const VECTOR3 CAMERA_EYE = VECTOR3(50.0f,15.0f,-400.0f);
@@ -70,7 +70,7 @@ void CTitle::Init(void)
 
 	// Ground
 	Ground = nullptr;
-	Ground = CMeshGround::Create(VECTOR3(0.0f,0,0.0f),VECTOR2(30.0f,30.0f),VECTOR2(0.0f,0.0f),3.0f);
+	Ground = CMeshGround::Create(VECTOR3(0.0f,0,0.0f),VECTOR2(40.0f,40.0f),VECTOR2(0.0f,0.0f),4.0f);
 	Ground->SetTex(CTexture::Texture(TEX_FIELD));
  // Rock
  float rock_rot = PI * 2 / kRockMax;

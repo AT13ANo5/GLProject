@@ -98,7 +98,7 @@ void CMeshGround::Init(void)
 				Vtx[num] = VECTOR3(OffsetX + (-PanelSize.x*LoopX),HeightMap[num],-OffsetZ + (PanelSize.y*LoopZ));
     Tex[num] = VECTOR2((float)LoopX / 3.0f,(float)LoopZ / 3.0f);
 				Nor[num] = VECTOR3(0,1.0f,0);
-				_Color = COLOR(1.0f,0.90f,0.90f,1.0f);
+				_Color = COLOR(1.0f,0.9f,0.85f,1.0f);
 			}
 			num++;
 		}
@@ -299,7 +299,7 @@ void CMeshGround::Draw(void)
 
 	glBindTexture(GL_TEXTURE_2D,Texture.TexID);
 	MATERIAL Material;
-	Material.ambient = COLOR(0.45f,0.55f,0.55f,1.0f);
+	Material.ambient = COLOR(0.5f,0.45f,0.4f,1.0f);
 	Material.diffuse = _Color;
 	Material.specular = COLOR(0,0,0,1.0f);
 	Material.emission = COLOR(0,0,0,1.0f);
