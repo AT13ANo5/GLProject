@@ -80,6 +80,9 @@ public:
 	// カウント数字
 	void SetCountSizeRefresh(void);
 
+	// 成績表の描画止める
+	void	ReportDrawDisable(void);
+
 private:
 
 	CLife*			    life;

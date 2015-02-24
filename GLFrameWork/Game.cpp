@@ -1093,6 +1093,10 @@ void CGame::StartCount(void)
 				gamePhase = PHASE_END;
 				UI->SetStringDrawFlag(true);
 				UI->SetStringTexture(CTexture::Texture(TEX_END));
+
+				UI->SetTimeUpdateFlag(false);
+				UI->ReportDrawDisable();
+
 				// ƒvƒŒƒCƒ„[‚ÌUŒ‚‚ğ~‚ß‚é
 				for (int i = 0; i < PLAYER_MAX; i++){
 					Player[i]->SetEndGameFlag(true);
