@@ -200,7 +200,8 @@ void CGame::Init(void)
 			Player[i] = CPlayer::Create(CModel::YOUJO,PLAYER_POSITION_LIST[i],i);
 
 		Player[i]->SetTex(CTexture::Texture(TEX_YOUJO_RED + i));
-		Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
+  Player[i]->SetDestRot(PLAYER_ROTATION_LIST[i]);
+  Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
 		Player[i]->setBarrelTex(TEX_YOUJO_RED + i);
 
 		if (i == CManager::netData.charNum)
@@ -316,9 +317,9 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 		{
 		case DATA_TYPE_POS:
 
-			Player[_netData.charNum]->SetPosX(_netData.data_pos.posX);
-			Player[_netData.charNum]->SetPosY(_netData.data_pos.posY);
-			Player[_netData.charNum]->SetPosZ(_netData.data_pos.posZ);
+			Player[_netData.charNum]->SetDestPosX(_netData.data_pos.posX);
+			Player[_netData.charNum]->SetDestPosY(_netData.data_pos.posY);
+			Player[_netData.charNum]->SetDestPosZ(_netData.data_pos.posZ);
 
 			break;
 
@@ -327,13 +328,12 @@ void CGame::SetPlayerState(NET_DATA _netData,DATA_TYPE _dataType)
 			/*Player[_netData.charNum]->SetAxisRotation(VECTOR3(_netData.data_rot.X, _netData.data_rot.Y, _netData.data_rot.Z));
 			Player[_netData.charNum]->SetRotationAxis(_netData.data_rot.rot);
 			Player[_netData.charNum]->SetRotY(_netData.data_rot.yRotation);*/
-			Player[_netData.charNum]->SetRotY(_netData.data_rot.rotY);
-			
+  Player[_netData.charNum]->SetDestRotY(_netData.data_rot.rotY);
 			break;
 
 		case DATA_TYPE_CANNONROT:
 
-			Player[_netData.charNum]->setBarrelRot(
+			Player[_netData.charNum]->setBarrelDestRot(
 				VECTOR3(_netData.data_cannonRot.rotX,
 				_netData.data_cannonRot.rotY,
 				_netData.data_cannonRot.rotZ
@@ -755,11 +755,13 @@ void CGame::PushBackRock(void)
 				{
 					VECTOR3	vectorPushBack = vectorOffenseToDefense * -(RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock - distanceOffenseAndDefense) / distanceOffenseAndDefense;
 					vectorPushBack.y = 0.0f;
-					pPlayer->AddPos(vectorPushBack);
+     pPlayer->AddPos(vectorPushBack);
+     pPlayer->AddDestPos(vectorPushBack);
 				}
 				else
 				{
-					pPlayer->AddPosX(RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock);
+     pPlayer->AddPosX(RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock);
+     pPlayer->AddDestPosX(RADIUS_PUSH_CHARACTER + RADIUS_PUSH_ROCK * scalingRock);
 				}
 
 				// エフェクト：火花　プレイヤーと岩のぶつかり
@@ -871,7 +873,8 @@ void CGame::PushBackObjectByField(CObject* pObject, float offsetY)
 	}
 
 	// キャラクターに設定する
-	pObject->SetPosY(HeightGround);
+ pObject->SetPosY(HeightGround);
+ pObject->SetDestPosY(HeightGround);
 	pObject->SetAxisRotation(vectorAxisRotation);
 	pObject->SetRotationAxis(rotation);
 	//********************************************************
@@ -905,7 +908,8 @@ void CGame::PushBackBattleArea(void)
 		{
 			float	distancePushBack = sqrtf(distanceFromCenter) - (RADIUS_AREA_BATTLE - RADIUS_PUSH_CHARACTER);
 			vectorPlayerToCenter.Normalize();
-			pPlayerCurrent->AddPos(vectorPlayerToCenter * distancePushBack);
+   pPlayerCurrent->AddPos(vectorPlayerToCenter * distancePushBack);
+   pPlayerCurrent->AddDestPos(vectorPlayerToCenter * distancePushBack);
 		}
 	}
 }

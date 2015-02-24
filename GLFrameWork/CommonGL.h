@@ -35,6 +35,10 @@
 #define REVISE_PI(radian) {if((radian) > PI){(radian) -= (2.0f * PI);}\
 				else if((radian) < -PI){(radian) += (2.0f * PI);}}
 
+// Šp“x‚Ì³‹K‰»(360`-360)
+#define REVISE_DEGREE(degree)if((degree) > 360.0f){ (degree) -= (2 * 360.0f);}\
+else if((degree) < -360.0f){ (degree) += (2 * 360.0f); }
+
 #define PLAYER_MAX (6)	//ƒvƒŒƒCƒ„[‚ÌÅ‘å”
 
 //===================================================================

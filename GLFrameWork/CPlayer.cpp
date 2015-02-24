@@ -126,7 +126,9 @@ void CPlayer::Init(void)
 	DriveSE = CSoundAL::Play(CSoundAL::SE_DRIVE,_Pos);
 	DriveSE->SetVolume(0);
 	IdlingSE = CSoundAL::Play(CSoundAL::SE_IDLING,_Pos);
-
+ _DestPos = _Pos;
+ _DestRot = _Rot;
+ Barrel->SetDestPos(Barrel->Rot());
 	_InputFlag = true;
 }
 
@@ -143,12 +145,31 @@ void CPlayer::Update()
 
 	DriveSE->SetPos(_Pos);
 	IdlingSE->SetPos(_Pos);
+
+ //ゆっくり回転
+ _Rot = _DestRot;
+ VECTOR3 diffRot;
+ diffRot = (_DestRot - _Rot) * 0.1f;
+ REVISE_DEGREE(diffRot.x);
+ REVISE_DEGREE(diffRot.y);
+ REVISE_DEGREE(diffRot.z);
+ AddRot(diffRot);
+ REVISE_DEGREE(_Rot.x);
+ REVISE_DEGREE(_Rot.y);
+ REVISE_DEGREE(_Rot.z);
+
+ VECTOR3 posDiff;
+ posDiff = ( _DestPos - _Pos ) * 0.1f;
+
+ AddPos(posDiff);
+
 	//モード選択
 	switch (_State)
 	{
 	case PLAYER_STATE_DEATH:
 	{
-		AddPosY(kUpSpeed + 0.0f);
+  AddPosY(kUpSpeed + 0.0f);
+  AddDestPosY(kUpSpeed + 0.0f);
 		_Hegiht += kUpSpeed;
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
 
@@ -182,7 +203,8 @@ void CPlayer::Update()
 	case PLAYER_STATE_RESPAWN:
 	{
 		float Alpha = (1.0f / kHeightMax) * kUpSpeed;
-		AddPosY(-kUpSpeed);
+  AddPosY(-kUpSpeed);
+  AddDestPosY(-kUpSpeed);
 		_Hegiht += kUpSpeed;
   VECTOR3 pos = _Pos;
   pos.y += 20;
@@ -342,17 +364,20 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	// キャラクターの回転
-	AddRot(rot);
+ AddRot(rot);
+ SetDestRot(_Rot);
 
 	// 値の丸め込み
 	// プレイヤーの回転量
 	if (Rot().y > 360.0f)
 	{
-		SetRotY(Rot().y - 2 * 360.0f);
+  SetRotY(Rot().y - 2 * 360.0f);
+  SetDestRotY(Rot().y - 2 * 360.0f);
 	}
 	else if (Rot().y < -360.0f)
 	{
-		SetRotY(Rot().y + 2 * 360.0f);
+  SetRotY(Rot().y + 2 * 360.0f);
+  SetDestRotY(Rot().y + 2 * 360.0f);
 	}
 
 	// 砲身
@@ -366,7 +391,8 @@ void CPlayer::UpdatePlayer(void)
 	}
 
 	// キャラクターの移動値を加算
-	AddPos(Movement);
+ AddPos(Movement);
+ AddDestPos(Movement);
 
 	// 移動エフェクト
 	if (_SandTime >= 0)
@@ -465,6 +491,19 @@ void CPlayer::BlastBullet()
 //------------------------------------------------------------------------------
 void CPlayer::UpdateCPU(void)
 {
+ //ゆっくり回転
+ Barrel->SetRotY(Barrel->DestRot().y);
+ Barrel->SetRotZ(Barrel->DestRot().z);
+ VECTOR3 diffRot;
+ VECTOR3 BarrelRot = Barrel->Rot();
+ VECTOR3 BarrelDestRot = Barrel->DestRot();
+ diffRot = (BarrelDestRot - BarrelRot)*0.1f;
+ REVISE_DEGREE(diffRot.x);
+ Barrel->AddRot(diffRot);
+ BarrelRot = Barrel->Rot();
+ REVISE_DEGREE(BarrelRot.x);
+ Barrel->SetRot(BarrelRot);
+
 	Barrel->SetPos(_Pos);			// 位置
 	BarrelRotX = Barrel->Rot().x;
 
@@ -558,6 +597,10 @@ void CPlayer::UpdateNari(void)
 void CPlayer::setBarrelRot(VECTOR3 _rot)
 {
 	Barrel->SetRot(_rot);			// 回転
+}
+void CPlayer::setBarrelDestRot(VECTOR3 _rot)
+{
+ Barrel->SetDestRot(_rot);			// 回転
 }
 
 //------------------------------------------------------------------------------

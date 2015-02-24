@@ -82,7 +82,8 @@ public:
 	void ReleaseBullet(void);	// ’e‚ğíœ
 
 	void BlastBullet();
-	void setBarrelRot(VECTOR3 _rot);
+ void setBarrelRot(VECTOR3 _rot);
+ void setBarrelDestRot(VECTOR3 _rot);
 
 	void SetDeath(VECTOR3 posint,int _charNum);//€–Sˆ—
 	void SetRespawn(void);//•œŠˆˆ—

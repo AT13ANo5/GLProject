@@ -53,6 +53,21 @@ public:
 	virtual void SetRotY(float y){ _Rot.y = y; }
 	virtual void SetRotZ(float z){ _Rot.z = z; }
 
+ //Position
+ virtual void SetDestPos(float x,float y,float z){ _DestPos.x = x;_DestPos.y = y;_DestPos.z = z; }
+ virtual void SetDestPos(const VECTOR3& pos){ _DestPos = pos; }
+ virtual void SetDestPosX(float x){ _DestPos.x = x; }
+ virtual void SetDestPosY(float y){ _DestPos.y = y; }
+ virtual void SetDestPosZ(float z){ _DestPos.z = z; }
+
+ //Rotation
+ virtual void SetDestRot(float x,float y,float z){ _DestRot.x = x;_DestRot.y = y;_DestRot.z = z; }
+ virtual void SetDestRot(const VECTOR3& rot){ _DestRot = rot; }
+ virtual void SetDestRotX(float x){ _DestRot.x = x; }
+ virtual void SetDestRotY(float y){ _DestRot.y = y; }
+ virtual void SetDestRotZ(float z){ _DestRot.z = z; }
+
+
 	//Scale
 	virtual void SetScl(float x,float y,float z){ _Scl.x = x;_Scl.y = y;_Scl.z = z; }
 	virtual void SetScl(const VECTOR3& Scl){ _Scl = Scl; }
@@ -91,6 +106,20 @@ public:
 	virtual void AddRotY(float y){ _Rot.y += y; }
 	virtual void AddRotZ(float z){ _Rot.z += z; }
 
+ //Position
+ virtual void AddDestPos(float x,float y,float z){ _DestPos.x += x;_DestPos.y += y;_DestPos.z += z; }
+ virtual void AddDestPos(const VECTOR3& pos){ _DestPos += pos; }
+ virtual void AddDestPosX(float x){ _DestPos.x += x; }
+ virtual void AddDestPosY(float y){ _DestPos.y += y; }
+ virtual void AddDestPosZ(float z){ _DestPos.z += z; }
+
+ //Rotation
+ virtual void AddDestRot(float x,float y,float z){ _Rot.x += x;_Rot.y += y;_Rot.z += z; }
+ virtual void AddDestRot(const VECTOR3& rot){ _Rot += rot; }
+ virtual void AddDestRotX(float x){ _Rot.x += x; }
+ virtual void AddDestRotY(float y){ _Rot.y += y; }
+ virtual void AddDestRotZ(float z){ _Rot.z += z; }
+
 	//Scale
 	virtual void AddScl(float x,float y,float z){ _Scl.x += x;_Scl.y += y;_Scl.z += z; }
 	virtual void AddScl(const VECTOR3& Scl){ _Scl = Scl; }
@@ -109,7 +138,9 @@ public:
 	//ゲッター
 	//=================================================================================
 	virtual VECTOR3 Pos(void)const{ return _Pos; }
-	virtual VECTOR3 Rot(void)const{ return _Rot; }
+ virtual VECTOR3 Rot(void)const{ return _Rot; }
+ virtual VECTOR3 DestPos(void)const{ return _DestRot; }
+ virtual VECTOR3 DestRot(void)const{ return _DestRot; }
 	virtual VECTOR3 Scl(void)const{ return _Scl; }
 	virtual COLOR Color(void)const{return _Color;}
 	//=================================================================================
@@ -122,6 +153,8 @@ protected:
 	VECTOR3 _Scl;
 	COLOR _Color;
 	TEX_INFO Texture;
+ VECTOR3 _DestPos;
+ VECTOR3 _DestRot;
 
 	VECTOR3	VectorAxisRotation;		// クォータニオン回転軸
 	float	RotationAxis;			// 回転角度

@@ -147,8 +147,11 @@ void CTitle::Update(void)
   PlayerPos.z -= cosf(MoveRot) * MoveSpeed;
   Player[i]->SetPosX(PlayerPos.x);
   Player[i]->SetPosZ(PlayerPos.z);
+  Player[i]->SetDestPosX(PlayerPos.x);
+  Player[i]->SetDestPosZ(PlayerPos.z);
 
   Player[i]->SetRotY(180 + RAD2DEG(MoveRot));
+  Player[i]->SetDestRotY(180 + RAD2DEG(MoveRot));
 
   VECTOR3	NormalGround;		// 地形の法線
 
@@ -183,6 +186,7 @@ void CTitle::Update(void)
   {
    rotation = 0.0f;
   }
+  Player[i]->SetDestPosY(pos + 12.0f);
   Player[i]->SetPosY(pos + 12.0f);
 
   // キャラクターに設定する
