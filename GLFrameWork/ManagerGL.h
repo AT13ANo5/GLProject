@@ -103,6 +103,8 @@ public:
 
 	static short CurrentScene;
 
+	static bool sendEntryFlag;
+
 private:
 
 	bool myBind(SOCKET* _socket, SOCKADDR_IN* _sockAdd);
