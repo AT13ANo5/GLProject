@@ -92,7 +92,6 @@ void CResultUIManager::Init(void)
 		{
 			PlayerName[player]->SetTex(CTexture::Texture(NAME_TEX[ranking[player]]));
 
-
 			ResultNumber->SetNumber((CResultNumberManager::TYPE)player,
 				CManager::userInfo[ranking[player]].kill,
 				CManager::userInfo[ranking[player]].death);

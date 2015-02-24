@@ -245,7 +245,6 @@ void CPlayer::Update()
 			SetDrawFlag(true);
 			_Timer = 0;
 		}
-
 	}
 	if (PlayerFlag == true)
 	{

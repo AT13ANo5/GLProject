@@ -415,7 +415,7 @@ int* CManager::getRanking()
 
 	for (int sortCount = 0; sortCount < PLAYER_MAX; sortCount++)
 	{
-		for (int compareCount = PLAYER_MAX; compareCount > sortCount; compareCount--)
+		for (int compareCount = PLAYER_MAX - 1; compareCount > sortCount; compareCount--)
 		{
 			if (score[compareCount] > score[compareCount - 1])
 			{
@@ -425,6 +425,8 @@ int* CManager::getRanking()
 
 
 				work = scoreID[compareCount];
+
+
 				scoreID[compareCount] = scoreID[compareCount - 1];
 				scoreID[compareCount - 1] = work;
 			}
