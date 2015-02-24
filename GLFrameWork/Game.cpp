@@ -1112,7 +1112,7 @@ void CGame::StartCount(void)
 				UI->SetStringTexture(CTexture::Texture(TEX_END));
 				// ƒvƒŒƒCƒ„[‚ÌUŒ‚‚ğ~‚ß‚é
 				for (int i = 0; i < PLAYER_MAX; i++){
-					Player[i]->SetLaunchFlag(false);
+					Player[i]->SetEndGameFlag(true);
 				}
 			}
 			break;

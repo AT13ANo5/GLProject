@@ -92,6 +92,9 @@ void CPlayer::Init(void)
 	// 弾発射フラグ
 	_LaunchFlag = false;
 
+	// ゲーム終了フラグ
+	_EndGameFlag = false;
+
 	// 弾
 	_Bullet = nullptr;
 
@@ -266,7 +269,9 @@ void CPlayer::Update()
 //------------------------------------------------------------------------------
 void CPlayer::UpdatePlayer(void)
 {
+	// 仮想コントローラー
 	VC* vc = VC::Instance();
+	
 	// 弾の使用状態を確定
 	if (_Bullet == nullptr)
 	{
@@ -301,36 +306,38 @@ void CPlayer::UpdatePlayer(void)
 		// 砲身の上下
 		BarrelRotX -= BARREL_ROTX_SPEED * vc->RightStick().y;
 
-		
-
-		// 弾の発射
-		// 弾が発射されていなかった時
-		if (_LaunchFlag == false)
+		// ゲームが終了していない時
+		if(_EndGameFlag == false)
 		{
-			if (vc->Trigger(COMMAND_SHOT))
+			// 弾の発射
+			// 弾が発射されていなかった時
+			if (_LaunchFlag == false)
 			{
-				_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),_PlayerColor);
-				vc->SetVibration(0.5f,20,0.5f,20);
-				CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
-				_LaunchFlag = true;
-				_BulletUseFlag = true;
-				_ReloadTimer = 0;
-				CManager::SendCannon(_LaunchFlag,PlayerID);
+				if (vc->Trigger(COMMAND_SHOT))
+				{
+					_Bullet = CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),_PlayerColor);
+					vc->SetVibration(0.5f,20,0.5f,20);
+					CSoundAL::Play(CSoundAL::SE_CANNON,_Pos);
+					_LaunchFlag = true;
+					_BulletUseFlag = true;
+					_ReloadTimer = 0;
+					CManager::SendCannon(_LaunchFlag,PlayerID);
+				}
 			}
-		}
-		// 弾が発射されている時
-		else
-		{
-			// リロード可能までの時間を加算
-			_ReloadTimer++;
-
-			// リロード制限時間を超えたら
-			if (_ReloadTimer >= PLAYER_RELOAD_TIME)
+			// 弾が発射されている時
+			else
 			{
-				// 再発射可能に
-				_LaunchFlag = false;
-				_BulletUseFlag = false;
-				_ReloadTimer = PLAYER_RELOAD_TIME;
+				// リロード可能までの時間を加算
+				_ReloadTimer++;
+
+				// リロード制限時間を超えたら
+				if (_ReloadTimer >= PLAYER_RELOAD_TIME)
+				{
+					// 再発射可能に
+					_LaunchFlag = false;
+					_BulletUseFlag = false;
+					_ReloadTimer = PLAYER_RELOAD_TIME;
+				}
 			}
 		}
 	}
@@ -504,19 +511,23 @@ void CPlayer::UpdateCPU(void)
 		DriveSE->SetVolume(0);
 	}
 
-	// 弾が発射されていなかった時
-	if (_LaunchFlag == true)
+	// ゲームが終了していない時
+	if(_EndGameFlag == false)
 	{
-		// リロード可能までの時間を加算
-		_ReloadTimer++;
-
-		// リロード制限時間を超えたら
-		if (_ReloadTimer >= PLAYER_RELOAD_TIME)
+		// 弾が発射されている時
+		if (_LaunchFlag == true)
 		{
-			// 再発射可能に
-			_LaunchFlag = false;
-			_BulletUseFlag = false;
-			_ReloadTimer = PLAYER_RELOAD_TIME;
+			// リロード可能までの時間を加算
+			_ReloadTimer++;
+
+			// リロード制限時間を超えたら
+			if (_ReloadTimer >= PLAYER_RELOAD_TIME)
+			{
+				// 再発射可能に
+				_LaunchFlag = false;
+				_BulletUseFlag = false;
+				_ReloadTimer = PLAYER_RELOAD_TIME;
+			}
 		}
 	}
 
@@ -679,6 +690,9 @@ void CPlayer::SetRespawn(void)
 		CManager::SendCannonRot(Barrel->Rot(),PlayerID);
 		CManager::SendCannon(_LaunchFlag,PlayerID);
 
+		// フラグの初期化
+		_BulletUseFlag = false;
+		_LaunchFlag = false;
 	}
 }
 //------------------------------------------------------------------------------
