@@ -93,5 +93,6 @@ private:
 	static CUI*		UI;
 	CModel**		ppRock_;	//	Šâ
 	CShadow**		Shadow;		// ‰e
+	int					gameEndCount;
 };
 #endif
