@@ -1019,8 +1019,6 @@ void CGame::StartCount(void)
 	const int PHASE_COUNT_START_FIN = 60 * 5;
 	const int PHASE_COUNT_END = 60 * 3;
 
-	gamePhaseCnt++;
-
 	switch (gamePhase){
 
 		case PHASE_NONE:
