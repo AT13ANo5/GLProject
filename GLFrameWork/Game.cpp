@@ -1112,6 +1112,7 @@ void CGame::StartCount(void)
 				// ƒvƒŒƒCƒ„[‚ÌUŒ‚‚ğ~‚ß‚é
 				for (int i = 0; i < PLAYER_MAX; i++){
 //					Player[i]->set
+					Player[i]->SetEndGameFlag(true);
 				}
 			}
 			break;

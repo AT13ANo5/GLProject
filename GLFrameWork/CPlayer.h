@@ -132,10 +132,13 @@ public:
 	bool LunchFlag(void){return _LaunchFlag;}
 	void SetLaunchFlag(bool flag){_LaunchFlag = flag;}
 
+	bool EndGameFlag(void){return _EndGameFlag;}
+	void SetEndGameFlag(bool flag){_EndGameFlag = flag;}
+
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
- void UpdateNari(void); //なり更新
+	void UpdateNari(void); //なり更新
 
 	PLAYER_STATE _State;	// プレイヤーの状態
 	CModel* Barrel;			// 砲身
@@ -167,6 +170,8 @@ private:
 
 	COLOR _PlayerColor;	// プレイヤーの色を退避
 	bool _InputFlag;	// 入力可不可判定（true 可能 / false 不可）
+
+	bool _EndGameFlag;	// ゲーム終了フラグ[終了後の行動抑制] （true 終了 / false 非終了）
 };
 
 #endif
