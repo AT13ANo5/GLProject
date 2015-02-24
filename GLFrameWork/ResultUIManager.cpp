@@ -16,22 +16,22 @@
 #include "ManagerGL.h"
 
 namespace{
-  // sheet
-  const float   RESULT_SHEET_SCALE = 1.0f;
-  const VECTOR2 RESULT_SHEET_SIZE = VECTOR2(SCREEN_WIDTH * RESULT_SHEET_SCALE, 256.0f * RESULT_SHEET_SCALE);
-	const VECTOR2 RESULT_SHEET_BASE_SIZE = VECTOR2(RESULT_SHEET_SIZE.x * 0.95f, RESULT_SHEET_SIZE.y * 1.1f);
-	const VECTOR3 RESULT_SHEET_POS = VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f + 200.0f, 0);
+	// sheet
+	const float   RESULT_SHEET_SCALE = 1.0f;
+	const VECTOR2 RESULT_SHEET_SIZE = VECTOR2(SCREEN_WIDTH * RESULT_SHEET_SCALE,256.0f * RESULT_SHEET_SCALE);
+	const VECTOR2 RESULT_SHEET_BASE_SIZE = VECTOR2(RESULT_SHEET_SIZE.x * 0.95f,RESULT_SHEET_SIZE.y * 1.1f);
+	const VECTOR3 RESULT_SHEET_POS = VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f + 200.0f,0);
 
-  // name
-  const float   NAME_SCALE = 1.3f;
-  const VECTOR2 NAME_SIZE = VECTOR2(193 * NAME_SCALE, 32 * NAME_SCALE);
-  const float   NAME_POS_X_SUB = 170.0f;
+	// name
+	const float   NAME_SCALE = 1.3f;
+	const VECTOR2 NAME_SIZE = VECTOR2(193 * NAME_SCALE,32 * NAME_SCALE);
+	const float   NAME_POS_X_SUB = 170.0f;
 
-  // texture
-  const int NAME_TEX[CResultNumberManager::NUMBER_MAX] = {
-		TEX_PLAYER_YOUJO_RED, TEX_PLAYER_YOUJO_BLUE, TEX_PLAYER_YOUJO_WATER,
-		TEX_PLAYER_YOUJO_ORANGE, TEX_PLAYER_YOUJO_WHITE, TEX_PLAYER_YOUJO_YELLOW
-  };
+	// texture
+	const int NAME_TEX[CResultNumberManager::NUMBER_MAX] = {
+		TEX_PLAYER_YOUJO_RED,TEX_PLAYER_YOUJO_BLUE,TEX_PLAYER_YOUJO_WATER,
+		TEX_PLAYER_YOUJO_ORANGE,TEX_PLAYER_YOUJO_WHITE,TEX_PLAYER_YOUJO_YELLOW
+	};
 }
 
 //=============================================================================
@@ -40,10 +40,10 @@ namespace{
 CResultUIManager::CResultUIManager() :CObject(LAYER_NUM - 2)
 {
 	Logo = nullptr;
-  ResultSheet = nullptr;
+	ResultSheet = nullptr;
 	ResultSheetBase = nullptr;
-  ResultNumber = nullptr;
-  memset(PlayerName, NULL, sizeof(PlayerName));
+	ResultNumber = nullptr;
+	memset(PlayerName,NULL,sizeof(PlayerName));
 }
 
 //=============================================================================
@@ -51,10 +51,10 @@ CResultUIManager::CResultUIManager() :CObject(LAYER_NUM - 2)
 //=============================================================================
 CResultUIManager* CResultUIManager::Create(void)
 {
-  CResultUIManager* Scene = new CResultUIManager;
-  Scene->Init();
+	CResultUIManager* Scene = new CResultUIManager;
+	Scene->Init();
 
-  return Scene;
+	return Scene;
 }
 
 //=============================================================================
@@ -63,36 +63,41 @@ CResultUIManager* CResultUIManager::Create(void)
 void CResultUIManager::Init(void)
 {
 	// logo
-	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f - 300.0f, 0), VECTOR2(512.0f, 128.0f));
+	Logo = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f - 300.0f,0),VECTOR2(512.0f,128.0f));
 	Logo->SetTex(CTexture::Texture(TEX_RESULT_LOGO));
 
 	// 成績表の背景
-	ResultSheetBase = CResultSheet::Create(RESULT_SHEET_POS, RESULT_SHEET_BASE_SIZE);
-	ResultSheetBase->SetColor(COLOR(0.0f, 0.0f, 0.0f, 0.3f));
+	ResultSheetBase = CResultSheet::Create(RESULT_SHEET_POS,RESULT_SHEET_BASE_SIZE);
+	ResultSheetBase->SetColor(COLOR(0.0f,0.0f,0.0f,0.3f));
 	ResultSheetBase->SetAlphaMax(0.4f);
 
 	// 成績表
-	ResultSheet = CResultSheet::Create(RESULT_SHEET_POS, RESULT_SHEET_SIZE);
+	ResultSheet = CResultSheet::Create(RESULT_SHEET_POS,RESULT_SHEET_SIZE);
 	ResultSheet->SetTex(CTexture::Texture(TEX_RESULT_TEXT));
 	ResultSheet->SetAlpha(0.0f);
 
-  // 成績表の番号
-  ResultNumber = CResultNumberManager::Create();
+	// 成績表の番号
+	ResultNumber = CResultNumberManager::Create();
 
-  int* ranking = CManager::getRanking();
+	int* ranking = CManager::getRanking();
 
-  // プレイヤー名
-  for (int player = 0; player < PLAYER_MAX; player++){
-    VECTOR3 pos = ResultNumber->GetNumPosition((CResultNumberManager::TYPE)player);
-    pos.x -= NAME_POS_X_SUB;
-    PlayerName[player] = CResultSheet::Create(pos, NAME_SIZE);
-    PlayerName[player]->SetTex(CTexture::Texture(NAME_TEX[ranking[player]]));
+	// プレイヤー名
+	for (int player = 0; player < PLAYER_MAX; player++)
+	{
+		VECTOR3 pos = ResultNumber->GetNumPosition((CResultNumberManager::TYPE)player);
+		pos.x -= NAME_POS_X_SUB;
+		PlayerName[player] = CResultSheet::Create(pos,NAME_SIZE);
+
+		if (PlayerName[player] != nullptr)
+		{
+			PlayerName[player]->SetTex(CTexture::Texture(NAME_TEX[ranking[player]]));
 
 
-	ResultNumber->SetNumber((CResultNumberManager::TYPE)player,
-		CManager::userInfo[ranking[player]].kill,
-		CManager::userInfo[ranking[player]].death);
-  }
+			ResultNumber->SetNumber((CResultNumberManager::TYPE)player,
+				CManager::userInfo[ranking[player]].kill,
+				CManager::userInfo[ranking[player]].death);
+		}
+	}
 }
 
 //=============================================================================
@@ -124,7 +129,7 @@ void CResultUIManager::Draw(void)
 //=============================================================================
 void CResultUIManager::SetResultSheetDisable(void)
 {
-  ResultSheet->DrawDisable();
+	ResultSheet->DrawDisable();
 	ResultSheetBase->DrawDisable();
 }
 
@@ -135,7 +140,7 @@ void CResultUIManager::SetResultSheetDisable(void)
 //=============================================================================
 void CResultUIManager::SetResultNumberDisable(void)
 {
-  ResultNumber->DrawDisable();
+	ResultNumber->DrawDisable();
 }
 
 //=============================================================================
@@ -145,9 +150,9 @@ void CResultUIManager::SetResultNumberDisable(void)
 //=============================================================================
 void CResultUIManager::SetResultPlayerNameDisable(void)
 {
-  for (int player = 0; player < PLAYER_MAX; ++player){
-    PlayerName[player]->DrawDisable();
-  }
+	for (int player = 0; player < PLAYER_MAX; ++player){
+		PlayerName[player]->DrawDisable();
+	}
 }
 
 //=============================================================================
@@ -157,9 +162,9 @@ void CResultUIManager::SetResultPlayerNameDisable(void)
 //  kill   :  KILL数
 //  DEATH  :  DEATH数
 //=============================================================================
-void CResultUIManager::SetNumber(CResultNumberManager::TYPE type, int kill, int death)
+void CResultUIManager::SetNumber(CResultNumberManager::TYPE type,int kill,int death)
 {
-  ResultNumber->SetNumber(type, kill, death);
+	ResultNumber->SetNumber(type,kill,death);
 }
 
 

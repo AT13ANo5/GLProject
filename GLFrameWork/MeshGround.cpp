@@ -75,7 +75,7 @@ void CMeshGround::Init(void)
 	LoadImg(HEIGHT_MAP);
 	NormalMap = new VECTOR3[MapNum];
 
-	
+
 	Vtx = new VECTOR3[VertexNum];
 	Tex = new VECTOR2[VertexNum];
 	Nor = new VECTOR3[VertexNum];
@@ -96,7 +96,7 @@ void CMeshGround::Init(void)
 			if (num < VertexNum)
 			{
 				Vtx[num] = VECTOR3(OffsetX + (-PanelSize.x*LoopX),HeightMap[num],-OffsetZ + (PanelSize.y*LoopZ));
-    Tex[num] = VECTOR2((float)LoopX / 3.0f,(float)LoopZ / 3.0f);
+				Tex[num] = VECTOR2((float)LoopX / 3.0f,(float)LoopZ / 3.0f);
 				Nor[num] = VECTOR3(0,1.0f,0);
 				_Color = COLOR(1.0f,0.9f,0.85f,1.0f);
 			}
@@ -214,7 +214,7 @@ void CMeshGround::Init(void)
 		}
 
 	}
-	
+
 	int LoopX = 0;
 	int VtxNo = 0;
 	Index = new int[IndexNum];
@@ -365,7 +365,7 @@ float CMeshGround::GetHeight(VECTOR3 pos,VECTOR3* normal)
 	VECTOR3 Vec1 = VECTOR3(0,0,0);
 
 	// 法線の取得
-	GetNormal(pos.x, pos.z, normal);
+	GetNormal(pos.x,pos.z,normal);
 
 	bool flag = false;
 	for (int cnt = 0;cnt < 3;cnt++)
@@ -443,25 +443,25 @@ void CMeshGround::LoadImg(const char * imgFile)
 		fread(&bmih,sizeof(BITMAPINFOHEADER),1,file);
 		if (PanelNum.x <= 0 || PanelNum.y <= 0)
 		{
-			PanelNum.x = bmih.biWidth - 1;
-			PanelNum.y = bmih.biHeight - 1;
+			PanelNum.x = (float)bmih.biWidth - 1;
+			PanelNum.y = (float)bmih.biHeight - 1;
 		}
-   if(PanelNum.x > bmih.biWidth)
-   {
-    PanelNum.x = bmih.biWidth;
-   }
-   if(PanelNum.y > bmih.biHeight)
-   {
-    PanelNum.y = bmih.biHeight;
-   }
+		if (PanelNum.x > bmih.biWidth)
+		{
+			PanelNum.x = (float)bmih.biWidth;
+		}
+		if (PanelNum.y > bmih.biHeight)
+		{
+			PanelNum.y = (float)bmih.biHeight;
+		}
 		IndexNum = (int)(SUM_INDEX(PanelNum.x,PanelNum.y));
 		VertexNum = (int)((PanelNum.x + 1)*(PanelNum.y + 1));
 		PolygonNum = (int)(((PanelNum.x * 2)*PanelNum.y) + ((PanelNum.y - 1) * 4));
 		MapNum = (int)(PanelNum.x*PanelNum.y * 2);
 
 		HeightMap = new float[VertexNum];
-		bmih.biWidth = PanelNum.x + 1;
-		bmih.biHeight = PanelNum.y + 1;
+		bmih.biWidth = (LONG)PanelNum.x + 1;
+		bmih.biHeight = (LONG)PanelNum.y + 1;
 		BYTE Height;
 		if (bmih.biBitCount == 24)
 		{
@@ -485,34 +485,34 @@ void CMeshGround::LoadImg(const char * imgFile)
 					HeightMap[bmih.biWidth * y + x] *= FieldScl;
 				}
 			}
-			ImgSize.x = bmih.biWidth;
-			ImgSize.y = bmih.biHeight;
+			ImgSize.x = (float)bmih.biWidth;
+			ImgSize.y = (float)bmih.biHeight;
 		}
 		else
 			if (bmih.biBitCount == 8)
 			{
-				RGBQUAD sRGB[256];
+			RGBQUAD sRGB[256];
 
-				fread(&sRGB,sizeof(RGBQUAD),256,file);
+			fread(&sRGB,sizeof(RGBQUAD),256,file);
 
-				for (int y = bmih.biHeight - 1; y >= 0; y--)
+			for (int y = bmih.biHeight - 1; y >= 0; y--)
+			{
+				for (int x = 0; x < bmih.biWidth; x++)
 				{
-					for (int x = 0; x < bmih.biWidth; x++)
+					fread(&Height,1,1,file);
+					if (Height == '\0')
 					{
+
 						fread(&Height,1,1,file);
-						if (Height == '\0')
-						{
-
-							fread(&Height,1,1,file);
-						}
-
-						HeightMap[bmih.biWidth * y + x] = (float)sRGB[Height].rgbBlue - 255;
-						HeightMap[bmih.biWidth * y + x] += 255;
-						HeightMap[bmih.biWidth * y + x] *= FieldScl;
 					}
+
+					HeightMap[bmih.biWidth * y + x] = (float)sRGB[Height].rgbBlue - 255;
+					HeightMap[bmih.biWidth * y + x] += 255;
+					HeightMap[bmih.biWidth * y + x] *= FieldScl;
 				}
-				ImgSize.x = bmih.biWidth;
-				ImgSize.y = bmih.biHeight;
+			}
+			ImgSize.x = (float)bmih.biWidth;
+			ImgSize.y = (float)bmih.biHeight;
 
 
 			}
@@ -535,8 +535,8 @@ void CMeshGround::LoadImg(const char * imgFile)
 void CMeshGround::CalculateBufferNormal(void)
 {
 	// 頂点数の取得
-	UINT	numVertexX = static_cast< int >(PanelNum.x) + 1;		// X方向頂点数
-	UINT	numVertexZ = static_cast< int >(PanelNum.y) + 1;		// Z方向頂点数
+	UINT	numVertexX = static_cast<int>(PanelNum.x) + 1;		// X方向頂点数
+	UINT	numVertexZ = static_cast<int>(PanelNum.y) + 1;		// Z方向頂点数
 
 	// 法線の設定
 	VECTOR3	vectorNormal[2];		// 法線ベクトル
@@ -566,13 +566,13 @@ void CMeshGround::CalculateBufferNormal(void)
 			vectorPlaneX[1].Normalize();
 			vectorPlaneZ[0].Normalize();
 			vectorPlaneZ[1].Normalize();
-			VECTOR3::Cross(&vectorNormal[0], vectorPlaneX[0], vectorPlaneZ[0]);
-			VECTOR3::Cross(&vectorNormal[1], vectorPlaneX[1], vectorPlaneZ[1]);
+			VECTOR3::Cross(&vectorNormal[0],vectorPlaneX[0],vectorPlaneZ[0]);
+			VECTOR3::Cross(&vectorNormal[1],vectorPlaneX[1],vectorPlaneZ[1]);
 			vectorNormal[0].Normalize();
 			vectorNormal[1].Normalize();
 			vectorNormal[0] += vectorNormal[1];
 			vectorNormal[0].Normalize();
-			BufferNormal[numVertexX * cntZ + (static_cast< int >(PanelNum.x) - 1 - cntX)] = vectorNormal[0];
+			BufferNormal[numVertexX * cntZ + (static_cast<int>(PanelNum.x) - 1 - cntX)] = vectorNormal[0];
 		}
 	}
 
@@ -601,16 +601,16 @@ void CMeshGround::CalculateBufferNormal(void)
 	BufferNormal[numVertexX * (numVertexZ - 1) + numVertexX - 1].Normalize();
 }
 
-void CMeshGround::GetNormal(float fPosX, float fPosZ, VECTOR3* pOut)
+void CMeshGround::GetNormal(float fPosX,float fPosZ,VECTOR3* pOut)
 {
 	// 頂点の番号を算出
-	int		nIdxVtxX = static_cast< int >((fPosX + PanelSize.x * static_cast< int >(PanelNum.x) * 0.5f) / PanelSize.x);
-	int		nIdxVtxZ = static_cast< int >((fPosZ + PanelSize.y * static_cast< int >(PanelNum.y) * 0.5f) / PanelSize.y);
+	int		nIdxVtxX = static_cast<int>((fPosX + PanelSize.x * static_cast<int>(PanelNum.x) * 0.5f) / PanelSize.x);
+	int		nIdxVtxZ = static_cast<int>((fPosZ + PanelSize.y * static_cast<int>(PanelNum.y) * 0.5f) / PanelSize.y);
 
 	// 割合を算出
 	float	fRateX;
 	float	fRateZ;
-	fRateX = (fPosX - PanelSize.x * (nIdxVtxX - static_cast< int >(PanelNum.x) * 0.5f)) / PanelSize.x;
+	fRateX = (fPosX - PanelSize.x * (nIdxVtxX - static_cast<int>(PanelNum.x) * 0.5f)) / PanelSize.x;
 	if (fRateX < 0.0f)
 	{
 		fRateX = 0.0f;
@@ -619,7 +619,7 @@ void CMeshGround::GetNormal(float fPosX, float fPosZ, VECTOR3* pOut)
 	{
 		fRateX = 1.0f;
 	}
-	fRateZ = (fPosZ - PanelSize.y * (nIdxVtxZ - static_cast< int >(PanelNum.y) * 0.5f)) / PanelSize.y;
+	fRateZ = (fPosZ - PanelSize.y * (nIdxVtxZ - static_cast<int>(PanelNum.y) * 0.5f)) / PanelSize.y;
 	if (fRateZ < 0.0f)
 	{
 		fRateZ = 0.0f;
@@ -630,11 +630,11 @@ void CMeshGround::GetNormal(float fPosX, float fPosZ, VECTOR3* pOut)
 	}
 
 	// 法線を設定
-	VECTOR3	vecNormal(0.0f, 0.0f, 0.0f);
-	vecNormal += BufferNormal[(nIdxVtxZ + 0) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 0)] * (1.0f - fRateX) * (1.0f - fRateZ);
-	vecNormal += BufferNormal[(nIdxVtxZ + 0) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 1)] * fRateX * (1.0f - fRateZ);
-	vecNormal += BufferNormal[(nIdxVtxZ + 1) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 0)] * (1.0f - fRateX) * fRateZ;
-	vecNormal += BufferNormal[(nIdxVtxZ + 1) * (static_cast< int >(PanelNum.x) + 1) + (nIdxVtxX + 1)] * fRateX * fRateZ;
+	VECTOR3	vecNormal(0.0f,0.0f,0.0f);
+	vecNormal += BufferNormal[(nIdxVtxZ + 0) * (static_cast<int>(PanelNum.x) + 1) + (nIdxVtxX + 0)] * (1.0f - fRateX) * (1.0f - fRateZ);
+	vecNormal += BufferNormal[(nIdxVtxZ + 0) * (static_cast<int>(PanelNum.x) + 1) + (nIdxVtxX + 1)] * fRateX * (1.0f - fRateZ);
+	vecNormal += BufferNormal[(nIdxVtxZ + 1) * (static_cast<int>(PanelNum.x) + 1) + (nIdxVtxX + 0)] * (1.0f - fRateX) * fRateZ;
+	vecNormal += BufferNormal[(nIdxVtxZ + 1) * (static_cast<int>(PanelNum.x) + 1) + (nIdxVtxX + 1)] * fRateX * fRateZ;
 	if (vecNormal.y < 0.01f && vecNormal.y > -0.01f)
 	{
 		if (vecNormal.x < 0.01f && vecNormal.x > -0.01f)
@@ -646,8 +646,8 @@ void CMeshGround::GetNormal(float fPosX, float fPosZ, VECTOR3* pOut)
 			}
 		}
 	}
- if(pOut)
- {
-  *pOut = vecNormal;
- }
+	if (pOut)
+	{
+		*pOut = vecNormal;
+	}
 }

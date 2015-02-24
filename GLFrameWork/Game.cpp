@@ -190,11 +190,6 @@ void CGame::Init(void)
 	CylinderArea->SetTex(CTexture::Texture(TEX_WALL));
 	CylinderArea->SetAlpha(0.5f);
 
-#ifdef _DEBUG
-	// デバッグワイヤーフレーム
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-#endif
-
 	Player = new CPlayer*[PLAYER_MAX];
 	// プレイヤー生成
 	for (int i = 0; i < PLAYER_MAX; i++)
@@ -384,11 +379,9 @@ void CGame::Uninit(void)
 	// 影の破棄
 	for (int chtShadow = 0; chtShadow < 2 * PLAYER_MAX; ++chtShadow)
 	{
-		delete Shadow[chtShadow];
-		Shadow[chtShadow] = nullptr;
+		SafeDelete(Shadow[chtShadow]);
 	}
-	delete[] Shadow;
-	Shadow = nullptr;
+	SafeDelete(Shadow);
 
 	// 岩の破棄
 	for (int cntRock = 0; cntRock < MAX_ROCK; ++cntRock)
@@ -411,18 +404,11 @@ void CGame::Uninit(void)
 	SafeRelease(CylinderArea);
 
 	// 空破棄
-	if (Sky != nullptr)
-	{
-		Sky->Release();
-		Sky = nullptr;
-	}
+
+	SafeRelease(Sky);
 
 	// 地形破棄
-	if (Ground != nullptr)
-	{
-		Ground->Release();
-		Ground = nullptr;
-	}
+	SafeRelease(Ground);
 
 	// UI破棄
 	UI->Uninit();
@@ -1032,8 +1018,6 @@ void CGame::StartCount(void)
 	const int PHASE_COUNT_START = 60 * 4;
 	const int PHASE_COUNT_START_FIN = 60 * 5;
 	const int PHASE_COUNT_END = 60 * 3;
-
-	gamePhaseCnt++;
 
 	switch (gamePhase){
 

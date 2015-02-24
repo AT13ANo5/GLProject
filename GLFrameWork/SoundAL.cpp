@@ -385,8 +385,6 @@ void CSoundAL::UpdateAll(void)
 		sound = next;
 	}
 
-#ifdef _DEBUG
-#endif
 }
 
 void CSoundAL::ReleaseAll(void)
