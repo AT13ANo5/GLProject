@@ -27,10 +27,9 @@ public:
 private:
   static const float  RADIUS_SKY;   // ‹ó‚Ì”¼Œa
 
-  CPolygon2D* Logo;
   CPushStart* PushEnter;
   CPlayer**    Player;
-  CModel* Barrel;
+  CModel** Rock;
   CMeshGround*  Ground;   // ’nŒ`
   CMeshSphere*  Sky;      // ‹ó
   CCamera* Camera;

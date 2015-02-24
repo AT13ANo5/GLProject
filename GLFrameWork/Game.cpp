@@ -302,6 +302,7 @@ void CGame::Init(void)
 void CGame::subTimer()
 {
 	//	UIのタイマー減らす処理
+	UI->SubTime();
 }
 
 //=============================================================================
@@ -510,6 +511,11 @@ void CGame::Update(void)
 
 	// UIのアップデート
 	UI->Update();
+
+	if (UI->GetTime() == 0)
+	{
+		CManager::ChangeScene(SCENE_RESULT);
+	}
 }
 
 //==============================================================================
@@ -1112,7 +1118,7 @@ void CGame::StartCount(void)
 		}
 		case PHASE_END:
 		{
-			CManager::SendChangeResult();
+			//CManager::SendChangeResult();
 			CManager::ChangeScene(SCENE_RESULT);
 			break;
 		}

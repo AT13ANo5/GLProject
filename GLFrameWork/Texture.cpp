@@ -29,6 +29,8 @@ static std::string TexFile[TEX_MAX] =
 	"data/texture/youjo_network_rinchan.dds",
 	"data/texture/youjo_network_water.dds",
 	"data/texture/youjo_network_white.dds",
+	"data/texture/youjo_network_host.dds",
+	"data/texture/youjo_network_player.dds",
 	"data/texture/Light.tga",
  	"data/texture/field000.dds",
 	"data/texture/sky000.dds",

@@ -51,6 +51,8 @@ CPolygon2D* CConnection::backGround;
 CPolygon2D** CConnection::waitBackGround;
 CPolygon2D** CConnection::waitPlayer;
 CPushStart* CConnection::pushStart;
+CPolygon2D* CConnection::texHost;
+CPolygon2D* CConnection::texPlayer;
 bool CConnection::PlayerEntry[] = { false };
 
 //*****************************************************************************
@@ -151,7 +153,28 @@ void CConnection::Init(void)
 		waitBackGround[5]->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_CPU));
 	}
 	//-------------------------------------------------
+
+
+	//	文字オブジェクト「texHost」の配置
+	//-------------------------------------------------
+	texHost = CPolygon2D::Create(waitPlayerPos[0], VECTOR2(waitPlayerWidth, waitPlayerHeight));
+	texHost->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_HOST));
+	//-------------------------------------------------
+
+	//	文字オブジェクト「texPlayer」の配置
+	//-------------------------------------------------
+	texPlayer = CPolygon2D::Create(waitPlayerPos[0], VECTOR2(waitPlayerWidth, waitPlayerHeight));
+	texPlayer->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_PLAYER));
+	//-------------------------------------------------
+
 	CSoundAL::Play(CSoundAL::BGM_CONNECT);
+}
+//=============================================================================
+//	テクスチャ位置セット処理
+//=============================================================================
+void CConnection::setTexHostPos(int _id)
+{
+	texPlayer->SetPos(waitPlayerPos[_id]);
 }
 
 //=============================================================================
@@ -159,6 +182,18 @@ void CConnection::Init(void)
 //=============================================================================
 void CConnection::Uninit(void)
 {
+	if (texHost != nullptr)
+	{
+		texHost->Release();
+		texHost = nullptr;
+	}
+
+	if (texPlayer != nullptr)
+	{
+		texPlayer->Release();
+		texPlayer = nullptr;
+	}
+
 	for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
 	{
 		PlayerEntry[cnt] = false;

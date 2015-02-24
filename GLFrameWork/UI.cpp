@@ -233,8 +233,8 @@ void CUI::Update(void)
 
 	if (Time->GetUpdateFlag() == true){
 		// 成績表のON/OFF
-  if(VC::Instance()->Press(COMMAND_SCORE)){
-   reportBg->SetDrawFlag(true);
+		if(VC::Instance()->Press(COMMAND_SCORE)){
+			reportBg->SetDrawFlag(true);
 			report->SetDrawFlag(true);
 			numberManager->SetDrawFlag(true);
 
@@ -340,6 +340,16 @@ int		CUI::GetTime(void)
 void	CUI::SetTime(int time)
 {
 	Time->SetTime(time);
+}
+
+//=============================================================================
+// SubTime
+//-----------------------------------------------------------------------------
+// タイマー減算処理
+//=============================================================================
+void	CUI::SubTime()
+{
+	Time->SubTime();
 }
 
 

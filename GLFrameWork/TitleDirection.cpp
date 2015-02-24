@@ -31,7 +31,7 @@ void CTitleDirection::Init(void)
 	Title = nullptr;
 
 	number = 0;
-	Size = VECTOR2(833.33f, 166.66f);
+	Size = VECTOR2(500.0f, 100.0f);
 	Count = 0;
 	UDflag = false;
 	Title = CPolygon2D::Create(VECTOR3(SCREEN_WIDTH / 2, 0, 0), VECTOR2(Size.x, Size.y));
@@ -41,6 +41,7 @@ void CTitleDirection::Init(void)
 void CTitleDirection::Uninit(void)
 {
 	SafeRelease(Title);
+ delete this;
 }
 
 //=============================================================================
@@ -70,18 +71,20 @@ void CTitleDirection::Update(void)
 
 		if (Count <= 120)
 		{
-			Title->AddPos(0, 1.5f, 0);
-			Title->AddSize(1.5f, 1.5f);
+			Title->AddPos(0, 1.2f, 0);
+			Title->AddSize(1.0f, 1.0f);
 		}
 		if (Count >= 120)
 		{
 			if (UDflag == true)
 			{
-				Title->AddSize(-1.0f, -1.0f);
-			}
+    Title->AddPos(0,0.2f,0);
+    Title->AddSize(0.6f,0.6f);
+   }
 			else
 			{
-				Title->AddSize(1.0f, 1.0f);
+    Title->AddPos(0,-0.2f,0);
+    Title->AddSize(-0.6f,-0.6f);
 			}
 
 			if (Count >= 180)
