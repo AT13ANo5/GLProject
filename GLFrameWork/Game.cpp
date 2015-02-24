@@ -1019,6 +1019,8 @@ void CGame::StartCount(void)
 	const int PHASE_COUNT_START_FIN = 60 * 5;
 	const int PHASE_COUNT_END = 60 * 3;
 
+	gamePhaseCnt++;
+
 	switch (gamePhase){
 
 		case PHASE_NONE:
@@ -1100,6 +1102,12 @@ void CGame::StartCount(void)
 				// プレイヤーの攻撃を止める
 				for (int i = 0; i < PLAYER_MAX; i++){
 					Player[i]->SetEndGameFlag(true);
+
+					// プレイヤーだったら弾道を消す
+					if(Player[i]->GetPreyerFlag() == true)
+					{
+						Player[i]->SetBallisticDrawFlag(false);
+					}
 				}
 			}
 			break;
