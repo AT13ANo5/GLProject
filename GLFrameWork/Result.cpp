@@ -135,14 +135,14 @@ void CResult::Init(void)
 	for (int loop = 0;loop < PLAYER_MAX;loop++)
 	{
 		unsigned short PLAYER_TEX[PLAYER_MAX] = {
-			TEX_YOUJO_YELLOW,
-			TEX_YOUJO_BLUE,
-			TEX_YOUJO_ORANGE,
-			TEX_YOUJO_RED,
-			TEX_YOUJO_WATER,
-			TEX_YOUJO_WHITE
+   TEX_YOUJO_RED,
+   TEX_YOUJO_BLUE,
+   TEX_YOUJO_WATER,
+   TEX_YOUJO_ORANGE,
+   TEX_YOUJO_WHITE,
+   TEX_YOUJO_YELLOW,
 		};
-  if(ranking[loop] % 2 == 0)
+  if(ranking[loop] % 2 == 1)
   {
    Player[loop] = CModel::Create(CModel::RINCHAN,VECTOR3(0.0f,0.0f,0.0f));
   }
