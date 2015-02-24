@@ -147,6 +147,7 @@ CGame::CGame()
 	ppRock_ = nullptr;
 	gamePhase = PHASE_3;
 	gamePhaseCnt = 0;
+	gameEndCount = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -514,11 +515,6 @@ void CGame::Update(void)
 
 	// UIのアップデート
 	UI->Update();
-
-	if (UI->GetTime() == 0)
-	{
-		CManager::ChangeScene(SCENE_RESULT);
-	}
 }
 
 //==============================================================================
@@ -1035,6 +1031,9 @@ void CGame::StartCount(void)
 	const int PHASE_COUNT_1 = 60 * 3;
 	const int PHASE_COUNT_START = 60 * 4;
 	const int PHASE_COUNT_START_FIN = 60 * 5;
+	const int PHASE_COUNT_END = 60 * 3;
+
+	gamePhaseCnt++;
 
 	switch (gamePhase){
 
@@ -1119,8 +1118,10 @@ void CGame::StartCount(void)
 		}
 		case PHASE_END:
 		{
-			//CManager::SendChangeResult();
-			CManager::ChangeScene(SCENE_RESULT);
+			gameEndCount++;
+			if (gameEndCount >= PHASE_COUNT_END){
+				CManager::ChangeScene(SCENE_RESULT);
+			}
 			break;
 		}
 	}
