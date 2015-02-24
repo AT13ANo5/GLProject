@@ -40,6 +40,9 @@ const float CGame::RADIUS_SKY = 2500.0f;   // 空の半径
 CUI* CGame::UI = nullptr;
 CPlayer** CGame::Player;
 CPlayer* Player = nullptr;//プレイヤー
+
+CGame::PHSE CGame::gamePhase;
+
 int CGame::gamePhaseCnt = 0;
 const float	CGame::RADIUS_DEFENSE_CHARACTER = 12.0f;	// キャラクターの防御半径
 const float	CGame::HEIGHT_DEFENSE_CHARACTER = 0.0f;		// キャラクターの防御中心高さ
@@ -1027,8 +1030,6 @@ void CGame::HitBulletToField(void)
 //==============================================================================
 void CGame::StartCount(void)
 {
-	gamePhaseCnt++;
-
 	const int PHASE_COUNT_3 = 60 * 1;
 	const int PHASE_COUNT_2 = 60 * 2;
 	const int PHASE_COUNT_1 = 60 * 3;
@@ -1111,7 +1112,7 @@ void CGame::StartCount(void)
 				UI->SetStringTexture(CTexture::Texture(TEX_END));
 				// プレイヤーの攻撃を止める
 				for (int i = 0; i < PLAYER_MAX; i++){
-//					Player[i]->set
+					Player[i]->SetLaunchFlag(false);
 				}
 			}
 			break;
