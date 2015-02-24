@@ -44,6 +44,10 @@ public:
 	static void subTimer();
 
 
+	static PHSE				gamePhase;
+	static int	gamePhaseCnt;
+
+
 private:
 	static const float  RADIUS_SKY;					// ãÛÇÃîºåa
 	static const float	RADIUS_DEFENSE_CHARACTER;	// ÉLÉÉÉâÉNÉ^Å[ÇÃñhå‰îºåa
@@ -89,8 +93,5 @@ private:
 	static CUI*		UI;
 	CModel**		ppRock_;	//	ä‚
 	CShadow**		Shadow;		// âe
-
-	PHSE				gamePhase;
-	static int	gamePhaseCnt;
 };
 #endif

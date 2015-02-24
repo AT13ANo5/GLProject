@@ -534,7 +534,30 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 				case DATA_TYPE_TIMER:
 
 					if (CManager::CurrentScene == SCENE_GAME)
-						CGame::subTimer();
+					{
+						if (CGame::gamePhase == CGame::PHASE_3)
+						{
+							CGame::gamePhaseCnt = 60;
+						}
+						else if (CGame::gamePhase == CGame::PHASE_2)
+						{
+							CGame::gamePhaseCnt = 120;
+						}
+						else if (CGame::gamePhase == CGame::PHASE_1)
+						{
+							CGame::gamePhaseCnt = 180;
+						}
+						else if (CGame::gamePhase == CGame::PHASE_START)
+						{
+							CGame::gamePhaseCnt = 240;
+						}
+						else if (CGame::gamePhase == CGame::PHASE_START_FIN)
+						{
+							CGame::gamePhaseCnt = 300;
+						}
+						else
+							CGame::subTimer();
+					}
 
 					break;
 
