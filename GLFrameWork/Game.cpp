@@ -919,9 +919,9 @@ void CGame::PushBackBattleArea(void)
 		VECTOR3	vectorPlayerToCenter = Ground->Pos() - pPlayerCurrent->Pos();
 		vectorPlayerToCenter.y = 0.0f;
 		float	distanceFromCenter = vectorPlayerToCenter.x * vectorPlayerToCenter.x + vectorPlayerToCenter.y * vectorPlayerToCenter.y + vectorPlayerToCenter.z * vectorPlayerToCenter.z;
-		if (distanceFromCenter > RADIUS_AREA_BATTLE * RADIUS_AREA_BATTLE)
+		if (distanceFromCenter > (RADIUS_AREA_BATTLE - RADIUS_PUSH_CHARACTER) * (RADIUS_AREA_BATTLE - RADIUS_PUSH_CHARACTER))
 		{
-			float	distancePushBack = sqrtf(distanceFromCenter) - RADIUS_AREA_BATTLE;
+			float	distancePushBack = sqrtf(distanceFromCenter) - (RADIUS_AREA_BATTLE - RADIUS_PUSH_CHARACTER);
 			vectorPlayerToCenter.Normalize();
 			pPlayerCurrent->AddPos(vectorPlayerToCenter * distancePushBack);
 		}
