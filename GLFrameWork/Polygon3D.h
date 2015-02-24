@@ -70,6 +70,8 @@ public:
 
 	void SetDrawFlag(bool drawFlag){ DrawFlag = drawFlag; }	// 描画フラグセッター
 
+	void SetLightFlag(bool flag){LightFlag = flag;}
+
 protected:
 
 	VECTOR2 _Size;
@@ -81,7 +83,7 @@ protected:
 	void Resize(void);
 
 	bool DrawFlag;	// 描画フラグ（2015/02/23 田邊）
-
+	bool LightFlag;	// ライト照射フラグ（2015/02/24 宗像）
 };
 
 #endif

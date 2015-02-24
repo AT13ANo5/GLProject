@@ -42,6 +42,7 @@ void CPolygon3D::Init(void)
 	}
 
 	DrawFlag = true;
+	LightFlag = true;
 }
 CPolygon3D* CPolygon3D::Create(const VECTOR3& pos,const VECTOR2& size,const VECTOR3& rot,const COLOR& color)
 {
@@ -80,8 +81,17 @@ void CPolygon3D::Draw(void)
 		return;
 	}
 
-	//ライティング無効
-	glEnable(GL_LIGHTING);
+	// ライト照射フラグでライトオンオフ
+	if(LightFlag == true)
+	{
+		//ライティング有効
+		glEnable(GL_LIGHTING);
+	}
+	else
+	{
+		// ライティング無効
+		glDisable(GL_LIGHTING);
+	}
 	
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -126,6 +136,11 @@ void CPolygon3D::Draw(void)
 	glPopMatrix();//ビューマトリックスを戻す
 	glBindTexture(GL_TEXTURE_2D,0);
 
+	if(LightFlag == false)
+	{
+		//ライティング有効
+		glEnable(GL_LIGHTING);
+	}
 }
 
 void CPolygon3D::SetUV(float x,float y,float width,float height)
