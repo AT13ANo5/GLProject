@@ -97,12 +97,9 @@ void CConnection::Init(void)
 
 	//	文字オブジェクト「PUSHSTART」の配置
 	//-------------------------------------------------
-	if (CManager::netData.charNum == 0)
-	{
-		pushStart = CPushStart::Create(VECTOR3(655.0f, 690.0f, 0),
-			VECTOR2(325.0f, 50.0f));
-		pushStart->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_ENTER));
-	}
+	pushStart = CPushStart::Create(VECTOR3(655.0f, 690.0f, 0),
+		VECTOR2(325.0f, 50.0f));
+	pushStart->SetTex(CTexture::Texture(TEX_NETWARK_YOUJO_ENTER));
 	//-------------------------------------------------
 
 	//	サーバーへエントリー情報を送信
@@ -258,6 +255,15 @@ void CConnection::Update(void)
 			texPlayer->SetSize(VECTOR2(waitPlayerWidth * 2, waitPlayerHeight * 2));
 		}
 		texPlayer->SetPos(waitPlayerPos[HostID]);
+	}
+
+	if (CManager::netData.charNum != 0)
+	{
+		if (pushStart != nullptr)
+		{
+			pushStart->Release();
+			pushStart = nullptr;
+		}
 	}
 }
 //=============================================================================

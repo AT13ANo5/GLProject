@@ -169,6 +169,8 @@ void CResult::Init(void)
 void CResult::Uninit(void)
 {
 	CObject::ReleaseAll();
+
+	CManager::initUserInfo();
 }
 
 //=============================================================================

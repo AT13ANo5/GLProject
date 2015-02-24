@@ -105,10 +105,11 @@ public:
 
 	static bool sendEntryFlag;
 
+	static void initUserInfo();
+
 private:
 
 	bool myBind(SOCKET* _socket, SOCKADDR_IN* _sockAdd);
-	void initUserInfo();
 
 	static unsigned __stdcall recvUpdate(void *p);
 
