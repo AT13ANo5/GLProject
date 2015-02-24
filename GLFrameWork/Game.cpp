@@ -701,14 +701,18 @@ void CGame::PushBackCharacter(void)
 				if (distanceOffenseAndDefense < -FLT_EPSILON || distanceOffenseAndDefense > FLT_EPSILON)
 				{
 					VECTOR3	vectorPushBack = vectorOffenseToDefense * 0.51f * (2.0f * RADIUS_PUSH_CHARACTER - distanceOffenseAndDefense) / distanceOffenseAndDefense;
-					pPlayerDefense->AddPos(vectorPushBack);
+     pPlayerDefense->AddPos(vectorPushBack);
+     pPlayerDefense->AddDestPos(vectorPushBack);
 					vectorPushBack *= -1.0f;
-					pPlayerOffense->AddPos(vectorPushBack);
+     pPlayerOffense->AddPos(vectorPushBack);
+     pPlayerOffense->AddDestPos(vectorPushBack);
 				}
 				else
 				{
-					pPlayerOffense->AddPosX(RADIUS_PUSH_CHARACTER);
-					pPlayerDefense->AddPosX(-RADIUS_PUSH_CHARACTER);
+     pPlayerOffense->AddPosX(RADIUS_PUSH_CHARACTER);
+     pPlayerOffense->AddDestPosX(RADIUS_PUSH_CHARACTER);
+     pPlayerDefense->AddPosX(-RADIUS_PUSH_CHARACTER);
+     pPlayerDefense->AddDestPosX(-RADIUS_PUSH_CHARACTER);
 				}
 
 				// エフェクト：火花　プレイヤー同士のぶつかり

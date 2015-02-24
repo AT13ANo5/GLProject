@@ -149,7 +149,7 @@ void CPlayer::Update()
  //‚ä‚Á‚­‚è‰ñ“]
  _Rot = _DestRot;
  VECTOR3 diffRot;
- diffRot = (_DestRot - _Rot) * 0.1f;
+ diffRot = (_DestRot - _Rot) * 0.2f;
  REVISE_DEGREE(diffRot.x);
  REVISE_DEGREE(diffRot.y);
  REVISE_DEGREE(diffRot.z);
@@ -159,7 +159,7 @@ void CPlayer::Update()
  REVISE_DEGREE(_Rot.z);
 
  VECTOR3 posDiff;
- posDiff = ( _DestPos - _Pos ) * 0.1f;
+ posDiff = ( _DestPos - _Pos ) * 0.2f;
 
  AddPos(posDiff);
 
@@ -497,7 +497,7 @@ void CPlayer::UpdateCPU(void)
  VECTOR3 diffRot;
  VECTOR3 BarrelRot = Barrel->Rot();
  VECTOR3 BarrelDestRot = Barrel->DestRot();
- diffRot = (BarrelDestRot - BarrelRot)*0.1f;
+ diffRot = (BarrelDestRot - BarrelRot)*0.2f;
  REVISE_DEGREE(diffRot.x);
  Barrel->AddRot(diffRot);
  BarrelRot = Barrel->Rot();
@@ -696,7 +696,8 @@ void CPlayer::SetRespawn(void)
 	_Hegiht = 0;
 	_State = PLAYER_STATE_RESPAWN;
 	_PlayerRespown.y += kHeightMax;
-	SetPos(_PlayerRespown);
+ SetPos(_PlayerRespown);
+ SetDestPos(_PlayerRespown);
 	_PlayerLife = PLAYER_LIFE;
 	_ReloadTimer = PLAYER_RELOAD_TIME;
 
