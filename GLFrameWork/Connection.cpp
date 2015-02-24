@@ -53,7 +53,7 @@ CPolygon2D** CConnection::waitPlayer;
 CPushStart* CConnection::pushStart;
 CPolygon2D* CConnection::texHost;
 CPolygon2D* CConnection::texPlayer;
-int Connection::HostID; = -1;
+int CConnection::HostID = -1;
 bool CConnection::PlayerEntry[] = { false };
 
 //*****************************************************************************
