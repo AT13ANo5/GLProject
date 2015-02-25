@@ -346,14 +346,17 @@ void CPlayer::UpdatePlayer(void)
 
 	// 値の丸め込み
 	// プレイヤーの回転量
-	if (Rot().y > 360.0f)
+
+	REVISE_PI_DEG(_Rot.y);
+
+	/*if (Rot().y > 360.0f)
 	{
 		SetRotY(Rot().y - 2 * 360.0f);
 	}
 	else if (Rot().y < -360.0f)
 	{
 		SetRotY(Rot().y + 2 * 360.0f);
-	}
+	}*/
 
 	// 砲身
 	if (BarrelRotX > BARREL_ROT_MIN)
