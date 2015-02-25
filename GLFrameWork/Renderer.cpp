@@ -87,7 +87,7 @@ void CRenderer::Update(void)
 void CRenderer::Draw(void)
 {
 	//‰æ–Ê‚ÌƒNƒŠƒA
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);//RGBA
+	glClearColor((float)(178.0f / 255.0f), (float)(216.0f / 255.0f), 1.0f, 0.0f);//RGBA
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	
 	CObject::DrawAll();
