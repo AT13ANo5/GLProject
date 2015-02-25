@@ -21,6 +21,7 @@
 #include "SoundAL.h"
 #include "Input\VC.h"
 #include "Input\Keyboard.h"
+#include "Object.h"
 
 #define NARI_SCL (30.0f)
 const int kHeightMax = 400;
@@ -150,13 +151,13 @@ void CPlayer::Update()
  _Rot = _DestRot;
  VECTOR3 diffRot;
  diffRot = (_DestRot - _Rot) * 0.2f;
- REVISE_DEGREE(diffRot.x);
- REVISE_DEGREE(diffRot.y);
- REVISE_DEGREE(diffRot.z);
+ REVISE_PI_DEG(diffRot.x);
+ REVISE_PI_DEG(diffRot.y);
+ REVISE_PI_DEG(diffRot.z);
  AddRot(diffRot);
- REVISE_DEGREE(_Rot.x);
- REVISE_DEGREE(_Rot.y);
- REVISE_DEGREE(_Rot.z);
+ REVISE_PI_DEG(_Rot.x);
+ REVISE_PI_DEG(_Rot.y);
+ REVISE_PI_DEG(_Rot.z);
 
  VECTOR3 posDiff;
  posDiff = ( _DestPos - _Pos ) * 0.2f;
@@ -369,17 +370,8 @@ void CPlayer::UpdatePlayer(void)
 
 	// 値の丸め込み
 	// プレイヤーの回転量
-	if (Rot().y > 360.0f)
-	{
-  SetRotY(Rot().y - 2 * 360.0f);
-  SetDestRotY(Rot().y - 2 * 360.0f);
-	}
-	else if (Rot().y < -360.0f)
-	{
-  SetRotY(Rot().y + 2 * 360.0f);
-  SetDestRotY(Rot().y + 2 * 360.0f);
-	}
 
+	REVISE_PI_DEG(_Rot.y);
 	// 砲身
 	if (BarrelRotX > BARREL_ROT_MIN)
 	{
@@ -498,10 +490,10 @@ void CPlayer::UpdateCPU(void)
  VECTOR3 BarrelRot = Barrel->Rot();
  VECTOR3 BarrelDestRot = Barrel->DestRot();
  diffRot = (BarrelDestRot - BarrelRot)*0.2f;
- REVISE_DEGREE(diffRot.x);
+ REVISE_PI_DEG(diffRot.x);
  Barrel->AddRot(diffRot);
  BarrelRot = Barrel->Rot();
- REVISE_DEGREE(BarrelRot.x);
+ REVISE_PI_DEG(BarrelRot.x);
  Barrel->SetRot(BarrelRot);
 
 	Barrel->SetPos(_Pos);			// 位置

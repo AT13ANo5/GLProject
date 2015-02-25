@@ -15,6 +15,7 @@
 #include "Game.h"
 #include "ManagerGL.h"
 #include "Input/VC.h"
+#include "Input\Keyboard.h"
 #include "Billboard.h"
 #include "Effect3D.h"
 #include "Explosion.h"
@@ -506,6 +507,11 @@ void CGame::Update(void)
 
 	// UIのアップデート
 	UI->Update();
+
+ if(CKeyboard::Instance()->GetTrigger(DIK_RETURN))
+ {
+  CManager::ChangeScene(SCENE_RESULT);
+ }
 }
 
 //==============================================================================
