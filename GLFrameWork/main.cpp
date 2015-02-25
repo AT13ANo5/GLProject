@@ -6,12 +6,11 @@
 //=============================================================================
 //インクルード
 //=============================================================================
+#include "resource.h"
 #include "main.h"
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
-
-
 #include "ManagerGL.h"
 #include <time.h>
 #include <stdlib.h>
@@ -63,7 +62,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 	HWND hWnd;
 	MSG msg;
 
-	RegisterClassEx(&wcex);
+ wcex.hIcon = LoadIcon(hInstance,MAKEINTRESOURCE(IDI_ICON1)); /* アイコン */
+ RegisterClassEx(&wcex);
 	hWnd = CreateWindowEx(0,
 		"Test",
 		WINDOW_TITLE,

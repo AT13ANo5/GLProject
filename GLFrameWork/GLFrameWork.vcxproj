@@ -188,6 +188,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="MeshGround.h" />
     <ClInclude Include="Report.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="ResultNumberManager.h" />
     <ClInclude Include="ResultSheet.h" />
@@ -203,6 +204,12 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="TitleDirection.h" />
     <ClInclude Include="UI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GLFrameWork.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
