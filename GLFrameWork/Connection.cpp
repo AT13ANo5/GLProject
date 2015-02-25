@@ -254,6 +254,10 @@ void CConnection::Update(void)
 		{
 			texPlayer->SetSize(VECTOR2(waitPlayerWidth * 2, waitPlayerHeight * 2));
 		}
+		else
+		{
+			texPlayer->SetSize(VECTOR2(waitPlayerWidth, waitPlayerHeight));
+		}
 		texPlayer->SetPos(waitPlayerPos[HostID]);
 	}
 
