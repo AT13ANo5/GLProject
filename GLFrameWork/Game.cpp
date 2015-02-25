@@ -438,14 +438,6 @@ void CGame::Update(void)
 	// 最初のカウントダウン
 	StartCount();
 
-	if (vc->Trigger(COMMAND_OK))
-	{
-		if (CManager::netData.charNum == 0)
-		{
-			CManager::SendChangeResult();
-			CManager::ChangeScene(SCENE_RESULT);
-		}
-	}
 
 	// 空の位置プレイヤーに合わせる
 	Sky->SetPosX(Player[CManager::netData.charNum]->Pos().x);
@@ -508,7 +500,7 @@ void CGame::Update(void)
 	// UIのアップデート
 	UI->Update();
 
- if(CKeyboard::Instance()->GetTrigger(DIK_RETURN))
+ if(CKeyboard::Instance()->GetTrigger(DIK_F1))
  {
   CManager::ChangeScene(SCENE_RESULT);
  }
