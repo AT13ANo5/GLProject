@@ -98,7 +98,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 
 
 
-
+ return;
 	//	長崎ここから
 	netWorkData.emptyFlag = false;
 
@@ -198,6 +198,7 @@ void CManager::Init(HINSTANCE hInstance, HWND hWnd)
 //=============================================================================
 void CManager::initUserInfo()
 {
+ return;
 	for (int count = 0; count < CHARACTER_MAX; count++)
 	{
 		memset(&userInfo[count].fromaddr, 0, sizeof(userInfo[count].fromaddr));
@@ -223,7 +224,7 @@ void CManager::initUserInfo()
 bool CManager::myBind(SOCKET* _socket, SOCKADDR_IN* _sockAdd)
 {
 	int ret;
-
+ return true;
 	for (;;)
 	{
 		int portAdd = 1;
@@ -252,7 +253,7 @@ void CManager::SendEntry()
 	data.servID = SERV_ID;
 
 	sendEntryFlag = true;
-
+ return;
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
 //=============================================================================
@@ -267,7 +268,7 @@ void CManager::sendGameStart()
 		data.type = DATA_TYPE_GAME_START;
 		data.servID = SERV_ID;
 		data.charNum = 0;
-
+  return;
 		sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 	}
 }
@@ -281,6 +282,8 @@ void CManager::SendCannon(bool _flag, int _id)
 	data.charNum = _id;
 	data.servID = SERV_ID;
 	data.data_cannon.flag = _flag;
+
+ return;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -296,6 +299,8 @@ void CManager::SendPos(VECTOR3 _pos, int _id)
 	data.data_pos.posX = _pos.x;
 	data.data_pos.posY = _pos.y;
 	data.data_pos.posZ = _pos.z;
+
+ return;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -325,7 +330,7 @@ void CManager::SendRot(float _rotY, int _id)
 	data.data_rot.rotY = _Y;
 	data.data_rot.rotZ = _Z;
 #endif*/
-
+ return;
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
 //=============================================================================
@@ -341,6 +346,8 @@ void CManager::SendCannonRot(VECTOR3 _rot, int _id)
 	data.data_cannonRot.rotY = _rot.y;
 	data.data_cannonRot.rotZ = _rot.z;
 
+ return;
+
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
 
@@ -351,6 +358,8 @@ void CManager::SendChangeGame()
 	data.servID = SERV_ID;
 	data.charNum = netData.charNum;
 
+ return;
+
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
 void CManager::SendChangeResult()
@@ -359,6 +368,8 @@ void CManager::SendChangeResult()
 	data.type = DATA_TYPE_CHANGE_RESULT;
 	data.servID = SERV_ID;
 	data.charNum = netData.charNum;
+
+ return;
 
 	sendto(sendSock, (char*)&data, sizeof(data), 0, (sockaddr*)&sendAddress, sizeof(sendAddress));
 }
@@ -474,7 +485,7 @@ unsigned __stdcall CManager::recvUpdate(void *p)
 {
 	int rett;
 	NET_DATA data;
-
+ return true;
 	while (true)
 	{
 		// データ受信

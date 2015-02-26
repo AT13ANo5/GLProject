@@ -9,6 +9,7 @@
 // ヘッダインクルード
 //------------------------------------------------------------------------------
 #include <math.h>
+#include<float.h>
 
 #include "main.h"
 #include "CPlayer.h"
@@ -31,6 +32,21 @@ const float BARREL_ROTX_SPEED = 1.0f;
 const float PLAYER_ROTY_SPEED = 1.0f;
 const int NARI_SCL_SPEED = 6;
 //------------------------------------------------------------------------------
+//定数定義
+//------------------------------------------------------------------------------
+const float TURN_SPEED = 1.0f;		//回転速度
+const int UserMax = 6;//最大ユーザー数
+const double SURCH_MAX = 300.0f;	//フィールドのサイズの1/4
+const float GRAVITY = 0.06f;				//弾にかかる重力加速度
+const float FIELD_PANEL_SIZE = 35.0f;			//フィールドのパネル一枚のサイズ
+const float MAXANGLE = ( -45.0f );
+const float MAX_RANGE = 202.0f;
+const float MIN_RANGE = 70.0f;
+
+int CPlayer::MaxId = 0;
+CPlayer* CPlayer::player[PLAYER_MAX];
+
+//------------------------------------------------------------------------------
 // コンストラクタ
 //------------------------------------------------------------------------------
 // 引数
@@ -51,7 +67,7 @@ CPlayer::CPlayer() :CModel()
 	_ReloadTimer = PLAYER_RELOAD_TIME;
 
 	// 砲身のX軸回転量
-	BarrelRotX = 0.0f;
+ BarrelDestRotX = BarrelRotX = 0.0f;
 
 
 	killCount = 0;
@@ -67,6 +83,12 @@ CPlayer::CPlayer() :CModel()
 //------------------------------------------------------------------------------
 CPlayer::~CPlayer()
 {
+ player[MyId] = nullptr;
+ MaxId--;
+ if(MaxId < 0)
+ {
+  MaxId = 0;
+ }
 	SafeRelease(DriveSE);
 	SafeRelease(IdlingSE);
 	SafeDelete(Ballistic);
@@ -131,6 +153,15 @@ void CPlayer::Init(void)
  _DestRot = _Rot;
  Barrel->SetDestPos(Barrel->Rot());
 	_InputFlag = true;
+ frame = 0;
+ LaunchFlag = 0;
+ MyId = MaxId;
+ TargetId = -1;
+ player[MyId] = this;
+ DestRotY = 0;
+ TargetSpeed = TargetPos = VECTOR3(0,0,0);
+ Distance = 0;
+ MaxId++;
 }
 
 //------------------------------------------------------------------------------
@@ -497,10 +528,7 @@ void CPlayer::UpdateCPU(void)
  Barrel->SetRot(BarrelRot);
 
 	Barrel->SetPos(_Pos);			// 位置
-	BarrelRotX = Barrel->Rot().x;
-
-	// 移動値
-	Movement = _Pos - _OldPos;
+	BarrelDestRotX = Barrel->Rot().x;
 
 	// 移動エフェクト
 	if (_SandTime >= 0)
@@ -560,6 +588,93 @@ void CPlayer::UpdateCPU(void)
 			}
 		}
 	}
+
+ if(CManager::CurrentScene != SCENE_GAME)
+ {
+  Movement = _Pos - _OldPos;
+  return;
+ }
+ if(frame % 120 == 0)
+ {
+  if(TargetId < 0)
+  {
+   SurchTarget();
+
+  }
+  else
+  {
+   TargetId = -1;
+  }
+ }
+
+ _Pos += Movement;
+ _DestPos += Movement;
+
+ MazzleRevision();
+ if(TargetId >= 0)
+ {
+  VECTOR2 distance = VECTOR2(0,0);
+  distance.x = TargetPos.x - _Pos.x;
+  distance.y = TargetPos.z - _Pos.z;
+  double dis = sqrt(distance.x*distance.x + distance.y*distance.y);
+  if(dis < MIN_RANGE)
+  {
+   Movement.x -= sinf(DEG2RAD(_Rot.y)) * Speed;
+   Movement.z -= cosf(DEG2RAD(_Rot.y)) * Speed;
+  }
+  else if(dis > MAX_RANGE*0.5f)
+  {
+   Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
+   Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
+  }
+ }
+ else
+ {
+  if(frame % 180 == 0)
+  {
+   DestRotY = rand() % 360 + .0f;
+   REVISE_PI_DEG(DestRotY);
+
+  }
+  Movement.x += sinf(DEG2RAD(_Rot.y)) * Speed;
+  Movement.z += cosf(DEG2RAD(_Rot.y)) * Speed;
+  //SurchTarget();
+ }
+
+ frame++;
+ if(frame > 60 * 30)
+ {
+  frame = 0;
+ }
+
+ Movement *= 0.95f;
+
+
+ _ReloadTimer++;
+
+ if(_ReloadTimer >= PLAYER_RELOAD_TIME)
+ {
+  LaunchFlag = true;
+  _ReloadTimer = 0;
+ }
+
+ Shot();
+
+
+ float SubRotY = DestRotY - _Rot.y;
+ REVISE_PI_DEG(SubRotY);
+ if(SubRotY < -TURN_SPEED)
+ {
+  SubRotY = -TURN_SPEED;
+ }
+ else if(SubRotY > TURN_SPEED)
+ {
+  SubRotY = TURN_SPEED;
+ }
+ _Rot.y += SubRotY;
+ _DestRot.y += SubRotY;
+ REVISE_PI_DEG(_Rot.y);
+ REVISE_PI_DEG(_DestRot.y);
 
 	// 現在の座標を保存
 	_OldPos = _Pos;
@@ -755,6 +870,103 @@ void CPlayer::AddPlayerLife(int addVal)
 			}
 		}
 	}
+}
+
+//------------------------------------------------------------------------------
+//敵を探す
+//------------------------------------------------------------------------------
+void CPlayer::SurchTarget(void)
+{
+ double distance = DBL_MAX;
+ double disBuff = DBL_MAX;
+ int target = -1;
+ VECTOR2 Sub = VECTOR2(0,0);
+ for(int loop = 0;loop < PLAYER_MAX;loop++)
+ {
+  if(loop == MyId)
+  {
+   continue;
+  }
+  Sub.x = player[loop]->Pos().x - _Pos.x;
+  Sub.y = player[loop]->Pos().z - _Pos.z;
+  disBuff = sqrt(Sub.x*Sub.x + Sub.y*Sub.y);
+  if(disBuff > SURCH_MAX)
+  {
+   continue;
+  }
+  if(disBuff < distance)
+  {
+   disBuff = distance;
+   TargetPos = player[loop]->Pos();
+   TargetSpeed = player[loop]->Movement;
+   target = loop;
+  }
+ }
+ TargetId = target;
+}
+//------------------------------------------------------------------------------
+//狙撃
+//------------------------------------------------------------------------------
+void CPlayer::Shot(void)
+{
+ if(TargetId == -1 || Distance > MAX_RANGE)
+ {
+  BarrelRotX = 0;
+  return;
+ }
+
+ if(LaunchFlag == true)
+ {
+  LaunchFlag = false;
+  cannon = true;
+  BlastBullet();
+ }
+ else
+ {
+  cannon = false;
+ }
+}
+//------------------------------------------------------------------------------
+//銃口補正
+//------------------------------------------------------------------------------
+void CPlayer::MazzleRevision(void)
+{
+ if(TargetId >= 0)
+ {
+
+  VECTOR3 DestPos = TargetPos;
+  VECTOR3 Sub = TargetPos - _Pos;
+  VECTOR3 Dis = VECTOR3(0,0,0);
+  float time = Sub.x / BULLET_SPEED;
+  Distance = sqrt(Sub.x*Sub.x + Sub.z*Sub.z);
+
+  DestPos += TargetSpeed * ( Distance / BULLET_SPEED );
+
+  Sub = DestPos - _Pos;
+  Distance = sqrt(Sub.x*Sub.x + Sub.z*Sub.z);
+
+  Dis.x = BULLET_SPEED;
+
+  //BarrelRotX = -asin((distance*GRAVITY) / (BULLET_SPEED*BULLET_SPEED))*0.5f;
+
+  float per = Distance / MAX_RANGE;
+  if(Distance > MAX_RANGE)
+  {
+   BarrelRotX = DEG2RAD(-10.0f);
+  }
+  else
+  {
+   BarrelRotX = DEG2RAD(MAXANGLE*per);
+  }
+  DestRotY = atan2(Sub.x,Sub.z);
+  REVISE_PI(DestRotY);
+  DestRotY = RAD2DEG(DestRotY);
+ }
+ REVISE_PI(BarrelRotX);
+ Barrel->SetDestRot(_Rot);
+ Barrel->SetRotY(_Rot.y);
+ Barrel->SetRotZ(_Rot.z);
+ Barrel->SetDestRotX(RAD2DEG(BarrelRotX));
 }
 
 //------------------------------------------------------------------------------

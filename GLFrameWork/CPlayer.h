@@ -136,6 +136,11 @@ public:
 	bool EndGameFlag(void){return _EndGameFlag;}
 	void SetEndGameFlag(bool flag){_EndGameFlag = flag;}
 
+ void SurchTarget(void);
+ void Shot(void);
+ void MazzleRevision(void);
+
+
 private:
 	void UpdatePlayer(void);	// プレイヤー時の更新
 	void UpdateCPU(void);		// CPU時の更新
@@ -146,7 +151,8 @@ private:
 	CBullet* _Bullet;		// 弾
 	VECTOR3 Movement;		// 移動量
 	float Speed;			// 移動速度
-	float BarrelRotX;		// 砲身のX軸回転量
+ float BarrelRotX;		// 砲身のX軸回転量
+ float BarrelDestRotX;		// 砲身のX軸回転量
 	bool _LaunchFlag;		// 弾発射フラグ（true : 使用 / false : 不使用）
 	bool _BulletUseFlag;	// 弾存在フラグ
 	int _ReloadTimer;		// 現在の装填時間
@@ -173,6 +179,21 @@ private:
 	bool _InputFlag;	// 入力可不可判定（true 可能 / false 不可）
 
 	bool _EndGameFlag;	// ゲーム終了フラグ[終了後の行動抑制] （true 終了 / false 非終了）
+
+ float DestRotY;
+
+ bool LaunchFlag;
+ VECTOR3 TargetPos;
+ VECTOR3 TargetSpeed;
+ float Distance;
+
+ bool cannon;
+
+ int frame;
+ int MyId;
+ int TargetId;
+ static int MaxId;
+ static CPlayer* player[PLAYER_MAX];
 };
 
 #endif
