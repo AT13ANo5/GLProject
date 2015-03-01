@@ -21,7 +21,7 @@ const float CTitle::RADIUS_SKY = 2400.0f;   // 空の半径
 const int kRockMax = 34;
 namespace{
  const VECTOR3 CAMERA_EYE = VECTOR3(50.0f,15.0f,-400.0f);
- const VECTOR3 CAMERA_LOOKAT = VECTOR3(0.0f,20.0f,0.0f);
+ const VECTOR3 CAMERA_LOOKAT = VECTOR3(0.0f,25.0f,0.0f);
 }
 CTitle::CTitle()
 {
@@ -43,7 +43,7 @@ void CTitle::Init(void)
 	//岩、バレル削除、もとからあったPlayerをCModelからCPlayerに変更 (kikushima) 2/16
 
 	//タイトルロゴ
-	TitleD->Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3.0f, 0), VECTOR2(650.0f, 320.0f));
+	TitleD->Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3.0f, 0), VECTOR2(850.0f, 420.0f));
 
 	// pushenter
 	PushEnter = CPushStart::Create(VECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 1.15f, 0), VECTOR2(300.0f, 52.0f));
@@ -107,7 +107,7 @@ void CTitle::Init(void)
  MoveSpeed = 2.0f;
  RotSpeed = -0.003f;
  MoveRot = 0.0f;
- CameraRotation = PI;
+ CameraRotation = PI - 0.3f;
 	CSoundAL::Play(CSoundAL::BGM_TITLE);
 }
 
@@ -199,12 +199,12 @@ void CTitle::Update(void)
  }
 
  // TODO カメラ回す
- const float cameraLength = 120.0f;
+ const float cameraLength = 40.0f;
  CameraRotation += 0.004f;
  REVISE_PI(CameraRotation);
  float pos = Ground->GetHeight(Camera->Eye());
- Camera->SetEye(VECTOR3(Player[3]->Pos().x + sinf(CameraRotation) * cameraLength,pos + 40.0f,Player[3]->Pos().z + cosf(CameraRotation) * cameraLength));
- Camera->SetLookat(Player[3]->Pos());
+ Camera->SetEye(VECTOR3(Player[3]->Pos().x + sinf(CameraRotation) * cameraLength,pos + 16.0f,Player[3]->Pos().z + cosf(CameraRotation) * cameraLength));
+ Camera->SetLookat(VECTOR3(Player[3]->Pos().x,Player[3]->Pos().y + 5.0f,Player[3]->Pos().z));
 
 	if (VC::Instance()->Trigger(COMMAND_OK))
 	{
