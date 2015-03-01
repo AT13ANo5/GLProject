@@ -15,6 +15,7 @@ class CReport;
 class CNumberManager;
 class UI;
 class CShadow;
+class CPlayerCamera;
 
 class CGame :public CScene
 {
@@ -93,6 +94,11 @@ private:
 	static CUI*		UI;
 	CModel**		ppRock_;	//	岩
 	CShadow**		Shadow;		// 影
+ CPlayerCamera* playerCamera;
 	int					gameEndCount;
+ bool     cameraMode;//カメラの切り替え
+ bool     cameraControl;//カメラを動かすか
+ unsigned short     cameraPlayer;//カメラの切り替え
+ bool    poseFlag;//ポーズフラグ
 };
 #endif

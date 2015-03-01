@@ -1,7 +1,9 @@
 #include "Renderer.h"
 #include "Object.h"
 #include "Fade.h"
-
+#include "gl_screenshot.h"
+#include "Input/Keyboard.h"
+#include "ManagerGL.h"
 HDC		CRenderer::OpenGLDevice	=NULL;
 HGLRC	CRenderer::OpenGLContext=NULL;
 
@@ -86,13 +88,33 @@ void CRenderer::Update(void)
 }
 void CRenderer::Draw(void)
 {
-	//画面のクリア
-	glClearColor((float)(178.0f / 255.0f), (float)(216.0f / 255.0f), 1.0f, 0.0f);//RGBA
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	
-	CObject::DrawAll();
-	CFade::Instance().Draw();
+ //画面のクリア
+ glClearColor((float)( 178.0f / 255.0f ),(float)( 216.0f / 255.0f ),1.0f,0.0f);//RGBA
+ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	SwapBuffers(OpenGLDevice);//バッファの入れ替え
+ CObject::DrawAll();
+ CFade::Instance().Draw();
 
+ SwapBuffers(OpenGLDevice);//バッファの入れ替え
+ if(CKeyboard::Instance()->GetTrigger(DIK_9))
+ {
+  //ファイル名チェック
+  FILE *fp;
+  int nCnt = 0;
+  char FileName[256];
+  do
+  {
+   sprintf(FileName,"./data/SCREENSHOT/screenshot%d.bmp",nCnt);
+   fp = fopen(FileName,"r");
+   nCnt++;
+  } while(fp != NULL);
+
+  if(fp != NULL)
+  {
+   fclose(fp);
+  }
+
+  gl_screenshot gl;
+  gl.screenshot(FileName);
+ }
 }

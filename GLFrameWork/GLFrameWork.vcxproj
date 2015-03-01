@@ -43,8 +43,8 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\</OutDir>
     <TargetName>$(ProjectName)_Debug</TargetName>
-    <IncludePath>D:\Program Files %28x86%29\OpenAL 1.1 SDK\libs\Win32;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Program Files %28x86%29\OpenAL 1.1 SDK\libs\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\NARI\Documents\GLProject\GLFrameWork\GL\include;D:\Program Files %28x86%29\OpenAL 1.1 SDK\libs\Win32;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\NARI\Documents\GLProject\GLFrameWork\GL\lib;D:\Program Files %28x86%29\OpenAL 1.1 SDK\libs\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -103,6 +103,7 @@
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="gl_screenshot.cpp" />
     <ClCompile Include="Input\GamePad.cpp" />
     <ClCompile Include="Input\Keyboard.cpp" />
     <ClCompile Include="Input\VC.cpp" />
@@ -163,6 +164,13 @@
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GL\include\GL\fgl.h" />
+    <ClInclude Include="GL\include\GL\fglu.h" />
+    <ClInclude Include="GL\include\GL\fglut.h" />
+    <ClInclude Include="GL\include\GL\glsmap.h" />
+    <ClInclude Include="GL\include\GL\glut.h" />
+    <ClInclude Include="GL\include\GL\tube.h" />
+    <ClInclude Include="gl_screenshot.h" />
     <ClInclude Include="Input\GamePad.h" />
     <ClInclude Include="Input\Keyboard.h" />
     <ClInclude Include="Input\VC.h" />

@@ -13,11 +13,17 @@ public:
 	void Init(void);
 	void Update(void);
 
+ void ChangeParent(CObject* parent){ Parent = parent; }
+ void SetCameraMode(bool cameraMode){ CameraMode = cameraMode; }
+ void SetCameraControl(bool cameracontrol){ cameraControl = cameracontrol; }
 private:
+void cameraMotion(void);
 	CObject* Parent;
-
 	VECTOR3 DestEye;
-	
+ bool CameraMode;
+ bool CameraMove;
+ bool cameraControl;
+ float cameraHeight;
 };
 
 

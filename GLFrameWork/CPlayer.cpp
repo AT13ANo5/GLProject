@@ -468,16 +468,26 @@ void CPlayer::UpdatePlayer(void)
 	CManager::SendRot(_Rot.y,PlayerID);
 	CManager::SendCannonRot(Barrel->Rot(),PlayerID);
 
-#ifdef _DEBUG
-	// デバッグ用
+ CKeyboard* keyboard = CKeyboard::Instance();
+ if(keyboard->GetPress(DIK_7))
+ {
+  _ReloadTimer = PLAYER_RELOAD_TIME;
+ }
+
+ // デバッグ用
 	// 連射
-	CKeyboard* keyboard = CKeyboard::Instance();
 	if (keyboard->GetPress(DIK_V))
 	{
 		CBullet::Create(_Pos,VECTOR2(BULLET_SIZE,BULLET_SIZE),VECTOR3(BarrelRotX,_Rot.y,_Rot.z),WHITE(0.5f));
 	}
 
-	// ライフの減算
+ // ライフの回復
+ if(keyboard->GetTrigger(DIK_B))
+ {
+  this->AddPlayerLife(1);
+  _State = PLAYER_STATE_DAMAGE;
+ }
+ // ライフの回復
 	if (keyboard->GetTrigger(DIK_L))
 	{
 		this->AddPlayerLife(-1);
@@ -489,7 +499,6 @@ void CPlayer::UpdatePlayer(void)
 	{
 		this->ReleaseBullet();
 }
-#endif
 }
 
 //=============================================================================

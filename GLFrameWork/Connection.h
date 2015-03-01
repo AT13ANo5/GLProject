@@ -39,6 +39,7 @@ private:
 	static CPushStart* pushStart;
 	static int HostID;
  static CPolygon2D* texPlayer;
+ static unsigned short playerNum;
 
 	static bool PlayerEntry[PLAYER_MAX];
 };

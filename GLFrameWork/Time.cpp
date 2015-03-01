@@ -12,7 +12,7 @@
 #include "Texture.h"
 #include "Time.h"
 #include "Number2D.h"
-
+#include "Input/Keyboard.h"
 //=============================================================================
 // マクロ
 //=============================================================================
@@ -54,7 +54,7 @@ void CTime::Init(void)
 		Nomber[i]->SetTex((CTexture::Texture(TEX_NUMBER)));
 		Nomber[i]->SetColor(COLOR_NORMAL);
 	}
-
+ cntFlag = true;
 }
 //=============================================================================
 //作成
@@ -81,33 +81,41 @@ void CTime::Uninit(void)
 //=============================================================================
 void CTime::Update(void)
 {
-	// color
-	if (Timer == LIMIT_TIME){
-		SetColor(COLOR_LIMIT);
-	}else if (Timer == (MAX_TIME / 2)){
-		SetColor(COLOR_HALF);
-	}
+ if(CKeyboard::Instance()->GetTrigger(DIK_2))
+ {
+  cntFlag = !cntFlag ? true : false;
+ }
+ if(cntFlag)
+ {
+  // color
+  if(Timer == LIMIT_TIME){
+   SetColor(COLOR_LIMIT);
+  }
+  else if(Timer == ( MAX_TIME / 2 )){
+   SetColor(COLOR_HALF);
+  }
 
-	/*if (updateFlag == true){
-		TimeCount++;
-	}
+  if(updateFlag == true){
+   TimeCount++;
+  }
 
-	if (TimeCount == 60)
-	{
-		Timer--;
-		//制限時間経過
-		if (Timer <= 0)
-		{
-			//終了
-			Timer = 0;
-		}
-		TimeCount = 0;
-	}*/
-	Nomber[0]->SetNumber(Timer/100);
+  if(TimeCount == 60)
+  {
+   Timer--;
+   //制限時間経過
+   if(Timer <= 0)
+   {
+    //終了
+    Timer = 0;
+   }
+   TimeCount = 0;
+  }
+  Nomber[0]->SetNumber(Timer / 100);
 
-	Nomber[1]->SetNumber(Timer/10);
+  Nomber[1]->SetNumber(Timer / 10);
 
-	Nomber[2]->SetNumber(Timer);
+  Nomber[2]->SetNumber(Timer);
+ }
 }
 
 //=============================================================================

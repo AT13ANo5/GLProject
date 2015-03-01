@@ -129,7 +129,6 @@ public:
 	VECTOR4 operator *= (const float);
 	VECTOR4 operator /= (const VECTOR4&);
 	VECTOR4 operator /= (const float);
-
 	union
 	{
 		struct
@@ -139,6 +138,12 @@ public:
 		float f[4];
 	};
 };
+
+//クォータニオンから回転行列を算出
+void qtor(double *r,VECTOR4 q);
+VECTOR4& qmul(VECTOR4 &q1,VECTOR4 &q2);
+
+
 //===================================================================
 //RGBA
 //===================================================================

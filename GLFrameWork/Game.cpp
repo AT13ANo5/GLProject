@@ -177,8 +177,7 @@ void CGame::Init(void)
 	gamePhase = PHASE_3;
 	gamePhaseCnt = 0;
 	gameEndCount = 0;
-
-
+ cameraControl = true;
 	CSoundAL::Play(CSoundAL::BGM_GAME);
 	//地形生成
 	Ground = nullptr;
@@ -209,15 +208,17 @@ void CGame::Init(void)
   Player[i]->SetDestRot(PLAYER_ROTATION_LIST[i]);
   Player[i]->SetRot(PLAYER_ROTATION_LIST[i]);
 		Player[i]->setBarrelTex(TEX_YOUJO_RED + i);
+  Player[i]->CreateBallistic();
+  Player[i]->SetBallisticDrawFlag(false);
 
 		if (i == CManager::netData.charNum)
 		{
 			Player[i]->SetPlayerFlag(true);
-			Player[i]->CreateBallistic();
-		}
+   Player[i]->SetBallisticDrawFlag(true);
+  }
 	}
 		//プレイヤーカメラ生成
-	CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
+ playerCamera = CPlayerCamera::Create(Player[CManager::netData.charNum],35.0f);
 
 	// 【テスト】各プレイヤーの色をセット
 	for(int i = 0; i < PLAYER_MAX; i++)
@@ -299,6 +300,9 @@ void CGame::Init(void)
 		}
 		Shadow[cntShadow]->SetTex(CTexture::Texture(TEX_SHADOW));
 	}
+ cameraMode = false;
+ cameraPlayer = 0;
+ poseFlag = false;
 
 	CManager::gameStartFlag = true;
 
@@ -434,14 +438,65 @@ void CGame::Uninit(void)
 //------------------------------------------------------------------------------
 void CGame::Update(void)
 {
+
+ // 空の位置プレイヤーに合わせる
+ Sky->SetPosX(playerCamera->Eye().x);
+ Sky->SetPosZ(playerCamera->Eye().z);
+ Player[cameraPlayer]->SetInputFlag(true);
+ if(cameraMode)
+ {
+  playerCamera->SetCameraControl(cameraControl);
+  Player[cameraPlayer]->SetInputFlag(!cameraControl);
+
+ }
+ if(CKeyboard::Instance()->GetTrigger(DIK_8))
+ {
+  cameraControl = !cameraControl ? true : false;
+ }
+
 	VC* vc = VC::Instance();
+ if(CKeyboard::Instance()->GetTrigger(DIK_6))
+ {
+  bool flag = !Player[cameraPlayer]->GetPreyerFlag() ? true : false;
+  Player[cameraPlayer]->SetPlayerFlag(flag);
+  Player[cameraPlayer]->SetBallisticDrawFlag(flag);
+ }
+ if(CKeyboard::Instance()->GetTrigger(DIK_1))
+ {
+  cameraMode = !cameraMode ? true : false;
+  playerCamera->SetCameraMode(cameraMode);
+ }
+ if(CKeyboard::Instance()->GetTrigger(DIK_4))
+ {
+  Player[cameraPlayer]->SetBallisticDrawFlag(false);
+  Player[cameraPlayer]->SetPlayerFlag(false);
+  cameraPlayer = ( cameraPlayer + 1 ) % PLAYER_MAX;
+  playerCamera->ChangeParent(Player[cameraPlayer]);
+  Player[cameraPlayer]->SetPlayerFlag(true);
+  Player[cameraPlayer]->SetBallisticDrawFlag(true);
+  UI->setMyID(cameraPlayer);
+ }
+ if(CKeyboard::Instance()->GetTrigger(DIK_3))
+ {
+  Player[cameraPlayer]->SetBallisticDrawFlag(false);
+  Player[cameraPlayer]->SetPlayerFlag(false);
+  cameraPlayer = ( cameraPlayer + ( PLAYER_MAX - 1 ) ) % PLAYER_MAX;
+  playerCamera->ChangeParent(Player[cameraPlayer]);
+  Player[cameraPlayer]->SetPlayerFlag(true);
+  Player[cameraPlayer]->SetBallisticDrawFlag(true);
+  UI->setMyID(cameraPlayer);
+ }
+ if(CKeyboard::Instance()->GetTrigger(DIK_O))
+ {
+  poseFlag = !poseFlag ? true:false;
+  CObject::SetUpdateFlagAll(!poseFlag);
+ }
+ if(poseFlag)
+ {
+  return;
+ }
 	// 最初のカウントダウン
 	StartCount();
-
-
-	// 空の位置プレイヤーに合わせる
-	Sky->SetPosX(Player[CManager::netData.charNum]->Pos().x);
-	Sky->SetPosZ(Player[CManager::netData.charNum]->Pos().z);
 	for (int loop = 0;loop < PLAYER_MAX;loop++)
 	{
 		if (Player[loop]->PlayerLife() <= 0)
@@ -967,7 +1022,7 @@ void CGame::HitBulletToField(void)
 	float		height;
 	CBillboard* mark;
 	VECTOR3		markPos;
-	CBallistic* ballistic = Player[CManager::netData.charNum]->GetBallistic();
+	CBallistic* ballistic = Player[cameraPlayer]->GetBallistic();
 	CPolygon3D* landing = ballistic->GetLanding();
 
 	for(int cnt = 0; cnt < MARK_MAX; ++cnt)
@@ -1111,15 +1166,12 @@ void CGame::StartCount(void)
 				UI->ReportDrawDisable();
 
 				// プレイヤーの攻撃を止める
-				for (int i = 0; i < PLAYER_MAX; i++){
-					Player[i]->SetEndGameFlag(true);
+    for(int i = 0; i < PLAYER_MAX; i++){
+     Player[i]->SetEndGameFlag(true);
 
-					// プレイヤーだったら弾道を消す
-					if(Player[i]->GetPreyerFlag() == true)
-					{
-						Player[i]->SetBallisticDrawFlag(false);
-					}
-				}
+     // プレイヤーだったら弾道を消す
+     Player[i]->SetBallisticDrawFlag(false);
+    }
 			}
 			break;
 		}

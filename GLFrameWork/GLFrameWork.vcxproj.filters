@@ -340,6 +340,9 @@
     <ClCompile Include="Input\Keyboard.cpp">
       <Filter>00_システム\Input\Keyboard</Filter>
     </ClCompile>
+    <ClCompile Include="gl_screenshot.cpp">
+      <Filter>00_システム\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -523,6 +526,27 @@
       <Filter>00_システム\Input\Keyboard</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="gl_screenshot.h">
+      <Filter>00_システム\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\GL\fgl.h">
+      <Filter>00_システム</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\GL\fglu.h">
+      <Filter>00_システム</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\GL\fglut.h">
+      <Filter>00_システム</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\GL\glsmap.h">
+      <Filter>00_システム</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\GL\glut.h">
+      <Filter>00_システム</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\GL\tube.h">
+      <Filter>00_システム</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GLFrameWork.rc">

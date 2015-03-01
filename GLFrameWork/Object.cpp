@@ -5,7 +5,8 @@ CObject* CObject::Cur[] = {nullptr};
 CObject::CObject(int priority)
 {
 	Priority = priority;
-	DeathFlag = false;
+ DeathFlag = false;
+ UpdateFlag = true;
 	LinkList();
 
 	// クォータニオンの初期化
@@ -102,7 +103,10 @@ void CObject::UpdateAll(void)
 		while(Scene)
 		{
 			Next = Scene->Next;
-			Scene->Update();
+   if(Scene->UpdateFlag)
+   {
+    Scene->Update();
+   }
 			if (Scene->DeathFlag)
 			{
 				Scene->Uninit();
@@ -111,6 +115,22 @@ void CObject::UpdateAll(void)
 		}
 	}
 }
+
+void CObject::SetUpdateFlagAll(bool updateFlag)
+{
+ for(int cnt = 0;cnt<LAYER_NUM;cnt++)
+ {
+  CObject* Scene = Top[cnt];
+  CObject* Next = nullptr;
+  while(Scene)
+  {
+   Next = Scene->Next;
+   Scene->UpdateFlag = updateFlag;
+   Scene = Next;
+  }
+ }
+}
+
 
 void CObject::DrawAll(void)
 {

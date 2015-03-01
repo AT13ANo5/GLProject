@@ -35,6 +35,7 @@ public:
 	static void UpdateAll(void);
 	static void DrawAll(void);
 	static void ReleaseAll(void);
+ static void SetUpdateFlagAll(bool updateFlag);
 
 	//=================================================================================
 	//セッター
@@ -170,6 +171,8 @@ private:
 	CObject* Prev;
 
 	bool DeathFlag;
+
+ bool UpdateFlag;
 
 };
 

@@ -120,7 +120,6 @@ public:
 	{
 		return PlayerID;
 	}
-
 	void SetPlayerColor(COLOR color){_PlayerColor = color;}
 	COLOR PlayerColor(void){return _PlayerColor;}
 
@@ -128,7 +127,7 @@ public:
 	bool InputFlag(void){return _InputFlag;}
 	bool GetPreyerFlag(void){ return PlayerFlag; }
 
-	CBallistic* GetBallistic(void){return Ballistic;}
+ CBallistic* GetBallistic(void){ return Ballistic; }
 
 	bool LunchFlag(void){return _LaunchFlag;}
 	void SetLaunchFlag(bool flag){_LaunchFlag = flag;}

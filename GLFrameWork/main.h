@@ -12,6 +12,7 @@
 //=============================================================================
 #pragma comment(lib, "openGL32.lib")
 #pragma comment(lib, "glu32.lib")
+#pragma comment(lib, "glut32.lib")
 #pragma comment (lib,"dxguid.lib")
 #pragma comment (lib, "dinput8.lib")
 #pragma comment (lib, "winmm.lib")

@@ -84,6 +84,7 @@ private:
 	VECTOR3 Pos;
 	VECTOR2 Size;
 	bool updateFlag;
+ bool cntFlag;
 };
 
 #endif

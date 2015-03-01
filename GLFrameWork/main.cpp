@@ -6,6 +6,7 @@
 //=============================================================================
 //インクルード
 //=============================================================================
+#include "GL\include\GL\glut.h"
 #include "resource.h"
 #include "main.h"
 #define _CRTDBG_MAP_ALLOC
@@ -42,7 +43,9 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF|_CRTDBG_LEAK_CHECK_DF);
 
 	//_CrtSetBreakAlloc(714);	//メモリを確保した場所を探すときは、この行のコメントを外して何番目に確保したかの番号を括弧内に書く
-
+ int argc = 1;
+ char* argv[] = {"どっかん！ようじょ"};
+ glutInit(&argc,argv);
 	WNDCLASSEX wcex =
 	{
 		sizeof(WNDCLASSEX),
@@ -62,6 +65,14 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 	HWND hWnd;
 	MSG msg;
 
+ RECT rect;
+ rect.top = 0;
+ rect.left = 0;
+ rect.bottom = SCREEN_HEIGHT;
+ rect.right = SCREEN_WIDTH;
+
+ AdjustWindowRect(&rect,WS_OVERLAPPEDWINDOW &~( WS_MAXIMIZEBOX | WS_THICKFRAME ),false);
+
  wcex.hIcon = LoadIcon(hInstance,MAKEINTRESOURCE(IDI_ICON1)); /* アイコン */
  RegisterClassEx(&wcex);
 	hWnd = CreateWindowEx(0,
@@ -70,9 +81,9 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 		GAME_WINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		(int)SCREEN_WIDTH,
-		(int)SCREEN_HEIGHT,
-		NULL,
+  rect.right - rect.left,
+  rect.bottom - rect.top,
+  NULL,
 		NULL,
 		hInstance,
 		NULL);

@@ -54,6 +54,7 @@ CPushStart* CConnection::pushStart;
 CPolygon2D* CConnection::texPlayer;
 int CConnection::HostID = -1;
 bool CConnection::PlayerEntry[] = { false };
+unsigned short CConnection::playerNum = 0;
 
 //*****************************************************************************
 //	変数定義
@@ -176,61 +177,26 @@ void CConnection::setTexHostPos(int _id)
 //=============================================================================
 void CConnection::Uninit(void)
 {
-	if (texPlayer != nullptr)
-	{
-		texPlayer->Release();
-		texPlayer = nullptr;
-	}
+ SafeRelease(texPlayer);
 
 	for (int cnt = 0;cnt < PLAYER_MAX;cnt++)
 	{
 		PlayerEntry[cnt] = false;
 	}
+ SafeRelease(pushStart);
 
-	if (pushStart != nullptr)
-	{
-		pushStart->Release();
-		pushStart = nullptr;
-	}
-
-	if (Logo != nullptr)
-	{
-		Logo->Release();
-		Logo = nullptr;
-	}
+ SafeRelease(Logo);
 
 	for (int count = 0; count < connectionPlayerMax; count++)
 	{
-		if (waitBackGround[count] != nullptr)
-		{
-			waitBackGround[count]->Release();
-			waitBackGround[count] = nullptr;
-		}
-
-		if (waitPlayer[count] != nullptr)
-		{
-			waitPlayer[count]->Release();
-			waitPlayer[count] = nullptr;
-		}
+   SafeRelease(waitBackGround[count]);
+   SafeRelease(waitPlayer[count]);
 	}
 
-	if (waitPlayer != nullptr)
-	{
-		delete[] waitPlayer;
-		waitPlayer = nullptr;
-	}
 
-	if (waitBackGround != nullptr)
-	{
-		delete[] waitBackGround;
-		waitBackGround = nullptr;
-	}
-
-	if (backGround != nullptr)
-	{
-		backGround->Release();
-		backGround = nullptr;
-	}
+ SafeDeletes(waitPlayer);
+ SafeDeletes(waitBackGround);
+ SafeRelease(backGround);
 }
 //=============================================================================
 //	更新処理
@@ -248,9 +214,7 @@ void CConnection::Update(void)
 		}
 	}
 
-	if (HostID >= 0)
-	{
-		if (HostID == 0)
+  if(CManager::netData.charNum == 0)
 		{
 			texPlayer->SetSize(VECTOR2(waitPlayerWidth * 2, waitPlayerHeight * 2));
 		}
@@ -258,17 +222,19 @@ void CConnection::Update(void)
 		{
 			texPlayer->SetSize(VECTOR2(waitPlayerWidth, waitPlayerHeight));
 		}
-		texPlayer->SetPos(waitPlayerPos[HostID]);
-	}
+  texPlayer->SetPos(waitPlayerPos[CManager::netData.charNum]);
 
-	if (CManager::netData.charNum != 0)
-	{
-		if (pushStart != nullptr)
-		{
-			pushStart->Release();
-			pushStart = nullptr;
-		}
-	}
+ if(VC::Instance()->Trigger(COMMAND_LEFT))
+ {
+  playerNum = ( playerNum + (PLAYER_MAX - 1) ) % PLAYER_MAX;
+  CManager::netData.charNum = playerNum;
+ }
+ if(VC::Instance()->Trigger(COMMAND_RIGHT))
+ {
+  playerNum = (playerNum + 1) % PLAYER_MAX;
+  CManager::netData.charNum = playerNum;
+
+ }
 }
 //=============================================================================
 //	サーバーからの受信状況による更新処理
@@ -289,9 +255,6 @@ void CConnection::recvUpdate()
 //=============================================================================
 void CConnection::keyUpdate()
 {
-	//	自分が親なら
-	if (CManager::netData.charNum == 0)
-	{
 		//	シーン切り替え
 		if (VC::Instance()->Trigger(COMMAND_OK))
 		{
@@ -299,7 +262,6 @@ void CConnection::keyUpdate()
 			CManager::SendChangeGame();
 			CManager::ChangeScene(SCENE_GAME);
 		}
-	}
 }
 //=============================================================================
 //	「CPU」からエントリーへの変更処理
